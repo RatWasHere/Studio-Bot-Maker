@@ -18,15 +18,16 @@ function createWindow () {
 }
 
 app.whenReady().then(createWindow)
-/* const { autoUpdater } = require('electron');
+
+const { autoUpdater } = require('electron');
 autoUpdater.setFeedURL({
     provider: "github",
     owner: "RatWasHere",
     repo: "studiobotmaker",
-    token: "token",
+    token: "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",
     private: true
   });
 autoUpdater.on('update-available', (info) => {
     autoUpdater.on('update-available', (info) => {
         console.log('Update available:', info.version);
-      });  }); */
+      });  });

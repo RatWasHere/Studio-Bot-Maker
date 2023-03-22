@@ -136,7 +136,36 @@ function switchObjs() {
         lastObj = cmdpending
         document.getElementById('name').innerHTML = datjson.commands[cmdpending].name
         switchObjs()
-    }   
+    }  
+    function openBar() {
+        let bottombar = document.getElementById('bottombar')
+        bottombar.style.animationDuration = ''
+        bottombar.style.animationName = '';
+        bottombar.style.animationDuration = '0.5s'
+        bottombar.style.animationName = 'expandFrom';
+        bottombar.style.height = '30%'
+        bottombar.style.width = '40%'
+        bottombar.style.backdropFilter = 'blur(22px)'
+        bottombar.style.border = '#00000030 solid 2px'
+        bottombar.style.marginTop = '-90vh'
+        bottombar.style.zIndex = '50'
+        bottombar.style.marginLeft = '30%'
+        bottombar.style.borderRadius = '22px'
+        bottombar.style.backgroundColor = '#3d3d3d40'
+        bottombar.style.boxShadow = '#00000050 0px 0px 12px'
+        bottombar.onclick = () => {
+            unmodify()
+        }
+        setTimeout( () => {
+            bottombar.style.animationName = ''
+            bottombar.style.animationDuration = ''
+            document.onkeydown = function(event) {
+                if (event.key === "Escape") {
+                    unmodify()
+                }
+              }}, 500);
+    
+    } 
     function modifyBar() {
         let bottombar = document.getElementById('bottombar')
         bottombar.style.animationDuration = ''
@@ -1100,3 +1129,19 @@ function switchObjs() {
         sp.style.animationDuration = ''
         }, 490)
         } 
+        
+        function checkForUpdate() {
+            openBar()
+            setTimeout (() => {
+                let bottombar = document.getElementById('bottombar')
+                bottombar.innerHTML = `
+                <div class="flexbox" style="height: 100%;">
+                <div class="ring">
+                <div class="ring" style="height: 7vh; width: 7vh; margin-top: 0.25vh;  animation-delay: 0.8s; animation-duration: 1.8s;"></div>
+                </div>
+                <br>
+                <div class="barbuttontexta">Checking For Updates</div>
+                </div>
+                `
+            }, 470)
+        }
