@@ -1,0 +1,150 @@
+{
+  "READ ME: MESSING AROUND WITH THESE VALUES MIGHT DESTROY YOUR DISCORD BOT. MODIFY ON YOUR BEHALF!": "!!",
+  "commands": {
+    "1": {
+      "id": "DZMT+S",
+      "count": 12,
+      "name": "TestCommand1",
+      "actions": {
+        "1": {
+          "name": "Send Message",
+          "file": "sendmessage.js",
+          "data": {
+            "messageContent": "the hekk",
+            "button": "User*",
+            "ExtraData": "eeeeeeeeeeee",
+            "name": "Send Message"
+          }
+        },
+        "2": {
+          "name": "Send Message",
+          "file": "sendmessage.js",
+          "data": {
+            "messageContent": "UwU",
+            "button": "Channel*",
+            "ExtraData": "User* uwu",
+            "name": "Send Message"
+          }
+        },
+        "3": {
+          "name": "Send Message",
+          "file": "sendmessage.js",
+          "data": {
+            "messageContent": "aah",
+            "button": "Channel*",
+            "ExtraData": "User* zaddyssssss!!",
+            "name": "Send Message"
+          }
+        },
+        "4": {
+          "name": "Send Message",
+          "file": "sendmessage.js",
+          "data": {
+            "messageContent": "#dragqueenreunion",
+            "button": "User*",
+            "ExtraData": "${user('dragqueen')}",
+            "name": "Send Message"
+          }
+        },
+        "5": {
+          "name": "Send Message",
+          "file": "sendmessage.js",
+          "data": {
+            "messageContent": "#dragqueenreunion",
+            "button": "User*",
+            "ExtraData": "${user('dragqueen')}",
+            "name": "Send Message"
+          }
+        },
+        "6": {
+          "name": "Send Message",
+          "file": "sendmessage.js",
+          "data": {
+            "messageContent": "#dragqueenreunion",
+            "button": "User*",
+            "ExtraData": "${user('dragqueen')}",
+            "name": "Send Message"
+          }
+        },
+        "7": {
+          "name": "Send Message",
+          "file": "sendmessage.js",
+          "data": {
+            "messageContent": "#dragqueenreunion",
+            "button": "User*",
+            "ExtraData": "${user('dragqueen')}",
+            "name": "Send Message"
+          }
+        },
+        "8": {
+          "name": "Send Message",
+          "file": "sendmessage.js",
+          "data": {
+            "messageContent": "#dragqueenreunion",
+            "button": "User*",
+            "ExtraData": "${user('dragqueen')}",
+            "name": "Send Message"
+          }
+        },
+        "9": {
+          "name": "Send Message",
+          "file": "sendmessage.js",
+          "data": {
+            "messageContent": "#dragqueenreunion",
+            "button": "User*",
+            "ExtraData": "${user('dragqueen')}",
+            "name": "Send Message"
+          }
+        },
+        "10": {
+          "name": "Send Message",
+          "file": "sendmessage.js",
+          "data": {
+            "messageContent": "#dragqueenreunion",
+            "button": "User*",
+            "ExtraData": "${user('dragqueen')}",
+            "name": "Send Message"
+          }
+        },
+        "11": {
+          "name": "Send Message",
+          "file": "sendmessage.js",
+          "data": {
+            "messageContent": "#dragqueenreunion",
+            "button": "User*",
+            "ExtraData": "${user('dragqueen')}",
+            "name": "Send Message"
+          }
+        },
+        "12": {
+          "name": "Send Message",
+          "file": "sendmessage.js",
+          "data": {
+            "messageContent": "#dragqueenreunion",
+            "button": "User*",
+            "ExtraData": "${user('dragqueen')}",
+            "name": "Send Message"
+          }
+        }
+      }
+    },
+    "2": {
+      "id": "SBMR+C",
+      "count": 1,
+      "name": "Create Embed",
+      "actions": {
+        "1": {
+          "name": "Send Embed",
+          "file": "sendembed.js",
+          "data": {
+            "messageContent": "Eh",
+            "button": "User*",
+            "ExtraData": ""
+          }
+        }
+      }
+    }
+  },
+  "count": 2,
+  "settings": {}
+}

@@ -1,0 +1,363 @@
+@keyframes moveFrom {
+    0% {
+        opacity: 100%;
+    }
+    50% {
+        opacity: 0%;
+    }
+    100% {
+        opacity: 100%;
+    }
+}
+@keyframes moveunder {
+    0% {
+        margin-top: -7%;
+    }
+    100% {
+        margin-top: -40%;
+    }
+}
+@keyframes movefrom {
+    0% {
+        margin-top: -40%;
+    }
+    100% {
+        margin-top: -7%;
+    }
+}
+.tile {
+    height: 300px;
+    width: 460px;
+    border-radius: 53px;
+    background-color: #FFFFFF;
+    color: #000000;
+    box-shadow: #FFFFFF75 0px 0px 50px;
+    margin-bottom: 12px;
+    transition: box-shadow 0.3s ease-in-out;
+}
+.tile:hover {
+    box-shadow: #FFFFFF 0px 0px 512px;
+    transition: box-shadow 0.3s ease-in-out;
+}
+.tile:active {
+    box-shadow: #FFFFFF 0px 0px 1000px;
+    transition: box-shadow 0.3s ease-out;
+}
+.inv {
+    color: #FFFFFF !important;
+    background-color: #000000 !important;
+}
+.tinv {
+    color: #FFFFFF !important;
+}
+.actionBar {
+    width: 500px;
+    height: calc(85% - 48px) !important;
+    background-color: #FFFFFF;
+    border-radius: 50px;
+    padding: 12px;
+    box-shadow: #FFFFFF75 0px 0px 60px;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    justify-content: left;
+}
+.action {
+    width: 90%;
+    height: auto;
+    font-size: 25px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 5px;
+    margin-top: 6px;
+    background-color: #000000;
+    border-radius: 100px;
+    text-align: center;
+    color: #FFFFFF;
+    overflow: auto;
+    box-shadow: #00000075 0px 0px 12px;
+}
+.fullsize {
+    height: 96.5% !important;
+    margin-left: 3%;
+}
+.inputBar {
+    width: 90%;
+    border: #000000 solid 5px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 4px;
+    text-align: center;
+    background-color: #000000;
+    color: #FFFFFF;
+    font-size: 26px;
+    padding: 4px;
+    border-radius: 12px;
+    box-shadow: #00000035 0px 0px 4px;
+    transition: box-shadow ease 0.5s;
+}
+.input {
+    width: 90%;
+    border: #000000 solid 5px;
+    margin-left: auto;
+    border-radius: 100px;
+    margin-right: auto;
+    margin-top: 4px;
+    text-align: center;
+    background-color: #000000;
+    color: #FFFFFF;
+    font-size: 26px;
+    padding: 1px;
+    box-shadow: #00000035 0px 0px 4px;
+    transition: box-shadow ease 0.5s;
+}
+.largeInput {
+    width: 90%;
+    height: 300px;
+    border: #000000 solid 5px;
+    margin-left: auto;
+    border-radius: 20px;
+    overflow: auto;
+    margin-right: auto;
+    margin-top: 4px;
+    text-align: left;
+    background-color: #000000;
+    color: #FFFFFF;
+    margin-bottom: 12px;
+    font-size: 17px;
+    padding: 12px;
+    box-shadow: #00000035 0px 0px 4px;
+    transition: box-shadow ease 0.5s;
+}
+.sepbar {
+    background-color: #00000086;
+    box-shadow: #00000050 0px 0px 12px;
+    width: 90%;
+    margin-top: 22px;
+    margin-bottom: 22px;
+    margin-left: auto;
+    margin-right: auto;
+    height: 3px;
+    border-radius: 20px;
+}
+.input:focus {
+    box-shadow: #00000085 0px 7px 14px 4px;
+    transition: box-shadow ease-in 0.5s;
+}
+.clsr {
+    margin-bottom: -10px;
+    margin-left: 20px !important;
+}
+.inputBar:focus {
+    box-shadow: #00000085 0px 7px 14px 4px;
+    transition: box-shadow ease-in 0.5s;
+}
+.text {
+    color: #000000;
+    font-size: 25px;
+    margin-left: 12px;
+}
+.white {
+    color: #FFFFFF !important;
+}
+.switchBar {
+    width: 524px;
+    height: 12%;
+    background-color: #FFFFFF;
+    border-radius: 500px;
+    margin-top: -7%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: left;
+}
+.fbh {
+    height: 100%;
+    width: 100%;
+}
+.tiletext {
+    font-size: 25px;
+    color: #000000;
+    margin-top: 255px;
+    margin-left: 32px;
+}
+.barbuttonb {
+    height: 120px;
+    width: 120px;
+    background-color: #000000;
+    border: solid 12px #FFFFFF;
+    border-radius: 500px;
+    margin: 0px;
+    transition: background-color 0.5s ease;
+    transition: border 0.5s ease;
+    transition: width 0.5s ease;
+}
+.barbuttonbottom {
+    margin-top: 10%
+}
+.barbuttonb:hover {
+    background-color: #FFFFFF;
+    border: solid 12px #999999;
+    transition: background-color 0.5s ease;
+    transition: border 0.5s ease;
+    transition: width 0.5s ease;
+    width: 140px;
+}
+.barbuttonb:active {
+    background-color: #000000;
+    color: #FFFFFF;
+    width: 200px;
+    border: solid 12px #999999;
+    transition: border 0.1s ease;
+    transition: width 0.1s ease;
+
+}
+.barbutton {
+    height: 85%;
+    width: 115px;
+    margin: 0px;
+    border-radius: 120px;
+    transition: background-color 0.5s ease;
+    border: #000000 solid 5px;
+    background-color: #000000;
+    margin-left: 6px;
+    display: flex;
+    align-self: center;
+}
+
+.frst {
+    margin-left: 10% !important;
+}
+.barbuttontext {
+    font-size: 25px;
+    color: #FFFFFF;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: auto;
+    margin-bottom: auto;
+}
+.barbuttontexta {
+    font-size: 18px;
+    color: #FFFFFF;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: auto;
+    margin-bottom: auto;
+}
+.barbutton:active {
+    background-color: #FFFFFF;
+    transition: background-color 0.5s ease;
+}
+.barbutton:active .barbuttontext {
+    color: #FFFFFF;
+}
+.margintop {
+    margin-top: 30px;
+}
+.title {
+    color: #FFFFFF;
+    font-size: 33px;
+}
+.blk {
+    color: #000000 !important;
+}
+.smalltext {
+    font-size: 12px;
+    color: #FFFFFF80;
+}
+.halftransparent {
+    opacity: 75%;
+}
+.flexbox {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: left;
+}
+.center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+body {
+    background-color: #000000;
+    font-family :'Courier New', Courier, monospace;
+    padding: 25px;
+    cursor:default;
+    user-select: none;
+}
+::-webkit-scrollbar {
+    width: 10px;
+}
+::-webkit-scrollbar-track {
+    background: #000000;
+}
+::-webkit-scrollbar-thumb {
+    background: #FFFFFF;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: #FFFFFF;
+}
+
+
+{
+    "READ ME: MESSING AROUND WITH THESE VALUES MIGHT DESTROY YOUR DISCORD BOT. MODIFY ON YOUR BEHALF!": "!!",
+    "commands": {
+      "1": {
+        "id": "DZMT+S",
+        "count": 3,
+        "name": "TestCommand1",
+        "actions": {
+          "1": {
+            "name": "Send Message",
+            "file": "sendmessage.js",
+            "data": {
+              "messageContent": "the hekk",
+              "button": "User*",
+              "ExtraData": "eeeeeeeeeeee",
+              "name": "Send Message"
+            }
+          },
+          "2": {
+            "name": "Send Message",
+            "file": "sendmessage.js",
+            "data": {
+              "messageContent": "UwU",
+              "button": "Channel*",
+              "ExtraData": "User* uwu",
+              "name": "Send Message"
+            }
+          },
+          "3": {
+            "name": "Send Message",
+            "file": "sendmessage.js",
+            "data": {
+              "messageContent": "aah",
+              "button": "Channel*",
+              "ExtraData": "User* zaddyssssss!!",
+              "name": "Send Message"
+            }
+          }
+        }
+      },
+      "2": {
+        "id": "SBMR+C",
+        "count": 1,
+        "name": "Create Embed",
+        "actions": {
+          "1": {
+            "name": "Send Embed",
+            "file": "sendembed.js",
+            "data": {
+              "messageContent": "Eh",
+              "button": "User*",
+              "ExtraData": ""
+            }
+          }
+        }
+      }
+    },
+    "count": 2,
+    "settings": {}
+  }
