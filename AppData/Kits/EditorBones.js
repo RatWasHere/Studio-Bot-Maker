@@ -1,4 +1,5 @@
 let version = 3
+
 function Get(yourUrl){
     var Httpreq = new XMLHttpRequest(); // a new request
     Httpreq.open("GET",yourUrl,false);
@@ -6,6 +7,7 @@ function Get(yourUrl){
     return Httpreq.responseText;          
 }
 
+const { nil } = require('builder-util-runtime/out/uuid');
 /* if (JSON.parse(Get('https://ratapp.rf.gd/version.json')).version == version) {
     console.log(Get('https://ratapp.rf.gd/version.json'))
     console.log('You\'re on the latest version of studio bot maker!')
@@ -27,6 +29,7 @@ const fs = require('fs');
 
 
 
+
 var datjson = require('./AppData/data.json')
 let lastType = 0 // 0 = Command; 1 = Actions;
 let lastObj = "1"
@@ -40,6 +43,19 @@ document.onkeydown = function(event) {
     }
   };
 
+  if (datjson.reset == true) {
+  if (fs.readFileSync('C:\\ProgramData\\studiodata.json')) {
+    datjson = JSON.parse(fs.readFileSync('C:\\ProgramData\\studiodata.json'))
+    fs.writeFileSync('./AppData/data.json', JSON.stringify(datjson, null, 2));
+    datjson.reset = false;
+    fs.writeFileSync('C:\\ProgramData\\studiodata.json', JSON.stringify(datjson, null, 2))
+    fs.writeFileSync('./AppData/data.json', JSON.stringify(datjson, null, 2));
+
+  } else {
+    fs.writeFileSync('C:\\ProgramData\\studiodata.json', JSON.stringify(datjson, null, 2))
+
+  }
+}
   function highlight(element, bln, blne) {
     if (lastHighlighted) {
     lastHighlighted.style.backgroundColor = '#FFFFFF15'
@@ -188,15 +204,15 @@ function switchObjs() {
         setTimeout( () => {
         bottombar.innerHTML += `
         <div class="flexbox" style="width: 98%; margin-left: auto; margin-right: auto; height: 20%; justify-content: center;">
-        <div class="barbutton"><div class="barbuttontexta">Save</div></div>
-        <div class="barbutton"><div class="barbuttontexta">Close</div></div>
+        <div class="barbutton" onclick="savePrj()"><div class="barbuttontexta">Save</div></div>
         <div class="barbutton" onclick="modcolor(this)"><div class="barbuttontexta">Color</div></div>
+        <div class="barbutton" onclick="sltPrj()"><div class="barbuttontexta">Select Project</div></div>
 
         </div>
         <div class="sepbar"></div>
         <div class="flexbox" style="width: 98%; margin-left: auto; margin-right: auto; height: 20%; justify-content: center;">
         <div class="barbutton"><div class="barbuttontexta">Toggle Bot</div></div>
-        <div class="barbutton"><div class="barbuttontexta">Export Project</div></div>
+        <div class="barbutton" onclick="exportProject() "><div class="barbuttontexta">Export Project</div></div>
         <div class="barbutton" onclick="settoken(this)"><div class="barbuttontexta">Bot Data</div></div>
 
         </div>
@@ -488,22 +504,21 @@ function switchObjs() {
             let events = fs.readdirSync('./AppData/Events')
             bottombar.overflowY = 'auto'
             bottombar.innerHTML += `
-            <div class="flexbox" style="height: 40%; justify-content: center;">
+            <div class="flexbox" style="height: 30%; justify-content: center;">
             
             <div class="text">Prefix</div>
             <div class="input" onkeyup="storeprefix(this.innerText)" contenteditable="true" onclick="console.log('token setting...')">${datjson.prefix}</div>
             <br>
 
             <div class="text">Token</div>
-            <div class="input" onkeyup="storetoken(this.innerText)" contenteditable="true" onclick="console.log('token setting...')">${datjson.btk}</div>
+            <div class="input" style="overflow-y: auto; overflow-x: hidden; onkeyup="storetoken(this.innerText)" contenteditable="true" onclick="console.log('token setting...')">${datjson.btk}</div>
             <br>
+
             <div class="text">Client ID</div>
-
             <div class="input" onkeyup="storeclientid(this.innerText)" contenteditable="true" onclick="console.log('token setting...')">${datjson.clientID}</div>
-
-            <div class="sepbar" style="margin-top: 10px; margin-bottom: 30px;"></div>
-            <div class="barbutton" onclick="brd()" style="height: 40%; backdrop-filter: blur(15px);"><div class="barbuttontexta">Close</div></div>
-            </div>
+<br>            <br>
+            <div class="barbutton" onclick="brd()" style="height: 40%; margin-top: 10vh; backdrop-filter: blur(5px); background-color: ${datjson.color}; opacity: 80%;"><div class="barbuttontexta">Close</div></div>
+</div>
             `
         }, 600)
 
@@ -1144,4 +1159,179 @@ function switchObjs() {
                 </div>
                 `
             }, 470)
+        }
+
+
+        /* ipcRenderer.send('selectDirectory');
+        
+         ipcRenderer.on('selectedDirectory', function (event, dir) {
+          console.log(dir);
+        }); */
+
+        function sltPrj() {
+            const ipcRenderer = require('electron').ipcRenderer;
+
+            ipcRenderer.send('selectDirectory');
+            
+            ipcRenderer.on('selectedDirectory', function (event, dir) {
+                if (dir[0] == undefined) {
+                    location.reload()
+                    bottombar.style.animationName = ''
+                    bottombar.style.animationDuration = ''
+                    bbar.style.animationName = ''
+                    bbar.style.animationDuration = ''
+                    actionTile.style.animationName = ''
+                    actionTile.style.animationDuration = ''
+                    editor.style.animationName = ''
+                    editor.style.animationDuration = ''
+                    editor.style.animationDelay = ''
+                    editor.style.filter = 'blur(0px)'
+                    actionTile.style.filter = 'blur(0px)'
+                    actionTile.style.zIndex = '0'
+                    actionTile.style.zIndex = '0'
+        
+                    bbar.style.filter = 'blur(0px)'
+                    bottombar.style.filter = 'blur(0px)'
+                } else {
+              console.log(dir);
+              let di = fs.readFileSync(dir[0] + '\\AppData\\data.json') 
+              console.log('di' + di)
+              datjson = JSON.parse(di)
+              document.getElementById('opentext').innerHTML = `Opening Project <span style="color: #FFFFFF50">${JSON.parse(di).name}</span> <br> <div style="color: #FFFFFF50">Contains ${JSON.parse(di).count} action groups</div>`
+              setTimeout (() => {
+                              fs.writeFileSync('./AppData/data.json', JSON.stringify(datjson, null, 2))
+              location.reload()
+              }, 5000)
+
+            }});
+            let actionTile = document.getElementById('actionbar')
+            let editor = document.getElementById('edutor')
+            let bbar = document.getElementById('bbar')
+            let bottombar = document.getElementById('bottombar')
+
+            
+            bottombar.style.animationName = 'blurify'
+            bottombar.style.animationDuration = '0.5s'
+            bbar.style.animationName = 'blurify'
+            bbar.style.animationDuration = '0.5s'
+            actionTile.style.animationName = 'blurify'
+            actionTile.style.animationDuration = '0.5s'
+            editor.style.animationName = 'blurify'
+            editor.style.animationDuration = '0.5s'
+            editor.style.animationDelay = '0.25s'
+            editor.style.filter = 'blur(30px)'
+            actionTile.style.filter = 'blur(30px)'
+            actionTile.style.zIndex = '0'
+            actionTile.style.zIndex = '0'
+
+            bbar.style.filter = 'blur(30px)'
+            bottombar.style.filter = 'blur(30px)'
+            document.body.innerHTML += '<div class="barbuttontexta" id="opentext" style="margin-top: -10vh; position: relative; z-index: 50; text-align: center;">The editor will reload after you select your project</div>'
+        }
+        let exportFolder;
+        function exportProject() {
+            let actionTile = document.getElementById('actionbar')
+            let editor = document.getElementById('edutor')
+            let bbar = document.getElementById('bbar')
+            let bottombar = document.getElementById('bottombar')
+
+            
+            bottombar.style.animationName = 'blurify'
+            bottombar.style.animationDuration = '0.5s'
+            bbar.style.animationName = 'blurify'
+            bbar.style.animationDuration = '0.5s'
+            actionTile.style.animationName = 'blurify'
+            actionTile.style.animationDuration = '0.5s'
+            editor.style.animationName = 'blurify'
+            editor.style.animationDuration = '0.5s'
+            editor.style.animationDelay = '0.25s'
+            editor.style.filter = 'blur(30px)'
+            actionTile.style.filter = 'blur(30px)'
+            actionTile.style.zIndex = '0'
+            actionTile.style.zIndex = '0'
+
+            bbar.style.filter = 'blur(30px)'
+            bottombar.style.filter = 'blur(30px)'
+            document.body.innerHTML += `
+            <div class="actbar" style="margin-top: -95vh; padding: 0px; margin-left: auto; margin-right: auto; position: relative; background-color: #00000040; box-shadow: #00000035 0px 0px 12px;">
+            
+            <div class="barbuttontext" style="margin-top: 3vh; text-align: center;">Export Project</div>
+            <div class="sepbar"></div>
+
+            <br>
+            <div class="flexbox" style="height: 8%;">
+            <div class="barbuttontexta">Project Name</div>
+            <div class="input" id="projectName" style="width: 85%;" contenteditable="true">${datjson.name}</div>
+            <div class="sepbars" style="width: 90%;"></div>
+            <div class="barbuttontexta">Export Folder</div>
+            <div class="action" style="height: auto; width: 85%;" id="pathTo" onclick="selectFolder(this)">None Selected</div>
+            <br>
+            <div class="sepbar"></div>
+            <div class="barbutton" style="margin: auto;" onclick="exportBot(this)"><div class="barbuttontexta">Export</div></div>
+            <div class="barbutton" style="margin: auto;" onclick="location.reload()"><div class="barbuttontexta">Cancel</div></div>
+
+            </div>
+            `
+        }
+        function selectFolder(elm) {
+            const ipcRenderer = require('electron').ipcRenderer;
+
+            ipcRenderer.send('selectDirectory');
+            
+            ipcRenderer.on('selectedDirectory', function (event, dir) { 
+                if (!dir || dir == null || dir == undefined) {
+                    elm.innerHTML = 'Selection Cancelled. No Folder selected'
+                } else {
+                    elm.innerHTML = `${dir[0]}`
+                    exportFolder = dir[0]
+                }})
+        }
+        function exportBot(elm) {
+            elm.style.animationName = ''
+            elm.style.animationDuration = '0s'
+            if (exportFolder) {
+                datjson.name = document.getElementById('projectName').innerText
+                datjson.prjSrc = exportFolder
+                fs.writeFileSync('./AppData/data.json', JSON.stringify(datjson, null, 2))
+
+                elm.parentNode.parentNode.innerHTML = `
+                <div class="barbuttontexta" style="margin: auto; margin-top: 50%; text-align: center;" id="exprjt">Exporting Project!</div>
+                `
+                fs.writeFileSync(exportFolder + '\\bot.js', fs.readFileSync('./bot.js'))
+                fs.writeFileSync(exportFolder + '\\package.json', fs.readFileSync('./package.json'))
+                try {
+                fs.mkdirSync(exportFolder + '\\AppData')
+                } catch (err) {
+                    null
+                }
+                fs.writeFileSync(exportFolder + '\\AppData\\data.json', fs.readFileSync('./AppData/data.json'))
+                try {
+                fs.mkdirSync(exportFolder + '\\AppData\\Actions')
+                } catch (err) {
+                    null
+                }  
+
+                let actions = fs.readdirSync('./AppData/Actions')
+                let counnt = 0;
+                for (let action in actions) {
+                    counnt++
+                    setTimeout(() => {
+                        document.getElementById('exprjt').innerHTML = 'Exported Project <br>' + counnt + ' Actions written'
+                        fs.writeFileSync(exportFolder + '\\AppData\\Actions\\' + actions[action], fs.readFileSync('./AppData/Actions/' + actions[action]))
+                    }, 1400)
+                    document.getElementById('exprjt').innerHTML = 'Project Exported! <br>' + counnt + 'Actions written in total'
+                    setTimeout(() => {
+                        location.reload()
+                    }, 5000)
+                }
+            } else {
+                elm.style.animationName = 'glowTwice'
+                elm.style.animationDuration = '1s'
+            }
+        }
+        
+        function savePrj() {
+            fs.writeFileSync(datjson.prjSrc + '\\AppData\\data.json', JSON.stringify(datjson, null, 2))
+            fs.writeFileSync('C:\\ProgramData\\studiodata.json', JSON.stringify(datjson, null, 2));
+
         }

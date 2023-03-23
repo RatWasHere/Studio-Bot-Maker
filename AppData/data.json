@@ -1,0 +1,215 @@
+{
+  "READ ME: MESSING AROUND WITH THESE VALUES MIGHT DESTROY YOUR DISCORD BOT. MODIFY ON YOUR BEHALF!": "!!",
+  "prefix": ">",
+  "commands": {
+    "1": {
+      "count": 9,
+      "name": "waah",
+      "type": "action",
+      "trigger": "messageContent",
+      "actions": {
+        "1": {
+          "name": "Send Message",
+          "file": "sendmessage.js",
+          "data": {
+            "messageContent": "Hello World!",
+            "button": "Message Channel",
+            "ExtraData": "",
+            "name": "Send Message"
+          }
+        },
+        "2": {
+          "name": "Stop Action Sequence",
+          "file": "endActionSequence.js",
+          "data": {
+            "name": "Stop Action Sequence",
+            "end": "•"
+          }
+        },
+        "3": {
+          "name": "Get Role",
+          "file": "getRole.js",
+          "data": {
+            "name": "Get Role",
+            "memberChoice": "1073625160852189277",
+            "storeAs": "storedRole"
+          }
+        },
+        "4": {
+          "name": "Get Member",
+          "file": "getMember.js",
+          "data": {
+            "messageContent": "",
+            "button": "Command Guild",
+            "name": "Get Member",
+            "ExtraData": "",
+            "sendTo": "",
+            "choice": "ID*",
+            "memberValue": "924706314494566450",
+            "storesAs": "mbmer"
+          }
+        },
+        "5": {
+          "name": "Add Role",
+          "file": "addRole.js",
+          "data": {
+            "name": "Add Role",
+            "memberChoice": "storedRole",
+            "storeAs": "",
+            "addTo": "Message Author",
+            "efadd": "mbmer"
+          }
+        },
+        "6": {
+          "name": "Send Message",
+          "file": "sendmessage.js",
+          "data": {
+            "messageContent": "You now have... the gay role? ",
+            "button": "Message Channel",
+            "ExtraData": "",
+            "name": "Send Message"
+          }
+        },
+        "7": {
+          "name": "Timeout Member",
+          "file": "timeoutMember.js",
+          "data": {
+            "messageContent": "",
+            "button": "Variable*",
+            "name": "Timeout Member",
+            "ExtraData": "we",
+            "sendTo": "",
+            "ButtonRow": "",
+            "ActionRow": "",
+            "embedVar": "",
+            "guild": "Variable*",
+            "guildField": "emdvar",
+            "reason": "",
+            "duration": "Minute(s)*",
+            "howMuch": "5"
+          }
+        },
+        "8": {
+          "name": "Timeout Member",
+          "file": "timeoutMember.js",
+          "data": {
+            "messageContent": "",
+            "button": "Variable*",
+            "name": "Timeout Member",
+            "ExtraData": "",
+            "sendTo": "",
+            "ButtonRow": "",
+            "ActionRow": "",
+            "embedVar": "",
+            "guild": "Message Guild",
+            "guildField": "",
+            "reason": "",
+            "duration": "Minute(s)*",
+            "howMuch": ""
+          }
+        },
+        "9": {
+          "name": "Remove Role",
+          "file": "removeRole.js",
+          "data": {
+            "name": "Remove Role",
+            "memberChoice": "",
+            "storeAs": "",
+            "addTo": "Message Author",
+            "efadd": ""
+          }
+        }
+      }
+    },
+    "2": {
+      "count": 2,
+      "name": "New Command",
+      "type": "action",
+      "trigger": "textCommand",
+      "actions": {
+        "1": {
+          "name": "Send Message",
+          "file": "sendmessage.js",
+          "data": {
+            "messageContent": "WeeeeeeeeeeeeWWWWWWWWWWWWWWWW",
+            "button": "Message Channel",
+            "ExtraData": "",
+            "name": "Send Message"
+          }
+        },
+        "2": {
+          "name": "Send Message",
+          "file": "sendmessage.js",
+          "data": {
+            "messageContent": "Hello World!",
+            "button": "Message Channel",
+            "ExtraData": "",
+            "name": "Send Message"
+          }
+        }
+      }
+    },
+    "3": {
+      "count": 1,
+      "name": "New Command",
+      "type": "action",
+      "trigger": "textCommand",
+      "actions": {
+        "1": {
+          "name": "Send Message",
+          "file": "sendmessage.js",
+          "data": {
+            "messageContent": "Hello World!",
+            "button": "Message Channel",
+            "ExtraData": "",
+            "name": "Send Message"
+          }
+        }
+      }
+    },
+    "4": {
+      "count": 1,
+      "name": "New Command",
+      "type": "action",
+      "trigger": "textCommand",
+      "actions": {
+        "1": {
+          "name": "Send Message",
+          "file": "sendmessage.js",
+          "data": {
+            "messageContent": "Hello World!",
+            "button": "Message Channel",
+            "ExtraData": "",
+            "name": "Send Message"
+          }
+        }
+      }
+    },
+    "5": {
+      "count": 1,
+      "name": "New Command",
+      "type": "action",
+      "trigger": "textCommand",
+      "actions": {
+        "1": {
+          "name": "Send Message",
+          "file": "sendmessage.js",
+          "data": {
+            "messageContent": "Hello World!",
+            "button": "Message Channel",
+            "ExtraData": "",
+            "name": "Send Message"
+          }
+        }
+      }
+    }
+  },
+  "count": 5,
+  "settings": {},
+  "color": "rgb(7, 19, 20)",
+  "btk": "ODU5NzUxMjMzNDAwNjAyNjM1.Gk3Zz4.eV2x4XUaIKMYsJcJU6Pni69hYHzqLhWOcOvdpQ",
+  "clientID": "859751233400602635",
+  "name": "nodot",
+  "prjSrc": "E:\\nwjs-sdk-v0.73.0-win-x64\\updatetester\\export",
+  "reset": false
+}

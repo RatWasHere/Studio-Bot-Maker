@@ -12,14 +12,22 @@
     filter: blur(0px);
     }
     }
-@keyframes ringify {
-    0% {
-        transform: rotate3d(0, 1, 0, 0deg);
+    @keyframes ringify {
+        0% {
+            transform: rotate3d(1, 0, 0, 0deg);
+        }
+        100% {
+            transform: rotate3d(1, 0, 0, 360deg);
+        }
     }
-    100% {
-        transform: rotate3d(0, 1, 0, 360deg);
+    @keyframes blurify {
+        0% {
+            filter: blur(0px);
+        }
+        100% {
+            filter: blur(30px);
+        }
     }
-}
     @keyframes rotatefast {
         0% {
             transform: rotate(0deg);
@@ -904,7 +912,7 @@
     margin-left: 6px;
     display: flex;
     align-self: center;
-    z-index: 1
+    z-index: 1;
     }
     .frst {
     margin-left: 10% !important;
