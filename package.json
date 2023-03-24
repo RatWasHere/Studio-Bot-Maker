@@ -10,8 +10,13 @@
     },
     "build": {
         "files": [
-          "AppData/**/*"
-        ]
+            "**/*",
+            "!AppData/**/*.js",
+            "!AppData/Toolkit/**.js",
+            "!AppData/Toolkit/**.json",
+            "!AppData/data.json",
+            "!AppData/Actions/**.js"
+          ]
       },
     "dependencies": {
       "discord-api-types": "^0.37.34",
@@ -29,25 +34,17 @@
       "electron": "^23.1.2"
     },
     "scripts": {
-      "start": "electron-forge start",
+      "start": "electron .",
       "package": "electron-forge package",
       "make": "electron-forge make"
     },
     "config": {
       "forge": {
-        "packagerConfig": {
-          "ignore": [
-            "!./AppData/**/*.json",
-            "!./AppData/**/*.js",
-            "!./AppData/data.json",
-            "!./AppData/Actions/**.js"
-          ]
-        },
         "makers": [
             {
               "name": "@electron-forge/maker-squirrel",
               "config": {
-                "name": "Studio Bot Maker"
+                "name": "StudioBotMaker"
               }
             }
           ]

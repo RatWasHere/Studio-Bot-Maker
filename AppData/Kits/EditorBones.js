@@ -1,4 +1,5 @@
 let version = 3
+const { app } = require('electron');
 
 function Get(yourUrl){
     var Httpreq = new XMLHttpRequest(); // a new request
@@ -26,11 +27,10 @@ const { nil } = require('builder-util-runtime/out/uuid');
 
 const { ApplicationCommandPermissionType } = require('discord.js');
 const fs = require('fs');
+const processPath = require('process').cwd();
 
 
-
-
-var datjson = require('./AppData/data.json')
+var datjson = JSON.parse(fs.readFileSync(processPath +'/AppData/data.json'))
 let lastType = 0 // 0 = Command; 1 = Actions;
 let lastObj = "1"
 let lastAct = "1"
@@ -46,14 +46,13 @@ document.onkeydown = function(event) {
   if (datjson.reset == true) {
   if (fs.readFileSync('C:\\ProgramData\\studiodata.json')) {
     datjson = JSON.parse(fs.readFileSync('C:\\ProgramData\\studiodata.json'))
-    fs.writeFileSync('./AppData/data.json', JSON.stringify(datjson, null, 2));
     datjson.reset = false;
     fs.writeFileSync('C:\\ProgramData\\studiodata.json', JSON.stringify(datjson, null, 2))
-    fs.writeFileSync('./AppData/data.json', JSON.stringify(datjson, null, 2));
+    fs.writeFileSync(processPath +'/AppData/data.json', JSON.stringify(datjson, null, 2));
 
   } else {
+    datjson.reset = false;
     fs.writeFileSync('C:\\ProgramData\\studiodata.json', JSON.stringify(datjson, null, 2))
-
   }
 }
   function highlight(element, bln, blne) {
@@ -147,7 +146,6 @@ function switchObjs() {
         }
     }
 
-    `eval(fs.readFileSync('./AppData/bot.js', 'utf8'))`
     function cmdOpen(cmdpending) {
         lastObj = cmdpending
         document.getElementById('name').innerHTML = datjson.commands[cmdpending].name
@@ -333,7 +331,7 @@ function switchObjs() {
                     }
 
             }
-        fs.writeFileSync('./AppData/data.json', JSON.stringify(datjson, null, 2));
+        fs.writeFileSync(processPath +'\\AppData\\data.json', JSON.stringify(datjson, null, 2));
     }
     function moveDown() {
         let actionElement, currentAction, tempAction;
@@ -368,7 +366,7 @@ function switchObjs() {
             }
     
         }
-        fs.writeFileSync('./AppData/data.json', JSON.stringify(datjson, null, 2));
+        fs.writeFileSync(processPath +'\\AppData\\data.json', JSON.stringify(datjson, null, 2));
     }
     
 
@@ -425,19 +423,19 @@ function switchObjs() {
     }
     function sltTxt() {
         datjson.commands[lastObj].trigger = 'textCommand'
-        fs.writeFileSync('./AppData/data.json', JSON.stringify(datjson, null, 2));
+        fs.writeFileSync(processPath + '\\AppData\\data.json', JSON.stringify(datjson, null, 2));
         checkErrors()
 
     }
     function tSlsh() {
         datjson.commands[lastObj].trigger = 'slashCommand'
-        fs.writeFileSync('./AppData/data.json', JSON.stringify(datjson, null, 2));
+        fs.writeFileSync(processPath +'\\AppData\\data.json', JSON.stringify(datjson, null, 2));
         checkErrors()
 
     }
     function sltMsg() {
         datjson.commands[lastObj].trigger = 'messageContent'
-        fs.writeFileSync('./AppData/data.json', JSON.stringify(datjson, null, 2));
+        fs.writeFileSync(processPath + '\\AppData\\data.json', JSON.stringify(datjson, null, 2));
         checkErrors()
 
     }
@@ -500,7 +498,6 @@ function switchObjs() {
             bottombar.style.boxShadow = '#00000050 0px 0px 12px'  
             bottombar.style.display = 'block'; 
             bottombar.onclick = () => {null}
-            let events = fs.readdirSync('./AppData/Events')
             bottombar.overflowY = 'auto'
             bottombar.innerHTML += `
             <div class="flexbox" style="height: 30%; justify-content: center;">
@@ -532,21 +529,21 @@ function switchObjs() {
    }
     function storetoken(what) {
         datjson.btk = what
-        fs.writeFileSync('./AppData/data.json', JSON.stringify(datjson, null, 2));
+        fs.writeFileSync(processPath +'\\AppData\\data.json', JSON.stringify(datjson, null, 2));
     }
     function storeprefix(what) {
         datjson.prefix = what
-        fs.writeFileSync('./AppData/data.json', JSON.stringify(datjson, null, 2));
+        fs.writeFileSync(processPath +'\\AppData\\data.json', JSON.stringify(datjson, null, 2));
     }
     function storeclientid(what) {
         datjson.clientID = what
-        fs.writeFileSync('./AppData/data.json', JSON.stringify(datjson, null, 2));
+        fs.writeFileSync(processPath + '\\AppData\\data.json', JSON.stringify(datjson, null, 2));
     }
     function setColor(color) {
         let newc = color.style.backgroundColor
         document.body.style.background = `linear-gradient(45deg, ${newc} 0%, #1d1d1d 160%)`
         datjson.color = newc
-        fs.writeFileSync('./AppData/data.json', JSON.stringify(datjson, null, 2));
+        fs.writeFileSync(processPath +'\\AppData\\data.json', JSON.stringify(datjson, null, 2));
     }
     function duplicate() {
         datjson.commands[parseFloat(datjson.count) + 1] = datjson.commands[lastObj]
@@ -554,7 +551,7 @@ function switchObjs() {
         datjson.count = count
         if (lastType == 0) {
                    ActionTile.innerHTML += `<div onclick="highlight(this, true, true)" class="action textToLeft" id="${datjson.count}" ondblclick="cmdOpen('${datjson.count}')"><div id="name">${datjson.commands[lastObj].name}</div> <div style="opacity: 50%; margin-left: 7px;"> | ${datjson.commands[lastObj].count} Actions </div> <div class="deleteActionButton" onclick="highlight(this.parentNode, true, true); deleteObject(this);">✕</div> `
-        fs.writeFileSync('./AppData/data.json', JSON.stringify(datjson, null, 2));
+        fs.writeFileSync(processPath + '\\AppData\\data.json', JSON.stringify(datjson, null, 2));
         setTimeout(() => {
         highlight(document.getElementById(count), true, true)
         }, 100) 
@@ -563,12 +560,12 @@ function switchObjs() {
     }
     function setCmd() {
             datjson.commands[lastObj].type = 'action'
-        fs.writeFileSync('./AppData/data.json', JSON.stringify(datjson, null, 2));
+        fs.writeFileSync(processPath + '\\AppData\\data.json', JSON.stringify(datjson, null, 2));
         checkErrors()
     }
     function setEvt() {
         datjson.commands[lastObj].type = 'event'
-        fs.writeFileSync('./AppData/data.json', JSON.stringify(datjson, null, 2));
+        fs.writeFileSync(processPath + '\\AppData\\data.json', JSON.stringify(datjson, null, 2));
         checkErrors()
 
     }
@@ -619,7 +616,7 @@ function switchObjs() {
             datjson.count = parseFloat(datjson.count) + 1
         }
 
-        fs.writeFileSync('./AppData/data.json', JSON.stringify(datjson, null, 2));
+        fs.writeFileSync(processPath + '\\AppData\\data.json', JSON.stringify(datjson, null, 2));
     }
     function deleteObject(object) {
         
@@ -634,7 +631,7 @@ function switchObjs() {
         delete datjson
         delete require.cache[`./AppData/data.json`];
 
-        var datjson = JSON.parse(JSON.stringify(JSON.parse(fs.readFileSync('./AppData/data.json'))));
+        var datjson = JSON.parse(JSON.stringify(JSON.parse(fs.readFileSync(processPath + '\\AppData\\data.json'))));
     }, 150)
 
 
@@ -656,7 +653,7 @@ function switchObjs() {
         actionButton.style.animationName = 'expande'
         setTimeout(() => {
             actionButton.style.overflowY = 'auto'
-            let actons = fs.readdirSync('./AppData/Actions')
+            let actons = fs.readdirSync(processPath + '\\AppData\\Actions')
             actionButton.innerHTML = `<div class="flexbox fwd" style="justify-content: center;"><div class="barbutton" style="z-index: 3; margin-left: 3.1%; height: auto; background-color: #FFFFFF10" onclick="deselectAction(this)"><div style="font-size: 1.2em; line-height: 1.15em; height: auto; text-align: center !important; margin: auto;">Close</div></div><div="search" class="input" id="searchbar" contentEditable="true" onkeydown="searchFor(this)" style="width: 63%; margin-left: 6px; margin-right: 6px; margin-bottom: -3px; height: 38px; font-size: 1.1em; font-size: auto; line-height: 38px; background-color: #FFFFFF10 !important;"></div><div id="actarraypick"></div>`
             let actionBut = document.getElementById('actarraypick')
 
@@ -689,7 +686,7 @@ function switchObjs() {
         } else {
             kindOf = 'Event'
         }
-        let actons = fs.readdirSync('./AppData/Actions')
+        let actons = fs.readdirSync(processPath + '\\AppData\\Actions')
         let actionButton = document.getElementById('actarraypick')
         const input = document.getElementById('searchbar');
         if (input.innerHTML == ' ' || input.innerHTML == '' || input.innerHTML == '   ') {
@@ -764,7 +761,7 @@ function switchObjs() {
             datjson.commands[lastObj].actions[lastAct].data = filedata.data
             datjson.commands[lastObj].actions[lastAct].name = filedata.data.name
             document.getElementById('actionName00').innerHTML = filedata.data.name
-            fs.writeFileSync('./AppData/data.json', JSON.stringify(datjson, null, 2));
+            fs.writeFileSync(processPath + '\\AppData\\data.json', JSON.stringify(datjson, null, 2));
             var edutor = document.getElementById('edutor');
             let htmle = "<br>"
             var UIdata = null
@@ -847,7 +844,7 @@ function switchObjs() {
         function saveField(fieldId, sa) {
             let field = document.getElementById(fieldId) 
             datjson.commands[lastObj].actions[lastAct].data[fieldId] = field.innerText;
-            fs.writeFileSync('./AppData/data.json', JSON.stringify(datjson))
+            fs.writeFileSync(processPath + '\\AppData\\data.json', JSON.stringify(datjson))
         }
         Element.prototype.appendBefore = function (element) {
             element.parentNode.insertBefore(this, element);
@@ -917,7 +914,7 @@ function switchObjs() {
             }, 50)
         
             datjson.commands[lastObj].actions[lastAct].data[storeAs] = elminht2
-            fs.writeFileSync('./AppData/data.json', JSON.stringify(datjson))
+            fs.writeFileSync('\\AppData\\data.json', JSON.stringify(datjson))
             // closeMenu(eldpn2, elminht2, storeAs)
         }
         
@@ -1018,16 +1015,8 @@ function switchObjs() {
                   }, 295)
               }
 
-            fs.writeFileSync('./AppData/data.json', JSON.stringify(datjson, null, 2));
+            fs.writeFileSync(processPath + '\\AppData\\data.json', JSON.stringify(datjson, null, 2));
             checkErrors()
-        }
-
-        function newVariable(name, value, type) {
-            if (type == 1) {
-                let tempVars = require(`./AppData/Toolkit/tempVars.json`)
-                tempVars[name] = value
-                fs.writeFileSync(`./AppData/Toolkit/tempVars.json`, JSON.stringify(tempVars, null, 2))
-            }
         }
         function substitute(str) {
             return eval("`" + str + "`");
@@ -1198,7 +1187,7 @@ function switchObjs() {
               datjson = JSON.parse(di)
               document.getElementById('opentext').innerHTML = `Opening Project <span style="color: #FFFFFF50">${JSON.parse(di).name}</span> <br> <div style="color: #FFFFFF50">Contains ${JSON.parse(di).count} action groups</div>`
               setTimeout (() => {
-                              fs.writeFileSync('./AppData/data.json', JSON.stringify(datjson, null, 2))
+                              fs.writeFileSync(processPath + '\\AppData\\data.json', JSON.stringify(datjson, null, 2))
               location.reload()
               }, 5000)
 
@@ -1291,7 +1280,7 @@ function switchObjs() {
             if (exportFolder) {
                 datjson.name = document.getElementById('projectName').innerText
                 datjson.prjSrc = exportFolder
-                fs.writeFileSync('./AppData/data.json', JSON.stringify(datjson, null, 2))
+                fs.writeFileSync(processPath + '\\AppData\\data.json', JSON.stringify(datjson, null, 2))
 
                 elm.parentNode.parentNode.innerHTML = `
                 <div class="barbuttontexta" style="margin: auto; margin-top: 50%; text-align: center;" id="exprjt">Exporting Project!</div>
@@ -1303,7 +1292,7 @@ function switchObjs() {
                 } catch (err) {
                     null
                 }
-                fs.writeFileSync(exportFolder + '\\AppData\\data.json', fs.readFileSync('./AppData/data.json'))
+                fs.writeFileSync(exportFolder + '\\AppData\\data.json', fs.readFileSync(processPath + '\\AppData\\data.json'))
                 try {
                 fs.mkdirSync(exportFolder + '\\AppData\\Actions')
                 } catch (err) {
@@ -1314,22 +1303,22 @@ function switchObjs() {
                     } catch (err) {
                         null
                     }  
-                fs.writeFileSync(exportFolder + '\\AppData\\Toolkit\\variableTools.json', fs.readFileSync('./AppData/Toolkit/variableTools.js'))
-                fs.writeFileSync(exportFolder + '\\AppData\\Toolkit\\variableTools.json', fs.readFileSync('./AppData/Toolkit/tempVars.json'))
+                fs.writeFileSync(exportFolder + '\\AppData\\Toolkit\\variableTools.json', fs.readFileSync(processPath + '\\AppData\\Toolkit\\variableTools.js'))
+                fs.writeFileSync(exportFolder + '\\AppData\\Toolkit\\variableTools.json', fs.readFileSync(processPath + '\\AppData\\Toolkit\\tempVars.json'))
 
                 try {
                     fs.mkdirSync(exportFolder + '\\AppData\\Project')
                     } catch (err) {
                         null
                     }  
-                    fs.writeFileSync(exportFolder + '\\AppData\\Project\\data.json', fs.readFileSync('./AppData/Project/data.json'))
-                let actions = fs.readdirSync('./AppData/Actions')
+                    fs.writeFileSync(exportFolder + '\\AppData\\Project\\data.json', fs.readFileSync(processPath + '\\AppData\\Project\\data.json'))
+                let actions = fs.readdirSync(processPath + '\\AppData\\Actions')
                 let counnt = 0;
                 for (let action in actions) {
                     counnt++
                     setTimeout(() => {
                         document.getElementById('exprjt').innerHTML = 'Exported Project <br>' + counnt + ' Actions written'
-                        fs.writeFileSync(exportFolder + '\\AppData\\Actions\\' + actions[action], fs.readFileSync('./AppData/Actions/' + actions[action]))
+                        fs.writeFileSync(exportFolder + '\\AppData\\Actions\\' + actions[action], fs.readFileSync(processPath + '\\AppData\\Actions\\' + actions[action]))
                     }, 1400)
                     document.getElementById('exprjt').innerHTML = 'Project Exported! <br>' + counnt + 'Actions written in total'
                     setTimeout(() => {
