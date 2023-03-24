@@ -748,13 +748,13 @@ function switchObjs() {
         }
 
         function openAction(file) {
-            delete require.cache[`./AppData/Actions/${file}`]
-            delete require.cache[require.resolve(`./AppData/Actions/${file}`)]
-            var filedata = require(`./AppData/Actions/${file}`)
+            delete require.cache[`${processPath}\\AppData\\Actions\\${file}`]
+            delete require.cache[require.resolve(`${processPath}\\AppData\\Actions\\${file}`)]
+            var filedata = require(`${processPath}\\AppData\\Actions\\${file}`)
             delete filedata
             var filedata = null;
-            delete require.cache[`./AppData/Actions/${file}`]
-            filedata = require(`./AppData/Actions/${file}`)
+            delete require.cache[`${processPath}\\AppData\\Actions\\${file}`]
+            filedata = require(`${processPath}\\AppData\\Actions\\${file}`)
             console.log(filedata)
             console.log(filedata, 'filedata')
             datjson.commands[lastObj].actions[lastAct].file = file
@@ -765,7 +765,7 @@ function switchObjs() {
             var edutor = document.getElementById('edutor');
             let htmle = "<br>"
             var UIdata = null
-            UIdata = JSON.parse(JSON.stringify(require(`./AppData/Actions/${file}`).UI))
+            UIdata = JSON.parse(JSON.stringify(require(`${processPath}\\AppData\\Actions\\${file}`).UI))
             let action = {
                 "id": lastAct
             }

@@ -1,4 +1,4 @@
-const { app, BrowserWindow, ipcMain, dialog } = require('electron');
+const { app, BrowserWindow, ipcMain } = require('electron');
 
 let win;
 
@@ -8,7 +8,7 @@ function createWindow() {
     height: 600,
     minHeight: 790,
     minWidth: 1170,
-    icon: 'icon.png',
+    icon: 'icon.ico',
     title: 'Studio Bot Maker',
     center: true,
     webPreferences: {
@@ -24,6 +24,7 @@ function createWindow() {
 app.whenReady().then(createWindow);
 
 ipcMain.on('selectDirectory', async function (event) {
+  const dialog = require('electron').dialog
   const result = await dialog.showOpenDialog(win, {
     properties: ['openDirectory']
   });
@@ -68,8 +69,5 @@ autoUpdater.setFeedURL({
     autoUpdater.quitAndInstall();
   });
 
-  dialog.showOpenDialogSync(win, {
-    properties: ['openFile', 'openDirectory']
-  })
 
 

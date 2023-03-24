@@ -55,7 +55,6 @@
             }
         }, 500)
     }
-      fs.readFileSync('./AppData/Data.json', 'utf8')
       let ActionTile = document.getElementById('actionbar');
       let SWT = document.getElementById('switchTask')
       let CmdName = document.getElementById('Command_Name')
@@ -64,7 +63,7 @@
 
       function editAction(ect) {
             delete datjson
-            var datjson = require(`./AppData/data.json`)
+            var datjson = require(`${processPath}\\AppData\\data.json`)
         lastAct = ect.id
         let action = lastAct
         document.onkeydown = null
@@ -81,14 +80,14 @@
         ActionTile.style.animationName = 'moveFrom'
             pinHTML = edutor.innerHTML;
             let htmle = "<br>"
-            let UIdata = require(`./AppData/Actions/${datjson.commands[lastObj].actions[ect.id].file}`).UI
+            let UIdata = require(`${processPath}\\AppData\\Actions\\${datjson.commands[lastObj].actions[ect.id].file}`).UI
             console.log(UIdata)
             for (let e in UIdata) {
                 console.log(UIdata[e], datjson.commands[lastObj].actions[lastAct].data)
 
                 let ems = e
                 if (ems == 'largeInput') {
-                    htmle = `${htmle} <div class="largeInput" contentEditable="true" id="${UIdata[e]}">${require('./AppData/data.json').commands[lastObj].actions[lastAct].data[UIdata[e]]}</div>`
+                    htmle = `${htmle} <div class="largeInput" contentEditable="true" id="${UIdata[e]}">${require(processPath + '\\AppData\\data.json').commands[lastObj].actions[lastAct].data[UIdata[e]]}</div>`
                 }
                 if (ems.startsWith('input')) {
                     htmle = `${htmle} <div class="input" contentEditable="true" id="${UIdata[e]}">${datjson.commands[lastObj].actions[lastAct].data[UIdata[e]]}</div>`
@@ -169,7 +168,7 @@
             ActionTile.style.animationName = ''
             bbar.style.animationDuration = ''
             bbar.style.animationName = ''
-            fs.writeFileSync('./AppData/data.json', JSON.stringify(datjson, null, 2))
+            fs.writeFileSync(processPath + '\\AppData\\data.json', JSON.stringify(datjson, null, 2))
             delete UIdata
             delete htmle 
             delete edutor
@@ -198,7 +197,7 @@
         lastButton = butt.id
         datjson.commands[lastObj].actions[action].data.button = butt.innerText
         console.log(butt.innerText, datjson.commands[lastObj].actions[action].data.button)
-        fs.writeFileSync('./AppData/data.json', JSON.stringify(datjson, null, 2))
+        fs.writeFileSync(processPath + '\\AppData\\data.json', JSON.stringify(datjson, null, 2))
         
     }
 
@@ -208,9 +207,9 @@
         console.log(action)
         console.log('started')
         let savd = datjson.commands[lastObj].actions[lastAct]
-        var sdd = require(`./AppData/Actions/${datjson.commands[lastObj].actions[lastAct].file}`)
+        var sdd = require(processPath + `\\AppData\\Actions\\${datjson.commands[lastObj].actions[lastAct].file}`)
         delete sdd
-        var sdd = require(`./AppData/Actions/${datjson.commands[lastObj].actions[lastAct].file}`)
+        var sdd = require(processPath + `\\AppData\\Actions\\${datjson.commands[lastObj].actions[lastAct].file}`)
 
         console.log('w')
         for (let i in sdd.UI) {
@@ -236,7 +235,7 @@
 
             }
         }
-        fs.writeFileSync('./AppData/data.json', JSON.stringify(datjson, null, 2))
+        fs.writeFileSync(processPath + '\\AppData\\data.json', JSON.stringify(datjson, null, 2))
     }}
     function updateName(mnt) {
         datjson.commands[lastObj].name = mnt.innerText.split(' |')[0]
@@ -245,7 +244,7 @@
         }
 
 
-        fs.writeFileSync('./AppData/data.json', JSON.stringify(datjson, null, 2))
+        fs.writeFileSync(processPath + '\\AppData\\data.json', JSON.stringify(datjson, null, 2))
     }
 
         switchObjs()
