@@ -18,5 +18,5 @@
     "scripts": {
         "start": "electron ."
     },
-    "version": "001"
+    "version": "2.0.0"
 }

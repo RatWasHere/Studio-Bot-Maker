@@ -3,10 +3,10 @@
   "prefix": ">",
   "commands": {
     "1": {
-      "count": 9,
-      "name": "waah",
+      "count": 1,
+      "name": "New Command",
       "type": "action",
-      "trigger": "messageContent",
+      "trigger": "textCommand",
       "actions": {
         "1": {
           "name": "Send Message",
@@ -17,16 +17,16 @@
             "ExtraData": "",
             "name": "Send Message"
           }
-        },
-        "2": {
-          "name": "Stop Action Sequence",
-          "file": "endActionSequence.js",
-          "data": {
-            "name": "Stop Action Sequence",
-            "end": "•"
-          }
-        },
-        "3": {
+        }
+      }
+    },
+    "2": {
+      "count": 10,
+      "name": "waah",
+      "type": "event",
+      "trigger": "textCommand",
+      "actions": {
+        "1": {
           "name": "Get Role",
           "file": "getRole.js",
           "data": {
@@ -35,7 +35,7 @@
             "storeAs": "storedRole"
           }
         },
-        "4": {
+        "2": {
           "name": "Get Member",
           "file": "getMember.js",
           "data": {
@@ -49,7 +49,15 @@
             "storesAs": "mbmer"
           }
         },
-        "5": {
+        "3": {
+          "name": "Stop Action Sequence",
+          "file": "endActionSequence.js",
+          "data": {
+            "name": "Stop Action Sequence",
+            "end": "•"
+          }
+        },
+        "4": {
           "name": "Add Role",
           "file": "addRole.js",
           "data": {
@@ -60,11 +68,21 @@
             "efadd": "mbmer"
           }
         },
-        "6": {
+        "5": {
           "name": "Send Message",
           "file": "sendmessage.js",
           "data": {
             "messageContent": "You now have... the gay role? ",
+            "button": "Message Channel",
+            "ExtraData": "",
+            "name": "Send Message"
+          }
+        },
+        "6": {
+          "name": "Send Message",
+          "file": "sendmessage.js",
+          "data": {
+            "messageContent": "Hello World!",
             "button": "Message Channel",
             "ExtraData": "",
             "name": "Send Message"
@@ -118,10 +136,19 @@
             "addTo": "Message Author",
             "efadd": ""
           }
+        },
+        "10": {
+          "name": "Delete Variable",
+          "file": "deleteVariable.js",
+          "data": {
+            "name": "Delete Variable",
+            "varble": "",
+            "button": "✕"
+          }
         }
       }
     },
-    "2": {
+    "3": {
       "count": 2,
       "name": "New Command",
       "type": "action",
@@ -138,24 +165,6 @@
           }
         },
         "2": {
-          "name": "Send Message",
-          "file": "sendmessage.js",
-          "data": {
-            "messageContent": "Hello World!",
-            "button": "Message Channel",
-            "ExtraData": "",
-            "name": "Send Message"
-          }
-        }
-      }
-    },
-    "3": {
-      "count": 1,
-      "name": "New Command",
-      "type": "action",
-      "trigger": "textCommand",
-      "actions": {
-        "1": {
           "name": "Send Message",
           "file": "sendmessage.js",
           "data": {
@@ -202,9 +211,27 @@
           }
         }
       }
+    },
+    "6": {
+      "count": 1,
+      "name": "New Command",
+      "type": "action",
+      "trigger": "textCommand",
+      "actions": {
+        "1": {
+          "name": "Send Message",
+          "file": "sendmessage.js",
+          "data": {
+            "messageContent": "Hello World!",
+            "button": "Message Channel",
+            "ExtraData": "",
+            "name": "Send Message"
+          }
+        }
+      }
     }
   },
-  "count": 5,
+  "count": 6,
   "settings": {},
   "color": "rgb(7, 19, 20)",
   "btk": "ODU5NzUxMjMzNDAwNjAyNjM1.Gk3Zz4.eV2x4XUaIKMYsJcJU6Pni69hYHzqLhWOcOvdpQ",

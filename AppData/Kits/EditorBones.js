@@ -462,7 +462,6 @@ function switchObjs() {
                 document.getElementById('wedf').onclick = () => {switchGroups()}
                 unmodify()
             }
-            let events = fs.readdirSync('./AppData/Events')
             bottombar.overflowY = 'auto'
             bottombar.innerHTML += `
             <div class="text" style="margin-left: 20px;">Select Color</div>
@@ -616,7 +615,7 @@ function switchObjs() {
             }
             delete require.cache[`./AppData/data.json`];
             datjson.commands[datjson.count +1] = newAct
-            ActionTile.innerHTML += `<div onclick="highlight(this, true, true)" class="action textToLeft" id="${count + 1}" ondblclick="cmdOpen('${count + 1}')"><div id="name">New Command</div> <div style="opacity: 50%; margin-left: 7px;"> | 1 Actions </div> <div class="deleteActionButton" onclick="highlight(this.parentNode, true, true); deleteObject(this);">✕</div> `
+            ActionTile.innerHTML += `<div onclick="highlight(this, true, true)" class="action textToLeft" id="${count + 1}" ondblclick="cmdOpen('${count + 1}')"><div id="name">New Command</div> <div style="opacity: 50%; margin-left: 7px;"> | 1 Action </div> <div class="deleteActionButton" onclick="highlight(this.parentNode, true, true); deleteObject(this);">✕</div> `
             datjson.count = parseFloat(datjson.count) + 1
         }
 
@@ -1310,7 +1309,12 @@ function switchObjs() {
                 } catch (err) {
                     null
                 }  
-
+                try {
+                    fs.mkdirSync(exportFolder + '\\AppData\\Project')
+                    } catch (err) {
+                        null
+                    }  
+                    fs.writeFileSync(exportFolder + '\\AppData\\Project\\data.json', fs.readFileSync('./AppData/Project/data.json'))
                 let actions = fs.readdirSync('./AppData/Actions')
                 let counnt = 0;
                 for (let action in actions) {
