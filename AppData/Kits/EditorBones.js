@@ -1310,6 +1310,14 @@ function switchObjs() {
                     null
                 }  
                 try {
+                    fs.mkdirSync(exportFolder + '\\AppData\\Toolkit')
+                    } catch (err) {
+                        null
+                    }  
+                fs.writeFileSync(exportFolder + '\\AppData\\Toolkit\\variableTools.json', fs.readFileSync('./AppData/Toolkit/variableTools.js'))
+                fs.writeFileSync(exportFolder + '\\AppData\\Toolkit\\variableTools.json', fs.readFileSync('./AppData/Toolkit/tempVars.json'))
+
+                try {
                     fs.mkdirSync(exportFolder + '\\AppData\\Project')
                     } catch (err) {
                         null

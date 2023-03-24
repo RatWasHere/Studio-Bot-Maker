@@ -9,6 +9,7 @@ function createWindow() {
     minHeight: 790,
     minWidth: 1170,
     icon: 'icon.png',
+    title: 'Studio Bot Maker',
     center: true,
     webPreferences: {
       nodeIntegration: true,
