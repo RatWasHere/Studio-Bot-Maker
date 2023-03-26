@@ -8,7 +8,7 @@ function createWindow() {
     height: 600,
     minHeight: 790,
     minWidth: 1170,
-    icon: 'icon.ico',
+    icon: 'resized-ico.png',
     title: 'Studio Bot Maker',
     center: true,
     webPreferences: {
