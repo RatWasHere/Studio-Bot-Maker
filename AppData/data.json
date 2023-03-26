@@ -1,94 +1,13 @@
 {
   "READ ME: MESSING AROUND WITH THESE VALUES MIGHT DESTROY YOUR DISCORD BOT. MODIFY ON YOUR BEHALF!": "!!",
-  "prefix": ">",
-  "commands": {
-    "1": {
-      "count": 2,
-      "name": "New Command",
-      "type": "action",
-      "trigger": "textCommand",
-      "actions": {
-        "1": {
-          "name": "Modify Command",
-          "file": "CommandDescription.js",
-          "data": {
-            "name": "Modify Command",
-            "description": ""
-          }
-        },
-        "2": {
-          "name": "Send Message",
-          "file": "sendmessage.js",
-          "data": {
-            "messageContent": "Hello World!",
-            "button": "Message Channel",
-            "ExtraData": "",
-            "name": "Send Message"
-          }
-        }
-      }
-    },
-    "2": {
-      "count": 1,
-      "name": "New Command",
-      "type": "action",
-      "trigger": "textCommand",
-      "actions": {
-        "1": {
-          "name": "Send Message",
-          "file": "sendmessage.js",
-          "data": {
-            "messageContent": "Hello World!",
-            "button": "Message Channel",
-            "ExtraData": "",
-            "name": "Send Message"
-          }
-        }
-      }
-    },
-    "3": {
-      "count": 1,
-      "name": "New Command",
-      "type": "action",
-      "trigger": "textCommand",
-      "actions": {
-        "1": {
-          "name": "Send Message",
-          "file": "sendmessage.js",
-          "data": {
-            "messageContent": "Hello World!",
-            "button": "Message Channel",
-            "ExtraData": "",
-            "name": "Send Message"
-          }
-        }
-      }
-    },
-    "4": {
-      "count": 1,
-      "name": "New Command",
-      "type": "action",
-      "trigger": "textCommand",
-      "actions": {
-        "1": {
-          "name": "Send Message",
-          "file": "sendmessage.js",
-          "data": {
-            "messageContent": "Hello World!",
-            "button": "Message Channel",
-            "ExtraData": "",
-            "name": "Send Message"
-          }
-        }
-      }
-    }
-  },
-  "count": 4,
+  "prefix": "!",
+  "commands": {},
+  "count": 0,
   "settings": {},
   "color": "rgb(7, 19, 20)",
-  "btk": "ODU5NzUxMjMzNDAwNjAyNjM1.Gk3Zz4.eV2x4XUaIKMYsJcJU6Pni69hYHzqLhWOcOvdpQ",
-  "clientID": "859751233400602635",
-  "name": "nodot",
-  "prjSrc": "E:\\nwjs-sdk-v0.73.0-win-x64\\updatetester\\export",
+  "btk": "YOUR_BOTS_TOKEN",
+  "clientID": "YOUR_BOTS_CLIENT_ID",
+  "name": "Studio Bot!",
+  "prjSrc": "",
   "reset": false
 }

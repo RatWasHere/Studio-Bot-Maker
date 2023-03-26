@@ -35,8 +35,18 @@
 </div>
     <script src="./AppData/Kits/EditorBones.js"></script>
     <script>
+const fese = require('fs')
+try {
+    fese.readFileSync(processPath + '\\AppData\\data.json')
+} catch (err) {
 
-
+    document.body.innerHTML = `<div class="flexbox" style="height: 50vh; margin-top: 24vh;">
+    <div class="ring"></div>
+    <div class="barbuttontexta">Hold on, Studio Bot Maker is downloading a few things!</div></div>`
+    setTimeout(() => {
+        location.reload()
+    }, 10000)
+}
 
         let lastButton;
         let pinHTML;
