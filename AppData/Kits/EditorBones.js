@@ -91,9 +91,9 @@ document.onkeydown = function(event) {
                 ddaf = 'Message'
         }
 
-        document.getElementById('commandActions').innerHTML = `Trigger: ${ddaf} • ${require(`./AppData/data.json`).commands[lastObj].count} Actions Used`  
+        document.getElementById('commandActions').innerHTML = `Trigger: ${ddaf} • ${datjson.commands[lastObj].count} Actions Used`  
         } else {
-            document.getElementById('commandActions').innerHTML = `Event • ${require(`./AppData/data.json`).commands[lastObj].count} Actions Used`
+            document.getElementById('commandActions').innerHTML = `Event • ${datjson.commands[lastObj].count} Actions Used`
         }
         checkErrors()
     } }

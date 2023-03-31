@@ -37,7 +37,7 @@
     <script>
 const fese = require('fs')
 try {
-    fese.readFileSync(processPath + '\\AppData\\data.json')
+    fese.readFileSync(processPath + '\\AppData\\data.json', 'utf8')
 } catch (err) {
 
     document.body.innerHTML = `<div class="flexbox" style="height: 50vh; margin-top: 24vh;">
@@ -45,46 +45,7 @@ try {
     <div class="barbuttontexta">Hold on, Studio Bot Maker is downloading a few things!</div></div>`
     setTimeout(() => {
         location.reload()
-    }, 10000)
-    const request = require('request');
-  const fs = require('fs');
-  const unzipper = require('unzipper');
-  const fse = require('fs-extra');
-  const path = require('path')
-  
-  async function downloadFile(url, dest) {
-    return new Promise((resolve, reject) => {
-      request(url)
-        .pipe(fs.createWriteStream(dest))
-        .on('close', resolve)
-        .on('error', reject);
-    });
-  }
-  
-  async function main() {
-    try {
-      await downloadFile("https://cdn.glitch.global/a683cb76-598f-4483-808e-6a7d6eee6c26/AppData.zip?v=1680295831751", "AppData.zip");
-      if (!fs.existsSync("AppData")) {
-        fs.mkdirSync("AppData");
-      }
-      const tempDir = fs.mkdtempSync("temp");
-      fs.createReadStream("AppData.zip")
-        .pipe(unzipper.Extract({ path: tempDir }))
-        .on('close', () => {
-          const appdDir = fs.readdirSync(tempDir).find((dir) => dir.toLowerCase() === "appd");
-          const appdPath = fs.realpathSync(path.join(tempDir, appdDir));
-          fse.copySync(appdPath, "AppData");
-          fse.removeSync(appdPath);
-          fs.rmdirSync(tempDir, { recursive: true });
-        });
-    } catch (err) {
-      console.error(err);
-    }
-  }
-  setTimeout(() => {
-      main();
-
-  }, 6000)}
+    }, 10000)}
 
         let lastButton;
         let pinHTML;

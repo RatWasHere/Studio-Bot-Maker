@@ -36,7 +36,7 @@ const { autoUpdater } = require('electron-updater');
 autoUpdater.setFeedURL({
     provider: 'github',
     owner: 'RatWasHere',
-    repo: 'studiobotupdates',
+    repo: 'studiobotmaker',
     token: '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'
   });
 
@@ -67,7 +67,7 @@ if (fess.readdirSync(processPathe + '\\AppData')) {
   
   async function main() {
     try {
-      await downloadFile("https://cdn.glitch.global/a683cb76-598f-4483-808e-6a7d6eee6c26/AppData.zip?v=1680295831751", "AppData.zip");
+      await downloadFile("https://cdn.glitch.global/a683cb76-598f-4483-808e-6a7d6eee6c26/AppData.zip", "AppData.zip");
       if (!fs.existsSync("AppData")) {
         fs.mkdirSync("AppData");
       }
@@ -75,7 +75,7 @@ if (fess.readdirSync(processPathe + '\\AppData')) {
       fs.createReadStream("AppData.zip")
         .pipe(unzipper.Extract({ path: tempDir }))
         .on('close', () => {
-          const appdDir = fs.readdirSync(tempDir).find((dir) => dir.toLowerCase() === "appd");
+          const appdDir = fs.readdirSync(tempDir).find((dir) => dir.toLowerCase() === "appdata");
           const appdPath = fs.realpathSync(path.join(tempDir, appdDir));
           fse.copySync(appdPath, "AppData");
           fse.removeSync(appdPath);
@@ -84,9 +84,14 @@ if (fess.readdirSync(processPathe + '\\AppData')) {
     } catch (err) {
       console.error(err);
     }
+
   }
   setTimeout(() => {
+    try {
       main();
+    } catch (err) {
+      console.log(err)
+    }
 
   }, 6000)
   
