@@ -1,4 +1,4 @@
 # studiobotmaker
-Create awesome discord bots without any code!
+Create awesome discord bots without any code
 
---- NOT FINAL RELEASE, APPLICATION SUBJECT TO CHANGE ---
+# NOT FINAL RELEASE, APPLICATION SUBJECT TO CHANGE 
