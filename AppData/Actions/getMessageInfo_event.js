@@ -3,7 +3,6 @@ module.exports = {
     UI: {"compatibleWith": ["Event", "Slash"],"text1":"Get Message Info", "sepbar2":"sepber","btextguild":"Guild Variable", "inputguildvar*":"vrb" ,"sepbar001":"","btext33333333":"Message Variable", "input0001*":"ExtraData", "sepbar0560":"", "btextMenubr":"Get", "menuBar":{"choices":["Message Content", "Message Channel", "Message Author", "Message Timestamp", "Message Guild"], storeAs:"datainfo"}, "sepbar91201":"","btext566": "Store As", "input666*":"varble", previewName: "Get", preview: "datainfo"},
     run(values, message, uID, fs, client) {
         console.log(uID, 'msginfouid')
-        let varTools = require(`../Toolkit/variableTools.js`)
         var msg;
         var tempVars = JSON.parse(fs.readFileSync('./AppData/Toolkit/tempVars.json', 'utf8'))
             msg = tempVars[uID][values.ExtraData]

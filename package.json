@@ -6,28 +6,42 @@
     "window": {
         "min_width": 1170,
         "min_height": 790,
-        "icon": "icon.png"
+        "icon": "econ.ico"
     },
     "build": {
-        "files": [
-            "**/*",
-            "!AppData/**/*.js",
-            "!AppData/Toolkit/**.js",
-            "!AppData/Toolkit/**.json",
-            "!AppData/data.json",
-            "!AppData/Actions/**.js"
-        ]
+        "appId": "com.ratapp.sbm",
+        "publish": [
+          {
+            "provider": "github",
+            "owner": "RatWasHere",
+            "repo": "studiobotupdates"
+          }
+        ],
+        "win": {
+            "publish": ["github"], 
+            "target": [
+                {
+                    "target": "nsis",
+                    "arch": [
+                        "x64"
+                    ]
+                }
+            ]
+        }
     },
     "dependencies": {
+        "@electron-forge/maker-base": "^6.1.0",
         "discord-api-types": "^0.37.34",
         "discord.js": "^14.8.0",
         "electron-squirrel-startup": "^1.0.0",
         "electron-updater": "^5.3.0",
         "fs": "^0.0.1-security",
+        "fs-extra": "^11.1.1",
         "fse": "^4.0.1",
         "node-fetch": "^3.3.1",
         "request": "^2.88.2",
-        "unzipper": "^0.10.11"
+        "unzipper": "^0.10.11",
+        "update-electron-app": "^2.0.1"
     },
     "devDependencies": {
         "@electron-forge/cli": "^6.0.5",
@@ -35,25 +49,16 @@
         "@electron-forge/maker-rpm": "^6.0.5",
         "@electron-forge/maker-squirrel": "^6.0.5",
         "@electron-forge/maker-zip": "^6.0.5",
-        "electron": "^23.1.2"
+        "@electron-forge/publisher-github": "^6.0.5",
+        "electron": "^23.1.2",
+        "electron-builder": "^23.6.0"
     },
     "scripts": {
         "start": "electron .",
-        "package": "electron-forge package",
-        "make": "electron-forge make"
+        "pack": "electron-builder --dir",
+        "dist": "electron-builder",
+        "release": "electron-builder"
+
     },
-    "config": {
-        "forge": {
-            "makers": [
-                {
-                    "name": "@electron-forge/maker-squirrel",
-                    "config": {
-                        "name": "StudioBotMaker",
-                        "icon": "./icon"
-                    }
-                }
-            ]
-        }
-    },
-    "version": "2.0.1"
+    "version": "2.1.0"
 }

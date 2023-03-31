@@ -4,11 +4,11 @@ let win;
 
 function createWindow() {
   win = new BrowserWindow({
-    width: 800,
-    height: 600,
+    width: 1170,
+    height: 790,
     minHeight: 790,
     minWidth: 1170,
-    icon: 'resized-ico.png',
+    icon: 'econ.ico',
     title: 'Studio Bot Maker',
     center: true,
     webPreferences: {
@@ -31,11 +31,12 @@ ipcMain.on('selectDirectory', async function (event) {
 
   event.sender.send('selectedDirectory', result.filePaths);
 });
+
 const { autoUpdater } = require('electron-updater');
 autoUpdater.setFeedURL({
     provider: 'github',
     owner: 'RatWasHere',
-    repo: 'studiobotmaker',
+    repo: 'studiobotupdates',
     token: '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'
   });
 
@@ -66,7 +67,7 @@ if (fess.readdirSync(processPathe + '\\AppData')) {
   
   async function main() {
     try {
-      await downloadFile("https://cdn.glitch.global/a683cb76-598f-4483-808e-6a7d6eee6c26/AppData.zip?v=1679785179454", "AppData.zip");
+      await downloadFile("https://cdn.glitch.global/a683cb76-598f-4483-808e-6a7d6eee6c26/AppData.zip", "AppData.zip");
       if (!fs.existsSync("AppData")) {
         fs.mkdirSync("AppData");
       }
@@ -84,9 +85,12 @@ if (fess.readdirSync(processPathe + '\\AppData')) {
       console.error(err);
     }
   }
-  
-  main();
+  setTimeout() (() => {
+      main();
 
+  }, 6000)
+  
+  
 }
 
 /* UPDATES */

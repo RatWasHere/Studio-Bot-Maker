@@ -67,6 +67,7 @@ document.onkeydown = function(event) {
     }
     lastHighlighted = element;
     element.style.backgroundColor = '#FFFFFF25'
+    if (lastType == 0) {
     if (bln) {
         console.log(element.innerText)
         document.getElementById('Command_Name').innerHTML = element.innerText.split('|')[0]
@@ -95,7 +96,7 @@ document.onkeydown = function(event) {
             document.getElementById('commandActions').innerHTML = `Event • ${require(`./AppData/data.json`).commands[lastObj].count} Actions Used`
         }
         checkErrors()
-    } 
+    } }
     
 } 
 function switchObjs() {
@@ -214,10 +215,10 @@ function switchObjs() {
 
         </div>
         <div class="sepbar"></div>
-        <div class="flexbox" style="width: 98%; margin-left: auto; margin-right: auto; height: 20%; justify-content: center;">
-        <div class="barbutton"><div class="barbuttontexta">Toggle Bot</div></div>
-        <div class="barbutton" onclick="exportProject() "><div class="barbuttontexta">Export Project</div></div>
-        <div class="barbutton" onclick="settoken(this)"><div class="barbuttontexta">Bot Data</div></div>
+        <div class="flexbox" style="width: 98%; margin-left: auto; margin-right: auto; height: 20%; justify-content: center; animation-duration: 0.8s;">
+        <div class="barbutton" style="animation-duration: 0.5s"><div class="barbuttontexta">Toggle Bot</div></div>
+        <div class="barbutton" onclick="exportProject()" style="animation-duration: 0.5s"><div class="barbuttontexta">Export Project</div></div>
+        <div class="barbutton" onclick="settoken(this)" style="animation-duration: 0.5s"><div class="barbuttontexta">Bot Data</div></div>
 
         </div>
         <div class="smalltext" style="margin-top: 10%; margin-bottom: 2%; text-align: center;">[ESC] / [CLICK] - Close</div>`
@@ -277,6 +278,7 @@ function switchObjs() {
             }, 50)
             setTimeout(() => {
                 switchObjs()
+                highlight(document.getElementById(lastObj), true, true)
                 switchObjs()
             }, 200)
             setTimeout (() => {
@@ -920,7 +922,7 @@ function switchObjs() {
             }, 50)
         
             datjson.commands[lastObj].actions[lastAct].data[storeAs] = elminht2
-            fs.writeFileSync('\\AppData\\data.json', JSON.stringify(datjson))
+            fs.writeFileSync(processPath + '\\AppData\\data.json', JSON.stringify(datjson))
             // closeMenu(eldpn2, elminht2, storeAs)
         }
         
@@ -1124,6 +1126,8 @@ function switchObjs() {
                         }
                     }
 
+
+
                 }
                 console.log(kindOf)
             }
@@ -1132,6 +1136,13 @@ function switchObjs() {
             } else {
                 status.innerHTML = '✓ • No Issues Found'
             }
+
+            let issueshtml = issues.innerHTML;
+            let isht = issueshtml;
+            issues.innerHTML = `<div class="ring" style="margin: auto; display: block; margin-top: 10vh; animation-name: ringifygo; animation-duration: 1s;"></div>`
+            setTimeout(() => {
+                issues.innerHTML = isht;
+            }, 1005)
         }, 250)
         setTimeout(() => {
         sp.style.animationName = ''
@@ -1289,7 +1300,7 @@ function switchObjs() {
                 fs.writeFileSync(processPath + '\\AppData\\data.json', JSON.stringify(datjson, null, 2))
 
                 elm.parentNode.parentNode.innerHTML = `
-                <div class="barbuttontexta" style="margin: auto; margin-top: 50%; text-align: center;" id="exprjt">Exporting Project!</div>
+                <div class="barbuttontexta" style="margin: auto; margin-top: 25%; text-align: center;" id="exprjt">Exporting Project!</div>
                 `
                 fs.writeFileSync(exportFolder + '\\bot.js', fs.readFileSync(processPath + '\\AppData\\bot.js'))
                 fs.writeFileSync(exportFolder + '\\package.json', fs.readFileSync(processPath + '\\package.json'))
@@ -1320,16 +1331,30 @@ function switchObjs() {
                     fs.writeFileSync(exportFolder + '\\AppData\\Project\\data.json', fs.readFileSync(processPath + '\\AppData\\Project\\data.json'))
                 let actions = fs.readdirSync(processPath + '\\AppData\\Actions')
                 let counnt = 0;
+                document.getElementById('exprjt').innerHTML = '<div class="ring"></div> <br> Exporting Project!'
+                    let acrnum = 0;
+                    for (let acf in datjson.commands) {
+                        acrnum = parseFloat(acrnum) + parseFloat(datjson.commands[acf].count)
+                    }
                 for (let action in actions) {
+                    
+
                     counnt++
                     setTimeout(() => {
-                        document.getElementById('exprjt').innerHTML = 'Exported Project <br>' + counnt + ' Actions written'
                         fs.writeFileSync(exportFolder + '\\AppData\\Actions\\' + actions[action], fs.readFileSync(processPath + '\\AppData\\Actions\\' + actions[action]))
                     }, 1400)
-                    document.getElementById('exprjt').innerHTML = 'Project Exported! <br>' + counnt + 'Actions written in total'
+                    document.getElementById('exprjt').innerHTML = '<div class="ring"></div> <br> Project Exported! <br>' + counnt + ' Actions Exported To  <span style="opacity:50%"> ' + datjson.name + '</span><br>' + `
+                    <div class="sepbar"></div>
+                    <div class="barbuttontexta">Project Summary</div>
+                    <br>
+                    <span style="opacity:50%">${datjson.count}</span> Action Groups In Total
+                    <div></div>
+                    <span style="opacity:50%">${acrnum}</span> Actions Used In Total
+                    <br>
+                    `
                     setTimeout(() => {
                         location.reload()
-                    }, 5000)
+                    }, 14000)
                 }
             } else {
                 elm.style.animationName = 'glowTwice'
@@ -1361,7 +1386,7 @@ function switchObjs() {
             elm.style.padding = '1vh'
             elm.innerHTML = `
             <div class="flexbox" style="margin: auto;">
-            <div class="ring" style="width: 3vh; height: 3vh; animation-duration: 1.5s;"></div>
+            <div class="ring" style="width: 3vh; height: 3vh; animation-duration: 1s;"></div>
             <div class="barbuttontexta">Saving your project..</div>
             </div>
             `
@@ -1372,3 +1397,29 @@ function switchObjs() {
                spn.remove()
             }, 5000)
         }, 60000)
+
+        let elm = document.createElement('div')
+        elm.className = 'issue'
+        elm.id = 'saveProjectnotif'
+        elm.style.backdropFilter = 'blur(10px)'
+        elm.style.zIndex = '10'
+        elm.style.width = '23vw'
+        elm.style.marginRight = '3vw'
+        elm.style.position = 'relative'
+        elm.style.marginTop = '-90vh'
+        elm.style.animationName = 'fadeoutspfload'
+        elm.style.animationDuration = '5.1s'
+        elm.style.height = '5.5vh'
+        elm.style.padding = '1vh'
+        elm.innerHTML = `
+        <div class="flexbox" style="margin: auto;">
+        <div class="ring" style="width: 3vh; height: 3vh; animation-duration: 1s;"></div>
+        <div class="barbuttontexta">Saving your project..</div>
+        </div>
+        `
+        document.body.appendChild(elm)
+        savePrj()
+        setTimeout(() => {
+           let spn = document.getElementById('saveProjectnotif')
+           spn.remove()
+        }, 5000)

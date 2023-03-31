@@ -41,6 +41,22 @@
             transform: rotate3d(0, 1, 0, 360deg);
         }
     }
+    @keyframes ringifygo {
+        0% {
+            opacity: 0%;
+            transform: rotate3d(0, 1, 0, 0deg);
+        }
+        10% {
+            opacity: 100%;
+        }
+        78% {
+            opacity: 100%;
+        }
+        100% {
+            opacity: 0%;
+            transform: rotate3d(0, 1, 0, 360deg);
+        }
+    }
     @keyframes blurify {
         0% {
             filter: blur(0px);
@@ -239,10 +255,17 @@
         0% {
             opacity: 0%;
         }
-
-        99% {
+        100% {
+            opacity: 100%;
+        }
+    }
+    @keyframes appearfaden {
+        0% {
+            opacity: 0%;
+            margin-bottom:15px; 
         }
         100% {
+            margin-bottom: 5px;
             opacity: 100%;
         }
     }
@@ -1092,7 +1115,8 @@
         border-radius: 12px;
         border-bottom: #FFFFFF10 solid 2px;
         background-color: #00000050;
-
+        animation-name: appearfaden;
+        animation-duration: 0.3s;
         margin-left: auto;
         margin-right: auto;
         margin-bottom: 5px;

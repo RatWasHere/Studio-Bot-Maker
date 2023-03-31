@@ -13,7 +13,11 @@ module.exports = {
     }
     switch(values.datainfo) {
             case 'Member Nickname':
-                tempVars[uID][values.varble] = user.nickname
+                if (user.nickname != undefined || user.nickname != null) {
+                    tempVars[uID][values.varble] = user.nickname
+                } else {
+                    tempVars[uID][values.varble] = user.user.username
+                }
             break
             case 'Member Name':
                 tempVars[uID][values.varble] = user.user.username

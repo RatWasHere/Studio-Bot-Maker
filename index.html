@@ -72,8 +72,6 @@ try {
 
 
       function editAction(ect) {
-            delete datjson
-            var datjson = require(`${processPath}\\AppData\\data.json`)
         lastAct = ect.id
         let action = lastAct
         document.onkeydown = null
@@ -97,7 +95,7 @@ try {
 
                 let ems = e
                 if (ems == 'largeInput') {
-                    htmle = `${htmle} <div class="largeInput" contentEditable="true" id="${UIdata[e]}">${require(processPath + '\\AppData\\data.json').commands[lastObj].actions[lastAct].data[UIdata[e]]}</div>`
+                    htmle = `${htmle} <div class="largeInput" contentEditable="true" id="${UIdata[e]}">${datjson.commands[lastObj].actions[lastAct].data[UIdata[e]]}</div>`
                 }
                 if (ems.startsWith('input')) {
                     htmle = `${htmle} <div class="input" contentEditable="true" id="${UIdata[e]}">${datjson.commands[lastObj].actions[lastAct].data[UIdata[e]]}</div>`
