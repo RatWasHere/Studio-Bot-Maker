@@ -1,0 +1,13 @@
+{
+  "READ ME: MESSING AROUND WITH THESE VALUES MIGHT DESTROY YOUR DISCORD BOT. MODIFY ON YOUR BEHALF!": "!!",
+  "prefix": "!",
+  "commands": {},
+  "count": 0,
+  "settings": {},
+  "color": "rgb(20, 20, 20)",
+  "btk": "YOUR_BOTS_TOKEN",
+  "clientID": "YOUR_BOTS_CLIENT_ID",
+  "name": "YOUR_BOTS_NAME",
+  "prjSrc": "",
+  "reset": true
+}
