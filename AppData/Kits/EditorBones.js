@@ -625,6 +625,8 @@ function switchObjs() {
         }
 
         fs.writeFileSync(processPath + '\\AppData\\data.json', JSON.stringify(datjson, null, 2));
+        switchObjs()
+        switchObjs()
     }
     function deleteObject(object) {
         
@@ -1390,12 +1392,26 @@ function switchObjs() {
             <div class="barbuttontexta">Saving your project..</div>
             </div>
             `
+            
             document.body.appendChild(elm)
-            savePrj()
             setTimeout(() => {
-               let spn = document.getElementById('saveProjectnotif')
-               spn.remove()
-            }, 5000)
+                let spn = document.getElementById('saveProjectnotif')
+                spn.remove()
+             }, 5000)
+            try {
+            savePrj()
+        } catch(err) {
+            console.log(err)
+            elm.innerHTML = `
+            <div class="flexbox" style="margin: auto;">
+            <div class="barbutton" onclick="exportProject()"style="width: 3vh; height: 3vh; animation-duration: 1s;">
+            <div class="barbuttontexta">Fix</div>
+            </div>
+            <div class="barbuttontexta">No project output</div>
+            </div>
+            `
+        }
+
         }, 60000)
 
         let elm = document.createElement('div')
@@ -1418,7 +1434,11 @@ function switchObjs() {
         </div>
         `
         document.body.appendChild(elm)
-        savePrj()
+        try {
+            savePrj()
+        } catch(err) {
+            null
+        }
         setTimeout(() => {
            let spn = document.getElementById('saveProjectnotif')
            spn.remove()

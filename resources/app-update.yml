@@ -1,0 +1,8 @@
+        "nsis": {
+            "artifactName": "${productName}-${version}-Installer.${ext}",
+            "oneClick": false,
+            "perMachine": false,
+            "allowToChangeInstallationDirectory": true,
+            "runAfterFinish": true,
+            "deleteAppDataOnUninstall": true
+        }

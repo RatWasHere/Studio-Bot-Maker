@@ -5,8 +5,8 @@ let win;
 function createWindow() {
   win = new BrowserWindow({
     width: 1170,
-    height: 790,
-    minHeight: 790,
+    height: 750,
+    minHeight: 550,
     minWidth: 1170,
     icon: 'econ.ico',
     title: 'Studio Bot Maker',
@@ -36,13 +36,16 @@ const { autoUpdater } = require('electron-updater');
 autoUpdater.setFeedURL({
     provider: 'github',
     owner: 'RatWasHere',
-    repo: 'studiobotmaker',
-    token: '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'
+    repo: 'studiobotmaker'
   });
+
+
 
   app.on('ready', () => {
     const fess = require('fs');
 const processPathe = require('process').cwd();
+console.log('checked for updates!')
+autoUpdater.checkForUpdatesAndNotify();
 try {
 if (fess.readdirSync(processPathe + '\\AppData')) {
 
@@ -64,10 +67,11 @@ if (fess.readdirSync(processPathe + '\\AppData')) {
         .on('error', reject);
     });
   }
+
   
   async function main() {
     try {
-      await downloadFile("https://cdn.glitch.global/a683cb76-598f-4483-808e-6a7d6eee6c26/AppData.zip", "AppData.zip");
+      await downloadFile("https://cdn.glitch.global/a683cb76-598f-4483-808e-6a7d6eee6c26/AppData.zip?v=1680295831751", "AppData.zip");
       if (!fs.existsSync("AppData")) {
         fs.mkdirSync("AppData");
       }
@@ -102,8 +106,7 @@ if (fess.readdirSync(processPathe + '\\AppData')) {
 
 
 
-    console.log('checked for updates!')
-    autoUpdater.checkForUpdatesAndNotify();
+
   });
   
   autoUpdater.on('checking-for-update', () => {

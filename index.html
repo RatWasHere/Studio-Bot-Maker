@@ -4,9 +4,13 @@
     <meta charset="utf8">
     <div style="justify-content: center; width: 100%; align-content: center; margin-left: auto; margin-right: auto; align-items: center; justify-items: center;">
 <div class="flexbox fbh">
+    <div style="flex: none;">
     <div class="actionBar" id="actionbar" style="z-index: 2;">
 
     </div>
+    <div class="switchBar felxbox" id="bbar" style="display: flex; padding-top: 3.5px; padding-bottom: 3.5px;"><div class="barbutton center unrounded" style="margin-left: 30px !important; margin-right: 10px;" onclick="newObject()" ><div class="barbuttontext" style="font-size: 45px;"><b>+</b></div></div><div class="barbutton unrounded center flexbox" style="justify-content: center;"><div  onclick="moveUp()" class="barbuttonhalf flexbox" style="justify-content: center;"><div class="barbuttontext">▲</div></div><div class="barbuttonhalfr flexbox" style="justify-content: center;"  onclick="moveDown()"><div class="barbuttontext">▼</div></div></div><div class="barbutton unrounded center" onclick="switchObjs(this)" id="objswitch" style="margin-left: auto !important; margin-right: 30px;"><div class="barbuttontext">◀▶</div></div></div>
+
+</div>
     <div id="edutor" class="actionBar fullsize">
         <br>
         <div class="text clsr">Group Name</div>
@@ -29,7 +33,6 @@
 </div>
     </div>
 
-<div class="switchBar felxbox" id="bbar" style="display: flex; padding-top: 3.5px; padding-bottom: 3.5px;"><div class="barbutton center unrounded" style="margin-left: 30px !important; margin-right: 10px;" onclick="newObject()" ><div class="barbuttontext" style="font-size: 45px;"><b>+</b></div></div><div class="barbutton unrounded center flexbox" style="justify-content: center;"><div  onclick="moveUp()" class="barbuttonhalf flexbox" style="justify-content: center;"><div class="barbuttontext">▲</div></div><div class="barbuttonhalfr flexbox" style="justify-content: center;"  onclick="moveDown()"><div class="barbuttontext">▼</div></div></div><div class="barbutton unrounded center" onclick="switchObjs(this)" id="objswitch" style="margin-left: auto !important; margin-right: 30px;"><div class="barbuttontext">◀▶</div></div></div>
 
 <div class="bottombar" onclick="modifyBar()" id="bottombar">•••</div>
 </div>

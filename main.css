@@ -44,15 +44,22 @@
     @keyframes ringifygo {
         0% {
             opacity: 0%;
+            margin-top: 15vh;
             transform: rotate3d(0, 1, 0, 0deg);
         }
         10% {
+            margin-top: 15vh;
             opacity: 100%;
         }
+        40% {
+            margin-top: 10vh;
+        }
         78% {
+            margin-top: 10vh;
             opacity: 100%;
         }
         100% {
+            margin-top: 3vh;
             opacity: 0%;
             transform: rotate3d(0, 1, 0, 360deg);
         }
@@ -504,7 +511,7 @@
     }
     .actionBar {
     width: calc(47.3vw - 24px);
-    height: calc(100vh - 48px) !important;
+    height: calc(98vh - 48px) !important;
     background-color: #ffffff16;
     backdrop-filter: blur(12px);
     padding-top: -5px;
@@ -519,15 +526,13 @@
     }
     .actBar {
     width: calc(48.3vw - 24px);
-    height: calc(82vh - 24px) !important;
+    height: calc(83vh - 24px) !important;
     background-color: #ffffff16;
     backdrop-filter: blur(12px);    
     border-radius: 12px;
     padding: 12px;
     overflow-y: auto !important;
-    overflow-x: none !important;
-
-
+    overflow-x: none !important
     }
     .action {
     width: 95%;
@@ -656,7 +661,7 @@
         animation-duration: 0s !important;
     }
     .fullsize {
-    height: calc(98% - 12px) !important;
+    height: calc(95.5vh - 24px) !important;
     margin-left: 1vw;
     }
     .inputBar {
@@ -789,7 +794,7 @@
     background-color: #202020;
     padding: 12px;
     border-radius: 15px;
-    margin-top: -11.3vh;
+    margin-top: 1.5vh;
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: center;
@@ -1135,9 +1140,8 @@
     background: linear-gradient(45deg, #000814 0%,#1d1d1d 160%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
     font-family : 'Arial', Arial, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif, sans-serif;
     padding: 1vw; 
-    padding-right: 1vw;
     padding-top: 1vh;
-    padding-bottom: -15%;
+    padding-bottom: 1vh;
     overflow: hidden;
     cursor:default;
     user-select: none;
