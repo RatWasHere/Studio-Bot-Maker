@@ -2,18 +2,56 @@ try {
     const Discord = require('discord.js');
     const fs  = require('fs');
     const client = new Discord.Client({  intents: 3276799 })
-    const { SlashCommandBuilder } = require('discord.js');
+    const { SlashCommandBuilder, ApplicationCommandOptionType } = require('discord.js');
     const { REST } = require('@discordjs/rest');
     const { Routes } = require('discord-api-types/v9');
-    let data = require('./AppData/data.json')
+    let data = JSON.parse(fs.readFileSync('./AppData/data.json'))
     let msgFunction;
-    ``
+    fs.writeFileSync('./AppData/Toolkit/tempVars.json', '{}')
+
     client.on('ready', () => {
         console.log('Studio Bot Maker V0.0.1 Project, started successfully!');
         fs.writeFileSync('./AppData/Toolkit/tempVars.json', '{}')
     });
     
-    client.on('messageCreate', msg => {
+    const runActionArray =  async (at, msg, client, actionBridge) => {
+        console.log('CUCK.')
+        var tempVars = JSON.parse(fs.readFileSync('./AppData/Toolkit/tempVars.json', 'utf8'))
+        var date1 = new Date();
+        var uniq = new Date(date1.getTime());            
+        tempVars[uniq] = actionBridge
+        fs.writeFileSync('./AppData/Toolkit/tempVars.json', JSON.stringify(tempVars))
+
+        for (let action in data.commands[at].actions) {
+
+        console.log(tempVars[uniq], 'tvuniq')
+        if (tempVars[uniq][`ACTIONARRAY_stop`] == true) {
+                if (data.commands[at].actions[data.commands[at].count] == data.commands[at].actions[action]) {
+                setTimeout(
+                    () => {
+                delete tempVars[uniq]
+                fs.writeFileSync('./AppData/Toolkit/tempVars.json', JSON.stringify(tempVars))
+                    }, 15
+                )
+            }
+        } else {
+            let acfile = require(`./AppData/Actions/${data.commands[at].actions[action].file}`)
+            await require(`./AppData/Actions/${data.commands[at].actions[action].file}`).run(data.commands[at].actions[action].data, msg, uniq, fs, client)
+                if (data.commands[at].actions[data.commands[at].count] == data.commands[at].actions[action]) {
+                setTimeout(
+                    () => {
+                delete tempVars[uniq]
+                fs.writeFileSync('./AppData/Toolkit/tempVars.json', JSON.stringify(tempVars))
+                    }, 15
+                )
+
+            }
+        }
+    }
+
+    /* END RUN ARRAY FUNCTION */
+}
+    client.on('messageCreate', async msg => {
         if (msg.author.bot) return
         for (let i in data.commands) {
             if (data.commands[i].type == 'action') {
@@ -47,7 +85,7 @@ try {
                         break
                     } else {
                         let acfile = require(`./AppData/Actions/${data.commands[i].actions[action].file}`)
-                        require(`./AppData/Actions/${data.commands[i].actions[action].file}`).run(data.commands[i].actions[action].data, msg, uniq, fs, client)
+                        await require(`./AppData/Actions/${data.commands[i].actions[action].file}`).run(data.commands[i].actions[action].data, msg, uniq, fs, client)
                             if (data.commands[i].actions[data.commands[i].count] == data.commands[i].actions[action]) {
                             setTimeout(
                                 () => {
@@ -91,7 +129,7 @@ try {
                                     break
                                 } else {
                                     let acfile = require(`./AppData/Actions/${data.commands[i].actions[action].file}`)
-                                    require(`./AppData/Actions/${data.commands[i].actions[action].file}`).run(data.commands[i].actions[action].data, msg, uniq, fs, client)
+                                    await require(`./AppData/Actions/${data.commands[i].actions[action].file}`).run(data.commands[i].actions[action].data, msg, uniq, fs, client)
                                         if (data.commands[i].actions[data.commands[i].count] == data.commands[i].actions[action]) {
                                         setTimeout(
                                             () => {
@@ -119,43 +157,53 @@ try {
             let description = 'No Description'
             let params = []
             let endParams = []
-                // For Loop
-                    for (let action in data.commands[i].actions) {
-                        if (data.commands[i].actions[action].name == 'Modify Command') {
-                            description = data.commands[i].actions[action].data.description
-                        }
-                        if (data.commands[i].actions[action].name == 'Create Parameter') {
-                                let sw; 
+
+            description = data.commands[i].description
+            if (description == undefined || description == null ) {
+                hm = 'No Description!'
+            }
+            for (let param in data.commands[i].parameters) {
+                let sw; 
                                 let bl;
-                                switch (data.commands[i].actions[action].data.choice) {
+                                switch (data.commands[i].parameters[param].type) {
                                     case 'String':
-                                        sw = 3
+                                        sw = ApplicationCommandOptionType.String
                                         break; 
                                     case 'Boolean':
-                                        sw = 5;
+                                        sw = ApplicationCommandOptionType.Boolean
                                         break
                                     case 'User':
-                                        sw = 6
+                                        sw = ApplicationCommandOptionType.User
                                         break
                                     case 'Channel': 
-                                        sw = 7
-                                    break;
+                                        sw = ApplicationCommandOptionType.Channel
+                                    break
                                     case 'Integer':
-                                        sw = 3
+                                        sw = ApplicationCommandOptionType.Integer
+                                    break
+                                    case 'Role':
+                                        sw = ApplicationCommandOptionType.Role
+                                    break
+                                    case 'Mentionable':
+                                        sw = ApplicationCommandOptionType.Mentionable
                                     break
                                 }
-                                if (data.commands[i].actions[action].data.button == '✕') {
+                                if (data.commands[i].parameters[param].required == false) {
                                     bl = false
                                 } else {
                                     bl = true
                                 }
                                 let newCmd = {
-                                    "name": data.commands[i].actions[action].data.paramName.toLowerCase(),
+                                    "name": data.commands[i].parameters[param].name.toLowerCase(),
                                     "type": sw,
                                     "required": bl,
-                                    "description": data.commands[i].actions[action].data.paramDesc
+                                    "description": data.commands[i].parameters[param].description
                                 }
                                 params.push(newCmd)            
+            }
+                    for (let action in data.commands[i].actions) {
+                        if (data.commands[i].actions[action].name == 'Create Parameter') {
+                                
                         }
                     }
                 
@@ -185,307 +233,40 @@ try {
             //.setName(data.commands[i].name)
             //.setDescription(description);
         }
-    
         if (data.commands[i].type == 'event') {
-            for (let act in data.commands[i].actions) {
-                if (data.commands[i].actions[act].name == 'Declare Event') {
-                    switch(data.commands[i].actions[act].data.choice) {
-                        case 'Message Create':
-                            client.on('messageCreate', (msg) => {
-                                if (msg.author.bot) return
-                                let tvars = require('./AppData/Toolkit/tempVars.json');
-                            var date1 = new Date();
-                            var uniq = new Date(date1.getTime());
-                            tvars[uniq] = {}
-                            fs.writeFileSync('./AppData/Toolkit/tempVars.json', JSON.stringify(tvars))
-                for (let action in data.commands[i].actions) {
-if (tempVars[uniq][`ACTIONARRAY_stop`] == true) {
-                            if (data.commands[i].actions[data.commands[i].count] == data.commands[i].actions[action]) {
-                            setTimeout(
-                                () => {
-                            delete tvars[uniq]
-                            fs.writeFileSync('./AppData/Toolkit/tempVars.json', JSON.stringify(tvars))
-                                }, 15
-                            )
-        
-                        }
-                        break
-                    } else {
-                        let acfile = require(`./AppData/Actions/${data.commands[i].actions[action].file}`)
-                        require(`./AppData/Actions/${data.commands[i].actions[action].file}`).run(data.commands[i].actions[action].data, msg, uniq, fs, client)
-                        if (data.commands[i].actions[data.commands[i].count] == data.commands[i].actions[action]) {
-                            setTimeout(
-                                () => {
-                            delete tvars[uniq]
-                            fs.writeFileSync('./AppData/Toolkit/tempVars.json', JSON.stringify(tvars))
-                                }, 15
-                            )
-        
-                        }
-                    }
-    
-                }
-                            })
-                        break
-                        case 'Message Delete': 
-                        client.on('messageDelete', (msg) => {
-                            let tvars = require('./AppData/Toolkit/tempVars.json');
-                            var date1 = new Date();
-    var uniq = new Date(date1.getTime());
-                            tvars[uniq] = {}
-                            fs.writeFileSync('./AppData/Toolkit/tempVars.json', JSON.stringify(tvars))
-                for (let action in data.commands[i].actions) {
-if (tempVars[uniq][`ACTIONARRAY_stop`] == true) {
-                            if (data.commands[i].actions[data.commands[i].count] == data.commands[i].actions[action]) {
-                            setTimeout(
-                                () => {
-                            delete tvars[uniq]
-                            fs.writeFileSync('./AppData/Toolkit/tempVars.json', JSON.stringify(tvars))
-                                }, 15
-                            )
-        
-                        }
-                        break
-                    } else {
-                        let acfile = require(`./AppData/Actions/${data.commands[i].actions[action].file}`)
-                        require(`./AppData/Actions/${data.commands[i].actions[action].file}`).run(data.commands[i].actions[action].data, msg, uniq, fs, client)
-                        if (data.commands[i].actions[data.commands[i].count] == data.commands[i].actions[action]) {
-                            setTimeout(
-                                () => {
-                            delete tvars[uniq]
-                            fs.writeFileSync('./AppData/Toolkit/tempVars.json', JSON.stringify(tvars))
-                                }, 15
-                            )
-        
-                        }
-                    }
-    
-                }
-                        })
-                        break
-                        case 'Message Update':
-                            console.log('message update registered')
-                            client.on('messageUpdate', async (msg1, msg2) => {
-                                const msg = [msg1, msg2]
-    
-                                let tvars = require('./AppData/Toolkit/tempVars.json');
-                                var date1 = new Date();
-                                var uniq = new Date(date1.getTime());            tvars[uniq] = {}
-                                fs.writeFileSync('./AppData/Toolkit/tempVars.json', JSON.stringify(tvars))
-                                for (let action in data.commands[i].actions) {
-                                    let acfile = require(`./AppData/Actions/${data.commands[i].actions[action].file}`)
-                                    require(`./AppData/Actions/${data.commands[i].actions[action].file}`).run(data.commands[i].actions[action].data, msg, uniq, fs, client)
-                                    if (data.commands[i].actions[data.commands[i].count] == data.commands[i].actions[action]) {
-                                        setTimeout(
-                                            () => {
-                                                null
-                                        //delete tvars[uniq]
-                                        //fs.writeFileSync('./AppData/Toolkit/tempVars.json', JSON.stringify(tvars))
-                                            }, 
-                                        )
-                                    }
-                                }
-                            })
-                        break
-                        case 'Bot Ready': 
-                        client.on('ready', () => {
-                            let tvars = require('./AppData/Toolkit/tempVars.json');
-                            var date1 = new Date();
-                            var uniq = new Date(date1.getTime());
-                            tvars[uniq] = {}
-                            fs.writeFileSync('./AppData/Toolkit/tempVars.json', JSON.stringify(tvars))
-                for (let action in data.commands[i].actions) {
-if (tempVars[uniq][`ACTIONARRAY_stop`] == true) {
-                            if (data.commands[i].actions[data.commands[i].count] == data.commands[i].actions[action]) {
-                            setTimeout(
-                                () => {
-                            delete tvars[uniq]
-                            fs.writeFileSync('./AppData/Toolkit/tempVars.json', JSON.stringify(tvars))
-                                }, 15
-                            )
-        
-                        }
-                        break
-                    } else {
-                        let acfile = require(`./AppData/Actions/${data.commands[i].actions[action].file}`)
-                        require(`./AppData/Actions/${data.commands[i].actions[action].file}`).run(data.commands[i].actions[action].data, msg, uniq, fs, client)
-                        if (data.commands[i].actions[data.commands[i].count] == data.commands[i].actions[action]) {
-                            setTimeout(
-                                () => {
-                            delete tvars[uniq]
-                            fs.writeFileSync('./AppData/Toolkit/tempVars.json', JSON.stringify(tvars))
-                                }, 15
-                            )
-        
-                        }
-                    }
-    
-                }
-                        })
-                    break
-                        case 'Channel Create': 
-                        client.on('channelCreate', (msg) => {
-                            let tvars = require('./AppData/Toolkit/tempVars.json');
-                            var date1 = new Date();
-                            var uniq = new Date(date1.getTime());
-                            tvars[uniq] = {}
-                            fs.writeFileSync('./AppData/Toolkit/tempVars.json', JSON.stringify(tvars))
-                for (let action in data.commands[i].actions) {
-if (tempVars[uniq][`ACTIONARRAY_stop`] == true) {
-                            if (data.commands[i].actions[data.commands[i].count] == data.commands[i].actions[action]) {
-                            setTimeout(
-                                () => {
-                            delete tvars[uniq]
-                            fs.writeFileSync('./AppData/Toolkit/tempVars.json', JSON.stringify(tvars))
-                                }, 15
-                            )
-        
-                        }
-                        break
-                    } else {
-                        let acfile = require(`./AppData/Actions/${data.commands[i].actions[action].file}`)
-                        require(`./AppData/Actions/${data.commands[i].actions[action].file}`).run(data.commands[i].actions[action].data, msg, uniq, fs, client)
-                        if (data.commands[i].actions[data.commands[i].count] == data.commands[i].actions[action]) {
-                            setTimeout(
-                                () => {
-                            delete tvars[uniq]
-                            fs.writeFileSync('./AppData/Toolkit/tempVars.json', JSON.stringify(tvars))
-                                }, 15
-                            )
-        
-                        }
-                    }
-    
-                }
-                        }) 
-                        break
-                        case 'Channel Update': 
-                        client.on('channelUpdate', (msg1, msg2) => {
-                            const msg = [msg1, msg2]
-                            let tvars = require('./AppData/Toolkit/tempVars.json');
-                            var date1 = new Date();
-                            var uniq = new Date(date1.getTime());
-                            tvars[uniq] = {}
-                            fs.writeFileSync('./AppData/Toolkit/tempVars.json', JSON.stringify(tvars))
-                for (let action in data.commands[i].actions) {
-if (tempVars[uniq][`ACTIONARRAY_stop`] == true) {
-                            if (data.commands[i].actions[data.commands[i].count] == data.commands[i].actions[action]) {
-                            setTimeout(
-                                () => {
-                            delete tvars[uniq]
-                            fs.writeFileSync('./AppData/Toolkit/tempVars.json', JSON.stringify(tvars))
-                                }, 15
-                            )
-        
-                        }
-                        break
-                    } else {
-                        let acfile = require(`./AppData/Actions/${data.commands[i].actions[action].file}`)
-                        require(`./AppData/Actions/${data.commands[i].actions[action].file}`).run(data.commands[i].actions[action].data, msg, uniq, fs, client)
-                        if (data.commands[i].actions[data.commands[i].count] == data.commands[i].actions[action]) {
-                            setTimeout(
-                                () => {
-                            delete tvars[uniq]
-                            fs.writeFileSync('./AppData/Toolkit/tempVars.json', JSON.stringify(tvars))
-                                }, 15
-                            )
-        
-                        }
-                    }
-    
-                }
-                        })
-                        break
-                        case 'Channel Delete': 
-                            client.on('channelDelete', (msg) => {
-                                let tvars = require('./AppData/Toolkit/tempVars.json');
-                                var date1 = new Date();
-                                var uniq = new Date(date1.getTime());
-                                tvars[uniq] = {}
-                                fs.writeFileSync('./AppData/Toolkit/tempVars.json', JSON.stringify(tvars))
-                                for (let action in data.commands[i].actions) {
-                                    let acfile = require(`./AppData/Actions/${data.commands[i].actions[action].file}`)
-                                    require(`./AppData/Actions/${data.commands[i].actions[action].file}`).run(data.commands[i].actions[action].data, msg, uniq, fs, client)
-                                    if (data.commands[i].actions[data.commands[i].count] == data.commands[i].actions[action]) {
-                                        setTimeout(
-                                            () => {
-                                        delete tvars[uniq]
-                                        fs.writeFileSync('./AppData/Toolkit/tempVars.json', JSON.stringify(tvars))
-                                            }, 150
-                                        )
-                                    }
-                                }
-                            })
-                        break
-                        case 'Member Leave': 
-                        client.on('guildMemberRemove', (msg) => {
-                            let tvars = require('./AppData/Toolkit/tempVars.json');
-                            var date1 = new Date();
-                            var uniq = new Date(date1.getTime());
-                            tvars[uniq] = {}
-                            fs.writeFileSync('./AppData/Toolkit/tempVars.json', JSON.stringify(tvars))
-                for (let action in data.commands[i].actions) {
-if (tempVars[uniq][`ACTIONARRAY_stop`] == true) {
-                            if (data.commands[i].actions[data.commands[i].count] == data.commands[i].actions[action]) {
-                            setTimeout(
-                                () => {
-                            delete tvars[uniq]
-                            fs.writeFileSync('./AppData/Toolkit/tempVars.json', JSON.stringify(tvars))
-                                }, 15
-                            )
-        
-                        }
-                        break
-                    } else {
-                        let acfile = require(`./AppData/Actions/${data.commands[i].actions[action].file}`)
-                        require(`./AppData/Actions/${data.commands[i].actions[action].file}`).run(data.commands[i].actions[action].data, msg, uniq, fs, client)
-                        if (data.commands[i].actions[data.commands[i].count] == data.commands[i].actions[action]) {
-                            setTimeout(
-                                () => {
-                            delete tvars[uniq]
-                            fs.writeFileSync('./AppData/Toolkit/tempVars.json', JSON.stringify(tvars))
-                                }, 15
-                            )
-        
-                        }
-                    }
-    
-                }
-                        })
-                        break
-                        case 'Member Join': 
-                        client.on('guildMemberAdd', (msg) => {
-                            let tvars = require('./AppData/Toolkit/tempVars.json');
-                            var date1 = new Date();
-                            var uniq = new Date(date1.getTime());
-                            tvars[uniq] = {}
-                            fs.writeFileSync('./AppData/Toolkit/tempVars.json', JSON.stringify(tvars))
-                            for (let action in data.commands[i].actions) {
-                                let acfile = require(`./AppData/Actions/${data.commands[i].actions[action].file}`)
-                                require(`./AppData/Actions/${data.commands[i].actions[action].file}`).run(data.commands[i].actions[action].data, msg, uniq, fs, client)
-                                if (data.commands[i].actions[data.commands[i].count] == data.commands[i].actions[action]) {
-                                    setTimeout(
-                                        () => {
-                                    delete tvars[uniq]
-                                    fs.writeFileSync('./AppData/Toolkit/tempVars.json', JSON.stringify(tvars))
-                                        }, 1444444444444450
-                                    )
-                                }
-                            }
-                        })
-                        break
-                    }
-                }
-            }
-        }
+            let process = require('process').cwd()
+
+            let tvars = require('./AppData/Toolkit/tempVars.json');
+            var date1 = new Date();
+            var uniq = new Date(date1.getTime());
+            tvars[uniq] = {}
+            fs.writeFileSync('./AppData/Toolkit/tempVars.json', JSON.stringify(tvars))
+            var tempVars = JSON.parse(fs.readFileSync('./AppData/Toolkit/tempVars.json', 'utf8'))
+
+                /* RUN ARRAY FUNCTION */
+
+                        /* ENDED RUN ARRAY FUNCTION */
+
+
+
+            let eventFile = require(`./AppData/Events/${data.commands[i].eventFile}`);
+
+            await eventFile.run(data.commands[i].eventData, client, fs, runActionArray, i)  
     }
-    client.on(Events.InteractionCreate, interaction => {
+    client.on(Events.InteractionCreate, async interaction => {
         if (!interaction.isChatInputCommand()) return;
         for (let i in data.commands) {
             if (data.commands[i].trigger == 'slashCommand' && data.commands[i].type == 'action' && interaction.commandName.toLowerCase() == data.commands[i].name.toLowerCase()) {
+                let tvars = require('./AppData/Toolkit/tempVars.json');
+
+                var date1 = new Date();
+                var uniq = new Date(date1.getTime());        
+                tvars[uniq] = {}
+                fs.writeFileSync('./AppData/Toolkit/tempVars.json', JSON.stringify(tvars))
+
                 for (let action in data.commands[i].actions) {
-                    var date1 = new Date();
-                    var uniq = new Date(date1.getTime());        require(`./AppData/Actions/${data.commands[i].actions[action].file}`).run(data.commands[i].actions[action].data, interaction, uniq, fs, client)
+
+                    await require(`./AppData/Actions/${data.commands[i].actions[action].file}`).run(data.commands[i].actions[action].data, interaction, uniq, fs, client)
         }}
     }
     });
@@ -495,5 +276,5 @@ if (tempVars[uniq][`ACTIONARRAY_stop`] == true) {
         .catch(console.error);
     
     client.login(data.btk);
-    } catch (err) {
-null    }
+    }} catch (err) {
+console.log('oops! Studio Bot Maker just got run over by an error, here\'s more about it so you can report it: ', err)    }

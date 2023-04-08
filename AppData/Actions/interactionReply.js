@@ -13,7 +13,7 @@ module.exports = {
         } else {
             var tempVars = JSON.parse(fs.readFileSync('./AppData/Toolkit/tempVars.json', 'utf8'))
             const emped = tempVars[uID][values.ExtraData]
-            message.channel.send({ embeds: [emped] });
+            message.reply({ embeds: [emped], ephemeral: ephemeral});
         }
     }
 }

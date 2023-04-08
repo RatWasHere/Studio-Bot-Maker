@@ -35,6 +35,7 @@ var datjson = JSON.parse(fs.readFileSync(processPath +'/AppData/data.json'))
 let lastType = 0 // 0 = Command; 1 = Actions;
 let lastObj = "1"
 let lastAct = "1"
+let lastParam;
 let lastHighlighted;
 let newc = datjson.color
 document.body.style.background = `linear-gradient(45deg, ${newc} 0%, #1d1d1d 160%)`
@@ -97,7 +98,8 @@ document.onkeydown = function(event) {
         }
         checkErrors()
     } }
-    
+    closeCommand()
+
 } 
 function switchObjs() {
     var delay = 0;
@@ -151,6 +153,8 @@ function switchObjs() {
             }
             lastType = 0
         }
+        closeCommand()
+
     }
 
     function cmdOpen(cmdpending) {
@@ -216,9 +220,9 @@ function switchObjs() {
         </div>
         <div class="sepbar"></div>
         <div class="flexbox" style="width: 98%; margin-left: auto; margin-right: auto; height: 20%; justify-content: center; animation-duration: 0.8s;">
-        <div class="barbutton" style="animation-duration: 0.5s"><div class="barbuttontexta">Toggle Bot</div></div>
-        <div class="barbutton" onclick="exportProject()" style="animation-duration: 0.5s"><div class="barbuttontexta">Export Project</div></div>
-        <div class="barbutton" onclick="settoken(this)" style="animation-duration: 0.5s"><div class="barbuttontexta">Bot Data</div></div>
+        <div class="barbutton" style="animation-duration: 0.6s"><div class="barbuttontexta">Toggle Bot</div></div>
+        <div class="barbutton" onclick="exportProject()" style="animation-duration: 0.6s"><div class="barbuttontexta">Export Project</div></div>
+        <div class="barbutton" onclick="settoken(this)" style="animation-duration: 0.6s"><div class="barbuttontexta">Bot Data</div></div>
 
         </div>
         <div class="smalltext" style="margin-top: 10%; margin-bottom: 2%; text-align: center;">[ESC] / [CLICK] - Close</div>`
@@ -235,15 +239,14 @@ function switchObjs() {
         let bottombar = document.getElementById('bottombar')
         bottombar.style.animationDuration = '0.4s'
         bottombar.style.animationName = 'fromExpand';
-        bottombar.style.height = '1.9vh'
-        bottombar.style.width = '96.5vw'
-        bottombar.style.backdropFilter = 'blur(9px)'
-        bottombar.style.border = 'none'
-        bottombar.style.marginTop = '0.5rem'
-        bottombar.style.zIndex = '50'
-        bottombar.style.marginLeft = 'auto'
-        bottombar.style.borderRadius = '400px'
-        bottombar.style.backgroundColor = '#FFFFFF10'
+        bottombar.style.height = ''
+        bottombar.style.width = ''
+        bottombar.style.backdropFilter = ''
+        bottombar.style.marginTop = ''
+        bottombar.style.border = ''
+        bottombar.style.marginLeft = ''
+        bottombar.style.borderRadius = ''
+        bottombar.style.backgroundColor = ''
         document.onkeydown = null;
         document.onkeydown = function(event) {
             if (event.key === "F1") {
@@ -286,7 +289,6 @@ function switchObjs() {
             edutor.style.animationName = ''
             ActionTile.style.animationDuration = ''
             ActionTile.style.animationName = ''
-            bbar.style.marginTop = '-7%'
             var btbr = document.createElement('div')
             btbr.className = 'bottombar'
             btbr.onclick = () => {modifyBar()}
@@ -411,7 +413,7 @@ function switchObjs() {
             bottombar.innerHTML += `
             <div class="flexbox" style="width: 98%; margin-left: auto; margin-right: auto; height: 20%; justify-content: center;">
             <div class="barbutton" onmousedown="setCmd()"><div class="barbuttontexta" >Command</div></div>
-            <div class="barbutton" onmouseup="setEvt()"><div class="barbuttontexta" >Event</div></div>
+            <div class="barbutton" onmouseup="setEvt()"><div class="barbuttontexta">Event</div></div>
             </div>
             <div class="sepbar"></div>
             <div class="flexbox" style="width: 98%; margin-left: auto; margin-right: auto; height: 20%; justify-content: center;">
@@ -568,14 +570,21 @@ function switchObjs() {
     }
     function setCmd() {
             datjson.commands[lastObj].type = 'action'
+            if (datjson.commands[lastObj].eventFile) {
+                delete datjson.commands[lastObj].eventFile
+            }
         fs.writeFileSync(processPath + '\\AppData\\data.json', JSON.stringify(datjson, null, 2));
         checkErrors()
     }
     function setEvt() {
         datjson.commands[lastObj].type = 'event'
+        datjson.commands[lastObj] = {
+            ...datjson.commands[lastObj],
+            eventFile: 'update_message.js',
+            event: 'Message Update'
+        }
         fs.writeFileSync(processPath + '\\AppData\\data.json', JSON.stringify(datjson, null, 2));
         checkErrors()
-
     }
 
     function newObject() {
@@ -639,7 +648,6 @@ function switchObjs() {
         const v1 = JSON.stringify(datjson)
         const v2 = v1
         delete datjson
-        delete require.cache[`./AppData/data.json`];
 
         var datjson = JSON.parse(JSON.stringify(JSON.parse(fs.readFileSync(processPath + '\\AppData\\data.json'))));
     }, 150)
@@ -1311,7 +1319,24 @@ function switchObjs() {
                 } catch (err) {
                     null
                 }
-                fs.writeFileSync(exportFolder + '\\AppData\\data.json', fs.readFileSync(processPath + '\\AppData\\data.json'))
+                fs.writeFileSync(exportFolder + '\\AppData\\data.json', `
+                {
+                    "name": "${datjson.name}",
+                    "main": "bot.js",
+                    "author": "Studio Bot Maker",
+                    "description": "A project created via Studio Bot Maker!",
+                    "dependencies": {
+                        "discord-api-types": "^0.37.34",
+                        "discord.js": "^14.8.0",
+                        "fs": "^0.0.1-security",
+                        "fs-extra": "^11.1.1",
+                        "fse": "^4.0.1",
+                        "node-fetch": "^3.3.1",
+                        "request": "^2.88.2",
+                    },
+                    "version": "0"
+                }
+                `)
                 try {
                 fs.mkdirSync(exportFolder + '\\AppData\\Actions')
                 } catch (err) {
@@ -1322,8 +1347,20 @@ function switchObjs() {
                     } catch (err) {
                         null
                     }  
-                fs.writeFileSync(exportFolder + '\\AppData\\Toolkit\\variableTools.json', fs.readFileSync(processPath + '\\AppData\\Toolkit\\variableTools.js'))
-                fs.writeFileSync(exportFolder + '\\AppData\\Toolkit\\variableTools.json', fs.readFileSync(processPath + '\\AppData\\Toolkit\\tempVars.json'))
+
+                    try {
+                        fs.mkdirSync(exportFolder + '\\AppData\\Events')
+                        } catch (err) {
+                            null
+                        }  
+                    let events = fs.readdirSync(processPath + '\\AppData\\Events')
+    
+                    for (let event in events) {
+                        setTimeout(() => {
+                            fs.writeFileSync(exportFolder + '\\AppData\\Events\\' + events[event], fs.readFileSync(processPath + '\\AppData\\Events\\' + events[event]))
+                        }, 1400)
+                    }   
+                fs.writeFileSync(exportFolder + '\\AppData\\Toolkit\\variableTools.js', fs.readFileSync(processPath + '\\AppData\\Toolkit\\variableTools.js'))
 
                 try {
                     fs.mkdirSync(exportFolder + '\\AppData\\Project')
@@ -1339,7 +1376,6 @@ function switchObjs() {
                         acrnum = parseFloat(acrnum) + parseFloat(datjson.commands[acf].count)
                     }
                 for (let action in actions) {
-                    
 
                     counnt++
                     setTimeout(() => {
@@ -1358,6 +1394,7 @@ function switchObjs() {
                         location.reload()
                     }, 14000)
                 }
+
             } else {
                 elm.style.animationName = 'glowTwice'
                 elm.style.animationDuration = '1s'
@@ -1443,3 +1480,419 @@ function switchObjs() {
            let spn = document.getElementById('saveProjectnotif')
            spn.remove()
         }, 5000)
+
+        function commandOptions() {
+            // commandActions
+
+            let commandOptions = document.getElementById('commandActions')
+            commandOptions.className = 'baction'
+            commandOptions.style.maxHeight = '70vh';
+            commandOptions.style.animationName = 'actionExpand'
+            commandOptions.style.animationDuration = '0.5s'
+            commandOptions.style.height = '45vh';
+            commandOptions.style.borderRadius = '15px'
+            commandOptions.style.backgroundColor = '#FFFFFF15'
+            commandOptions.style.paddingLeft = '5px'
+            let inhf1 = commandOptions.innerHTML;
+            let inh = inhf1;
+            setTimeout(() => {
+                if (datjson.commands[lastObj].type != 'event') {
+            switch(datjson.commands[lastObj].trigger) {
+                case 'slashCommand':
+                    let hm = ''
+                    hm = datjson.commands[lastObj].description
+    
+                    if (hm == undefined || hm == null ) {
+                        hm = ''
+                    } else {
+                    }
+                commandOptions.innerHTML = `
+                <div class="btext">Command Description</div>
+                <div class="input" contenteditable="true" onkeyup="if (this.innerText.split('').length > 31) {let fk = this.innerText.split(''); let count = 0; this.innerHTML = ''; this.blur(); for (let i in fk) { count++; if (count < 30) {this.innerHTML += fk[i]; this.focus();}else {this.blur()} }}; setDescription(this)">${hm}</div>
+                <div class="btext">Parameters</div>
+                <div id="sepfx" class="flexbox" style="margin-bottom: 1vh; margin-left: calc(auto + 2.5px); margin-right: auto;">
+                <div id="parameterTile" class="flexbox" style="background-color: #00000030; border-radius: 12px; padding: 12px; margin-left: auto; margin-right: auto; width: 15vw; height: 18vh; justify-content: center; align-items: center;">
+                
+                </div>
+
+                <div id="plTile" class="flexbox" style="background-color: #00000030; border-radius: 12px; padding: 12px; margin-left: auto; margin-right: auto; width: 20vw; height: 18vh; justify-content: center; align-items: center;">
+                    <div class="barbuttontexta flexbox" style="margin: auto;">⟨  <span style="margin-left: 5vw"></span> Select A Parameter!</div>
+                </div>
+                
+                <div id="plusMinusParams" class="flexbox" style="margin-left: 5.5px; margin-top: 1vh; margin-bottom: -0.5vh; background-color: #00000060; padding: 12px; border-radius: 13px; height: auto; align-items: center; justify-content: center; width: 55%; margin-left: auto; margin-right: auto;">
+                <div class="barbuttone" onclick="newParam()" style="margin-top: auto; margin-bottom: 0vh; height: auto; animation-duration: 0s;"><div class="barbuttontext"><b>+</b></div></div>
+                <div class="barbuttone" onclick="deleteParam()" style="margin-top: auto; margin-bottom: 0vh; height: auto; animation-duration: 0s;"><div class="barbuttontext"><b>-</b></div></div>
+                <div class="barbuttone" onclick="editParam()" style="margin-top: auto; margin-bottom: 0vh; height: auto; animation-duration: 0s;"><div class="barbuttontext">•••</div></div>
+
+                <div class="barbuttone" onclick="closeCommand()" style="margin-top: auto; margin-bottom: auto; width: 40px; animation-duration: 0s;"><div class="barbuttontexta">✕</div></div>
+
+                </div>
+                <div class="flexbox" id="storeParamAs" style="margin-top: 1vh; margin-bottom: -0.5vh; background-color: #00000060; padding: 0px; border-radius: 13px; height: auto; align-items: center; justify-content: center; margin-left: auto; margin-right: auto; width: 15vw;">
+                    <div class="ring" style="width: 3vh; height: 3vh;"></div>
+                </div>
+                `
+
+                    let parameters = datjson.commands[lastObj].parameters
+                    let params = ''
+                    if (parameters != undefined) {
+                        let cont = 0
+                        for (let parameter in parameters) {
+                            cont++
+                            params = `${params}
+                            <div class="barbuttone" ondblclick="this.contentEditable='true'" onblur="this.contentEditable='false'" id="${parameters[parameter].paramPos}Param" onclick="parameterIfy(this)" onkeyup="if (this.innerText.split('').length > 25) {let fk = this.innerText.split(''); let count = 0; this.innerHTML = ''; this.blur(); for (let i in fk) { count++; if (count < 31) {this.innerHTML += fk[i]; this.focus();}else {this.blur()} }}; paramify(this)" style="width: 15vw; height: auto; animation-name: appearfadenmt; margin: 0.3vh; font-size: 18px; overflow-x: auto; overflow-y: auto;">${datjson.commands[lastObj].parameters[parameter].name}</div>`
+                        }
+                        document.getElementById('parameterTile').innerHTML = params
+                    } else {
+                        datjson.commands[lastObj].parameters = []
+                        fs.writeFileSync(processPath +'/AppData/data.json', JSON.stringify(datjson, null, 2));
+                    }
+                break
+
+                case 'textCommand':
+                    commandOptions.innerHTML = `
+                    <div class="barbuttontexta flexbox" margin: auto;>Nothing Available Yet For Text Commands</div>
+                    <div class="barbuttone flexbox" onclick="closeCommand()"><div class="barbuttontexta">✕</div></div>
+                    `
+                break
+
+                case 'messageContent':
+                    commandOptions.innerHTML = `
+                    <div class="barbuttontexta flexbox" margin: auto;>Nothing Available Yet For Text Commands</div>
+                    <div class="barbuttone flexbox" onclick="closeCommand()"><div class="barbuttontexta">✕</div></div>
+                    `
+                break
+
+            }
+        } else {
+            let events = fs.readdirSync(processPath + '\\AppData\\Events')
+
+
+            commandOptions.innerHTML = `
+            <div class="flexbox" style="height: 100%; align-items: center; justify-content: center;">
+            <div id="evtpane" style="background-color: #00000030; border-radius: 12px; width: 49%; margin-right: 2%; height: 100%;">
+            <div class="barbuttontexta">Trigger: ${datjson.commands[lastObj].event}</div>
+</div>
+            <div id="aevts" style="background-color: #00000030; border-radius: 12px; width: 49%; padding-top: 5px; height: calc(100% - 5px); max-height: calc(100% - 5px); overflow: auto;">
+            </div></div>`
+
+                if (datjson.commands[lastObj].eventData == undefined) {
+                    datjson.commands[lastObj] = {
+                        ...datjson.commands[lastObj],
+                        eventData: [" ", " "]
+                }}
+
+            for (let event in events) {
+                let efile = require(`./AppData/Events/${events[event]}`)
+                let aev = document.getElementById('aevts')   
+                let inp = ''
+                let decor = '&'
+                if (efile.inputSchemes > 1) {
+                    for (let inpsch in efile.nameSchemes) {
+                        if (!efile.nameSchemes[inpsch + 1]) {
+                            decor = '' 
+                        }
+                        inp = inp + ' ' + efile.nameSchemes[inpsch] + decor
+                    }
+                } else {
+                    inp = efile.nameSchemes[0]
+                }
+                aev.innerHTML += `
+                <div onclick="epane('${events[event]}')" style="background-color: #00000030; margin-bottom: 5px; padding: 5px; width: 93%; border-radius: 10px; margin-left: auto; margin-right: auto;">
+                <div class="zaction" style="margin-bottom: 5px;">${efile.name}</div>
+                <div class="barbuttontexta">Includes ${efile.inputSchemes} Field(s)
+                </div>
+
+                </div>
+
+                `    
+            }
+            epane(datjson.commands[lastObj].eventFile)
+        }
+        }, 100)
+
+        
+        setTimeout(() => {
+            commandOptions.style.animationName = ' '
+            commandOptions.style.animationDuration = ' '
+
+        }, 510)
+        }    
+
+        function epane(file) {
+            let efile = require(`./AppData/Events/${file}`)
+            let evtpane = document.getElementById('evtpane')
+            datjson.commands[lastObj].eventFile = file
+            fs.writeFileSync(processPath +'/AppData/data.json', JSON.stringify(datjson, null, 2));
+
+            if (efile.inputSchemes > 1) {
+                evtpane.innerHTML = `
+                <div style="margin-top: 10px;"></div>
+                <div class="btext">On ${efile.name}</div>
+                <div class="sepbars"></div>
+                    <div class="barbuttontexta">${efile.nameSchemes[0]}</div>
+                    <div class="input" id="0EV" onblur="storeevfield(this)" style="height: 26px; text-align: left;" contenteditable="true">${datjson.commands[lastObj].eventData[0]}</div>
+                
+                    <div class="sepbars"></div>
+                    <div class="barbuttontexta">${efile.nameSchemes[1]}</div>
+                    <div class="input" id="1EV" onblur="storeevfield(this)" style="height: 26px; text-align: left;" contenteditable="true">${datjson.commands[lastObj].eventData[1]}</div>
+                    `
+            } else {
+                evtpane.innerHTML = `
+                <div style="margin-top: 10px;"></div>
+                <div class="btext">On ${efile.name}</div>
+                <div class="sepbars"></div>
+                    <div class="barbuttontexta">${efile.nameSchemes[0]}</div>
+                    <div class="input" id="0EV" onblur="storeevfield(this)" style="height: 26px; text-align: left;" contenteditable="true">${datjson.commands[lastObj].eventData[0]}</div>
+                `
+            }
+            
+        }
+        function storeevfield(fr) {
+            let id = fr.id.split('EV')[0]
+            let nht = fr.innerHTML 
+
+            datjson.commands[lastObj].eventData[id] = nht
+            fs.writeFileSync(processPath +'/AppData/data.json', JSON.stringify(datjson, null, 2));
+        }
+        function newParam() {
+            let paramParent = document.getElementById('parameterTile')
+            let f = 0;
+            for (let parm in datjson.commands[lastObj].parameters) {
+                f++   
+            }
+            if (f > 4) return
+            while (document.getElementById(f + 'Param')) {
+                console.log('exists!!')
+                f++ 
+            }
+            let newParam = {
+                "name":"Parameter " + f,
+                "type": "String",
+                "required": false,
+                "description": "Parameter #" + f + " of this command!",
+                "storeAs":"Param" + f,
+                "paramPos": f
+            }
+
+            datjson.commands[lastObj].parameters.push(newParam)
+            fs.writeFileSync(processPath +'/AppData/data.json', JSON.stringify(datjson, null, 2));
+
+            paramParent.innerHTML += `<div class="barbuttone"  ondblclick="this.contentEditable='true'" onblur="this.contentEditable='false'"  id="${f}Param" onclick="parameterIfy(this)" onkeyup="if (this.innerText.split('').length > 32) {let fk = this.innerText.split(''); let count = 0; this.innerHTML = ''; this.blur(); for (let i in fk) { count++; if (count < 31) {this.innerHTML += fk[i]; this.focus();}else {this.blur()} }}; paramify(this);" style="width: 15vw; height: auto; font-size: 18px; animation-name: appearfadenmt; margin: 0.3vh; overflow-y: auto; overflow-x: auto;">Parameter ${f}</div>`
+        }
+        function deleteParam() {
+
+            // get the parameter position
+            let paramPosition = lastParam.split('Param')[0]
+            console.log(paramPosition)
+            datjson.commands[lastObj].parameters.splice(paramPosition, 1)
+            let cont = 0
+            let params = ''
+            let vafr = 0;
+            for (let parame in datjson.commands[lastObj].parameters) {
+                let prms = datjson.commands[lastObj].parameters
+
+                    datjson.commands[lastObj].parameters[parame].paramPos = vafr
+                    vafr++
+            }
+
+            const parent = document.getElementById('parameterTile');
+            for (let i = 0; i < parent.children.length; i++) {
+              const child = parent.children[i];
+              child.id = `${i}Param`
+            }
+            for (let parameter in datjson.commands[lastObj].parameters) {
+                cont++
+                params = `${params}
+                <div class="barbuttone" id="${datjson.commands[lastObj].parameters[parameter].paramPos}Param" onclick="parameterIfy(this)" onkeyup="paramify(this)" style="width: 15vw; height: auto; animation-name: appearfadenmt; margin: 0.3vh;"> <div class="barbuttontexta" ondblclick="this.contentEditable = 'true'" onblur = "this.contentEditable = 'false'">${datjson.commands[lastObj].parameters[parameter].name}</div></div>`
+            }
+            document.getElementById('parameterTile').innerHTML = params
+            fs.writeFileSync(processPath +'/AppData/data.json', JSON.stringify(datjson, null, 2));
+        }
+        function parameterIfy(what) {
+
+            if (lastParam && document.getElementById(lastParam)) {
+                try {
+                document.getElementById(lastParam).style.backgroundColor = '#FFFFFF10'
+            } catch(err) {
+
+            }
+            }
+            lastParam = what.id 
+
+            what.style.backgroundColor = '#FFFFFF25'
+
+            let paramTile = document.getElementById('plTile')
+
+            paramTile.innerHTML = `
+            <div class="barbuttontexta" style="margin-top: -1vh;">Require Parameter?</div>
+            <div class="flexbox" style="width: 100vw; margin-top: -0.7vh; margin-left: auto; margin-right: auto;background-color: #00000030; border-radius: 10px; align-items: center; justify-content:center; padding: 5px;">
+            <div onclick="setReq(true, this)" id="rft" class="barbuttone">
+            <div class="barbuttontexta">✓</div>
+            </div>
+
+            <div onclick="setReq(false, this)" id="rff" class="barbuttone">
+            <div class="barbuttontexta">✕</div>
+
+            </div>
+            </div>
+
+
+            <div class="flexbox" style="overflow-y: auto; max-height: 11vh; height: 11vh; width: 100%; margin-left: auto; margin-right: auto;background-color: #00000030; border-radius: 10px; align-items: center; justify-content:center; padding: 5px; margin-bottom: -1vh;">
+            <div class="zaction" id="strng" onclick="setPrm(this)">String</div>
+            <div class="zaction" id="intgr" onclick="setPrm(this)">Integer</div>
+            <div class="zaction" id="blen" onclick="setPrm(this)">Boolean</div>
+            <div class="zaction" id="chnl" onclick="setPrm(this)">Channel</div>
+            <div class="zaction" id="usere" onclick="setPrm(this)">User</div>
+            <div class="zaction" id="rle" onclick="setPrm(this)">Role</div>
+            <div class="zaction" id="mentnable" onclick="setPrm(this)">Mentionable</div>
+
+            </div>
+            `
+            let spas = document.getElementById('storeParamAs')
+            spas.innerHTML = `
+            <div class="barbuttontexta">Description</div>
+            <div class="input" onkeyup="if (this.innerText.split('').length > 25) {let fk = this.innerText.split(''); let count = 0; this.innerHTML = ''; this.blur(); for (let i in fk) { count++; if (count < 25) {this.innerHTML += fk[i]; this.focus();}else {this.blur()} }}; storeParamDesc(this)" contenteditable="true" style="margin: 2px; margin-top: -15px; padding-left: 2px; padding-right: 2px; padding-top: 2px; padding-bottom: -25px; overflow-y: none; overflow-x: auto; height: 25px;">${datjson.commands[lastObj].parameters[lastParam.split('Param')[0]].description}</div>
+            
+            `
+            let spl = parseFloat(lastParam.split('Param')[0]);
+            switch (datjson.commands[lastObj].parameters[spl].type) {
+                case 'String':
+                    document.getElementById('strng').style.backgroundColor = '#FFFFFF20'
+                    break; 
+                case 'Boolean':
+                    document.getElementById('blen').style.backgroundColor = '#FFFFFF20'
+                    break
+                case 'User':
+                    document.getElementById('usere').style.backgroundColor = '#FFFFFF20'
+                    break
+                case 'Channel': 
+                document.getElementById('chnl').style.backgroundColor = '#FFFFFF20'
+                break
+                case 'Integer':
+                    document.getElementById('intgr').style.backgroundColor = '#FFFFFF20'
+                break
+                case 'Role':
+                    document.getElementById('rle').style.backgroundColor = '#FFFFFF20'
+                break
+                case 'Mentionable':
+                    document.getElementById('mentnable').style.backgroundColor = '#FFFFFF20'
+                break
+            }
+            
+            if (datjson.commands[lastObj].parameters[lastParam.split('Param')[0]].required == true) {
+                document.getElementById('rff').style.backgroundColor = '#FFFFFF25'
+
+            } else {
+                document.getElementById('rft').style.backgroundColor = '#FFFFFF25'
+            }
+        }
+
+        function storeParamDesc(wh) {
+            datjson.commands[lastObj].parameters[lastParam.split('Param')[0]].description = wh.innerText
+            fs.writeFileSync(processPath +'/AppData/data.json', JSON.stringify(datjson, null, 2));
+
+        }
+
+        function setPrm(wut) {
+
+
+            switch (datjson.commands[lastObj].parameters[parseFloat(lastParam.split('Param')[0])].type) {
+                case 'String':
+                    document.getElementById('strng').style.backgroundColor = '#FFFFFF15'
+                    break; 
+                case 'Boolean':
+                    document.getElementById('blen').style.backgroundColor = '#FFFFFF15'
+                    break
+                case 'User':
+                    document.getElementById('usere').style.backgroundColor = '#FFFFFF15'
+                    break
+                case 'Channel': 
+                document.getElementById('chnl').style.backgroundColor = '#FFFFFF15'
+                break
+                case 'Integer':
+                    document.getElementById('intgr').style.backgroundColor = '#FFFFFF15'
+                break
+                case 'Role':
+                    document.getElementById('rle').style.backgroundColor = '#FFFFFF15'
+                break
+                case 'Mentionable':
+                    document.getElementById('mentnable').style.backgroundColor = '#FFFFFF15'
+                break
+            }
+
+            datjson.commands[lastObj].parameters[lastParam.split('Param')[0]].type = wut.innerHTML
+            fs.writeFileSync(processPath +'/AppData/data.json', JSON.stringify(datjson, null, 2));
+            wut.style.backgroundColor = '#FFFFFF20'
+
+
+
+        }
+        function paramify(what) {
+            let paramPosition = what.id.split('Param')[0]
+            datjson.commands[lastObj].parameters[parseFloat(paramPosition)].name = what.innerText
+            if (what.innerText == '') {
+                what.innerText = ' '
+                datjson.commands[lastObj].parameters[parseFloat(paramPosition)].name = ' '
+            }
+            
+            
+            fs.writeFileSync(processPath +'/AppData/data.json', JSON.stringify(datjson, null, 2));
+        }
+        function setReq(bln, what) {
+            let paramPosition = lastParam.split('Param')[0]
+            console.log(paramPosition)
+        datjson.commands[lastObj].parameters[lastParam.split('Param')[0]].required = bln
+            if (bln == true) {
+                document.getElementById('rff').style.backgroundColor = ''
+                document.getElementById('rft').style.backgroundColor = '#FFFFFF25'
+                datjson.commands[lastObj].parameters[parseFloat(paramPosition)].required = true
+
+            } else {
+                document.getElementById('rft').style.backgroundColor = ''
+                document.getElementById('rff').style.backgroundColor = '#FFFFFF25'
+                datjson.commands[lastObj].parameters[parseFloat(paramPosition)].required = false
+
+            }
+            fs.writeFileSync(processPath +'/AppData/data.json', JSON.stringify(datjson, null, 2));
+
+        }
+
+        function setDescription(e) {
+            console.log('settingdescription!')
+            if (datjson.commands[lastObj].description) {
+                datjson.commands[lastObj].description = e.innerText
+            } else {
+                datjson.commands[lastObj] = {
+                    ...datjson.commands[lastObj],
+                    description: e.innerText
+                }
+            }
+            fs.writeFileSync(processPath +'/AppData/data.json', JSON.stringify(datjson, null, 2));
+        }
+
+        function closeCommand() {
+            let commandOptions = document.getElementById('commandActions')
+            commandOptions.style.animationName = 'actionUnexpand'
+            commandOptions.style.animationDuration = '0.5s'
+            commandOptions.style.height = ''
+            setTimeout (() => {
+                let ddaf;
+                if (datjson.commands[lastObj].type == 'action') {
+                    console.log(datjson.commands[lastObj])
+                        switch(datjson.commands[lastObj].trigger) {
+                    case 'slashCommand':
+                        ddaf = 'Slash Command'
+                        break
+                    case 'textCommand':
+                        ddaf = 'Text Command'
+                    break
+                    case 'messageContent':
+                        ddaf = 'Message'
+                }
+        
+                document.getElementById('commandActions').innerHTML = `Trigger: ${ddaf} • ${datjson.commands[lastObj].count} Actions Used`  
+                } else {
+                    document.getElementById('commandActions').innerHTML = `Event • ${datjson.commands[lastObj].count} Actions Used`
+                }
+            }, 200)
+        }

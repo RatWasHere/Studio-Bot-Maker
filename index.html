@@ -16,12 +16,12 @@
         <div class="text clsr">Group Name</div>
         <div class="inputBar" contenteditable="true" id="Command_Name" onkeyup="if (this.innerText.split('').length > 25) {let fk = this.innerText.split(''); let count = 0; this.innerHTML = ''; this.blur(); for (let i in fk) { count++; if (count < 25) {this.innerHTML += fk[i]; this.focus();}else {this.blur()} }}" onblur="updateName(this)"></div>
         <div class="sepbar"></div>
-        <div id="commandActions" class="action noanims" style="width: 88%">Using 0 Actions</div>
+        <div id="commandActions" class="baction noanims" style="width: 88%">Using 0 Actions</div>
         <br>
         <div class="flexbox" style="height: 5%; justify-content: center;">
             <div id="rawData" class="barbutton" onclick="switchGroups()"><div class="barbuttontexta" id="wedf" >Group Trigger</div></div>
         <div id="rawData" class="barbutton"onclick="duplicate()"><div class="barbuttontexta" >Duplicate</div></div>
-        <div id="rawData" class="barbutton" onclick="checkErrors()"><div class="barbuttontexta">Check Errors</div></div>
+        <div id="rawData" class="barbutton" onclick="commandOptions()"><div class="barbuttontexta">Command Options</div></div>
     </div>
         <div class="sepbar"></div>
         <div class="tiled" id="tld">
@@ -160,7 +160,6 @@ try {
                 var dfs = ActionTile.innerHTML;
                 ActionTile.innerHTML = '<br><div class="text blk" style="text-align: center;">Currently Editing <br> <div class="center halftransparent" id="actionName00"> ' + datjson.commands[lastObj].actions[lastAct].name + '</div></div> <br> <div class="flexbox" style="align-content: center; margin-left: auto; margin-right: auto; width: 90%; justify-content: center;"><div class="barbutton" onclick="save_changes(\'' + lastAct + '\')"><br><div class="barbuttontext">✓</div></div><div class="barbutton center" id="cndcl"> <div class="barbuttontext">✕</div></div></div> <div class="daction noanim" style="width: 45%" onclick="selectAction()" id="cakt"><div>Change Action</div></div> <br> <div class="smalltext blk" style="margin-top: auto; text-align: center; font-size: 18px;">Action Of ' + datjson.commands[lastObj].name + ' <br></div> <div class="smalltext blk" style="text-align: center">✓ = Save | ✕ = Discard</div>'
         document.getElementById('cndcl').onclick = () => {restoreTo(dfs, pinHTML)  }
-        bbar.style.marginTop = '-40%'
         ActionTile.className = 'actionBar'
         edutor.style.overflowY = 'auto'
         document.getElementById('bottombar').style.opacity = '0%'
@@ -250,7 +249,7 @@ try {
     function updateName(mnt) {
         datjson.commands[lastObj].name = mnt.innerText.split(' |')[0]
         if (lastType == 0) {
-            document.getElementById(lastObj).innerHTML = `<div id="name">${mnt.innerText.split(' |')[0].trim()}</div> <div style="opacity: 50%; margin-left: 7px;"> | ${Object.keys(datjson.commands[lastObj].actions).length} Action(s) Used</div> <div class="deleteActionButton" onclick="deleteObject(this)">✕</div>`
+            document.getElementById(lastObj).innerHTML = `<div id="name">${mnt.innerText.split(' |')[0].trim()}</div> <div style="opacity: 50%; margin-left: 7px;"> | ${Object.keys(datjson.commands[lastObj].actions).length} Actions</div> <div class="deleteActionButton" onclick="deleteObject(this)">✕</div>`
         }
 
 
