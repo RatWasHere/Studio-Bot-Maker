@@ -728,20 +728,31 @@ function switchObjs() {
         }
         const inpet = document.getElementById('searchbar');
 
-        }
+        } 
         actionButton.innerHTML = ''
 
         for (let acte in actons) {
-            if (require(`./AppData/Actions/${actons[acte]}`).data.name.toLowerCase().startsWith(elemnt.innerText.toLowerCase())) {
-                
-                if (require(`./AppData/Actions/${actons[acte]}`).UI.compatibleWith.includes(kindOf) || require(`./AppData/Actions/${actons[acte]}`).UI.compatibleWith.includes("Any")) {
-                    let acten = actons[acte]
-                    let afile = require(`./AppData/Actions/${acten}`)
-                    actionButton.innerHTML += `<div class="flexbox"><div class="action" style="z-index: 3; background-color: #FFFFFF10 !important;" onclick="openAction('${acten}');" id="${acten}">${afile.data.name}</div>`
-                }
+            let actionFile = require(`./AppData/Actions/${actons[acte]}`);
+            let name = actionFile.data.name.toLowerCase();
+            let name2 = elemnt.innerText.toLowerCase();
+            let included = true;
+            
+            for (let i = 0; i < name2.length; i++) {
+              if (!name.includes(name2[i])) {
+                included = false;
+                break;
+              }
             }
-    }
-
+            
+            if (included) {
+              if (actionFile.UI.compatibleWith.includes(kindOf) || actionFile.UI.compatibleWith.includes("Any")) {
+                let acten = actons[acte];
+                let afile = require(`./AppData/Actions/${acten}`);
+          
+                actionButton.innerHTML += `<div class="flexbox"><div class="action" style="z-index: 3; background-color: #FFFFFF10 !important;" onclick="openAction('${acten}');" id="${acten}">${afile.data.name}</div>`;
+              }
+            }
+          }
     
     }
     function deselectAction() {
@@ -1519,15 +1530,14 @@ function switchObjs() {
                     <div class="barbuttontexta flexbox" style="margin: auto;">⟨  <span style="margin-left: 5vw"></span> Select A Parameter!</div>
                 </div>
                 
-                <div id="plusMinusParams" class="flexbox" style="margin-left: 5.5px; margin-top: 1vh; margin-bottom: -0.5vh; background-color: #00000060; padding: 12px; border-radius: 13px; height: auto; align-items: center; justify-content: center; width: 55%; margin-left: auto; margin-right: auto;">
+                <div id="plusMinusParams" class="flexbox" style="margin-left: 5.5px; margin-top: 1vh; margin-bottom: -0.5vh; background-color: #00000060; padding: 12px; border-radius: 13px; height: auto; align-items: center; justify-content: center; width: 35%; margin-left: auto; margin-right: auto;">
                 <div class="barbuttone" onclick="newParam()" style="margin-top: auto; margin-bottom: 0vh; height: auto; animation-duration: 0s;"><div class="barbuttontext"><b>+</b></div></div>
                 <div class="barbuttone" onclick="deleteParam()" style="margin-top: auto; margin-bottom: 0vh; height: auto; animation-duration: 0s;"><div class="barbuttontext"><b>-</b></div></div>
-                <div class="barbuttone" onclick="editParam()" style="margin-top: auto; margin-bottom: 0vh; height: auto; animation-duration: 0s;"><div class="barbuttontext">•••</div></div>
 
                 <div class="barbuttone" onclick="closeCommand()" style="margin-top: auto; margin-bottom: auto; width: 40px; animation-duration: 0s;"><div class="barbuttontexta">✕</div></div>
 
                 </div>
-                <div class="flexbox" id="storeParamAs" style="margin-top: 1vh; margin-bottom: -0.5vh; background-color: #00000060; padding: 0px; border-radius: 13px; height: auto; align-items: center; justify-content: center; margin-left: auto; margin-right: auto; width: 15vw;">
+                <div class="flexbox" id="storeParamAs" style="margin-top: 1vh; margin-bottom: -0.5vh; background-color: #00000060; padding: 0px; border-radius: 13px; height: auto; align-items: center; justify-content: center; margin-left: auto; margin-right: auto; width: 56%;">
                     <div class="ring" style="width: 3vh; height: 3vh;"></div>
                 </div>
                 `
@@ -1750,8 +1760,8 @@ function switchObjs() {
             `
             let spas = document.getElementById('storeParamAs')
             spas.innerHTML = `
-            <div class="barbuttontexta">Description</div>
-            <div class="input" onkeyup="if (this.innerText.split('').length > 25) {let fk = this.innerText.split(''); let count = 0; this.innerHTML = ''; this.blur(); for (let i in fk) { count++; if (count < 25) {this.innerHTML += fk[i]; this.focus();}else {this.blur()} }}; storeParamDesc(this)" contenteditable="true" style="margin: 2px; margin-top: -15px; padding-left: 2px; padding-right: 2px; padding-top: 2px; padding-bottom: -25px; overflow-y: none; overflow-x: auto; height: 25px;">${datjson.commands[lastObj].parameters[lastParam.split('Param')[0]].description}</div>
+            <div class="barbuttontexta">Parameter Description</div>
+            <div class="input" onkeyup="if (this.innerText.split('').length > 31) {let fk = this.innerText.split(''); let count = 0; this.innerHTML = ''; this.blur(); for (let i in fk) { count++; if (count < 31) {this.innerHTML += fk[i]; this.focus();}else {this.blur()} }}; storeParamDesc(this)" contenteditable="true" style="margin: 2px; margin-top: -15px; padding-left: 2px; padding-right: 2px; padding-top: 2px; padding-bottom: -25px; overflow-y: none; overflow-x: auto; height: 25px;">${datjson.commands[lastObj].parameters[lastParam.split('Param')[0]].description}</div>
             
             `
             let spl = parseFloat(lastParam.split('Param')[0]);

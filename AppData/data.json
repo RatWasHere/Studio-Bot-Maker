@@ -3,44 +3,58 @@
   "prefix": ">",
   "commands": {
     "1": {
-      "count": 1,
+      "count": 2,
       "name": "deez",
       "type": "action",
       "trigger": "slashCommand",
       "actions": {
         "1": {
-          "name": "Send Message",
-          "file": "sendmessage.js",
+          "name": "Get Parameter",
+          "file": "getParameter.js",
           "data": {
-            "messageContent": "Hello World!",
-            "button": "Message Channel",
-            "ExtraData": "",
-            "name": "Send Message"
+            "name": "Get Parameter",
+            "paramName": "p0",
+            "storeAs": "param0",
+            "button": "String",
+            "choice": "Boolean"
+          }
+        },
+        "2": {
+          "name": "Compare Variable",
+          "file": "compareVariable.js",
+          "data": {
+            "name": "Compare Variable",
+            "end": "C",
+            "button": "=",
+            "firstInput": "param0",
+            "secondInput": "true",
+            "ifTrue": "Run Action Group*",
+            "actionGroup": "sendMsg"
           }
         }
       },
       "parameters": [
         {
-          "name": "what",
-          "type": "String",
-          "required": false,
-          "description": "Parameter #0 of this command!",
+          "name": "p0",
+          "type": "Boolean",
+          "required": true,
+          "description": "this parameter is a boolean",
           "storeAs": "Param0",
           "paramPos": 0
         },
         {
-          "name": "deeeeeee",
+          "name": "de",
           "type": "String",
           "required": false,
-          "description": "zeeeeeeeeee",
+          "description": "This parameter is a stri",
           "storeAs": "Param2",
           "paramPos": 1
         },
         {
-          "name": "10101010101010010101010101",
+          "name": "num",
           "type": "String",
           "required": false,
-          "description": "Parameter #2 of this command!",
+          "description": "eeeeeeeeeeeeeeeeeeeeeeee",
           "storeAs": "Param2",
           "paramPos": 2
         }
@@ -48,7 +62,7 @@
       "description": "wow! this command has a descr"
     },
     "2": {
-      "count": 3,
+      "count": 4,
       "name": "e",
       "type": "event",
       "trigger": "textCommand",
@@ -94,6 +108,16 @@
             "button": "String",
             "choice": "Message Create"
           }
+        },
+        "4": {
+          "name": "Send Message",
+          "file": "sendmessage.js",
+          "data": {
+            "messageContent": "Hello World!",
+            "button": "Message Channel",
+            "ExtraData": "",
+            "name": "Send Message"
+          }
         }
       },
       "eventFile": "message_delete.js",
@@ -102,9 +126,27 @@
         "msg0",
         "DEEEEE!"
       ]
+    },
+    "3": {
+      "count": 1,
+      "name": "sendMsg",
+      "type": "action",
+      "trigger": "textCommand",
+      "actions": {
+        "1": {
+          "name": "Send Message",
+          "file": "sendmessage.js",
+          "data": {
+            "messageContent": "${tempVar('param0')}",
+            "button": "Message Channel",
+            "ExtraData": "",
+            "name": "Send Message"
+          }
+        }
+      }
     }
   },
-  "count": 2,
+  "count": 3,
   "settings": {},
   "color": "rgb(7, 19, 20)",
   "btk": "ODU5NzUxMjMzNDAwNjAyNjM1.GR8h0p.Y9V7-A8Db8ieObljf2YUA_iALNPnjILwezwkoE",

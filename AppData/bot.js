@@ -14,7 +14,7 @@ try {
         fs.writeFileSync('./AppData/Toolkit/tempVars.json', '{}')
     });
     
-    const runActionArray =  async (at, msg, client, actionBridge) => {
+    const runActionArray =  (at, msg, client, actionBridge) => {
         console.log('CUCK.')
         var tempVars = JSON.parse(fs.readFileSync('./AppData/Toolkit/tempVars.json', 'utf8'))
         var date1 = new Date();
@@ -36,7 +36,7 @@ try {
             }
         } else {
             let acfile = require(`./AppData/Actions/${data.commands[at].actions[action].file}`)
-            await require(`./AppData/Actions/${data.commands[at].actions[action].file}`).run(data.commands[at].actions[action].data, msg, uniq, fs, client)
+             require(`./AppData/Actions/${data.commands[at].actions[action].file}`).run(data.commands[at].actions[action].data, msg, uniq, fs, client)
                 if (data.commands[at].actions[data.commands[at].count] == data.commands[at].actions[action]) {
                 setTimeout(
                     () => {
@@ -51,7 +51,7 @@ try {
 
     /* END RUN ARRAY FUNCTION */
 }
-    client.on('messageCreate', async msg => {
+    client.on('messageCreate',  msg => {
         if (msg.author.bot) return
         for (let i in data.commands) {
             if (data.commands[i].type == 'action') {
@@ -85,7 +85,7 @@ try {
                         break
                     } else {
                         let acfile = require(`./AppData/Actions/${data.commands[i].actions[action].file}`)
-                        await require(`./AppData/Actions/${data.commands[i].actions[action].file}`).run(data.commands[i].actions[action].data, msg, uniq, fs, client)
+                         require(`./AppData/Actions/${data.commands[i].actions[action].file}`).run(data.commands[i].actions[action].data, msg, uniq, fs, client)
                             if (data.commands[i].actions[data.commands[i].count] == data.commands[i].actions[action]) {
                             setTimeout(
                                 () => {
@@ -129,7 +129,7 @@ try {
                                     break
                                 } else {
                                     let acfile = require(`./AppData/Actions/${data.commands[i].actions[action].file}`)
-                                    await require(`./AppData/Actions/${data.commands[i].actions[action].file}`).run(data.commands[i].actions[action].data, msg, uniq, fs, client)
+                                     require(`./AppData/Actions/${data.commands[i].actions[action].file}`).run(data.commands[i].actions[action].data, msg, uniq, fs, client)
                                         if (data.commands[i].actions[data.commands[i].count] == data.commands[i].actions[action]) {
                                         setTimeout(
                                             () => {
@@ -188,10 +188,10 @@ try {
                                         sw = ApplicationCommandOptionType.Mentionable
                                     break
                                 }
-                                if (data.commands[i].parameters[param].required == false) {
-                                    bl = false
-                                } else {
+                                if (data.commands[i].parameters[param].required == true) {
                                     bl = true
+                                } else {
+                                    bl = false
                                 }
                                 let newCmd = {
                                     "name": data.commands[i].parameters[param].name.toLowerCase(),
@@ -251,9 +251,9 @@ try {
 
             let eventFile = require(`./AppData/Events/${data.commands[i].eventFile}`);
 
-            await eventFile.run(data.commands[i].eventData, client, fs, runActionArray, i)  
+            eventFile.run(data.commands[i].eventData, client, fs, runActionArray, i)  
     }
-    client.on(Events.InteractionCreate, async interaction => {
+    client.on(Events.InteractionCreate, interaction => {
         if (!interaction.isChatInputCommand()) return;
         for (let i in data.commands) {
             if (data.commands[i].trigger == 'slashCommand' && data.commands[i].type == 'action' && interaction.commandName.toLowerCase() == data.commands[i].name.toLowerCase()) {
@@ -266,7 +266,7 @@ try {
 
                 for (let action in data.commands[i].actions) {
 
-                    await require(`./AppData/Actions/${data.commands[i].actions[action].file}`).run(data.commands[i].actions[action].data, interaction, uniq, fs, client)
+                    require(`./AppData/Actions/${data.commands[i].actions[action].file}`).run(data.commands[i].actions[action].data, interaction, uniq, fs, client)
         }}
     }
     });
