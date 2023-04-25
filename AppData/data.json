@@ -4,90 +4,88 @@
   "commands": {
     "1": {
       "count": 2,
-      "name": "deez",
+      "name": "shake",
       "type": "action",
-      "trigger": "slashCommand",
+      "trigger": "textCommand",
       "actions": {
         "1": {
-          "name": "Get Parameter",
-          "file": "getParameter.js",
+          "name": "Create Embed",
+          "file": "createembed.js",
           "data": {
-            "name": "Get Parameter",
-            "paramName": "p0",
-            "storeAs": "param0",
-            "button": "String",
-            "choice": "Boolean"
+            "storeAs": "embed",
+            "name": "Create Embed",
+            "ExtraData": "",
+            "sendTo": "",
+            "title": "meow for rat:3",
+            "authorName": "YOUR MOTHER.",
+            "authorIcon": "",
+            "embedColor": "#FFFFFF",
+            "footerContent": "meow for mommy rat aswell",
+            "description": "THIS SHOULD HAVE A BUTTON BAR I THINK"
           }
         },
         "2": {
-          "name": "Compare Variable",
-          "file": "compareVariable.js",
+          "name": "Send Embed",
+          "file": "sendembed.js",
           "data": {
-            "name": "Compare Variable",
-            "end": "C",
-            "button": "=",
-            "firstInput": "param0",
-            "secondInput": "true",
-            "ifTrue": "Run Action Group*",
-            "actionGroup": "sendMsg"
+            "messageContent": "",
+            "storeAs": "",
+            "button": "Message Channel",
+            "name": "Send Embed",
+            "ExtraData": "",
+            "sendTo": "",
+            "ButtonRow": "",
+            "ActionRow": "",
+            "embedVar": "embed",
+            "actionRowElements": [
+              "1682272121060"
+            ]
           }
         }
       },
       "parameters": [
         {
-          "name": "p0",
-          "type": "Boolean",
-          "required": true,
-          "description": "this parameter is a boolean",
+          "name": "Parameter 0",
+          "type": "String",
+          "required": false,
+          "description": "Parameter #0 of this command!",
           "storeAs": "Param0",
           "paramPos": 0
-        },
-        {
-          "name": "de",
-          "type": "String",
-          "required": false,
-          "description": "This parameter is a stri",
-          "storeAs": "Param2",
-          "paramPos": 1
-        },
-        {
-          "name": "num",
-          "type": "String",
-          "required": false,
-          "description": "eeeeeeeeeeeeeeeeeeeeeeee",
-          "storeAs": "Param2",
-          "paramPos": 2
         }
-      ],
-      "description": "wow! this command has a descr"
+      ]
     },
     "2": {
-      "count": 4,
-      "name": "e",
+      "count": 5,
+      "name": "ja",
       "type": "event",
-      "trigger": "textCommand",
+      "trigger": "slashCommand",
       "actions": {
         "1": {
-          "name": "Get Message Info",
-          "file": "getMessageInfo_event.js",
+          "name": "Get Member Info",
+          "file": "getMemberInfo.js",
           "data": {
-            "name": "Get Message Info",
+            "name": "Get Member Info",
             "desc": "",
-            "varble": "msc",
+            "varble": "memberPfp",
             "vrble": "",
             "vrb": "",
             "button": "Command Message",
-            "ExtraData": "msg0",
-            "datainfo": "Message Channel"
+            "ExtraData": "",
+            "datainfo": "Member Profile Picture (URL)",
+            "memberVariable": "",
+            "memberChoice": "Message Author"
           }
         },
         "2": {
-          "name": "Ban Member",
-          "file": "banMember.js",
+          "name": "Randomize Number",
+          "file": "randomizeNumber.js",
           "data": {
             "messageContent": "",
             "button": "Variable*",
-            "name": "Ban Member",
+            "firstNumber": "7",
+            "secondNumber": "125",
+            "storeAs": "myss",
+            "name": "Randomize Number",
             "ExtraData": "",
             "sendTo": "",
             "ButtonRow": "",
@@ -99,17 +97,90 @@
           }
         },
         "3": {
-          "name": "Declare Event",
-          "file": "declareEvent.js",
+          "name": "Get Member Info",
+          "file": "getMemberInfo.js",
           "data": {
-            "name": "Declare Event",
-            "paramName": "",
-            "storeAs": "",
-            "button": "String",
-            "choice": "Message Create"
+            "name": "Get Member Info",
+            "desc": "",
+            "varble": "memberName",
+            "vrble": "",
+            "vrb": "",
+            "button": "Command Message",
+            "ExtraData": "",
+            "datainfo": "Member Name",
+            "memberVariable": "",
+            "memberChoice": "Message Author"
           }
         },
         "4": {
+          "name": "Send Embed",
+          "file": "sendembed.js",
+          "data": {
+            "messageContent": "",
+            "storeAs": "",
+            "button": "Message Channel",
+            "name": "Send Embed",
+            "ExtraData": "",
+            "sendTo": "",
+            "ButtonRow": "",
+            "ActionRow": "",
+            "embedVar": "embed"
+          }
+        },
+        "5": {
+          "name": "Create Embed",
+          "file": "createembed.js",
+          "data": {
+            "storeAs": "",
+            "name": "Create Embed",
+            "ExtraData": "",
+            "sendTo": "",
+            "title": "",
+            "authorName": "",
+            "authorIcon": "",
+            "embedColor": "#000000",
+            "footerContent": "",
+            "description": ""
+          }
+        }
+      },
+      "event": "Message Update",
+      "eventData": [
+        "eee",
+        " "
+      ],
+      "parameters": [],
+      "eventFile": "update_message.js"
+    },
+    "3": {
+      "count": 1,
+      "name": "New Command",
+      "type": "action",
+      "trigger": "slashCommand",
+      "actions": {
+        "1": {
+          "name": "Wait",
+          "file": "setWait.js",
+          "data": {
+            "name": "Wait",
+            "desc": "",
+            "varble": "",
+            "amountOfTime": "Seconds*",
+            "time": "",
+            "actionRowElements": ""
+          }
+        },
+        "2": {
+          "name": "Send Message",
+          "file": "sendmessage.js",
+          "data": {
+            "messageContent": "Hello World!",
+            "button": "Message Channel",
+            "ExtraData": "",
+            "name": "Send Message"
+          }
+        },
+        "3": {
           "name": "Send Message",
           "file": "sendmessage.js",
           "data": {
@@ -120,38 +191,83 @@
           }
         }
       },
-      "eventFile": "message_delete.js",
-      "event": "Message Update",
-      "eventData": [
-        "msg0",
-        "DEEEEE!"
-      ]
-    },
-    "3": {
-      "count": 1,
-      "name": "sendMsg",
-      "type": "action",
-      "trigger": "textCommand",
-      "actions": {
-        "1": {
-          "name": "Send Message",
-          "file": "sendmessage.js",
-          "data": {
-            "messageContent": "${tempVar('param0')}",
-            "button": "Message Channel",
-            "ExtraData": "",
-            "name": "Send Message"
-          }
-        }
-      }
+      "parameters": []
     }
   },
   "count": 3,
   "settings": {},
   "color": "rgb(7, 19, 20)",
-  "btk": "ODU5NzUxMjMzNDAwNjAyNjM1.GR8h0p.Y9V7-A8Db8ieObljf2YUA_iALNPnjILwezwkoE",
+  "btk": "ODU5NzUxMjMzNDAwNjAyNjM1.GIfRN8.of3SIVr55mAogimRf8cqEPWA1XBYexutp4m5JA",
   "clientID": "859751233400602635",
-  "name": "Nodot V2",
+  "name": "Nodoto",
   "prjSrc": "E:\\nwjs-sdk-v0.73.0-win-x64\\zelecexport",
-  "reset": false
+  "reset": false,
+  "buttons": {
+    "bars": [
+      {
+        "name": "Bar69",
+        "storeAs": "ButtonBar",
+        "customId": "1682272121060",
+        "buttons": [
+          {
+            "name": "never",
+            "style": "Danger",
+            "customId": "Button1",
+            "disabled": true,
+            "field": ""
+          },
+          {
+            "name": "gonna",
+            "style": "Neutral",
+            "customId": "Button2",
+            "disabled": true,
+            "field": ""
+          },
+          {
+            "name": "give",
+            "style": "Neutral",
+            "customId": "Button3",
+            "disabled": true,
+            "field": ""
+          },
+          {
+            "name": "you",
+            "style": "Success",
+            "customId": "Button4",
+            "disabled": true,
+            "field": ""
+          },
+          {
+            "name": "up",
+            "style": "Neutral",
+            "customId": "Button5",
+            "disabled": true,
+            "field": ""
+          }
+        ]
+      },
+      {
+        "name": "Ebar",
+        "storeAs": "castamaidi",
+        "customId": "1682430134138",
+        "type": "buttonBar",
+        "buttons": [
+          {
+            "name": "bluebutton",
+            "style": "Default",
+            "customId": "Button1e",
+            "disabled": false,
+            "field": ""
+          },
+          {
+            "name": "discordscam",
+            "style": "Danger",
+            "customId": "Button2e",
+            "disabled": true,
+            "field": ""
+          }
+        ]
+      }
+    ]
+  }
 }

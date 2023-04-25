@@ -1,6 +1,6 @@
 module.exports = {
     data: {"name":"Create Button", "paramName":"", "storeAs":"", "button": "String", "choice":"Message Create"},
-    UI: {"compatibleWith":["Slash"], "text": "Create Button","sepbar":"sbar", "btext69":"Store As", "input777":"storeAs", "preview":"storeAs", "previewName":"Name"},
+    UI: {"compatibleWith":[], "text": "Create Button","sepbar":"sbar", "btext69":"Store As", "input777":"storeAs", "preview":"storeAs", "previewName":"Name"},
     async run(values, interaction, uID, fs) { 
         let varTools = require(`../Toolkit/variableTools.js`)
         let tempVars = require(`../Toolkit/tempVars.json`);

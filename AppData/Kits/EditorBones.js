@@ -1,6 +1,5 @@
 let version = 3
 const { app } = require('electron');
-
 function Get(yourUrl){
     var Httpreq = new XMLHttpRequest(); // a new request
     Httpreq.open("GET",yourUrl,false);
@@ -8,6 +7,7 @@ function Get(yourUrl){
     return Httpreq.responseText;          
 }
 
+let errorPending = false;
 const { nil } = require('builder-util-runtime/out/uuid');
 /* if (JSON.parse(Get('https://ratapp.rf.gd/version.json')).version == version) {
     console.log(Get('https://ratapp.rf.gd/version.json'))
@@ -38,11 +38,9 @@ let lastAct = "1"
 let lastParam;
 let lastHighlighted;
 let newc = datjson.color
-document.body.style.background = `linear-gradient(45deg, ${newc} 0%, #1d1d1d 160%)`
+document.body.style.backgroundImage = `linear-gradient(45deg, ${newc} 0%, #121212 160%)`
 document.onkeydown = function(event) {
-    if (event.key === "F1") {
-        switchObjs()
-    }
+    handleKeybind(event)
   };
 
   if (datjson.reset == true) {
@@ -72,8 +70,6 @@ document.onkeydown = function(event) {
     if (bln) {
         console.log(element.innerText)
         document.getElementById('Command_Name').innerHTML = element.innerText.split('|')[0]
-    } else {
-        lastAct = element.id
     }
     if (blne) {
         checkErrors()
@@ -97,11 +93,152 @@ document.onkeydown = function(event) {
             document.getElementById('commandActions').innerHTML = `Event • ${datjson.commands[lastObj].count} Actions Used`
         }
         checkErrors()
-    } }
-    closeCommand()
+        closeCommand()
+
+    } } else {
+        lastAct = element.id
+    }
 
 } 
+function showAvailableSlots(elm) {
+    let arrfd = []
+    let fdr = datjson.commands[lastObj].actions[lastAct].data.actionRowElements
+    let i = 0
+    elm.onclick = () => {}
+    let newPush = ``
+    elm.style.animationName = 'showButtonBars'
+    elm.style.width = '90%'
+    elm.style.height = '45%'
+    elm.style.borderRadius = '20px'
+    elm.style.marginBottom = '5px'
+    elm.style.animationDuration = '0.4s'
+    elm.style.backgroundColor = '#00000060'
+    setTimeout(() => {
+        document.getElementById('actionElements').innerHTML = '<br>'
+    }, 190)
+    setTimeout(() => {
+        let toCompensateFor = 0;
+
+        for (let elm in fdr) {
+            toCompensateFor++
+            for (let bar in datjson.buttons.bars) {
+                if (datjson.buttons.bars[bar].customId == fdr[elm]){
+                    console.log(datjson.buttons.bars[bar].customId, fdr[elm], datjson.buttons.bars[bar].customId == fdr[elm])
+                    document.getElementById('actionElements').innerHTML += `
+                    <div class="issue flexbox textToLeft" onclick="getActionRow(${bar}, ${toCompensateFor})" style="background-color: #FFFFFF15">
+                    <div class="barbuttontexta textToLeft" style="margin-left: 12px; margin-right: auto;">${datjson.buttons.bars[bar].name}</div>
+                    <div class="barbuttond" onclick="ridButton(${toCompensateFor - 1})" style="margin-left: auto; margin-right: 0px; margin-top: auto; margin-bottom: auto; height: 30px; width: 30px; border-radius: 8px;"><div class="barbuttontexta">✕</div></div>
+                    </div>
+                    `
+                }
+            }   
+        }
+        while (toCompensateFor < 5) {
+            document.getElementById('actionElements').innerHTML += `
+            <div class="issue flexbox" onclick="getActionRow(null, null)" style="background-color: #FFFFFF15; border: 2px dashed #FFFFFF20;">
+            <div class="barbuttontexta">Empty Slot</div>
+            </div>
+            `           
+             toCompensateFor++
+
+        }
+        document.getElementById('actionElements').innerHTML += "<br>"
+        
+    }, 200)
+    elm.innerHTML = `
+    <div style="background-color: #FFFFFF15; border-radius: 12px; padding: 7px;">
+    <div class="barbuttontexta"></div>
+    </div>
+    `
+}
+function ridButton(atIndex) {
+    datjson.commands[lastObj].actions[lastAct].data.actionRowElements.splice(atIndex, 1)
+    fs.writeFileSync(processPath +'\\AppData\\data.json', JSON.stringify(datjson, null, 2));
+    showAvailableSlots(document.getElementById('actionElements'))
+
+}
+function getActionRow(bar, atIndex) {
+    let trv = true
+    if (bar == null) {
+        trv = false
+    }
+
+    let elm = document.getElementById('actionElements')
+    elm.innerHTML = '<div class="barbuttontexta" style="margin: 5px; margin-bottom: -5px;">Select An Action Row </div> <div class="sepbars"></div>'
+    elm.style.overflowY = 'auto'
+    let fdr = datjson.commands[lastObj].actions[lastAct].data.actionRowElements
+    for (let bar in datjson.buttons.bars) {
+        var buttonColors = ''
+        for (let button in datjson.buttons.bars[bar].buttons) {
+            switch (datjson.buttons.bars[bar].buttons[button].style) {
+                case 'Default': 
+                buttonColors = `${buttonColors}<div style="width: 12px; opacity: 50%; height: 12px; margin-right: 3px; background-color: #695dfb; border-radius: 100px;"></div>`
+                break
+                case 'Success': 
+                buttonColors = `${buttonColors}<div style="width: 12px; opacity: 50%; height: 12px; margin-right: 3px; background-color: #5fb77a; border-radius: 100px;"></div>`
+                break
+                case 'Danger': 
+                buttonColors = `${buttonColors}<div style="width: 12px; opacity: 50%; height: 12px; margin-right: 3px; background-color: #de4447; border-radius: 100px;"></div>`
+                break
+                case 'Neutral': 
+                buttonColors = `${buttonColors}<div style="width: 12px; opacity: 50%; height: 12px; margin-right: 3px; background-color: #50545d; border-radius: 100px;"></div>`
+                break
+                case 'Link': 
+                buttonColors = `${buttonColors}<div style="width: 12px; opacity: 50%; height: 12px; margin-right: 3px; background-color: #FFFFFF90; border-radius: 100px;"></div>`
+                break
+            }
+        }
+        elm.innerHTML += `
+        <div class="issue flexbox" onclick="setButtoenBar(${bar}, ${atIndex})" style="background-color: #ffffff15; height: 4vh; align-content: center; justify-items: center;" onclick="selectbar(${bar}, ${atIndex})">${datjson.buttons.bars[bar].name} - ${datjson.buttons.bars[bar].buttons.length} Buttons <div style="margin-left: 12px; align-items: center; justify-content: center;" class="flexbox">${buttonColors}</div></div>
+        `
+    }
+}
+function setButtoenBar(bar, atIndex) {
+    if (atIndex == null) {
+        datjson.commands[lastObj].actions[lastAct].data.actionRowElements.push(datjson.buttons.bars[bar].customId)
+    } else {
+        datjson.commands[lastObj].actions[lastAct].data.actionRowElements[atIndex - 1] = datjson.buttons.bars[bar].customId
+    }
+    fs.writeFileSync(processPath +'\\AppData\\data.json', JSON.stringify(datjson, null, 2));
+
+    showAvailableSlots(document.getElementById('actionElements'))
+}
+function showButtonBars(elm) {
+    elm.style.animationName = 'showButtonBars'
+    elm.style.width = '90%'
+    elm.style.height = '45%'
+    elm.style.borderRadius = '20px'
+    elm.style.marginBottom = '5px'
+    elm.style.animationDuration = '0.4s'
+    elm.style.backgroundColor = '#00000060'
+    setTimeout(() => {
+        elm.innerHTML = ''
+    }, 200)
+    setTimeout(() => {  
+        elm.style.animationName = ''
+        elm.className = 'zaction noanims'
+    }, 410
+    )
+    setTimeout(() => {
+        for (let bar in datjson.buttons.bars) {
+            let endResult = `<div class="fade slower" style="width: 98%; margin-right: auto;  margin-left: auto; background-color: #FFFFFF15; border-radius: 7px; height: auto;"> 
+            <div style="background-color: #00000040; border-radius: 7px; padding: 6px;"><div class="barbuttontexta">${datjson.buttons.bars[bar].name}</div></div><div style="margin-top: 4px; margin-bottom: 4px;" class="flexbox">`   
+            for (let button in datjson.buttons.bars[bar].buttons) {
+                endResult = `${endResult}
+                <div class="barbuttond unhoverable flexbox" style="height: auto; padding: 5px; padding-bottom: 5px; width: 17%; margin-left: 1px;"><div class="barbuttontexta">${datjson.buttons.bars[bar].buttons[button].name}</div></div>
+                `
+            }
+            endResult = `${endResult}
+            </div></div>
+            `
+            console.log(endResult)
+            elm.innerHTML += `<div style="margin-top: 2%;"></div>${endResult}`
+        }
+    }, 210)
+
+}
 function switchObjs() {
+    try {
     var delay = 0;
     ActionTile.innerHTML = ''
     if (lastType == 0) {
@@ -155,6 +292,9 @@ function switchObjs() {
         }
         closeCommand()
 
+    } catch (err) {
+        null
+    }
     }
 
     function cmdOpen(cmdpending) {
@@ -162,7 +302,7 @@ function switchObjs() {
         document.getElementById('name').innerHTML = datjson.commands[cmdpending].name
         switchObjs()
     }  
-    function openBar() {
+    function openBar(iftr) {
         let bottombar = document.getElementById('bottombar')
         bottombar.style.animationDuration = ''
         bottombar.style.animationName = '';
@@ -178,17 +318,15 @@ function switchObjs() {
         bottombar.style.borderRadius = '22px'
         bottombar.style.backgroundColor = '#3d3d3d40'
         bottombar.style.boxShadow = '#00000050 0px 0px 12px'
+        if (!iftr) {
         bottombar.onclick = () => {
             unmodify()
         }
+    }
         setTimeout( () => {
             bottombar.style.animationName = ''
             bottombar.style.animationDuration = ''
-            document.onkeydown = function(event) {
-                if (event.key === "Escape") {
-                    unmodify()
-                }
-              }}, 500);
+}, 500);
     
     } 
     function modifyBar() {
@@ -228,11 +366,6 @@ function switchObjs() {
         <div class="smalltext" style="margin-top: 10%; margin-bottom: 2%; text-align: center;">[ESC] / [CLICK] - Close</div>`
         bottombar.style.animationName = ''
         bottombar.style.animationDuration = ''
-        document.onkeydown = function(event) {
-            if (event.key === "Escape") {
-                unmodify()
-            }
-          };
 
     }, 500)}
     function unmodify() {
@@ -247,12 +380,9 @@ function switchObjs() {
         bottombar.style.marginLeft = ''
         bottombar.style.borderRadius = ''
         bottombar.style.backgroundColor = ''
-        document.onkeydown = null;
-        document.onkeydown = function(event) {
-            if (event.key === "F1") {
-                switchObjs()
-            }
-          };
+        bottombar.style.padding = ''
+        bottombar.style.paddingTop = ''
+        bottombar.style.paddingBottom = ''
         bottombar.onclick = () => {
             modifyBar()
         }
@@ -297,13 +427,7 @@ function switchObjs() {
             document.body.appendChild(btbr)
             btbr.style.animationName = 'appearfadenmt'
             btbr.style.animationDuration = '0.5s'
-            checkErrors()
             }, 590)
-            document.onkeydown = function(event) {
-                if (event.key === "F1") {
-                    switchObjs()
-                }
-              };
 
     }
 
@@ -408,11 +532,11 @@ function switchObjs() {
                 if (datjson.commands[lastObj].type == 'action') {
                     datkd = `<div class="barbutton" onmousedown="sltTxt()"><div class="barbuttontexta">Text Command</div></div><div class="barbutton"><div class="barbuttontexta" onclick="tSlsh()">Slash Command</div></div> <div class="barbutton" onmousedown="sltMsg()"><div class="barbuttontexta">Message</div></div>`
                 } else {
-                    datkd = `<div class="textse">Declaring Events Is Done Via Actions</div>`
+                    datkd = `<div class="textse">Click "Command Options" to select an event!</div>`
                 }
             bottombar.innerHTML += `
             <div class="flexbox" style="width: 98%; margin-left: auto; margin-right: auto; height: 20%; justify-content: center;">
-            <div class="barbutton" onmousedown="setCmd()"><div class="barbuttontexta" >Command</div></div>
+            <div class="barbutton" onmousedown="setCmd()"><div class="barbuttontexta">Command</div></div>
             <div class="barbutton" onmouseup="setEvt()"><div class="barbuttontexta">Event</div></div>
             </div>
             <div class="sepbar"></div>
@@ -423,12 +547,6 @@ function switchObjs() {
             <div class="smalltext" style="margin-top: 10%; margin-bottom: 2%; text-align: center;">[ESC] / [CLICK] - Close</div>`
             bottombar.style.animationName = ''
             bottombar.style.animationDuration = ''
-            document.onkeydown = function(event) {
-                document.getElementById('wedf').onclick = () => {switchGroups()}
-                if (event.key === "Escape") {
-                    unmodify()
-                }
-            } 
     }, 500)
     }
     function sltTxt() {
@@ -466,6 +584,7 @@ function switchObjs() {
             bottombar.style.borderRadius = '22px'
             bottombar.style.backgroundColor = '#3d3d3d40'
             bottombar.style.boxShadow = '#00000050 0px 0px 12px'  
+            bottombar.style.overflowY = 'auto'
             bottombar.onclick = () => {
                 document.getElementById('wedf').onclick = () => {switchGroups()}
                 unmodify()
@@ -475,15 +594,31 @@ function switchObjs() {
             <div class="text" style="margin-left: 20px;">Select Color</div>
 
             <div class="flexbox" style="height: 20%; margin-left: 20px; justify-content: center;">
-            <div class="barbutton" onclick="setColor(this)"style="background-color: #1a0303;"><div class="barbuttontexta">Red</div></div>
-            <div class="barbutton" onclick="setColor(this)"style="background-color: #0b031a;"><div class="barbuttontexta">Purple</div></div>
+            <div class="barbutton" onclick="setColor(this)"style="background-color: #170000;"><div class="barbuttontexta">Bloodshot Pink</div></div>
+            <div class="barbutton" onclick="setColor(this)"style="background-color: #0b0014;"><div class="barbuttontexta">Ultraviolet</div></div>
             <div class="barbutton" onclick="setColor(this)"style="background-color: #000814;"><div class="barbuttontexta">Navy Blue</div></div>
 </div><div class="sepbar"></div>            
 <div class="flexbox" style="height: 20%; margin-left: 20px; justify-content: center;">
 
-            <div class="barbutton" onclick="setColor(this)"style="background-color: #071314;"><div class="barbuttontexta">Green</div></div>
-            <div class="barbutton" onclick="setColor(this)"style="background-color: #1a0a03;"><div class="barbuttontexta">Orange</div></div>
+            <div class="barbutton" onclick="setColor(this)"style="background-color: #071314;"><div class="barbuttontexta">Forest Green</div></div>
+            <div class="barbutton" onclick="setColor(this)"style="background-color: #170701;"><div class="barbuttontexta">Wood</div></div>
             <div class="barbutton" onclick="setColor(this)"style="background-color: #141414;"><div class="barbuttontexta">Gray</div></div>
+            </div><div class="sepbar"></div>            
+            </div>
+            <div class="flexbox" style="height: 20%; margin-left: 20px; justify-content: center;">
+
+            <div class="barbutton" onclick="setColor(this)"style="background-color: #001417;"><div class="barbuttontexta">Aquamarine</div></div>
+            <div class="barbutton" onclick="setColor(this)"style="background-color: #000f17;"><div class="barbuttontexta">Moody Blue</div></div>
+            <div class="barbutton" onclick="setColor(this)"style="background-color: #000000;"><div class="barbuttontexta">Focused Night</div></div>
+
+            </div>
+            </div><div class="sepbar"></div>            
+            <div class="flexbox" style="height: 20%; margin-left: 20px; justify-content: center;">
+
+            <div class="barbutton" onclick="setColor(this)"style="background-color: #170011;"><div class="barbuttontexta">Soothing Cherry</div></div>
+            <div class="barbutton" onclick="setColor(this)"style="background-color: #170f00;"><div class="barbuttontexta">Golden Apple</div></div>
+            <div class="barbutton" onclick="setColor(this)"style="background-color: #170006;"><div class="barbuttontexta">Strawberry</div></div>
+
             </div>
             `
         }, 600)
@@ -551,19 +686,26 @@ function switchObjs() {
     }
     function setColor(color) {
         let newc = color.style.backgroundColor
-        document.body.style.background = `linear-gradient(45deg, ${newc} 0%, #1d1d1d 160%)`
+        document.body.style.backgroundImage = `linear-gradient(45deg, ${newc} 0%, #121212 160%)`
         datjson.color = newc
         fs.writeFileSync(processPath +'\\AppData\\data.json', JSON.stringify(datjson, null, 2));
     }
     function duplicate() {
-        datjson.commands[parseFloat(datjson.count) + 1] = datjson.commands[lastObj]
+        var datjon = JSON.parse(fs.readFileSync(processPath +'/AppData/data.json'))
+        datjson.commands[parseFloat(datjson.count) + 1] = {
+            ...datjon.commands[lastObj],
+            duplicated: true
+        }
         let count = parseFloat(datjson.count) + 1
         datjson.count = count
         if (lastType == 0) {
                    ActionTile.innerHTML += `<div onclick="highlight(this, true, true)" class="action textToLeft" id="${datjson.count}" ondblclick="cmdOpen('${datjson.count}')"><div id="name">${datjson.commands[lastObj].name}</div> <div style="opacity: 50%; margin-left: 7px;"> | ${datjson.commands[lastObj].count} Actions </div> <div class="deleteActionButton" onclick="highlight(this.parentNode, true, true); deleteObject(this);">✕</div> `
         fs.writeFileSync(processPath + '\\AppData\\data.json', JSON.stringify(datjson, null, 2));
         setTimeout(() => {
+            delete require.cache[`./AppData/data.json`];
+
         highlight(document.getElementById(count), true, true)
+        delete datjon
         }, 100) 
         }
 
@@ -666,21 +808,51 @@ function switchObjs() {
 
 
     function selectAction() {
+        let kindOf;
+        if (datjson.commands[lastObj].type == 'action') {
+            if (datjson.commands[lastObj].trigger == 'textCommand' || datjson.commands[lastObj].trigger == 'messageContent') {
+                kindOf = 'Text'
+            } else {
+                kindOf = 'Slash'
+            }
+        } else {
+            kindOf = 'Event'
+        }
+
         let actionButton = document.getElementById('cakt')
         actionButton.style.animationDuration = '0.6s'
         actionButton.style.animationName = 'expande'
         setTimeout(() => {
             actionButton.style.overflowY = 'auto'
             let actons = fs.readdirSync(processPath + '\\AppData\\Actions')
-            actionButton.innerHTML = `<div class="flexbox fwd" style="justify-content: center;"><div class="barbutton" style="z-index: 3; margin-left: 3.1%; height: auto; background-color: #FFFFFF10" onclick="deselectAction(this)"><div style="font-size: 1.2em; line-height: 1.15em; height: auto; text-align: center !important; margin: auto;">Close</div></div><div="search" class="input" id="searchbar" contentEditable="true" onkeydown="searchFor(this)" style="width: 63%; margin-left: 6px; margin-right: 6px; margin-bottom: -3px; height: 38px; font-size: 1.1em; font-size: auto; line-height: 38px; background-color: #FFFFFF10 !important;"></div><div id="actarraypick"></div>`
+            actionButton.innerHTML = `<div class="flexbox fwd" style="justify-content: center; width: 100%; align-items: center; margin-left: auto; margin-right: auto;">
+            <div style="background-color: unset; opacity: 100%; padding: 6px; border-radius: 15px; width: 100%; position: sticky; top: 0; bottom: 3; backdrop-filter: blur(50px); z-index: 50;" class="flexbox blurbb">
+            <div class="barbuttond" style="width: 20%; z-index: 3; margin: auto; background-color: #FFFFFF10" onclick="deselectAction(this)">
+            
+            <div style="line-height: auto; text-align: center !important; margin: auto;">Close</div></div>
+            
+            <div class="barbuttond" id="searchbar" contentEditable="true" onkeydown="searchFor(this)" style="width: 65%; margin: auto; background-color: #FFFFFF10 !important;"></div>
+            </div>
+            <div id="actarraypick" style="width: 95%; margin-left: auto; margin-right: auto; justify-content: center; align-items: center;" class="flexbox fwd"></div>`
             let actionBut = document.getElementById('actarraypick')
-
+            let miss = 0;
             document.getElementById('searchbar').innerHTML = ' '
+            actionBut.innerHTML += `<div class="action" id="misss"></div>`
+            let dly = 0;
             for (let acte in actons) {
+                dly++
+                let actionFile = require(`./AppData/Actions/${actons[acte]}`);
+
+                if (actionFile.UI.compatibleWith.includes(kindOf) || actionFile.UI.compatibleWith.includes("Any")) {
+
                 let acten = actons[acte]
                 let afile = require(`./AppData/Actions/${acten}`)
-                actionBut.innerHTML += `<div class="flexbox"><div class="action" style="z-index: 3; background-color: #FFFFFF10 !important;" onclick="openAction('${acten}');" id="${acten}">${afile.data.name}</div>`
+                actionBut.innerHTML += `<div class="action" style="animation-duration: 0.5s; animation-name: fdn; animation-delay: ${dly * 12}ms; z-index: 3; width: 45%; background-color: #FFFFFF10 !important;" onclick="openAction('${acten}');" id="${acten}">${afile.data.name}</div>`
                 lastType = 1
+                } else {
+                    miss++
+                }
+            document.getElementById('misss').innerHTML = miss + ' Actions Hidden (Incompatible)'
         }}, 360)
         setTimeout(() => {
             actionButton.style.animationDuration = ''
@@ -694,6 +866,7 @@ function switchObjs() {
         }, 585)
     }
     function searchFor(elemnt) {
+        let miss = 0;
         let kindOf;
         if (datjson.commands[lastObj].type == 'action') {
             if (datjson.commands[lastObj].trigger == 'textCommand' || datjson.commands[lastObj].trigger == 'messageContent') {
@@ -718,18 +891,19 @@ function switchObjs() {
           if (e.key === 13) e.preventDefault();
         });
         if (acte == '') {
-        actionButton.innerHTML = ''
+            actionBut.innerHTML += `<div class="action" id="misss"></div>`
 
             for (var acte in actons) {
                 let acten = actons[acte]
                 let afile = require(`./AppData/Actions/${acten}`)
-                actionButton.innerHTML += `<div class="flexbox"><div class="action" style="z-index: 3; background-color: #FFFFFF10 !important;" onclick="openAction('${acten}');" id="${acten}">${afile.data.name}</div>`
+                actionButton.innerHTML += `<div class="action fade" style="width: 45%; z-index: 3; background-color: #FFFFFF10 !important;" onclick="openAction('${acten}');" id="${acten}">${afile.data.name}</div>`
                 lastType = 1
         }
         const inpet = document.getElementById('searchbar');
 
         } 
         actionButton.innerHTML = ''
+        actionButton.innerHTML += `<div class="action" id="misss"></div>`
 
         for (let acte in actons) {
             let actionFile = require(`./AppData/Actions/${actons[acte]}`);
@@ -749,8 +923,11 @@ function switchObjs() {
                 let acten = actons[acte];
                 let afile = require(`./AppData/Actions/${acten}`);
           
-                actionButton.innerHTML += `<div class="flexbox"><div class="action" style="z-index: 3; background-color: #FFFFFF10 !important;" onclick="openAction('${acten}');" id="${acten}">${afile.data.name}</div>`;
-              }
+                actionButton.innerHTML += `<div style="width: 45%;" class="action fade flexbox" style="z-index: 3; background-color: #FFFFFF10 !important;" onclick="openAction('${acten}');" id="${acten}">${afile.data.name}</div>`;
+              } else {
+                miss++
+            }
+        document.getElementById('misss').innerHTML = miss + ' Actions Hidden (Incompatible)'
             }
           }
     
@@ -976,6 +1153,7 @@ function switchObjs() {
         }
         function deleteObject(obj) {
             if (lastType == 1) {
+                if (datjson.commands[lastObj].count == 1) return
                 let keyToRemove = obj.parentNode.id;
 
                 let filteredEntries = Object.entries(datjson.commands[lastObj].actions).filter(([key]) => key != keyToRemove);
@@ -1016,6 +1194,8 @@ function switchObjs() {
                 }
                 }, 290)
               } else {
+                if (datjson.count == 1) return
+
                   let keyToRemove = obj.parentNode.id;
 
                   let filteredEntries = Object.entries(datjson.commands).filter(([key]) => key != keyToRemove);
@@ -1033,7 +1213,7 @@ function switchObjs() {
                   ActionTile.className = 'actBar'
                 for (let cmd in datjson.commands) {
                     
-                    ActionTile.innerHTML += `<div onclick="highlight(this, true, true)" class="action textToLeft" id="${parseFloat(cmd)}" ondblclick="cmdOpen('${cmd}')"><div id="name">${datjson.commands[cmd].name}</div> <div style="opacity: 50%; margin-left: 7px;"> | ${Object.keys(datjson.commands[cmd].actions).length} Actions </div> <div class="deleteActionButton" onclick="deleteObject(this)">✕</div> `
+                    ActionTile.innerHTML += `<div onclick="highlight(this, true, true)" class="action noanim textToLeft" id="${parseFloat(cmd)}" ondblclick="cmdOpen('${cmd}')"><div id="name">${datjson.commands[cmd].name}</div> <div style="opacity: 50%; margin-left: 7px;"> | ${Object.keys(datjson.commands[cmd].actions).length} Actions </div> <div class="deleteActionButton" onclick="deleteObject(this)">✕</div> `
                 }
                 if (datjson.commands[parseFloat(parseFloat(keyToRemove) - 1)]) {
                     highlight(document.getElementById(parseFloat(keyToRemove - 1)), true, true)
@@ -1055,8 +1235,10 @@ function switchObjs() {
             let issues = document.getElementById('issues');
             let status = document.getElementById('status');
             let sp = document.getElementById('tld')
+            if (errorPending == false) {
             sp.style.animationName = 'degb'
             sp.style.animationDuration = '0.5s'
+        }
             setTimeout ( () => {
                 issues.innerHTML = ' '
             
@@ -1071,7 +1253,7 @@ function switchObjs() {
                         <div class="issue">
                         <div class="flexbox">
                         <div class="barbuttontexta">${datjson.commands[lastObj].actions[action].name} has an incomplete field</div>
-                        <div class="barbutton noanims" onclick="console.log('test123'); if(lastType == 0) {switchObjs()}; document.getElementById('${action}').style.backgroundColor = '#FFFFFF50'; editAction(document.getElementById('${action}')); setTimeout(() => { document.getElementById('${UIdata[element]}').style.animationName = 'glowTwice'; document.getElementById('${UIdata[element]}').style.animationDuration = '0.8s'; document.getElementById('${UIdata[element]}').focus();}, 1050)"><div class="barbuttontexta noanims">Focus</div></div>
+                        <div class="barbuttond noanims" style="height: 30px;margin: auto; margin-right: 0px;" onclick="console.log('test123'); if(lastType == 0) {switchObjs()}; document.getElementById('${action}').style.backgroundColor = '#FFFFFF50'; editAction(document.getElementById('${action}')); setTimeout(() => { document.getElementById('${UIdata[element]}').style.animationName = 'glowTwice'; document.getElementById('${UIdata[element]}').style.animationDuration = '0.8s'; document.getElementById('${UIdata[element]}').focus();}, 1050)"><div class="image focuds"></div></div>
                         </div></div>
                         `
                         foundIssues = true
@@ -1085,7 +1267,7 @@ function switchObjs() {
                                     <div class="issue">
                                     <div class="flexbox">
                                     <div class="barbuttontexta">${datjson.commands[lastObj].actions[action].name} has an empty input field</div>
-                                    <div class="barbutton noanims" onclick="if(lastType == 0) {switchObjs()}; document.getElementById('${action}').style.backgroundColor = '#FFFFFF50'; editAction(document.getElementById('${action}')); setTimeout(() => {document.getElementById('${UIdata[element].extraField}').style.animationName = 'glowTwice'; document.getElementById('${UIdata[element].extraField}').style.animationDuration = '1s'; document.getElementById('${UIdata[element].extraField}').focus()}, 1050)"><div class="barbuttontexta noanims">Focus</div></div>
+                                    <div class="barbuttond noanims" style="height: 30px; margin: auto; margin-right: 0px;" onclick="if(lastType == 0) {switchObjs()}; document.getElementById('${action}').style.backgroundColor = '#FFFFFF50'; editAction(document.getElementById('${action}')); setTimeout(() => {document.getElementById('${UIdata[element].extraField}').style.animationName = 'glowTwice'; document.getElementById('${UIdata[element].extraField}').style.animationDuration = '1s'; document.getElementById('${UIdata[element].extraField}').focus()}, 1050)"><div class="image focuds"></div></div>
                                     </div></div>
                                     `
                                     foundIssues = true
@@ -1114,7 +1296,7 @@ function switchObjs() {
                             <div class="issue">
                             <div class="flexbox">
                             <div class="barbuttontexta">${datjson.commands[lastObj].actions[action].name} is not compatible</div>
-                            <div class="barbutton noanims" onclick="if(lastType == 0) {switchObjs()}; highlight(document.getElementById('${action}')); lastHighlighted.focus();"><div class="barbuttontexta noanims">Highlight</div></div>
+                            <div class="barbutton noanims" onclick="if(lastType == 0) {switchObjs()}; setTimeout(() => {highlight(document.getElementById('${action}')); lastHighlighted.focus();}, 100);"><div class="barbuttontexta noanims">Highlight</div></div>
                             </div></div>
                             `
                             foundIssues = true
@@ -1127,7 +1309,7 @@ function switchObjs() {
                             <div class="issue">
                             <div class="flexbox">
                             <div class="barbuttontexta">${datjson.commands[lastObj].actions[action].name} is not compatible</div>
-                            <div class="barbutton noanims" onclick="if(lastType == 0) {switchObjs()}; highlight(document.getElementById('${action}')); lastHighlighted.focus();"><div class="barbuttontexta noanims">Highlight</div></div>
+                            <div class="barbutton noanims" onclick="if(lastType == 0) {switchObjs()}; setTimeout(() => {highlight(document.getElementById('${action}')); lastHighlighted.focus();}, 100); "><div class="barbuttontexta noanims">Highlight</div></div>
                             </div></div>
                             `
                             foundIssues = true;
@@ -1140,7 +1322,7 @@ function switchObjs() {
                             <div class="issue">
                             <div class="flexbox">
                             <div class="barbuttontexta">${datjson.commands[lastObj].actions[action].name} is not compatible</div>
-                            <div class="barbutton noanims"  onclick="if(lastType == 0) {switchObjs()}; highlight(document.getElementById('${action}')); lastHighlighted.focus();"><div class="barbuttontexta noanims">Highlight</div></div>
+                            <div class="barbutton noanims"  onclick="if(lastType == 0) {switchObjs()}; setTimeout(() => {highlight(document.getElementById('${action}')); lastHighlighted.focus();}, 100); "><div class="barbuttontexta noanims">Highlight</div></div>
                             </div></div>
                             `
                             foundIssues = true;
@@ -1160,9 +1342,12 @@ function switchObjs() {
 
             let issueshtml = issues.innerHTML;
             let isht = issueshtml;
+            if (errorPending == false) {
             issues.innerHTML = `<div class="ring" style="margin: auto; display: block; margin-top: 10vh; animation-name: ringifygo; animation-duration: 1s;"></div>`
+        }
             setTimeout(() => {
                 issues.innerHTML = isht;
+                errorPending = false
             }, 1005)
         }, 250)
         setTimeout(() => {
@@ -1186,7 +1371,6 @@ function switchObjs() {
                 `
             }, 470)
         }
-
 
         /* ipcRenderer.send('selectDirectory');
         
@@ -1323,8 +1507,8 @@ function switchObjs() {
                 elm.parentNode.parentNode.innerHTML = `
                 <div class="barbuttontexta" style="margin: auto; margin-top: 25%; text-align: center;" id="exprjt">Exporting Project!</div>
                 `
+
                 fs.writeFileSync(exportFolder + '\\bot.js', fs.readFileSync(processPath + '\\AppData\\bot.js'))
-                fs.writeFileSync(exportFolder + '\\package.json', fs.readFileSync(processPath + '\\package.json'))
                 try {
                 fs.mkdirSync(exportFolder + '\\AppData')
                 } catch (err) {
@@ -1347,6 +1531,26 @@ function switchObjs() {
                     },
                     "version": "0"
                 }
+                `)
+
+                fs.writeFileSync(exportFolder + '\\package.json', `
+                {
+                    "name": "Studio Bot!",
+                    "main": "bot.js",
+                    "author": "Studio Bot Maker, Rat#1111",
+                    "description": "A discord bot created via Studio Bot Maker!",
+                    "dependencies": {
+                        "discord-api-types": "^0.37.34",
+                        "discord.js": "^14.8.0",
+                        "fs": "^0.0.1-security",
+                        "fs-extra": "^11.1.1",
+                        "fse": "^4.0.1",
+                        "node-fetch": "^3.3.1",
+                        "request": "^2.88.2"
+                    },
+                    "version": "69420"
+                }
+                
                 `)
                 try {
                 fs.mkdirSync(exportFolder + '\\AppData\\Actions')
@@ -1372,6 +1576,7 @@ function switchObjs() {
                         }, 1400)
                     }   
                 fs.writeFileSync(exportFolder + '\\AppData\\Toolkit\\variableTools.js', fs.readFileSync(processPath + '\\AppData\\Toolkit\\variableTools.js'))
+                fs.writeFileSync(exportFolder + '\\AppData\\Toolkit\\interactionTools.js', fs.readFileSync(processPath + '\\AppData\\Toolkit\\interactionTools.js'))
 
                 try {
                     fs.mkdirSync(exportFolder + '\\AppData\\Project')
@@ -1431,7 +1636,7 @@ function switchObjs() {
             elm.style.position = 'relative'
             elm.style.marginTop = '-90vh'
             elm.style.animationName = 'fadeoutspfload'
-            elm.style.animationDuration = '5.1s'
+            elm.style.animationDuration = '3.1s'
             elm.style.height = '5.5vh'
             elm.style.padding = '1vh'
             elm.innerHTML = `
@@ -1445,7 +1650,7 @@ function switchObjs() {
             setTimeout(() => {
                 let spn = document.getElementById('saveProjectnotif')
                 spn.remove()
-             }, 5000)
+             }, 3000)
             try {
             savePrj()
         } catch(err) {
@@ -1460,7 +1665,7 @@ function switchObjs() {
             `
         }
 
-        }, 60000)
+        }, 120000)
 
         let elm = document.createElement('div')
         elm.className = 'issue'
@@ -1472,7 +1677,7 @@ function switchObjs() {
         elm.style.position = 'relative'
         elm.style.marginTop = '-90vh'
         elm.style.animationName = 'fadeoutspfload'
-        elm.style.animationDuration = '5.1s'
+        elm.style.animationDuration = '3.1s'
         elm.style.height = '5.5vh'
         elm.style.padding = '1vh'
         elm.innerHTML = `
@@ -1490,7 +1695,7 @@ function switchObjs() {
         setTimeout(() => {
            let spn = document.getElementById('saveProjectnotif')
            spn.remove()
-        }, 5000)
+        }, 3000)
 
         function commandOptions() {
             // commandActions
@@ -1532,7 +1737,8 @@ function switchObjs() {
                 
                 <div id="plusMinusParams" class="flexbox" style="margin-left: 5.5px; margin-top: 1vh; margin-bottom: -0.5vh; background-color: #00000060; padding: 12px; border-radius: 13px; height: auto; align-items: center; justify-content: center; width: 35%; margin-left: auto; margin-right: auto;">
                 <div class="barbuttone" onclick="newParam()" style="margin-top: auto; margin-bottom: 0vh; height: auto; animation-duration: 0s;"><div class="barbuttontext"><b>+</b></div></div>
-                <div class="barbuttone" onclick="deleteParam()" style="margin-top: auto; margin-bottom: 0vh; height: auto; animation-duration: 0s;"><div class="barbuttontext"><b>-</b></div></div>
+                <div class="barbuttone flexbox" onclick="deleteParam()" style="margin: auto; margin-top: auto; margin-bottom: 0vh; height: auto; animation-duration: 0s;"><div class="barbuttontext"><b>-</b></div>
+                </div>
 
                 <div class="barbuttone" onclick="closeCommand()" style="margin-top: auto; margin-bottom: auto; width: 40px; animation-duration: 0s;"><div class="barbuttontexta">✕</div></div>
 
@@ -1645,6 +1851,10 @@ function switchObjs() {
                     <div class="sepbars"></div>
                     <div class="barbuttontexta">${efile.nameSchemes[1]}</div>
                     <div class="input" id="1EV" onblur="storeevfield(this)" style="height: 26px; text-align: left;" contenteditable="true">${datjson.commands[lastObj].eventData[1]}</div>
+                    
+                    <div class="sepbars"></div>
+
+                    <div class="barbutton" onclick="closeCommand()" style="height: auto; margin: auto;"><div class="barbuttontexta">Close</div></div>
                     `
             } else {
                 evtpane.innerHTML = `
@@ -1653,7 +1863,10 @@ function switchObjs() {
                 <div class="sepbars"></div>
                     <div class="barbuttontexta">${efile.nameSchemes[0]}</div>
                     <div class="input" id="0EV" onblur="storeevfield(this)" style="height: 26px; text-align: left;" contenteditable="true">${datjson.commands[lastObj].eventData[0]}</div>
-                `
+                    <div class="sepbars"></div>
+
+                    <div class="barbutton" onclick="closeCommand()" style="height: auto; margin: auto;"><div class="barbuttontexta">Close</div></div>  
+                    `
             }
             
         }
@@ -1906,3 +2119,565 @@ function switchObjs() {
                 }
             }, 200)
         }
+        // UNFINISHED.
+        function modifyActElm() {
+            openBar(true)
+
+            setTimeout(() => {
+                let bottombar = document.getElementById('bottombar')
+                bottombar.style.animationDuration = ''
+                bottombar.style.animationName = '';
+                bottombar.style.animationDuration = '0.3s'
+                bottombar.style.animationName = 'expnd';
+                bottombar.style.height = '100vh'
+                bottombar.style.width = '100vw'
+                bottombar.style.backdropFilter = 'blur(22px)'
+                bottombar.style.border = '#00000030 solid 2px'
+                bottombar.style.marginTop = '-97.5vh'
+                bottombar.style.borderRadius = '0px'
+                bottombar.style.zIndex = '50'
+                bottombar.style.marginLeft = '-1.8vw'
+                bottombar.style.backgroundColor = '#3d3d3d40'
+                bottombar.style.boxShadow = '#00000050 0px 0px 12px'
+                setTimeout(() => {
+                    bottombar.innerHTML = `
+                    <div class="flexbox" id="toolbar" style="animation-name: appearfadenmt; animation-duration: 0.6s; margin: auto; align-items: center; justify-content: center;">
+                    <div class="flexbox" style="background-color: #00000060; width: 95%; padding: 9px; margin-left: auto; margin-right: auto; border-radius: 12px; margin-top: 2vh;">
+                    
+                    <div class="barbutton" onclick="showButtons()" style="margin-top: auto; margin-bottom: auto;"><div class="barbuttontexta">Buttons</div></div>
+                    <div class="barbutton" style="margin-top: auto; margin-bottom: auto;"><div class="barbuttontexta">Action Rows</div></div>
+                    <div class="barbutton" style="margin-top: auto; margin-bottom: auto;"><div class="barbuttontexta">Errors</div></div>
+
+                    </div>
+                    <div class="sepbar"></div>
+
+                    <div id="actElmsig" style="width: 95%; padding: 9px; margin-left: auto; margin-right: auto; height: 100%; border-radius: 12px; margin-top: 2vh;">
+                    <div class="barbuttontext texttoleft" style="margin-left: 5vw;">Studio Bot Project Home</div>
+                    <br>
+                    <div class="flexbox">
+                    <div style="background-color: #00000060; width: 35vw; margin-right: 5vw; height: 35vh; border-radius: 12px; padding: 10px;">
+                    <div class="barbuttontexta texttoleft" style="margin-left: 1vw;">Project Overview</div>
+                    <div class="sepbars"></div>
+                    <div class="barbuttontexta texttoleft" style="margin-left: 1vw;">Name</div>
+
+                    <div class="input" contenteditable="true" onkeyup="setProjectName(this)">${datjson.name}</div>
+                    </div>
+                    <div style="background-color: #00000060; width: 35vw; height: 35vh; border-radius: 12px; padding: 10px;">
+                    <div class="barbuttontexta">
+                    <b>READ ME!</b>
+                    You're currently running Studio Bot Maker version 2.2.0 - This is an unfinished build, and most things (such as the edit embed action) are unfinished - read more & release notes on RatWasHere/Studiobotmaker on github! 
+                    </div>
+                    </div>
+                    </div>
+<div class="barbutton noanims" onclick="closeMenu();" style="height: auto; margin: auto;">
+<div class="barbuttontexta">Cancel</div>
+</div>
+                    </div>
+                    </div>
+                    `
+                    setTimeout(() => {
+                        bottombar.onclick = () => null
+                 }, 100)
+            }, 300)
+ 
+            }, 500)
+        }
+function setProjectName(welm) {
+    datjson.name = welm.innerText
+    fs.writeFileSync(processPath + '\\AppData\\data.json', JSON.stringify(datjson, null, 2));
+
+}
+        function showButtons() {
+            let view = document.getElementById('actElmsig')
+            if (datjson.buttons) {
+                view.innerHTML = `
+                <div class="barbuttond" onclick="newButtonBar()" style="margin-left: auto; position: sticky; top: 1; bottom: 1; border-radius: 1000px; width: 50px; height: 50px; margin-bottom: -10vh;">
+                
+                <div class="barbuttontext"><b>+</b></div>
+                </div> 
+                <br>
+                `
+                view.innerHTML += `
+                <div class="issue flexbox" style="width: 90%; margin-left: 0px; margin-right: auto;">
+                <div class="barbuttontext">
+                Link To Actions
+</div>
+<div class="barbutton" onclick="swipeToLeft()">
+<div class="barbuttontexta">⟩</div>
+</div>
+                </div>
+                `
+                for (let bar in datjson.buttons.bars) {
+                    view.innerHTML += `
+                    <div class="issue flexbox" style="width: 90%; margin-left: 0px; margin-right: auto;">
+                        <div class="barbuttontext">
+                        ${datjson.buttons.bars[bar].name}
+                        </div>
+                        <div style="width: 1px; height: 20px; margin: auto; background-color: #FFFFFF40"></div>
+                        <div class="barbuttontexta">
+                        Buttons:
+                        ${datjson.buttons.bars[bar].buttons.length}
+                        </div>
+
+                        <div class="barbuttontexta">
+                        Store As:
+                        ${datjson.buttons.bars[bar].storeAs}
+                        </div>
+                        <div class="barbutton" onclick="editButtons('${bar}')">
+                        <div class="barbuttontexta">Edit</div>
+                        </div>
+                    </div>
+                    `
+                } 
+            } else {
+                view.innerHTML = `
+                <div class="barbuttontexta">No Button Bars Initiated</div>
+                <div class="barbutton flexbox" onclick="buildButtons()" style="margin: auto;">
+                <div class="barbuttontexta">Build</div>
+                </div>
+                `
+            }
+        }
+        function createButton(bar) {
+            if (datjson.buttons.bars[bar].buttons.length >= 5) return;
+            let ba = datjson.buttons.bars[bar]
+            if (lastButt) {
+                lastButt.style.backgroundColor = ''
+            }
+            let newBtn = {
+                name: "Button" + parseFloat(datjson.buttons.bars[bar].buttons.length + 1),
+                style: "Default",
+                customId: "Button" + parseFloat(datjson.buttons.bars[bar].buttons.length + 1),
+                disabled: false,
+                field: ""
+            }
+            datjson.buttons.bars[bar].buttons.push(newBtn)
+            fs.writeFileSync(processPath + '\\AppData\\data.json', JSON.stringify(datjson, null, 2));
+            document.getElementById('buttonsDisplay').innerHTML += `
+            <div class="barbuttond" onclick="buttonIfy(${datjson.buttons.bars[bar].buttons.length - 1}, ${bar}, this)" style="width: 17%;">
+            <div class="barbuttontexta" id="${bar}${datjson.buttons.bars[bar].buttons.length - 1}BUT">${ba.buttons[datjson.buttons.bars[bar].buttons.length - 1].name}</div>
+            </div> 
+            
+            `
+            let buttonEditor = document.getElementById('buttonsEditor')
+            buttonEditor.innerHTML = `
+            <div class="barbuttontexta center">Select A Button!</div>`
+        }
+
+        function deleteButton(bar) {
+            
+        }
+        let lastButt;
+        function editButtons(bar) {
+            let ba = datjson.buttons.bars[bar]
+            let view = document.getElementById('actElmsig')
+
+                let storedVi = view.innerHTML;
+                let storedView = storedVi;
+
+            view.innerHTML = `
+            <div class="barbuttontext center textToLeft flexbox" style="margin-top: -3.5vh; margin-right: auto; margin-left: 12px;">Editing <div style="margin-left: 10px;"></div> <span style="opacity: 50%;">${ba.name}</span>
+            <div class="flexbox" style="margin-left: auto; margin-right: 12px;">
+<div class="barbuttond center" onclick="showButtons(${bar})" style="width: 30px;">
+<div class="barbuttontexta">
+⟨
+</div>
+</div>
+            <div class="barbuttond center" style="width: 70px;" onclick="deleteBtBar(${bar})">
+            <div class="barbuttontexta">
+            Delete
+            </div>
+            </div>
+</div>
+            </div><br>
+                        <div class="flexbox" style="width: 95%; margin-left: auto; margin-right: auto; min-height: 9vh; height: 9vh; background-color: #00000060; border-radius: 12px; padding: 10px;">
+            <div style="align-items: center; justify-content: center; margin: auto;">
+            <div class="barbuttontexta">Button Bar Name</div>
+            <div class="input" style="width: 35vw;" contenteditable="true" onkeyup="storeName(${bar}, this)">${datjson.buttons.bars[bar].name}</div>
+            </div>
+            <div class="fade" style="width: 3px; height: 90%; margin: auto; background-color: #FFFFFF30;"></div><br>
+
+            <div style="align-items: center; justify-content: center; margin: auto;">
+                        <div class="barbuttontexta">Store Bar As</div>
+            <div class="input" style="width: 35vw;" contenteditable="true" onkeyup="storeBarAs(${bar}, this)">${datjson.buttons.bars[bar].storeAs}</div>
+
+            </div>
+            </div>
+
+
+            `
+            view.innerHTML += `
+<br>
+       <div class="barbuttond" onclick="createButton(${bar})" style="width: 50px; height: 50px; margin-left: auto; margin-right: 2.5vw; border-radius: 1000px; margin-bottom: -5vh; backdrop-filter: blur(72px); background-color: ${datjson.color};">
+            <div class="barbuttontext"><b>+</b></div>
+            </div> 
+            <div class="flexbox" style="width: 95%; margin-left: auto; margin-right: auto; min-height: 6vh; height: 6vh; background-color: #00000060; border-radius: 12px; padding: 15px;" id="buttonsDisplay"></div>
+            <br>
+            <div class="flexbox" style="width: 95%; margin-left: auto; margin-right: auto; min-height: 33vh; height: 33vh; background-color: #00000060; border-radius: 12px; padding: 10px; justify-content: center; align-items: center;" id="buttonsEditor">
+            <div class="barbuttontexta center">Select A Button!</div>
+            </div>
+
+            `
+            for (let button in ba.buttons) {
+                document.getElementById('buttonsDisplay').innerHTML += `
+                <div class="barbuttond" onclick="buttonIfy(${button}, ${bar}, this)" style="width: 17%;">
+                <div class="barbuttontexta" id="${bar}${button}BUT">${ba.buttons[button].name}</div>
+                </div> 
+                `
+            }
+        }
+        function deleteBtnBar(buttone, bar) {
+            let ba = datjson.buttons.bars[bar]
+            datjson.buttons.bars[bar].buttons.splice(buttone, 1)
+            fs.writeFileSync(processPath + '\\AppData\\data.json', JSON.stringify(datjson, null, 2));
+            document.getElementById('buttonsDisplay').innerHTML = ''
+            for (let button in ba.buttons) {
+                document.getElementById('buttonsDisplay').innerHTML += `
+                <div class="barbuttond" onclick="buttonIfy(${button}, ${bar}, this)" style="width: 17%;">
+                <div class="barbuttontexta" id="${bar}${button}BUT">${ba.buttons[button].name}</div>
+                </div> 
+                `
+            }
+            let buttonEditor = document.getElementById('buttonsEditor')
+            buttonEditor.innerHTML = `
+            <div class="barbuttontexta center">Select A Button!</div>
+
+            `
+        }
+        function deleteBtBar(bar) {
+            let ba = datjson.buttons.bars[bar]
+            datjson.buttons.bars.splice(bar, 1)
+            fs.writeFileSync(processPath + '\\AppData\\data.json', JSON.stringify(datjson, null, 2));
+            document.getElementById('buttonsDisplay').innerHTML = ''
+            showButtons()
+        }
+        function storeBarAs(bar, meh) {
+            datjson.buttons.bars[bar].storeAs = meh.innerText
+            fs.writeFileSync(processPath + '\\AppData\\data.json', JSON.stringify(datjson, null, 2));
+        }
+        function buttonIfy(button, bar, what) {
+            let buttonEditor = document.getElementById('buttonsEditor')
+            let ba = datjson.buttons.bars[bar]
+
+            if (lastButt != null || lastButt != undefined) {
+                lastButt.style.backgroundColor = ''
+            }
+            what.style.backgroundColor = '#FFFFFF25'
+
+            lastButt = what;
+            buttonEditor.innerHTML = `
+            <div>
+            <div class="barbuttontexta fade">Button Label</div>
+            <div class="input" style="width: 35vw;" contenteditable="true" onkeyup="buttonren(${button}, this, ${bar})">${ba.buttons[button].name}</div>
+            <div class="sepbar"></div>
+            <div class="barbuttontexta fade">Custom ID</div>
+            <div class="input" style="width: 35vw;" onkeyup="buttonID(${button}, this, ${bar})"  contenteditable="true">${ba.buttons[button].customId}</div>
+
+            <div class="barbuttone fade flexbox" style="margin-left: auto; margin-right: auto; margin-top: 22px;" onclick="deleteBtnBar(${button}, ${bar})"> 
+            <div class="barbuttontexta">Delete</div>
+            <div style="background-color: #f04747; opacity: 50%; width: 7px; height: 7px; border-radius: 100px; margin: auto; margin-right: 12px;"></div>
+            </div>
+            </div>
+
+            <div class="fade" style="width: 3px; height: 90%; margin: auto; margin-left: 3vw; margin-right: 3vw; background-color: #FFFFFF30;"></div><br>
+            <div>
+
+                <div class="barbuttontexta">Button Style</div>
+                <div class="tiled" style="width: 35vw; height: 12vh; padding: 0px; padding-top: 7px;">
+                <div class="zaction textToLeft" id="DefaultStyle" onclick="styledButton(this, ${bar}, ${button})"><div style="margin-left: 10px;"> </div> Default <div style="background-color: #5865f2; width: 12px; height: 12px; border-radius: 100px; margin: auto; margin-right: 12px;"></div></div>
+                <div class="zaction textToLeft" id="SuccessStyle" onclick="styledButton(this, ${bar}, ${button})"><div style="margin-left: 10px;"> </div> Success <div style="background-color: #43b581; width: 12px; height: 12px; border-radius: 100px; margin: auto; margin-right: 12px;"></div></div>
+                <div class="zaction textToLeft" id="DangerStyle" onclick="styledButton(this, ${bar}, ${button})"><div style="margin-left: 10px;"> </div> Danger <div style="background-color: #f04747; width: 12px; height: 12px; border-radius: 100px; margin: auto; margin-right: 12px;"></div></div>
+                <div class="zaction textToLeft" id="NeutralStyle" onclick="styledButton(this, ${bar}, ${button})"><div style="margin-left: 10px;"> </div> Neutral <div style="background-color: #4f545c; width: 12px; height: 12px; border-radius: 100px; margin: auto; margin-right: 12px;"></div></div>
+                <div class="zaction textToLeft" id="LinkStyle" style="margin-bottom: 10px;" onclick="styledButton(this, ${bar}, ${button}, true)"><div style="margin-left: 10px;"> </div> Link <div style="background-color: #4f545c; width: 12px; height: 12px; border-radius: 100px; margin: auto; margin-right: 12px;"></div></div>
+
+                </div>
+                <div class="sepbars"></div>
+
+                <div class="barbuttontexta">Disabled?</div>
+                <div class="flexbox" style="align-items: center; justify-content: center;">
+                <div class="barbuttone fade" id="enabledbutton" onclick="toggleButton(${bar}, ${button}, true)"><div class="barbuttontexta">✓</div></div>
+                <div class="barbuttone fade" id="disabledbutton" onclick="toggleButton(${bar}, ${button}, false)"><div class="barbuttontexta">✕</div></div>
+</div>           
+<div id="dpfgs"></div>
+<div id="dpfg" style="width: 35vw;">
+</div>
+           </div>
+                `
+                if (datjson.buttons.bars[bar].buttons[button].disabled == true) {
+                    document.getElementById('disabledbutton').style.backgroundColor = ''
+                    document.getElementById('enabledbutton').style.backgroundColor = '#FFFFFF25'
+                } else {
+                    document.getElementById('disabledbutton').style.backgroundColor = '#FFFFFF25'
+                    document.getElementById('enabledbutton').style.backgroundColor = ''
+                }
+                switch (datjson.buttons.bars[bar].buttons[button].style) {
+                    case 'Default': 
+                    document.getElementById('DefaultStyle').style.backgroundColor = '#FFFFFF25'
+                    setLinked(false, bar, button)
+
+                    break
+
+                    case 'Success': 
+                    document.getElementById('SuccessStyle').style.backgroundColor = '#FFFFFF25'
+                    setLinked(false, bar, button)
+
+                    break
+
+                    case 'Danger': 
+                    document.getElementById('DangerStyle').style.backgroundColor = '#FFFFFF25'
+                    setLinked(false, bar, button)
+
+
+                    break
+
+                    case 'Neutral': 
+                    document.getElementById('NeutralStyle').style.backgroundColor = '#FFFFFF25'
+                    setLinked(false, bar, button)
+
+                    break
+
+                    case 'Link': 
+                    document.getElementById('LinkStyle').style.backgroundColor = '#FFFFFF25'
+                    setLinked(true, bar, button)
+
+                    break
+                }
+        } 
+        function setLinked(trfa, bar, button) {
+            console.log('setting linked!')
+            let dpfg = document.getElementById('dpfg')
+            if (trfa == true) {
+                document.getElementById('dpfgs').className = 'sepbars'
+                dpfg.innerHTML = `
+                <div class="barbuttontexta">Link</div>
+                <div class="input" style="width: 35vw;" id="customLinked" contenteditable="true" style="min-height: 25px;" onkeyup="setCustomLinked(this, ${bar}, ${button})">${datjson.buttons.bars[bar].buttons[button].field}</div> 
+                `
+            } 
+            if (trfa == false) {
+                document.getElementById('dpfgs').className = 'sepbars'
+                dpfg.innerHTML = `
+                <div class="barbuttontexta">Emoji (Format: emojiName:emojiId)</div>
+                <div class="input" style="width: 35vw;" id="customLinked" contenteditable="true" style="min-height: 25px;" onkeyup="setCustomLinked(this, ${bar}, ${button})">${datjson.buttons.bars[bar].buttons[button].field}</div> 
+                `
+            }
+        }
+        function setCustomLinked(toWhat, bar, button) {
+            datjson.buttons.bars[bar].buttons[button].field = toWhat.innerText
+            fs.writeFileSync(processPath + '\\AppData\\data.json', JSON.stringify(datjson, null, 2));
+        }
+        function toggleButton(bar, button, nw) {
+            datjson.buttons.bars[bar].buttons[button].disabled = nw
+
+            if (nw == true) {
+                document.getElementById('disabledbutton').style.backgroundColor = ''
+                document.getElementById('enabledbutton').style.backgroundColor = '#FFFFFF25'
+            } else {
+                document.getElementById('enabledbutton').style.backgroundColor = ''
+                document.getElementById('disabledbutton').style.backgroundColor = '#FFFFFF25'
+
+            }
+            fs.writeFileSync(processPath + '\\AppData\\data.json', JSON.stringify(datjson, null, 2));
+
+        }
+        function styledButton(what, bar, button) {
+            document.getElementById(datjson.buttons.bars[bar].buttons[button].style + 'Style').style.backgroundColor = ''
+
+            document.getElementById(`${what.innerText}Style`).style.backgroundColor = '#FFFFFF25'
+            datjson.buttons.bars[bar].buttons[button].style = `${what.innerText}`
+            if (datjson.buttons.bars[bar].buttons[button].style == 'Link') {
+                setLinked(true, bar, button)
+            } else {
+                setLinked(false, bar, button)
+            }
+            fs.writeFileSync(processPath + '\\AppData\\data.json', JSON.stringify(datjson, null, 2));
+
+        }
+        function buttonren(button, element, bar) {
+            datjson.buttons.bars[bar].buttons[button].name = element.innerText
+            fs.writeFileSync(processPath + '\\AppData\\data.json', JSON.stringify(datjson, null, 2));
+            document.getElementById(`${bar}${button}BUT`).innerHTML = element.innerText
+        }
+        function buttonID(button, element, bar) {
+            datjson.buttons.bars[bar].buttons[button].customId = element.innerText
+            fs.writeFileSync(processPath + '\\AppData\\data.json', JSON.stringify(datjson, null, 2));
+        }
+        function storeName(bar, meh) {
+            datjson.buttons.bars[bar].name = meh.innerText
+            fs.writeFileSync(processPath + '\\AppData\\data.json', JSON.stringify(datjson, null, 2));
+        }
+        function buildButtons() {
+            datjson = {
+                ...datjson,
+                buttons: {
+                bars: [
+                    {name: "Bar", storeAs:"ButtonBar", buttons: []}
+                ]}
+            }
+            fs.writeFileSync(processPath + '\\AppData\\data.json', JSON.stringify(datjson, null, 2));
+        }
+
+        function newButtonBar() {
+            let tme = new Date().getTime()
+            let newBar = {name: "Bar",
+             storeAs:"ButtonBar",
+             customId: `${tme}`,
+             type: "buttonBar",
+              buttons: []}
+        datjson.buttons.bars.push(newBar)
+
+        fs.writeFileSync(processPath + '\\AppData\\data.json', JSON.stringify(datjson, null, 2));
+        showButtons()
+        }
+
+
+function closeMenu() {
+
+
+        let bottombar = document.getElementById('bottombar')
+        bottombar.style.animationDuration = '0.4s'
+        bottombar.style.animationName = 'menuExpand';
+        bottombar.style.height = ''
+        bottombar.style.width = ''
+        bottombar.style.backdropFilter = ''
+        bottombar.style.marginTop = ''
+        bottombar.style.border = ''
+        bottombar.style.marginLeft = ''
+        bottombar.style.borderRadius = ''
+        bottombar.style.backgroundColor = ''
+        bottombar.style.padding = ''
+        bottombar.style.paddingTop = ''
+        bottombar.style.paddingBottom = ''
+
+          setTimeout(() => {
+            bottombar.onclick = () => {
+                modifyBar()
+            }
+          }, 500)
+
+        setTimeout(() => {
+            bottombar.innerHTML = '•••'
+            bottombar.style.animationName = ''
+            bottombar.style.animationDuration = ''
+        }, 400)
+
+    }
+
+    function handleKeybind(keyEvent) {
+        if (keyEvent.key == 'Escape') {
+            if (document.getElementById('bottombar') == undefined || document.getElementById('bottombar') == null) {
+                null
+            } else {
+                if (document.getElementById('bottombar').style.width == '40%') {
+                    unmodify()
+                }
+                if (document.getElementById('bottombar').style.width == '100vw') {
+                    closeMenu()
+                }
+            }
+        }
+        if (keyEvent.key == 'F1') {
+            if (document.getElementById('bottombar') == undefined || document.getElementById('bottombar') == null) {
+                save_changes(lastAct)
+            } else {
+                switchObjs()
+            }
+        }
+        if (keyEvent.key == 'Tab') {
+            if (document.getElementById('bottombar') == undefined || document.getElementById('bottombar') == null) {
+                selectAction()
+            } else {
+                switchObjs()
+            }
+        }
+        if (keyEvent.key == 'X' && keyEvent.shiftKey == true) {
+            if (document.getElementById('bottombar') == undefined || document.getElementById('bottombar') == null) {
+            console.log('deletion!')
+            } else {
+                console.log('deletion')
+                if (lastType == 0) {
+                 deleteObject(document.getElementById(lastObj))
+                } else {
+                    deleteObject(document.getElementById(lastAct))
+                }
+            }
+        }
+    }
+
+    function dObj(obj) {
+        if (lastType == 1) {
+            if (datjson.commands[lastObj].count == 1) return
+            let keyToRemove = obj.id;
+
+            let filteredEntries = Object.entries(datjson.commands[lastObj].actions).filter(([key]) => key != keyToRemove);
+            let newJson = {};
+            for (let i = 0; i < filteredEntries.length; i++) {
+              newJson[i + 1] = filteredEntries[i][1];
+            }
+            datjson.commands[lastObj].count = datjson.commands[lastObj].count - 1
+            datjson.commands[lastObj].actions = newJson;
+            document.getElementById(obj.id).style.animationName = 'deleteObject';
+            document.getElementById(obj.id).style.animationDuration = '0.3s'
+            setTimeout (() => {
+              document.getElementById(obj.id).remove()
+              ActionTile.innerHTML = ''
+              ActionTile.innerHTML = ''
+              ActionTile.innerHTML = ''
+              for (let action in datjson.commands[lastObj].actions) {
+                delete quickdata;
+                delete dataquick;
+                delete count;
+                delete quickie;
+                let quickdata = require(`./AppData/Actions/${datjson.commands[lastObj].actions[action].file}`).UI
+                let dataquick = datjson.commands[lastObj].actions[action].data[quickdata.preview].split('');
+                let count = 0;
+                let quickie = ''
+                for (let vda in dataquick) {
+                    if (count != 11) {
+                        quickie = `${quickie}${dataquick[vda]}`
+                        count++
+                    }
+                }
+                    ActionTile.innerHTML += `<div class="action textToLeft" ondblclick="editAction(this)" onclick="highlight(this)" id="${action}">${datjson.commands[lastObj].actions[action].name} <div style="opacity: 50%; margin-left: 7px;"> ${`  ${quickdata.previewName}`}: ${quickie}...</div> <div class="deleteActionButton" onclick="deleteObject(this)">✕</div>`
+                    lastType = 1
+                delete quickdata;
+                delete dataquick;
+                delete count;
+                delete quickie;
+            }
+            }, 290)
+          } else {
+            if (datjson.count == 1) return
+
+              let keyToRemove = obj.id;
+
+              let filteredEntries = Object.entries(datjson.commands).filter(([key]) => key != keyToRemove);
+              let newJson = {};
+              for (let i = 0; i < filteredEntries.length; i++) {
+                newJson[i + 1] = filteredEntries[i][1];
+              }
+              datjson.count = datjson.count - 1
+              datjson.commands = newJson;
+              document.getElementById(keyToRemove).style.animationName = 'deleteObject';
+              document.getElementById(keyToRemove).style.animationDuration = '0.3s'
+              setTimeout( () => {
+              document.getElementById(keyToRemove).remove()
+              ActionTile.innerHTML = ''
+              ActionTile.className = 'actBar'
+            for (let cmd in datjson.commands) {
+                
+                ActionTile.innerHTML += `<div onclick="highlight(this, true, true)" class="action noanim textToLeft" id="${parseFloat(cmd)}" ondblclick="cmdOpen('${cmd}')"><div id="name">${datjson.commands[cmd].name}</div> <div style="opacity: 50%; margin-left: 7px;"> | ${Object.keys(datjson.commands[cmd].actions).length} Actions </div> <div class="deleteActionButton" onclick="deleteObject(this)">✕</div> `
+            }
+            if (datjson.commands[parseFloat(parseFloat(keyToRemove) - 1)]) {
+                highlight(document.getElementById(parseFloat(keyToRemove - 1)), true, true)
+             } else {
+                highlight(document.getElementById(parseFloat(keyToRemove + 1)), true, true)
+             }           
+             lastType = 0
+              }, 295)
+          }
+
+        fs.writeFileSync(processPath + '\\AppData\\data.json', JSON.stringify(datjson, null, 2));
+        checkErrors()
+    }    
+
+    

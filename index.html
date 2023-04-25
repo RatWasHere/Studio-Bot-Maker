@@ -8,7 +8,16 @@
     <div class="actionBar" id="actionbar" style="z-index: 2;">
 
     </div>
-    <div class="switchBar felxbox" id="bbar" style="display: flex; padding-top: 3.5px; padding-bottom: 3.5px;"><div class="barbutton center unrounded" style="margin-left: 30px !important; margin-right: 10px;" onclick="newObject()" ><div class="barbuttontext" style="font-size: 45px;"><b>+</b></div></div><div class="barbutton unrounded center flexbox" style="justify-content: center;"><div  onclick="moveUp()" class="barbuttonhalf flexbox" style="justify-content: center;"><div class="barbuttontext">▲</div></div><div class="barbuttonhalfr flexbox" style="justify-content: center;"  onclick="moveDown()"><div class="barbuttontext">▼</div></div></div><div class="barbutton unrounded center" onclick="switchObjs(this)" id="objswitch" style="margin-left: auto !important; margin-right: 30px;"><div class="barbuttontext">◀▶</div></div></div>
+    <div class="switchBar felxbox" id="bbar" style="display: flex; padding-top: 3.5px; padding-bottom: 3.5px;"><div class="barbutton center unrounded" style="margin-left: 30px !important; margin-right: 10px;" onclick="newObject()" ><div class="barbuttontext" style="font-size: 45px;"><b>+</b></div></div><div class="barbutton unrounded center flexbox" style="justify-content: center;">
+        
+        <div  onclick="moveUp()" class="barbuttonhalf flexbox" style="justify-content: center;"><div class="image actionUp"></div></div><div class="barbuttonhalfr flexbox" style="justify-content: center;"  onclick="moveDown()"><div class="image actionDown"></div></div></div>
+
+    <div class="barbutton unrounded center" id="objswitch" style="margin-left: auto !important; margin-right: 30px;">
+        <div class="barbuttonhalf flexbox" onclick="switchObjs(this)" style="justify-content: center;"><div class="image switchObjs"></div></div>
+        <div class="barbuttonhalfr flexbox" onclick="modifyActElm()" style="justify-content: center;"><div class="image openMenu"></div></div>
+    
+    </div></div>
+    
 
 </div>
     <div id="edutor" class="actionBar fullsize">
@@ -20,7 +29,7 @@
         <br>
         <div class="flexbox" style="height: 5%; justify-content: center;">
             <div id="rawData" class="barbutton" onclick="switchGroups()"><div class="barbuttontexta" id="wedf" >Group Trigger</div></div>
-        <div id="rawData" class="barbutton"onclick="duplicate()"><div class="barbuttontexta" >Duplicate</div></div>
+        <div id="rawData" class="barbutton"onclick="duplicate()"><div class="barbuttontexta">Duplicate</div></div>
         <div id="rawData" class="barbutton" onclick="commandOptions()"><div class="barbuttontexta">Command Options</div></div>
     </div>
         <div class="sepbar"></div>
@@ -38,6 +47,7 @@
 </div>
     <script src="./AppData/Kits/EditorBones.js"></script>
     <script>
+        const interactionTools = require('./AppData/Toolkit/interactionTools.js')
 const fese = require('fs')
 try {
     fese.readFileSync(processPath + '\\AppData\\data.json', 'utf8')
@@ -76,7 +86,6 @@ try {
       function editAction(ect) {
         lastAct = ect.id
         let action = lastAct
-        document.onkeydown = null
         lastHighlighted.style.backgroundColor = '#232323'
         let edutor = document.getElementById('edutor');
         let bbar = document.getElementById('bbar')
@@ -158,7 +167,9 @@ try {
               setTimeout(() => {
                 edutor.innerHTML = htmle;
                 var dfs = ActionTile.innerHTML;
-                ActionTile.innerHTML = '<br><div class="text blk" style="text-align: center;">Currently Editing <br> <div class="center halftransparent" id="actionName00"> ' + datjson.commands[lastObj].actions[lastAct].name + '</div></div> <br> <div class="flexbox" style="align-content: center; margin-left: auto; margin-right: auto; width: 90%; justify-content: center;"><div class="barbutton" onclick="save_changes(\'' + lastAct + '\')"><br><div class="barbuttontext">✓</div></div><div class="barbutton center" id="cndcl"> <div class="barbuttontext">✕</div></div></div> <div class="daction noanim" style="width: 45%" onclick="selectAction()" id="cakt"><div>Change Action</div></div> <br> <div class="smalltext blk" style="margin-top: auto; text-align: center; font-size: 18px;">Action Of ' + datjson.commands[lastObj].name + ' <br></div> <div class="smalltext blk" style="text-align: center">✓ = Save | ✕ = Discard</div>'
+                ActionTile.innerHTML = '<br><div class="text blk" style="text-align: center;">Currently Editing <br> <div class="center halftransparent" id="actionName00"> ' + datjson.commands[lastObj].actions[lastAct].name + '</div></div> <br> <div class="flexbox" style="align-content: center; margin-left: auto; margin-right: auto; width: 90%; justify-content: center;"><div class="barbutton"  onclick="save_changes(\'' + lastAct + '\')"><br><div id="saveobjects69" class="image save"></div></div><div class="barbutton center" id="cndcl"> <div class="barbuttontext">✕</div></div></div> <div class="daction noanim" style="width: 45%" onclick="selectAction()" id="cakt"><div>Change Action</div></div>' + `
+                <div id="actionElements" style="margin-top: auto;"></div>
+                ` + ' <div class="smalltext blk" style="margin-top: 14px; text-align: center; font-size: 18px;">Action Of ' + datjson.commands[lastObj].name + ' <br></div> <div class="smalltext blk" style="text-align: center">✓ = Save | ✕ = Discard</div>'
         document.getElementById('cndcl').onclick = () => {restoreTo(dfs, pinHTML)  }
         ActionTile.className = 'actionBar'
         edutor.style.overflowY = 'auto'
@@ -171,13 +182,25 @@ try {
                 if (document.getElementById('bottombar')) {
                     document.getElementById('bottombar').remove()
                 }
-                edutor.style.animationDuration = ''
+            edutor.style.animationDuration = ''
             edutor.style.animationName = ''
             ActionTile.style.animationDuration = ''
             ActionTile.style.animationName = ''
             bbar.style.animationDuration = ''
             bbar.style.animationName = ''
             fs.writeFileSync(processPath + '\\AppData\\data.json', JSON.stringify(datjson, null, 2))
+            if (datjson.commands[lastObj].actions[action].data.actionRowElements != undefined) {
+                let viewActionRowElements = document.getElementById('actionElements');
+                viewActionRowElements.onclick = () => {
+                    showAvailableSlots(viewActionRowElements)
+                }
+                viewActionRowElements.className = 'zaction noanim'
+                viewActionRowElements.style.width = '45%'
+                viewActionRowElements.style.marginRight = 'auto'
+    viewActionRowElements.style.marginLeft = 'auto'
+    viewActionRowElements.style.marginTop = 'auto'
+                viewActionRowElements.innerHTML = '<div class="barbuttontexta fade">Action Rows</div>'
+            }
             delete UIdata
             delete htmle 
             delete edutor
@@ -212,6 +235,7 @@ try {
 
 
     function save_changes(d) {
+        let toSave = document.getElementById('saveobjects69')
         let action = lastAct
         console.log(action)
         console.log('started')
@@ -245,6 +269,14 @@ try {
             }
         }
         fs.writeFileSync(processPath + '\\AppData\\data.json', JSON.stringify(datjson, null, 2))
+        // toSave.className = 'image save'
+        // toSave.className = 'image saveGif'
+        toSave.style.backgroundImage = 'url(./AppData/save.gif)'
+        setTimeout(() => {
+            toSave.style.backgroundImage = 'url(./AppData/save.png)'
+
+            // toSave.className = 'image saveAN'
+        }, 700)
     }}
     function updateName(mnt) {
         datjson.commands[lastObj].name = mnt.innerText.split(' |')[0]

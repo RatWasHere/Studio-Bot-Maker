@@ -15,7 +15,6 @@ try {
     });
     
     const runActionArray =  (at, msg, client, actionBridge) => {
-        console.log('CUCK.')
         var tempVars = JSON.parse(fs.readFileSync('./AppData/Toolkit/tempVars.json', 'utf8'))
         var date1 = new Date();
         var uniq = new Date(date1.getTime());            
@@ -24,7 +23,6 @@ try {
 
         for (let action in data.commands[at].actions) {
 
-        console.log(tempVars[uniq], 'tvuniq')
         if (tempVars[uniq][`ACTIONARRAY_stop`] == true) {
                 if (data.commands[at].actions[data.commands[at].count] == data.commands[at].actions[action]) {
                 setTimeout(
@@ -65,7 +63,6 @@ try {
             if (`${data.prefix}${dcn}`.toLowerCase() == `${msg.content}`.toLowerCase().split(' ')[0]) {
     
                 let tvars = require('./AppData/Toolkit/tempVars.json');
-                console.log('passed')
                 var date1 = new Date();
                 var uniq = new Date(date1.getTime());            tvars[uniq] = {}
                 fs.writeFileSync('./AppData/Toolkit/tempVars.json', JSON.stringify(tvars))
@@ -115,7 +112,6 @@ try {
                             for (let action in data.commands[i].actions) {
                                 var tempVars = JSON.parse(fs.readFileSync('./AppData/Toolkit/tempVars.json', 'utf8'))
 
-                                console.log(tempVars[uniq], 'tvuniq')
                                 if (tempVars[uniq][`ACTIONARRAY_stop`] == true) {
                                         if (data.commands[i].actions[data.commands[i].count] == data.commands[i].actions[action]) {
                                         setTimeout(
@@ -224,9 +220,7 @@ try {
                 };
             
               commands.push(command);  
-              console.log(command, 'single, no params')
             }
-            console.log(commands)
     
     
             //new SlashCommandBuilder()

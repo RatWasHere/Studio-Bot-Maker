@@ -1,6 +1,6 @@
 module.exports = {
     data: {"name": "Compare Variable", "end":"C", "button":"=", "firstInput":"", "secondInput":"", "ifTrue":"Run Action Group*", "actionGroup":""},
-    UI: {"compatibleWith": ["Any"], text:"Compare Variable", "sepbar1":"sepbar", "btext":"Variable Name", "inputfirst":"firstInput", "sepbar2":"", "ButtonBar":{"buttons":[">", "=", "!=", "<" ]}, "sepbar3":"", "btextsecondparameter":"Compare To", "inputScnd":"secondInput",  "sepbar7":"", 
+    UI: {"compatibleWith": ["Any"], text:"Compare Variable", "sepbar1":"sepbar", "btext":"Variable Name", "inputfirst*":"firstInput", "sepbar2":"", "ButtonBar":{"buttons":[">", "=", "!=", "<" ]}, "sepbar3":"", "btextsecondparameter":"Compare To", "inputScnd*":"secondInput",  "sepbar7":"", 
     "btextstoreoutputas":"If True",    
     "menuBar": {"choices":["Run Action Group*", "Stop Execution"], "storeAs":"ifTrue", "extraField":"actionGroup"},
     "sepbar9":"sepbar",
@@ -52,12 +52,16 @@ module.exports = {
            } else {
             let datjson = require('../data.json')
             for (let command in datjson.commands) {
+                
                 if (datjson.commands[command].name.toLowerCase() == values.actionGroup.toLowerCase()) {
+                    let timesRun = 1
                     for (let action in datjson.commands[command].actions) {
+                        if (timesRun <= datjson.commands[command].count) {
                         let actFile = require(`./${datjson.commands[command].actions[action].file}`)
                         let vls = datjson.commands[command].actions[action].data
                         actFile.run(vls, message, uID, fs, client)
-                    }
+                        timesRun++
+                    }}
                 }
             }
            }

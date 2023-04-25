@@ -71,7 +71,7 @@ if (fess.readdirSync(processPathe + '\\AppData')) {
   
   async function main() {
     try {
-      await downloadFile("https://cdn.glitch.global/a683cb76-598f-4483-808e-6a7d6eee6c26/AppData.zip?v=1680295831751", "AppData.zip");
+      await downloadFile("https://cdn.glitch.global/a683cb76-598f-4483-808e-6a7d6eee6c26/AppData.zip?v=1682446383826", "AppData.zip");
       if (!fs.existsSync("AppData")) {
         fs.mkdirSync("AppData");
       }
@@ -131,8 +131,62 @@ if (fess.readdirSync(processPathe + '\\AppData')) {
   
   autoUpdater.on('update-downloaded', (info) => {
     console.log('Update downloaded:', info);
+    const fs = require('fs');
+    const processPath = require('process').cwd();
+
+      fs.rmSync(processPath + `\\AppData`, {
+        recursive: true, 
+        force: true
+      })
     autoUpdater.quitAndInstall();
   });
 
 
 
+  ipcMain.on('reinstallAppData', async function (event) {
+    const request = require('request');
+    const fs = require('fs');
+    const unzipper = require('unzipper');
+    const fse = require('fs-extra');
+    const path = require('path')
+    
+    async function downloadFile(url, dest) {
+      return new Promise((resolve, reject) => {
+        request(url)
+          .pipe(fs.createWriteStream(dest))
+          .on('close', resolve)
+          .on('error', reject);
+      });
+    }
+  
+    
+    async function main() {
+      try {
+        await downloadFile("https://cdn.glitch.global/a683cb76-598f-4483-808e-6a7d6eee6c26/AppData.zip?v=1682446383826", "AppData.zip");
+        if (!fs.existsSync("AppData")) {
+          fs.mkdirSync("AppData");
+        }
+        const tempDir = fs.mkdtempSync("temp");
+        fs.createReadStream("AppData.zip")
+          .pipe(unzipper.Extract({ path: tempDir }))
+          .on('close', () => {
+            const appdDir = fs.readdirSync(tempDir).find((dir) => dir.toLowerCase() === "appdata");
+            const appdPath = fs.realpathSync(path.join(tempDir, appdDir));
+            fse.copySync(appdPath, "AppData");
+            fse.removeSync(appdPath);
+            fs.rmdirSync(tempDir, { recursive: true });
+          });
+      } catch (err) {
+        console.error(err);
+      }
+  
+    }
+    setTimeout(() => {
+      try {
+        main();
+      } catch (err) {
+        console.log(err)
+      }
+  
+    }, 6000)
+  })

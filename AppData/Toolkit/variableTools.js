@@ -4,13 +4,11 @@ module.exports = {
     tempVariables: require('./tempVars.json'),
     newVariable(name, value, uIDs, cdata) {
         if (cdata != undefined) {
-            console.log('cdata')
-            console.log(cdata)
             const tempVars = cdata;
             tempVars[uIDs] = {
                 ...tempVars[uIDs],
                 [name]: value
-              };            console.log(tempVars)
+              };            
         return `${JSON.stringify(tempVars)}`;
         } else {
             const fs = require('fs');
@@ -27,12 +25,8 @@ module.exports = {
             return JSON.stringify(tempVars);
     },
     transf(text, uID, tmpVar) {
-        console.log(text, 'text')
-        console.log(uID, 'uID')
         let tempccc = JSON.stringify(tmpVar, null, 2)
         var tempVars = JSON.parse(tempccc)
-        console.log(tempVars[uID], 'tvUID')
-        console.log(JSON.parse(JSON.stringify(tempVars)))
         const tempVar = (variable) => {
             return tempVars[uID][variable];
           };
@@ -45,7 +39,6 @@ module.exports = {
     },
     getVariable(name, uID) {
             let tempVars = require(`../Toolkit/tempVars.json`);
-            console.log(tempVars[uID][name])
             return tempVars[uID][name];
 
     },
