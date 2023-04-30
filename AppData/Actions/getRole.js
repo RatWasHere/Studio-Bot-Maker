@@ -8,13 +8,13 @@ module.exports = {
         var user;
         let guild; 
             if (values.guildAs == 'Message Guild') {
-                guild = client.guilds.cache.get(message.guild.id) 
+                guild = message.guild
             } else {
                 guild = client.guilds.cache.get(tempVars[uID][varTools.transf(values.guildS, uID, tempVars)])
             }
         tempVars[uID] = {
             ...tempVars[uID],
-            [values.storeAs]: guild.roles.cache.roles.cache.get(varTools.transf(values.memberChoice, uID, tempVars))
+            [values.storeAs]: guild.roles.cache.get(varTools.transf(values.memberChoice, uID, tempVars))
     }
     fs.writeFileSync('./AppData/Toolkit/tempVars.json', JSON.stringify(tempVars), 'utf8')
 

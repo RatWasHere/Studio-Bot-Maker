@@ -1,10 +1,75 @@
 let version = 3
-const { app } = require('electron');
+const { app, ipcRenderer } = require('electron');
 function Get(yourUrl){
     var Httpreq = new XMLHttpRequest(); // a new request
     Httpreq.open("GET",yourUrl,false);
     Httpreq.send(null);
     return Httpreq.responseText;          
+}
+ipcRenderer.send('checkForUpdates')
+
+ipcRenderer.on('checkedForUpdates', (event, arg) => {
+
+    console.log('arg-chck', arg)
+    if (arg == true) {
+        bottombar.onclick = () => {
+
+        }
+        openBar(true)
+        setTimeout(() => {
+            let bar = document.getElementById('bottombar')
+            bar.innerHTML = `
+            •••
+            <div class="barbuttontext">Update Available!</div>
+            <div class="flexbox" style="height: 5vh">
+            <div class="sepbars"></div>
+            <div class="barbutton" onclick="update(); unmodify()">
+            <div class="barbuttontexta" >Update!</div>
+            </div>
+            <div class="barbutton" onclick="unmodify()">
+            <div class="barbuttontexta">Maybe Later!</div>
+            </div>
+            </div>
+            `
+        }, 500)
+    }   
+  });
+  function update() {
+    setTimeout(() => {
+        let bottombar = document.getElementById('bottombar')
+        bottombar.style.animationDuration = ''
+        bottombar.style.animationName = '';
+        bottombar.style.animationDuration = '0.3s'
+        bottombar.style.animationName = 'expnd';
+        bottombar.style.height = '100vh'
+        bottombar.style.width = '100vw'
+        bottombar.style.backdropFilter = 'blur(22px)'
+        bottombar.style.border = '#00000030 solid 2px'
+        bottombar.style.marginTop = '-97.5vh'
+        bottombar.style.borderRadius = '0px'
+        bottombar.style.overflow = 'auto'
+        bottombar.style.zIndex = '50'
+        bottombar.style.marginLeft = '-1.8vw'
+        bottombar.style.backgroundColor = '#3d3d3d40'
+        bottombar.style.boxShadow = '#00000050 0px 0px 12px'
+        bottombar.innerHTML = `
+        <div class="barbuttontexta" style="margin-top: 40%;">Download Progress</div>
+        <div style="background-color: #00000060; height: 1vh; width: 70vh; margin: auto;  border-radius: 100000px;">
+        <div id="progressBar" style="background-color: #FFFFFF20; height: 1vh; width 0%; border-radius: 10000000px; margin-right: auto;"></div>
+        </div> 
+        ` 
+        ipcRenderer.send('downloadUpdate')
+        let progressBar = document.getElementById('progressBar')
+        progressBar.style.transition = 'width 04s. ease-out';
+        setInterval(() => {
+            ipcRenderer.send('checkProgress')
+            ipcRenderer.on('checkedProgress', function (event, reply) {
+                console.log('reply')
+                progressBar.style.width = reply + '%'
+            })
+        }, 50)
+  }, 600)
+
 }
 
 let errorPending = false;
@@ -99,6 +164,22 @@ document.onkeydown = function(event) {
         lastAct = element.id
     }
 
+}
+function closeSlots() {
+    elm = document.getElementById('actionElements')
+    elm.style.animationName = 'showBarsButton'
+    elm.style.width = '45%'
+    elm.style.height = ''
+    elm.style.borderRadius = '6px'
+    elm.style.marginBottom = '0px'
+    elm.style.animationDuration = '0.6s'
+    elm.innerHTML = '<div class="barbuttontexta">Action Rows</div>'
+    elm.style.backgroundColor = '#FFFFFF15'
+    setTimeout(() => {
+        elm.onclick = () => {
+            showAvailableSlots(elm)
+        }
+    })
 } 
 function showAvailableSlots(elm) {
     let arrfd = []
@@ -107,15 +188,20 @@ function showAvailableSlots(elm) {
     elm.onclick = () => {}
     let newPush = ``
     elm.style.animationName = 'showButtonBars'
+    elm.innerHTML = 'Action Rows'
     elm.style.width = '90%'
     elm.style.height = '45%'
     elm.style.borderRadius = '20px'
     elm.style.marginBottom = '5px'
-    elm.style.animationDuration = '0.4s'
+    elm.style.animationDuration = '0.5s'
     elm.style.backgroundColor = '#00000060'
     setTimeout(() => {
-        document.getElementById('actionElements').innerHTML = '<br>'
-    }, 190)
+        document.getElementById('actionElements').innerHTML = `
+
+        <div class="barbuttone noanims"  style="width: 95%; margin-top: 10px; margin-bottom: 10px;" onclick="closeSlots()"><div class="barbuttontexta">Close</div></div>
+
+        `
+    }, 220)
     setTimeout(() => {
         let toCompensateFor = 0;
 
@@ -125,7 +211,7 @@ function showAvailableSlots(elm) {
                 if (datjson.buttons.bars[bar].customId == fdr[elm]){
                     console.log(datjson.buttons.bars[bar].customId, fdr[elm], datjson.buttons.bars[bar].customId == fdr[elm])
                     document.getElementById('actionElements').innerHTML += `
-                    <div class="issue flexbox textToLeft" onclick="getActionRow(${bar}, ${toCompensateFor})" style="background-color: #FFFFFF15">
+                    <div class="issue noanims flexbox textToLeft" onclick="getActionRow(${bar}, ${toCompensateFor})" style="background-color: #FFFFFF15">
                     <div class="barbuttontexta textToLeft" style="margin-left: 12px; margin-right: auto;">${datjson.buttons.bars[bar].name}</div>
                     <div class="barbuttond" onclick="ridButton(${toCompensateFor - 1})" style="margin-left: auto; margin-right: 0px; margin-top: auto; margin-bottom: auto; height: 30px; width: 30px; border-radius: 8px;"><div class="barbuttontexta">✕</div></div>
                     </div>
@@ -135,7 +221,7 @@ function showAvailableSlots(elm) {
         }
         while (toCompensateFor < 5) {
             document.getElementById('actionElements').innerHTML += `
-            <div class="issue flexbox" onclick="getActionRow(null, null)" style="background-color: #FFFFFF15; border: 2px dashed #FFFFFF20;">
+            <div class="issue noanims flexbox" onclick="getActionRow(null, null)" style="background-color: #FFFFFF15; border: 2px dashed #FFFFFF20;">
             <div class="barbuttontexta">Empty Slot</div>
             </div>
             `           
@@ -144,7 +230,7 @@ function showAvailableSlots(elm) {
         }
         document.getElementById('actionElements').innerHTML += "<br>"
         
-    }, 200)
+    }, 280)
     elm.innerHTML = `
     <div style="background-color: #FFFFFF15; border-radius: 12px; padding: 7px;">
     <div class="barbuttontexta"></div>
@@ -1016,7 +1102,7 @@ function switchObjs() {
                             thenm = UIdata[ems].extraField
                            }
                            console.log(thenm, "thenm")
-                            htmle = `${htmle}<div class="baction" id="${lastAct}" style="animation-name: appearfadenmt; width: 90% !important; text-align: left; border-radius: 12px; border-bottom-left-radius: 0px; border-bottom: solid 2px #FFFFFF40; padding-bottom: 0px; border-bottom-right-radius: 0px; padding-left: 0px; padding-right: 0px; margin-bottom: 6px; padding-left: 24px !important; " onclick="openChoices('${UIdata[ems].storeAs}', this, '${thenm}', '${ems}')">${UIdata[ems].choices[option]}</div>`
+                            htmle = `${htmle}<div class="baction" id="${lastAct}" style="animation-name: appearfadenmt; width: 90% !important; text-align: left; border-radius: 12px; border-bottom-left-radius: 0px; border-bottom: solid 2px #FFFFFF40; padding-bottom: 0px; border-bottom-right-radius: 0px; padding-left: 0px; padding-right: 0px; margin-bottom: 6px; padding-left: 24px !important;" onclick="openChoices('${UIdata[ems].storeAs}', this, '${thenm}', '${ems}')">${UIdata[ems].choices[option]}</div>`
                             if (UIdata[ems].choices[option].endsWith('*')) {
                                 htmle = `${htmle} <div class="selectBar" onkeyup="saveField('${UIdata[ems].extraField}', '${UIdata[ems].storeAs}')" id="${thenm}" contenteditable="true">${datjson.commands[lastObj].actions[lastAct].data[UIdata[ems].extraField]}</div>`
                             }
@@ -1045,8 +1131,28 @@ function switchObjs() {
             delete UIdata
             delete filedata
             delete htmle 
+            if (datjson.commands[lastObj].actions[lastAct].data.actionRowElements != undefined) {
+                let viewActionRowElements = document.getElementById('actionElements');
+                viewActionRowElements.onclick = () => {
+                    showAvailableSlots(viewActionRowElements)
+                }
+                viewActionRowElements.className = 'zaction noanim'
+                viewActionRowElements.style.width = '45%'
+                viewActionRowElements.style.marginRight = 'auto'
+    viewActionRowElements.style.marginLeft = 'auto'
+    viewActionRowElements.style.marginTop = 'auto'
+                viewActionRowElements.innerHTML = '<div class="barbuttontexta fade">Action Rows</div>'
+            } else {
+                let viewActionRowElements = document.getElementById('actionElements');
+                viewActionRowElements.innerHTML = ''
+                viewActionRowElements.className = ''
+                viewActionRowElements.style.width = ''
 
-        }
+                viewActionRowElements.onclick = () => {
+                    null
+                }
+            }
+                }
         function saveField(fieldId, sa) {
             let field = document.getElementById(fieldId) 
             datjson.commands[lastObj].actions[lastAct].data[fieldId] = field.innerText;
@@ -1065,9 +1171,11 @@ function switchObjs() {
                 if (elm.innerText.endsWith('*')) {
 
                 } else {
+                    document.getElementById(menuElement).style.animationName = 'selectbarnmt2'
+                    document.getElementById(menuElement).style.animationDuration = '0.5s'
                     setTimeout(() => {
                         document.getElementById(menuElement).remove()
-                    }, 230)
+                    }, 495)
                 }
             } else {
 
@@ -1085,40 +1193,30 @@ function switchObjs() {
             }
             let eldpn1 = elm.parentNode
             let eldpn2 = eldpn1
-            eldpn2.style.animationName = 'rvt'
-            eldpn2.style.animationDuration = '0.45s'
             let elminht1 = elm.innerHTML;
             let elminht2 = elminht1;
             let lastElm = eldpn2; 
-            let nextElm = lastElm.nextSibling;
-            while (nextElm) {
-                if (nextElm.style) {
-                    nextElm.style.animationDuration = ''
-                    nextElm.style.animationName = ''
-                  nextElm.style.animationName = 'apfd';
-                  nextElm.style.animationDuration = '0.5s';
-                  let ndsd1 = nextElm
-                  let thene = ndsd1
-                  setTimeout(() => {
-                    thene.style.animationDuration = undefined
-                    thene.style.animationName = undefined
-                  }, 500);
-                }
-                nextElm = nextElm.nextSibling;
-              }
-            
+            var innerHeight = eldpn2.clientHeight;
+            console.log(innerHeight)
+            lastElm.style.animationName = ''
+            lastElm.style.animationDuration = ''
+            lastElm.style.setProperty('--inner-height', innerHeight + 'px');
+            lastElm.style.animationName = 'shrink'
+            lastElm.style.animationDuration = '300ms'
             setTimeout (() => {
                 elm.parentNode.innerHTML = elm.innerHTML
                 if (pending != '' && eldpn2.nextSibling.className != 'selectBar') {
                     pending.appendAfter(eldpn2)
                 }
-                eldpn2.style.animationName = 'revert2'
-                eldpn2.style.animationDuration = '0.30s'
-            }, 230)
+
+            }, 100)
             setTimeout(() => {
                 eldpn2.onclick = () => {openChoices(storeAs, eldpn2, menuElement, elecf)}
             }, 50)
-        
+            setTimeout(() => {
+                lastElm.style.animationName = ''
+                lastElm.style.animationDuration = ''
+            }, 400)
             datjson.commands[lastObj].actions[lastAct].data[storeAs] = elminht2
             fs.writeFileSync(processPath + '\\AppData\\data.json', JSON.stringify(datjson))
             // closeMenu(eldpn2, elminht2, storeAs)
@@ -2135,6 +2233,7 @@ function switchObjs() {
                 bottombar.style.border = '#00000030 solid 2px'
                 bottombar.style.marginTop = '-97.5vh'
                 bottombar.style.borderRadius = '0px'
+                bottombar.style.overflow = 'auto'
                 bottombar.style.zIndex = '50'
                 bottombar.style.marginLeft = '-1.8vw'
                 bottombar.style.backgroundColor = '#3d3d3d40'
@@ -2152,26 +2251,34 @@ function switchObjs() {
                     <div class="sepbar"></div>
 
                     <div id="actElmsig" style="width: 95%; padding: 9px; margin-left: auto; margin-right: auto; height: 100%; border-radius: 12px; margin-top: 2vh;">
-                    <div class="barbuttontext texttoleft" style="margin-left: 5vw;">Studio Bot Project Home</div>
+                    <div class="barbuttontext texttoleft" style="margin-left: 5vw;">Home</div>
                     <br>
                     <div class="flexbox">
-                    <div style="background-color: #00000060; width: 35vw; margin-right: 5vw; height: 35vh; border-radius: 12px; padding: 10px;">
+                    <div style="background-color: #00000060; width: 45vw; margin-right: 2vw; height: 35vh; border-radius: 12px; padding: 10px;">
                     <div class="barbuttontexta texttoleft" style="margin-left: 1vw;">Project Overview</div>
                     <div class="sepbars"></div>
-                    <div class="barbuttontexta texttoleft" style="margin-left: 1vw;">Name</div>
+                    <div class="barbuttontexta texttoleft">Name</div>
 
                     <div class="input" contenteditable="true" onkeyup="setProjectName(this)">${datjson.name}</div>
+                    <div class="sepbars"></div>
+                    <div class="barbuttontexta texttoleft">Data</div>
+
+                    <div class="barbuttone hoverable" style="margin-right: auto; margin-left: auto;" onclick="closeMenu(); setTimeout(() => {settoken()}, 100)">
+                    <div class="barbuttontexta">Bot Credentials</div>
                     </div>
-                    <div style="background-color: #00000060; width: 35vw; height: 35vh; border-radius: 12px; padding: 10px;">
+                    <div style="margin-top: 0.7vh"></div>
+                    <div class="barbuttone hoverable" style="margin-right: auto; margin-left: auto;" onclick="viewJSON()">
+                    <div class="barbuttontexta">View JSON</div>
+                    </div>
+                    </div>
+                    <div style="background-color: #00000060; width: 40vw; height: 35vh; border-radius: 12px; padding: 12px;" class="flexbox">
                     <div class="barbuttontexta">
                     <b>READ ME!</b>
-                    You're currently running Studio Bot Maker version 2.2.0 - This is an unfinished build, and most things (such as the edit embed action) are unfinished - read more & release notes on RatWasHere/Studiobotmaker on github! 
+                    You're currently running Studio Bot Maker version 2.2.1 - This is an unfinished build, and most things (such as the edit embed action) are unfinished - read more & release notes on RatWasHere/Studiobotmaker on github! 
                     </div>
                     </div>
                     </div>
-<div class="barbutton noanims" onclick="closeMenu();" style="height: auto; margin: auto;">
-<div class="barbuttontexta">Cancel</div>
-</div>
+
                     </div>
                     </div>
                     `
@@ -2181,6 +2288,17 @@ function switchObjs() {
             }, 300)
  
             }, 500)
+        }
+        function viewJSON() {
+            let view = document.getElementById('actElmsig')
+            view.innerHTML = `
+            <div style="background-color: #00000060; overflow: auto; height: 50vh; width: 95%; padding: 9px; margin-left: auto; margin-right: auto; border-radius: 12px; margin-top: 2vh;">
+            <div class="barbuttontexta" contenteditable="true">
+            ${fs.readFileSync(processPath + '\\AppData\\data.json', 'utf8')}
+            </div>
+            </div>
+            
+            `
         }
 function setProjectName(welm) {
     datjson.name = welm.innerText
@@ -2589,7 +2707,8 @@ function closeMenu() {
                 switchObjs()
             }
         }
-        if (keyEvent.key == 'X' && keyEvent.shiftKey == true) {
+        if (keyEvent.key == 'XÆ-12' && keyEvent.shiftKey == true) {
+            /* This... is elon musk */
             if (document.getElementById('bottombar') == undefined || document.getElementById('bottombar') == null) {
             console.log('deletion!')
             } else {

@@ -7,13 +7,12 @@ module.exports = {
         var tempVars = JSON.parse(fs.readFileSync('./AppData/Toolkit/tempVars.json', 'utf8'))
         var user;
         if (values.addTo == 'Message Author') {
-            user = message.author
+            user = message.author.id
         } else {
-            user = client.users.cache.get(values.efadd)
+            user = tempVars[uID][values.efadd].userId
         }
-       let role = client.guilds.cache.get(message.guild.id).roles.cache.get(tempVars[uID][values.memberChoice].id) 
-       console.log(user)
-       let member = client.guilds.cache(message.guild.id).members.cache.get(user.id) 
+       let role = client.guilds.cache.get(tempVars[uID][values.memberChoice].guild).roles.cache.get(tempVars[uID][values.memberChoice].id) 
+       let member = client.guilds.cache.get(tempVars[uID][values.memberChoice].guild).members.cache.get(user) 
        member.roles.remove(role) 
     }
 }

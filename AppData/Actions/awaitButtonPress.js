@@ -1,6 +1,11 @@
 module.exports = {
-    data: {"name":"Add Role", "memberChoice":"", "storeAs":"", "addTo":"Message Author", "efadd":""},
-    UI: {"compatibleWith":["Text", "Slash"], "text":"Add Role", "sepbar3":"", "btext33333333":"Role Variable", "input1":"memberChoice", "sepbar12":"", "btext2":"Add To", "menuBar":{"choices":["Message Author", "Member*"], storeAs: "addTo", extraField:"efadd"},  "sepbar0":"", "preview":"memberChoice", "previewName":"Role"},
+    data: {"name":"Await Button Interaction", "memberChoice":"", "storeAs":"", "addTo":"Message Author", "efadd":""},
+    UI: {"compatibleWith":[], 
+    "text":"Remove Role", "sepbar3":"",
+     "btext33333333":"Role Variable", "input1":"memberChoice", "sepbar12":"", 
+     "btext2":"Remove From", "menuBar":{"choices":["Message Author", "Member*"],
+      storeAs: "addTo", extraField:"efadd"},  "sepbar0":"", 
+      "preview":"memberChoice", "previewName":"Role"},
 
     run(values, message, uID, fs, client) { 
         let varTools = require(`../Toolkit/variableTools.js`)
@@ -13,6 +18,6 @@ module.exports = {
         }
        let role = client.guilds.cache.get(tempVars[uID][values.memberChoice].guild).roles.cache.get(tempVars[uID][values.memberChoice].id) 
        let member = client.guilds.cache.get(tempVars[uID][values.memberChoice].guild).members.cache.get(user) 
-       member.roles.add(role) 
+       member.roles.remove(role) 
     }
 }
