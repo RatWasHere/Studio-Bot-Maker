@@ -1,6 +1,12 @@
 module.exports = {
     data: {"name":"Add Role", "memberChoice":"", "storeAs":"", "addTo":"Message Author", "efadd":""},
-    UI: {"compatibleWith":["Text", "Slash"], "text":"Add Role", "sepbar3":"", "btext33333333":"Role Variable", "input1":"memberChoice", "sepbar12":"", "btext2":"Add To", "menuBar":{"choices":["Message Author", "Member*"], storeAs: "addTo", extraField:"efadd"},  "sepbar0":"", "preview":"memberChoice", "previewName":"Role"},
+    UI: {"compatibleWith":["Text", "Slash"], "text":"Add Role", "sepbar3":"", "btext33333333":"Role Variable", "input1_direct*":"memberChoice", "sepbar12":"", "btext2":"Add To", "menuBar":{"choices":["Message Author", "Member*"], storeAs: "addTo", extraField:"efadd"},  "sepbar0":"", "preview":"memberChoice", "previewName":"Role",
+    "variableSettings":{
+            "efadd": {
+                "Member*": "direct", 
+                "Message Author": "novars"
+            }}
+},
 
     run(values, message, uID, fs, client) { 
         let varTools = require(`../Toolkit/variableTools.js`)

@@ -1,6 +1,6 @@
 # Studio Bot Maker
 
-**🐛 An unfinished mess**
+**🐛 A no code discord bot maker!**
 
 ### Sooo... what is Studio Bot Maker?
 ~~Isn't it obvious~~ Right... SBM (Studio Bot Maker) is a complete rival to other paid alternatives on Steam, with the benefit of knowing everything is tested before release (except actions sometimes, there's only me workin on this thing & I don't have all the time in the world! 🥲) 

@@ -1,6 +1,6 @@
 module.exports = {
     data: {"name": "Split Variable","desc": "", "varble": "", "vrble":"", "vrb":""},
-    UI: {"compatibleWith": ["Any"], "text1":"Split Variable ", "sepbar2":"sepber", "btext1":"Variable Name", "input333":"varble", "btext556":"First Output", "input666":"vrble","btext552334":"Second Output", "input232424":"vrb", previewName: "Splitting", preview: "varble"},
+    UI: {"compatibleWith": ["None"], "text1":"Split Variable ", "sepbar2":"sepber", "btext1":"Variable Name", "input333":"varble", "btext556":"First Output", "input666":"vrble","btext552334":"Second Output", "input232424":"vrb", previewName: "Splitting", preview: "varble"},
     run(values, message, uID, fs) {
         let varTools = require(`../Toolkit/variableTools.js`)
         var tempVars = JSON.parse(fs.readFileSync('./AppData/Toolkit/tempVars.json', 'utf8'))

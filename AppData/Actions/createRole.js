@@ -15,7 +15,12 @@ module.exports = {
     "ButtonBar": {"buttons":["✓", "✕"]},
     "sepbarstoreas":"",
     "btextstoreas":"Store As",
-    "inputstoreas":"storeAs"
+    "inputstoreas_novars*":"storeAs",
+    "variableSettings":{
+        "guildVariable": {
+            "Guild*": "direct", 
+            "Command Guild": "novars"
+        }}
 
 },
     run(values, message, uID, fs, client) {

@@ -1,22 +1,69 @@
 module.exports = {
-    data: {"name":"Store Member Data", "memberChoice":"", "storeAs":"", "guildAs":"Message Guild", "guildS":""},
-    UI: {"compatibleWith":["Text", "Slash"], "text":"Get Role", "sepbar3":"", "btext33333333":"Role ID", "input1*":"memberChoice", "sepbar12":"", "btext00guild":"Get Role From", "menuBar":{"choices":["Message Guid", "Guild*"], storeAs:"guildAs", extraField:"guildS"},"btext2*":"Store As", "inputsa":"storeAs", "preview":"memberChoice", "previewName":"ID"},
+    data: {"name":"Store Member Data", 
+    "dataName":"",
+    "dataValue": "",
+     "storeAs":"",
+     "memberAs":"Message Author",
+      "memberFrom":""},
+     
+    UI: {"compatibleWith":["Text", "Slash"], 
+    "text":"Store Member Data", 
+    
+    "sepbar3":"", 
 
-    run(values, message, uID, fs, client) { 
+     "btext00guild":"Get Member From",
+      "menuBar":{"choices":["Message Author", "Variable*"], 
+      storeAs:"memberAs", extraField:"memberFrom"},
+
+      "sepbar134324121232":"",  
+
+      "btext33333333":"Data Name", 
+      "input1*":"dataName",
+       "sepbar12345":"", 
+       "btext3333ds3333":"Data Value", 
+       "input341*":"dataValue",
+
+      "variableSettings":{
+        "memberFrom": {
+            "Variable*": "direct", 
+            "Message Author": "novars"
+        }
+    },
+
+      "preview":"memberAs", 
+      "previewName":"Member"},
+
+   async run(values, message, uID, fs, client) { 
         let varTools = require(`../Toolkit/variableTools.js`)
         var tempVars = JSON.parse(fs.readFileSync('./AppData/Toolkit/tempVars.json', 'utf8'))
-        var user;
-        let guild; 
-            if (values.guildAs == 'Message Guild') {
-                guild = client.guilds.cache.get(message.guild.id) 
-            } else {
-                guild = client.guilds.cache.get(tempVars[uID][varTools.transf(values.guildS, uID, tempVars)])
+        var storedData = JSON.parse(fs.readFileSync('./AppData/Toolkit/storedData.json', 'utf8'))
+        let guild = ''
+        var firstValue = ``
+        let secondValue = varTools.transf(values.dataName, uID, tempVars)
+        var onArr = "members"
+
+        if (values.memberAs == 'Message Author') {
+            user = message.author.id
+            guild = message.guild.id
+        } else {
+                guild = tempVars[uID][values.memberFrom].guildId
+                user = tempVars[uID][values.memberFrom].userId
+        }
+        if (storedData[onArr][guild + user]) {
+            storedData[onArr][guild + user] = {
+                ...storedData[onArr][guild + user],
+                [firstValue + secondValue]: varTools.transf(values.dataValue, uID, tempVars)
             }
-        tempVars[uID] = {
-            ...tempVars[uID],
-            [values.storeAs]: guild.roles.cache.roles.cache.get(varTools.transf(values.memberChoice, uID, tempVars))
-    }
-    fs.writeFileSync('./AppData/Toolkit/tempVars.json', JSON.stringify(tempVars), 'utf8')
+        } else {
+            storedData[onArr] = {
+                ...storedData[onArr],
+                [guild + user]: {
+                    [firstValue + secondValue]: varTools.transf(values.dataValue, uID, tempVars)
+                }
+            }
+        }
+
+    await fs.writeFileSync('./AppData/Toolkit/storedData.json', JSON.stringify(storedData), 'utf8')
 
 }
 }

@@ -1,6 +1,15 @@
 module.exports = {
     data: {"messageContent": "", "button": "Command Guild", "name": "Get Member", "ExtraData": "", "sendTo":"", "choice":"ID*", "memberValue":"", "storesAs":""},
-    UI: {"compatibleWith": ["Event"], "text": "Get Member", "sepbar33235":"", "btextchoices": "Get Member Via", "menuBar": {choices: ["ID*", "Name*"], storeAs: "choice", extraField:"memberValue"}, "sepbarchoice":"","btext63555":"Get Member Of","ButtonBar":{"buttons": ["Command Guild", "Guild*"]}, "sepbarButtons":"sepbar","btextStoreAs":"Store As", "inputstoreas":"storesAs",preview: "choice", previewName: "From"},
+    UI: {"compatibleWith": ["Event"], "text": "Get Member", "sepbar33235":"", "btextchoices": "Get Member Via", "menuBar": {choices: ["ID*", "Name*"], storeAs: "choice", extraField:"memberValue"}, "sepbarchoice":"","btext63555":"Get Member Of","ButtonBar":{"buttons": ["Command Guild", "Guild*"]}, "sepbarButtons":"sepbar","btextStoreAs":"Store As", 
+    "variableSettings": {
+        "memberValue": {
+            "ID*": "indirect",
+            "Name*": "indirect",
+            "Command Author": "novars"
+        }
+    },
+    
+    "inputstoreas!*":"storesAs",preview: "choice", previewName: "From"},
     run(values, message, uID, fs, client) {
         let tempVrz = JSON.parse(fs.readFileSync('./AppData/Toolkit/tempVars.json'));
         var tempVars = JSON.parse(fs.readFileSync('./AppData/Toolkit/tempVars.json', 'utf8'))

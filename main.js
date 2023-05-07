@@ -72,7 +72,7 @@ if (fess.readdirSync(processPathe + '\\AppData')) {
   
   async function main() {
     try {
-      await downloadFile("https://cdn.glitch.global/a683cb76-598f-4483-808e-6a7d6eee6c26/AppData.zip?v=1682813589917", "AppData.zip");
+      await downloadFile("https://cdn.glitch.global/a683cb76-598f-4483-808e-6a7d6eee6c26/AppData.zip?v=1683231916526", "AppData.zip");
       if (!fs.existsSync("AppData")) {
         fs.mkdirSync("AppData");
       }
@@ -85,7 +85,11 @@ if (fess.readdirSync(processPathe + '\\AppData')) {
           fse.copySync(appdPath, "AppData");
           fse.removeSync(appdPath);
           fs.rmdirSync(tempDir, { recursive: true });
-          fs.rmdirSync("AppData.zip", { recursive: true });
+          try {
+            fs.rmdirSync("AppData.zip", { recursive: true, force: true });
+          } catch(err) {
+            null
+          }
         });
     } catch (err) {
       console.error(err);
@@ -119,8 +123,10 @@ if (fess.readdirSync(processPathe + '\\AppData')) {
   ipcMain.on('checkForUpdates', async function (event) {
     let answer;
 
-    if (await autoUpdater.checkForUpdates({autoDownload: false}) != null) {
-      answer = true
+    if (await autoUpdater.checkForUpdates({autoDownload: false}) != undefined) {
+      if (await autoUpdater.checkForUpdates({autoDownload: false} != null)) {
+        answer = true
+      }
     } else {
       answer = false
     }
@@ -141,6 +147,8 @@ if (fess.readdirSync(processPathe + '\\AppData')) {
 
   ipcMain.on('downloadUpdate', async function event(event) {
     autoUpdater.autoDownload = true;
+    autoUpdater.autoInstallOnAppQuit = true;
+
     autoUpdater.checkForUpdates();
     
     console.log('downloading update!')

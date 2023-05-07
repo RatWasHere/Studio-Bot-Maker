@@ -1,6 +1,13 @@
 module.exports = {
     data: {"messageContent": "", "button": "✓", "name": "Reply To Interaction", "ExtraData": "", "sendTo":"", "ButtonRow":"", "elementAs":"Message*","ActionRow":"", "embedVar":"", "guild":"Message Guild", "guildField":""},
-    UI: {"compatibleWith": ["Slash"], "text": "Interaction Reply","sepbar44423":"sepbar", "btextEmbVar":"Send", "menuBar1": {"choices": ["Message*", "Embed*"], storeAs: "elementAs", extraField: "ExtraData"}, "sepbarmenus":"sepbar", "btextmenus":"Ephemeral?", "ButtonBar":{"buttons": ["✓", "✕"]}, preview: "elementAs", previewName: "Send"},
+    UI: {"compatibleWith": ["Slash"], "text": "Interaction Reply","sepbar44423":"sepbar", "btextEmbVar":"Send", "menuBar1": {"choices": ["Message*", "Embed*"], storeAs: "elementAs", extraField: "ExtraData"}, "sepbarmenus":"sepbar", "btextmenus":"Ephemeral?", "ButtonBar":{"buttons": ["✓", "✕"]}, preview: "elementAs", previewName: "Send",
+    "variableSettings": {
+        "ExtraData": {
+            "Message*": "indirect",
+            "Embed*": "direct"
+        }
+    }
+},
     run(values, message, uID, fs, client) {
         if (values.elementAs == 'Message*') {
             let ephemeral;

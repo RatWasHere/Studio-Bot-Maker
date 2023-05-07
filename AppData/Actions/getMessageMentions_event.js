@@ -1,12 +1,15 @@
 module.exports = {
-    data: {"name":"Get Message Mention", "messageVariable":"", "button":"First", "ExtraData":"5"},
-    UI: {"compatibleWith": ["Event"], "text": "Get Message Mention","sepbarEmbVar":"", 
+    data: {"name":"Get Mentioned User", "messageVariable":"", "button":"First", "ExtraData":"5", 
+"storeAs":""},
+    UI: {"compatibleWith": ["Event", "Slash"], "text": "Get Message Mention","sepbarEmbVar":"", 
     
-    "btextmember":"Message Variable", "inputd":"messageVariable", 
+    "btextmember":"Message Variable", "inputd_direct*":"messageVariable", 
     "sepbarmenus":"sepbar",
     "btext00":"Mention Number",
     "ButtonBar": {"buttons":["First", "Second", "Third", "Custom*"]},
     "sepbar5131":"",
+    "btextstoreas":"Store As",
+    "inputstoreas!*":"storeAs",
     "btext":"<b>Note!</b> <br> If you're using \"Custom\", you need to insert the number, not ordinal numbers!",
     
     preview: "button", previewName: "Mention"},
@@ -18,6 +21,12 @@ module.exports = {
         
         if (values.button == 'First') {
              mention = msg.mentions.users.first()
+             tempVars[uID] = {
+                ...tempVars[uID],
+                [values.storeAs]: mention
+            }
+            fs.writeFileSync('./AppData/Toolkit/tempVars.json', JSON.stringify(tempVars), 'utf8')
+
         } else {
             let ment = msg.mentions.users.array;
             let mention; 
@@ -32,6 +41,12 @@ module.exports = {
                     mention = ment[parseFloat(varTools.transf(values.ExtraField, uID, tempVars))]
                 break
             }
+            tempVars[uID] = {
+                ...tempVars[uID],
+                [values.storeAs]: mention
+            }
+            fs.writeFileSync('./AppData/Toolkit/tempVars.json', JSON.stringify(tempVars), 'utf8')
+
         }
     }
 }

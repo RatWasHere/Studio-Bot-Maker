@@ -1,8 +1,23 @@
 module.exports = {
     data: {"name": "Get Message Info","desc": "", "varble": "", "vrble":"", "vrb":"", "button":"Command Message", "ExtraData":"", "datainfo":"Message Content"},
-    UI: {"compatibleWith": ["Text"],"text1":"Get Message Info", "sepbar2":"sepber","btext33333333":"Get Message Via", "ButtonBar": {"buttons": ["Command Message", "Variable*"]}, "menuBar":{"choices":["Message Content", "Message Channel", "Message Author", "Message Timestamp", "Message Guild"], storeAs:"datainfo"} ,"btext566": "Store As", "input666":"varble", previewName: "Get", preview: "datainfo"},
+    UI: {"compatibleWith": ["Any"],"text1":"Get Message Info", "sepbar2":"sepber",
+    "btext33333333":"Get Message Via",
+    "variableSettings": {
+        "ExtraData": {
+            "Command Message": "novars",
+            "Variable*": "direct"
+        }
+    },
+    "menuBar4": {"choices": ["Command Message", "Variable*"], storeAs:"button", extraField: "ExtraData"}, 
+    "sepbar232":"",
+    "btextget":"Get",
+    "menuBar":{"choices":["Message Content",
+    "Message ID",
+    "Message URL",
+    "Message Channel", "Message Author", "Message Timestamp", "Message Guild"], storeAs:"datainfo"} ,
+    "sepbar324get":"",
+    "btext566": "Store As", "input666!*":"varble", previewName: "Get", preview: "datainfo"},
     run(values, message, uID, fs, client) {
-        console.log(uID, 'msginfouid')
         let varTools = require(`../Toolkit/variableTools.js`)
         var msg;
         var tempVars = JSON.parse(fs.readFileSync('./AppData/Toolkit/tempVars.json', 'utf8'))
@@ -27,7 +42,12 @@ module.exports = {
             case 'Message Author':
                 tempVars[uID][values.varble] = client.guilds.cache.get(msg.guildId).members.cache.get(msg.authorId);
             break 
-            console.log(tempVars)
+            case 'Message ID': 
+                tempVars[uID][values.varble] = msg.id
+            break
+            case 'Message URL': 
+                tempVars[uID][values.varble] = msg.id
+            break
         } 
         fs.writeFileSync('./AppData/Toolkit/tempVars.json', JSON.stringify(tempVars), 'utf8')
 

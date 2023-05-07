@@ -1,6 +1,6 @@
 module.exports = {
     data: {"name":"Get Role", "memberChoice":"", "storeAs":"", "guildAs":"Message Guild", "guildS":""},
-    UI: {"compatibleWith":["Text", "Slash"], "text":"Get Role", "sepbar3":"", "btext33333333":"Role ID", "input1*":"memberChoice", "sepbar12":"", "btext00guild":"Get Role From", "menuBar":{"choices":["Message Guild", "Guild*"], storeAs:"guildAs", extraField:"guildS"},"btext2*":"Store As", "inputsa":"storeAs", "preview":"memberChoice", "previewName":"ID"},
+    UI: {"compatibleWith":["Text", "Slash"], "text":"Get Role", "sepbar3":"", "btext33333333":"Role ID", "input1*":"memberChoice", "sepbar12":"", "btext00guild":"Get Role From", "menuBar":{"choices":["Message Guild", "Guild*"], storeAs:"guildAs", extraField:"guildS"},"btext2*":"Store As", "inputsa!*":"storeAs", "preview":"memberChoice", "previewName":"ID"},
 
     run(values, message, uID, fs, client) { 
         let varTools = require(`../Toolkit/variableTools.js`)

@@ -144,11 +144,18 @@
     0% {
         opacity: 100%;
         z-index: 0;
+        margin-top: -6px;
+        margin-bottom: 0px;
         height: 21px;
+        padding-top: 4px;
+        padding-bottom: 4px;
     }
     100% {
         opacity: 0%;
         z-index: 0;
+        padding-top: 0px;
+        padding-bottom: 0px;
+        margin-top: 0px;
         height: 0px;
     }
 }
@@ -607,7 +614,7 @@
     55% {
     filter: blur(0px);
     height: 20px;
-    width: 37%;
+    width: 33%;
     margin-top: 150px;
     border-radius: 440px;
     max-height: 80%;
@@ -620,7 +627,7 @@
     border-radius: 50px;
     opacity: 100%;
     height: auto;
-    width: 48.5%;
+    width: 45%;
     margin-top: 6px;
     }
     }
@@ -760,6 +767,38 @@
         transition: background-color  0.1s ease; 
         color: #FFFFFF99;
     }
+    .switchableButton {
+        width: 20%; 
+        transition: background-color 0.3s ease-out;
+        transition: width 0.3s ease;
+
+        background-color: #FFFFFF15;
+        border-radius: 2px;
+        padding: 8px;
+        height: 5vh;
+        margin-right: 0.15vw;
+        margin-left: 0.15vw;
+        justify-content: center;
+        align-content: center;
+        display: flex;
+        align-items: flex-start;
+    }
+    .switchableButton:hover .barbuttontexta {
+        color: #bebebe;
+    }
+    .switchableButton:hover {
+        background-color: #FFFFFF20;
+    }
+    .fullwidth {
+        width: calc(100% - 2px) !important;
+        border-radius: 0px;
+        margin-top: 0px;
+        padding: 1px !important;
+        border-bottom: #FFFFFF30 dashed 1px;
+    }
+    .fullwidth:hover {
+        background-color: #FFFFFF20;
+    }
     .hoverable {
         color: inherit;
     }
@@ -890,7 +929,27 @@
     border-radius: 12px;
     transition: box-shadow ease 0.5s;
     }
-    
+    @keyframes startFrominput {
+        0% {
+            height: 0px;
+        }
+        100% {
+            height: 24px;
+        }
+    }
+    @keyframes goFromInput {
+        0% {
+            height: 24px;
+            opacity: 100%;
+        }
+        100% {
+            height: 0px;
+            margin-bottom: -4px;
+            padding: 0px;
+            opacity: 0%;
+            font-size: 0px;
+        }
+    }
     .input {
     width: calc(95% - 18px);
     background-color: #FFFFFF10;
@@ -907,8 +966,9 @@
     box-shadow: #25252535 0px 0px 4px;
     animation-name: kinput;
     animation-duration: 1.3s;
-    transition: box-shadow ease 0.5s;
+    border-bottom: #FFFFFF25 0px solid;
     }
+    
     .inputB {
         width: calc(95% - 16px);
         background-color: #FFFFFF10 !important;
@@ -1082,7 +1142,50 @@
         width: 96.5vw;
         overflow-block: hidden;
     }
-    
+    .borderright {
+        border-top-right-radius: 2px !important;
+        border-bottom-right-radius: 2px !important;
+    }
+    .bordercenter {
+        border-radius: 3px !important;
+    }
+    .borderleft {
+        border-top-left-radius: 2px !important;
+        border-bottom-left-radius: 2px !important;
+    }
+    .bordercentere {
+        border-radius: 3px !important;
+        margin-top: 4px !important;
+    }
+    .bordertop {
+        border-radius: 12px !important; 
+        margin-top: 4px !important;
+        border-top-left-radius: 2px !important;
+        border-top-right-radius: 2px !important;
+    }
+    .borderbottom {
+        border-radius: 12px !important; 
+        margin-top: 4px !important;
+        border-bottom-left-radius: 2px !important;
+        border-bottom-right-radius: 2px !important;
+    }
+    .borderrighttop {
+        border-radius: 2px !important; 
+        border-bottom-left-radius: 12px !important;
+    }
+    .borderlefttop {
+        border-radius: 2px !important; 
+        border-bottom-right-radius: 12px !important;
+    }
+
+    .borderrightbottom {
+        border-radius: 2px !important; 
+        border-top-left-radius: 12px !important;
+    }
+    .borderleftbottom {
+        border-radius: 2px !important; 
+        border-top-right-radius: 12px !important;
+    }
     .barbutton {
     height: 80%;
     width: 23% !important;
@@ -1142,7 +1245,7 @@
     .barbuttone {
         height: auto;
         width: 25%;
-        padding: 3.5px;
+        padding: 2px;
         margin-top: auto;
         box-shadow: inset 0 0 2px #FFFFFF10;
         margin-bottom: auto;
@@ -1214,7 +1317,7 @@
     height: 24px;
     margin-top: auto;
     margin-bottom: auto;
-    border-radius: 40px;
+    border-radius: 7px;
     text-align: center;
     background-color: #00000055;
     position: relative;
@@ -1323,6 +1426,7 @@
     margin-bottom: auto;
     }
     .barbuttontexta {
+        transition: color 0.4s ease;
     font-size: 18px;
     color: #949494;
     text-align: center;
@@ -1643,6 +1747,7 @@
     background-color: #000000;
     justify-content: center;
     align-items: center;
+    transition: all ease 0.7s;
     transition: background-image ease 5.5s;
     }
     ::-webkit-scrollbar {
@@ -1668,3 +1773,6 @@
         /**/
     }
     
+.forceRounded {
+    border-radius: 100px !important;
+}

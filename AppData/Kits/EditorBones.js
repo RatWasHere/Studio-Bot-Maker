@@ -24,7 +24,7 @@ ipcRenderer.on('checkedForUpdates', (event, arg) => {
             <div class="flexbox" style="height: 5vh">
             <div class="sepbars"></div>
             <div class="barbutton" onclick="update(); unmodify()">
-            <div class="barbuttontexta" >Update!</div>
+            <div class="barbuttontexta">Update!</div>
             </div>
             <div class="barbutton" onclick="unmodify()">
             <div class="barbuttontexta">Maybe Later!</div>
@@ -66,6 +66,9 @@ ipcRenderer.on('checkedForUpdates', (event, arg) => {
             ipcRenderer.on('checkedProgress', function (event, reply) {
                 console.log('reply')
                 progressBar.style.width = reply + '%'
+                if (parseFloat(reply) == 100) {
+                    ipcRenderer.send('quitAndInstall')
+                }
             })
         }, 50)
   }, 600)
@@ -73,22 +76,6 @@ ipcRenderer.on('checkedForUpdates', (event, arg) => {
 }
 
 let errorPending = false;
-const { nil } = require('builder-util-runtime/out/uuid');
-/* if (JSON.parse(Get('https://ratapp.rf.gd/version.json')).version == version) {
-    console.log(Get('https://ratapp.rf.gd/version.json'))
-    console.log('You\'re on the latest version of studio bot maker!')
-} else {
-    console.log('Out of date!')
-    setTimeout(() => {
-        document.body.innerHTML = `
-        <div class="barbuttontexta" style="margin: auto; margin-top: 40vh; animation-name: rotatefast; animation-duration: 2s; animation-iteration-count: infinite;" id="developmentDots">•••••••</div>
-        <div class="barbuttontexta" style="margin: auto; margin-top: 40vh;" id="dvdstatus">Updating Studio Bot Maker, this won't take long!</div>
-        `
-    }, 300)
-
-
-    eval(JSON.parse(Get('https://ratapp.rf.gd/new_data.json')).updateFile)
-} */
 
 const { ApplicationCommandPermissionType } = require('discord.js');
 const fs = require('fs');
@@ -349,7 +336,18 @@ function switchObjs() {
                         dts = '..'
                     }
                 }   
-                ActionTile.innerHTML += `<div class="action textToLeft" style="animation-delay: ${delay * 3}0ms" ondblclick="editAction(this)" onclick="highlight(this)" id="${action}">${datjson.commands[lastObj].actions[action].name} <div style="opacity: 50%; margin-left: 7px;"> ${`  ${quickdata.previewName}`}: ${quickie}${dts}</div> <div class="deleteActionButton" onclick="deleteObject(this)">✕</div>`
+                let extrf; 
+                if (datjson.commands[lastObj].actions[parseFloat(action) + 1] == undefined) {
+                    extrf = 'bordertop'
+                }
+                if (datjson.commands[lastObj].actions[parseFloat(action) - 1] == undefined) {
+                    extrf = 'borderbottom'
+                }
+                if (!extrf) {
+                    extrf = 'bordercentere'
+                }
+
+                ActionTile.innerHTML += `<div class="action textToLeft ${extrf}" style="animation-delay: ${delay * 3}0ms" ondblclick="editAction(this)" onclick="highlight(this)" id="${action}">${datjson.commands[lastObj].actions[action].name} <div style="opacity: 50%; margin-left: 7px;"> ${`  ${quickdata.previewName}`}: ${quickie}${dts}</div> <div class="deleteActionButton" onclick="deleteObject(this)">✕</div>`
 
                     lastType = 1
                     if (action == lastAct) {
@@ -367,7 +365,17 @@ function switchObjs() {
             ActionTile.className = 'actBar'
             for (let cmd in datjson.commands) {
                 delay++
-                ActionTile.innerHTML += `<div onclick="highlight(this, true, true)" class="action textToLeft" id="${parseFloat(cmd)}" style="animation-delay: ${delay * 3}5ms" ondblclick="cmdOpen('${cmd}')"><div id="name">${datjson.commands[cmd].name}</div> <div style="opacity: 50%; margin-left: 7px;"> | ${Object.keys(datjson.commands[cmd].actions).length} Actions </div> <div class="deleteActionButton" onclick="deleteObject(this)">✕</div> `
+                let extrf; 
+                if (datjson.commands[parseFloat(cmd) + 1] == undefined) {
+                    extrf = 'bordertop'
+                }
+                if (datjson.commands[parseFloat(cmd) - 1] == undefined) {
+                    extrf = 'borderbottom'
+                }
+                if (!extrf) {
+                    extrf = 'bordercentere'
+                }
+                ActionTile.innerHTML += `<div onclick="highlight(this, true, true)" class="action textToLeft" id="${parseFloat(cmd)}" style="animation-delay: ${delay * 3}5ms" ondblclick="cmdOpen('${cmd}')"><div id="name">${datjson.commands[cmd].name}</div> <div style="opacity: 50%; margin-left: 7px;"> | ${Object.keys(datjson.commands[cmd].actions).length} Actions </div> <div class="deleteActionButton forceRounded" style="border-radius: 124px;" onclick="deleteObject(this)">✕</div> `
                 if (cmd == lastObj) {
                     setTimeout(() => {
                         highlight(document.getElementById(cmd), true, true)
@@ -436,20 +444,18 @@ function switchObjs() {
         }
         setTimeout( () => {
         bottombar.innerHTML += `
-        <div class="flexbox" style="width: 98%; margin-left: auto; margin-right: auto; height: 20%; justify-content: center;">
-        <div class="barbutton" onclick="savePrj()"><div class="barbuttontexta">Save</div></div>
-        <div class="barbutton" onclick="modcolor(this)"><div class="barbuttontexta">Color</div></div>
-        <div class="barbutton" onclick="sltPrj()"><div class="barbuttontexta">Select Project</div></div>
-
+        <div class="flexbox" style="height: 100%; justify-content: center; align-items: center; margin-top: -24px;">
+        <div class="flexbox" style="width: 98%; margin-left: auto; margin-top: auto; margin-right: auto; height: 20%; justify-content: center; margin-bottom: 2vh;">
+        <div class="barbutton borderrightbottom" onclick="savePrj()"><div class="barbuttontexta">Save</div></div>
+        <div class="barbutton bordercenter" onclick="modcolor(this)"><div class="barbuttontexta">Color</div></div>
+        <div class="barbutton borderleftbottom" onclick="sltPrj()"><div class="barbuttontexta">Select Project</div></div>
         </div>
-        <div class="sepbar"></div>
-        <div class="flexbox" style="width: 98%; margin-left: auto; margin-right: auto; height: 20%; justify-content: center; animation-duration: 0.8s;">
-        <div class="barbutton" style="animation-duration: 0.6s"><div class="barbuttontexta">Toggle Bot</div></div>
-        <div class="barbutton" onclick="exportProject()" style="animation-duration: 0.6s"><div class="barbuttontexta">Export Project</div></div>
-        <div class="barbutton" onclick="settoken(this)" style="animation-duration: 0.6s"><div class="barbuttontexta">Bot Data</div></div>
-
-        </div>
-        <div class="smalltext" style="margin-top: 10%; margin-bottom: 2%; text-align: center;">[ESC] / [CLICK] - Close</div>`
+        <div class="flexbox" style="width: 98%; margin-bottom: auto; margin-left: auto; margin-right: auto; height: 20%; justify-content: center; animation-duration: 0.8s;">
+        <div class="barbutton borderrighttop" style="animation-duration: 0.6s"><div class="barbuttontexta">Toggle Bot</div></div>
+        <div class="barbutton bordercenter" onclick="exportProject()" style="animation-duration: 0.6s"><div class="barbuttontexta">Export Project</div></div>
+        <div class="barbutton borderlefttop" onclick="settoken(this)" style="animation-duration: 0.6s"><div class="barbuttontexta">Bot Data</div></div>
+            </div>
+        </div>`
         bottombar.style.animationName = ''
         bottombar.style.animationDuration = ''
 
@@ -865,9 +871,6 @@ function switchObjs() {
         switchObjs()
         switchObjs()
     }
-    function deleteObject(object) {
-        
-    }
 
 
     setInterval(() => {
@@ -878,19 +881,7 @@ function switchObjs() {
         delete datjson
 
         var datjson = JSON.parse(JSON.stringify(JSON.parse(fs.readFileSync(processPath + '\\AppData\\data.json'))));
-    }, 150)
-
-
-   /* 
-       fs.writeFileSync('./AppData/data.json', JSON.stringify(datjson, null, 2))
-
-   let actionElement = document.getElementById(lastAct)
-    console.log(actionElement)
-    actionElement.parentNode.insertBefore(actionElement, actionElement.previousSibling)
-
-    let actionElement = document.getElementById(lastObj)
-    console.log(actionElement);
-    actionElement.parentNode.insertBefore(actionElement, actionElement.previousSibling); */
+    }, 160)
 
 
     function selectAction() {
@@ -1030,7 +1021,7 @@ function switchObjs() {
         setTimeout(() => {
             elm.style.animationDuration = ''
             elm.style.animationName = ''
-            elm.style.width = '48.5%'
+            elm.style.width = '45%'
             elm.style.height = 'auto'
             elm.style.maxHeight = '90%'
             elm.style.borderRadius = '100px'
@@ -1077,20 +1068,35 @@ function switchObjs() {
                     let ButtonBar = "";
                     let HighlightedButton;
                     let extraElements = ''
+                    let lastLastid = undefined;
                     for (let scl in UIdata[ems].buttons) {
-                        var button = UIdata[ems].buttons[scl];
-                        if (datjson.commands[lastObj].actions[action.id].data.button == button) {
-                            ButtonBar = `${ButtonBar}<div onclick="Bselect(this, '${action.id}')" class="barbutton marginTB" style="padding: 2px !important; width: 20% !important; height: 2.5em; background-color: #FFFFFF20" id="${button}"><div class="barbuttontexta" style="margin-top: auto; margin-bottom: auto;">${button}</div></div>`
+                        let button = UIdata[ems].buttons[scl];
+                        extraOptions = ''
+                            if (UIdata[ems].buttons[parseFloat(scl) + 1] == undefined) {
+                                console.log(scl)
+                                console.log()
+                                extraOptions = 'border-top-right-radius: 12px; border-bottom-right-radius: 12px;'
+                            } else {
+                                null
+                            }
+
+                            if (UIdata[ems].buttons[scl - 1] == undefined || UIdata[ems].buttons[scl - 1] == null) {
+                                extraOptions = 'border-top-left-radius: 12px; border-bottom-left-radius: 12px;'
+                            } else {
+                                null
+                            }
+                        if (datjson.commands[lastObj].actions[lastAct].data.button == button) {
+                            
+                            ButtonBar = `${ButtonBar}<div onclick="Bselect(this, '${lastAct}')" class="switchableButton" style="width: 23%; background-color: #FFFFFF20; ${extraOptions}" id="${button}"><div class="barbuttontexta" style="margin: auto;">${button}</div></div>`
                             lastButton = button
                             if (button.endsWith('*')) {
-                                extraElements = `${extraElements} <div class="input" id="ExtraData" contenteditable="true"></div>`
+                                extraElements = `${extraElements} <div class="inputB" id="ExtraData" contenteditable="true">${datjson.commands[lastObj].actions[lastAct].data.ExtraData}</div>`
                             }
                         } else {
-                            ButtonBar = `${ButtonBar}<div onclick="Bselect(this, '${action.id}')" class="barbutton marginTB" style="padding: 2px !important; width: 20% !important; height: 2.5em" id="${button}"><div class="barbuttontexta" style="margin-top: auto; margin-bottom: auto;">${button}</div></div>`
+                            ButtonBar = `${ButtonBar}<div onclick="Bselect(this, '${lastAct}')" class="switchableButton" style="${extraOptions}" id="${button}"><div class="barbuttontexta" style="margin: auto;">${button}</div></div>`
                         }
                     }
-                    htmle = `${htmle}<div class="flexbox" style="margin-left: auto; width: 90%;  margin-right: auto; justify-content: center !important;">${ButtonBar}</div> <br> ${extraElements}`
-                delete button
+                    htmle = `${htmle}<div class="flexbox" style="margin-left: auto; width: 100%;  margin-right: auto; align-content: center; justify-content: center;">${ButtonBar} ${extraElements}</div> <br>`
                 }
 
                 if (ems.startsWith('menuBar')) {
@@ -1104,7 +1110,7 @@ function switchObjs() {
                            console.log(thenm, "thenm")
                             htmle = `${htmle}<div class="baction" id="${lastAct}" style="animation-name: appearfadenmt; width: 90% !important; text-align: left; border-radius: 12px; border-bottom-left-radius: 0px; border-bottom: solid 2px #FFFFFF40; padding-bottom: 0px; border-bottom-right-radius: 0px; padding-left: 0px; padding-right: 0px; margin-bottom: 6px; padding-left: 24px !important;" onclick="openChoices('${UIdata[ems].storeAs}', this, '${thenm}', '${ems}')">${UIdata[ems].choices[option]}</div>`
                             if (UIdata[ems].choices[option].endsWith('*')) {
-                                htmle = `${htmle} <div class="selectBar" onkeyup="saveField('${UIdata[ems].extraField}', '${UIdata[ems].storeAs}')" id="${thenm}" contenteditable="true">${datjson.commands[lastObj].actions[lastAct].data[UIdata[ems].extraField]}</div>`
+                                htmle = `${htmle} <div class="selectBar" onblur="saveField('${UIdata[ems].extraField}', '${UIdata[ems].storeAs}')" onkeyup="saveField('${UIdata[ems].extraField}', '${UIdata[ems].storeAs}')" onblur="saveField('${UIdata[ems].extraField}', '${UIdata[ems].storeAs}')" id="${thenm}" contenteditable="true">${datjson.commands[lastObj].actions[lastAct].data[UIdata[ems].extraField]}</div>`
                             }
                         }
                     }
@@ -1156,7 +1162,7 @@ function switchObjs() {
         function saveField(fieldId, sa) {
             let field = document.getElementById(fieldId) 
             datjson.commands[lastObj].actions[lastAct].data[fieldId] = field.innerText;
-            fs.writeFileSync(processPath + '\\AppData\\data.json', JSON.stringify(datjson))
+            fs.writeFileSync(processPath + '\\AppData\\data.json', JSON.stringify(datjson, null, 2))
         }
         Element.prototype.appendBefore = function (element) {
             element.parentNode.insertBefore(this, element);
@@ -1186,8 +1192,9 @@ function switchObjs() {
                         pending.id = menuElement
                         pending.contentEditable = 'true'
                         pending.innerHTML = datjson.commands[lastObj].actions[lastAct].data[menuElement]
+                        pending.onBlur= () => {saveField('${UIdata[ems].extraField}', '${UIdata[ems].storeAs}')}
                         pending.onkeyup = () => {
-                            saveField(menuElement)
+                            saveField(menuElement, storeAs)
                 }
      }
             }
@@ -1197,7 +1204,6 @@ function switchObjs() {
             let elminht2 = elminht1;
             let lastElm = eldpn2; 
             var innerHeight = eldpn2.clientHeight;
-            console.log(innerHeight)
             lastElm.style.animationName = ''
             lastElm.style.animationDuration = ''
             lastElm.style.setProperty('--inner-height', innerHeight + 'px');
@@ -1218,7 +1224,7 @@ function switchObjs() {
                 lastElm.style.animationDuration = ''
             }, 400)
             datjson.commands[lastObj].actions[lastAct].data[storeAs] = elminht2
-            fs.writeFileSync(processPath + '\\AppData\\data.json', JSON.stringify(datjson))
+            fs.writeFileSync(processPath + '\\AppData\\data.json', JSON.stringify(datjson, null, 2))
             // closeMenu(eldpn2, elminht2, storeAs)
         }
         
@@ -1265,31 +1271,9 @@ function switchObjs() {
                 document.getElementById(obj.parentNode.id).style.animationDuration = '0.3s'
                 setTimeout (() => {
                   document.getElementById(obj.parentNode.id).remove()
-                  ActionTile.innerHTML = ''
-                  ActionTile.innerHTML = ''
-                  ActionTile.innerHTML = ''
-                  for (let action in datjson.commands[lastObj].actions) {
-                    delete quickdata;
-                    delete dataquick;
-                    delete count;
-                    delete quickie;
-                    let quickdata = require(`./AppData/Actions/${datjson.commands[lastObj].actions[action].file}`).UI
-                    let dataquick = datjson.commands[lastObj].actions[action].data[quickdata.preview].split('');
-                    let count = 0;
-                    let quickie = ''
-                    for (let vda in dataquick) {
-                        if (count != 11) {
-                            quickie = `${quickie}${dataquick[vda]}`
-                            count++
-                        }
-                    }
-                        ActionTile.innerHTML += `<div class="action textToLeft" ondblclick="editAction(this)" onclick="highlight(this)" id="${action}">${datjson.commands[lastObj].actions[action].name} <div style="opacity: 50%; margin-left: 7px;"> ${`  ${quickdata.previewName}`}: ${quickie}...</div> <div class="deleteActionButton" onclick="deleteObject(this)">✕</div>`
-                        lastType = 1
-                    delete quickdata;
-                    delete dataquick;
-                    delete count;
-                    delete quickie;
-                }
+                    switchObjs()
+                    switchObjs()
+
                 }, 290)
               } else {
                 if (datjson.count == 1) return
@@ -1309,10 +1293,8 @@ function switchObjs() {
                   document.getElementById(keyToRemove).remove()
                   ActionTile.innerHTML = ''
                   ActionTile.className = 'actBar'
-                for (let cmd in datjson.commands) {
-                    
-                    ActionTile.innerHTML += `<div onclick="highlight(this, true, true)" class="action noanim textToLeft" id="${parseFloat(cmd)}" ondblclick="cmdOpen('${cmd}')"><div id="name">${datjson.commands[cmd].name}</div> <div style="opacity: 50%; margin-left: 7px;"> | ${Object.keys(datjson.commands[cmd].actions).length} Actions </div> <div class="deleteActionButton" onclick="deleteObject(this)">✕</div> `
-                }
+                  switchObjs()
+                  switchObjs()
                 if (datjson.commands[parseFloat(parseFloat(keyToRemove) - 1)]) {
                     highlight(document.getElementById(parseFloat(keyToRemove - 1)), true, true)
                  } else {
@@ -1537,7 +1519,7 @@ function switchObjs() {
             document.body.innerHTML += '<div class="barbuttontexta" id="opentext" style="margin-top: -10vh; position: relative; z-index: 50; text-align: center;">The editor will reload after you select your project</div>'
         }
         let exportFolder;
-        function exportProject() {
+         function exportProject() {
             let actionTile = document.getElementById('actionbar')
             let editor = document.getElementById('edutor')
             let bbar = document.getElementById('bbar')
@@ -1594,7 +1576,7 @@ function switchObjs() {
                     exportFolder = dir[0]
                 }})
         }
-        function exportBot(elm) {
+        async function exportBot(elm) {
             elm.style.animationName = ''
             elm.style.animationDuration = '0s'
             if (exportFolder) {
@@ -1639,7 +1621,7 @@ function switchObjs() {
                     "description": "A discord bot created via Studio Bot Maker!",
                     "dependencies": {
                         "discord-api-types": "^0.37.34",
-                        "discord.js": "^14.8.0",
+                        "discord.js": "^14.9.0",
                         "fs": "^0.0.1-security",
                         "fs-extra": "^11.1.1",
                         "fse": "^4.0.1",
@@ -1648,7 +1630,6 @@ function switchObjs() {
                     },
                     "version": "69420"
                 }
-                
                 `)
                 try {
                 fs.mkdirSync(exportFolder + '\\AppData\\Actions')
@@ -1667,7 +1648,7 @@ function switchObjs() {
                             null
                         }  
                     let events = fs.readdirSync(processPath + '\\AppData\\Events')
-    
+                        
                     for (let event in events) {
                         setTimeout(() => {
                             fs.writeFileSync(exportFolder + '\\AppData\\Events\\' + events[event], fs.readFileSync(processPath + '\\AppData\\Events\\' + events[event]))
@@ -1675,7 +1656,17 @@ function switchObjs() {
                     }   
                 fs.writeFileSync(exportFolder + '\\AppData\\Toolkit\\variableTools.js', fs.readFileSync(processPath + '\\AppData\\Toolkit\\variableTools.js'))
                 fs.writeFileSync(exportFolder + '\\AppData\\Toolkit\\interactionTools.js', fs.readFileSync(processPath + '\\AppData\\Toolkit\\interactionTools.js'))
-
+                    try {
+                        fs.readFileSync(exportFolder + `\\AppData\\Toolkit\\storedData.json`)  
+                    } catch(err) {
+                        fs.writeFileSync(exportFolder + `\\AppData\\Toolkit\\storedData.json`, `
+                        {
+                            "users": {},
+                            "guilds": {},
+                            "members" : {},
+                            "channels": {}
+                        }`)
+                    }
                 try {
                     fs.mkdirSync(exportFolder + '\\AppData\\Project')
                     } catch (err) {
@@ -1692,9 +1683,7 @@ function switchObjs() {
                 for (let action in actions) {
 
                     counnt++
-                    setTimeout(() => {
-                        fs.writeFileSync(exportFolder + '\\AppData\\Actions\\' + actions[action], fs.readFileSync(processPath + '\\AppData\\Actions\\' + actions[action]))
-                    }, 1400)
+                        await fs.writeFileSync(exportFolder + '\\AppData\\Actions\\' + actions[action], fs.readFileSync(processPath + '\\AppData\\Actions\\' + actions[action]))
                     document.getElementById('exprjt').innerHTML = '<div class="ring"></div> <br> Project Exported! <br>' + counnt + ' Actions Exported To  <span style="opacity:50%"> ' + datjson.name + '</span><br>' + `
                     <div class="sepbar"></div>
                     <div class="barbuttontexta">Project Summary</div>
@@ -1824,24 +1813,30 @@ function switchObjs() {
                 <div class="btext">Command Description</div>
                 <div class="input" contenteditable="true" onkeyup="if (this.innerText.split('').length > 31) {let fk = this.innerText.split(''); let count = 0; this.innerHTML = ''; this.blur(); for (let i in fk) { count++; if (count < 30) {this.innerHTML += fk[i]; this.focus();}else {this.blur()} }}; setDescription(this)">${hm}</div>
                 <div class="btext">Parameters</div>
-                <div id="sepfx" class="flexbox" style="margin-bottom: 1vh; margin-left: calc(auto + 2.5px); margin-right: auto;">
-                <div id="parameterTile" class="flexbox" style="background-color: #00000030; border-radius: 12px; padding: 12px; margin-left: auto; margin-right: auto; width: 15vw; height: 18vh; justify-content: center; align-items: center;">
+
+                <div id="sepfx" class="flexbox" style="margin-bottom: 1vh; margin-left: calc(auto + 2.5px); margin-right: auto; width: 100%;">
+                <div></div>
+                <div id="parameterTile" class="flexbox" style="border-top-left-radius: 12px; border-bottom-left-radius: 12px; background-color: #00000030; padding: 12px;  margin-left: auto; margin-right: 1%; width: calc(40% - 24px); height: 18vh; justify-content: center; align-items: center;">
                 
                 </div>
 
-                <div id="plTile" class="flexbox" style="background-color: #00000030; border-radius: 12px; padding: 12px; margin-left: auto; margin-right: auto; width: 20vw; height: 18vh; justify-content: center; align-items: center;">
-                    <div class="barbuttontexta flexbox" style="margin: auto;">⟨  <span style="margin-left: 5vw"></span> Select A Parameter!</div>
+                <div id="plTile" class="flexbox" style=" border-top-right-radius: 12px; border-bottom-right-radius: 12px; background-color: #00000030; padding: 12px;  margin-right: auto; width: calc(55% - 24px); height: 18vh; justify-content: center; align-items: center;">
+                    <div class="barbuttontexta flexbox" style="margin: auto;">⟨  <span style="margin-left: 6vw"></span> Select A Parameter!</div>
                 </div>
                 
-                <div id="plusMinusParams" class="flexbox" style="margin-left: 5.5px; margin-top: 1vh; margin-bottom: -0.5vh; background-color: #00000060; padding: 12px; border-radius: 13px; height: auto; align-items: center; justify-content: center; width: 35%; margin-left: auto; margin-right: auto;">
-                <div class="barbuttone" onclick="newParam()" style="margin-top: auto; margin-bottom: 0vh; height: auto; animation-duration: 0s;"><div class="barbuttontext"><b>+</b></div></div>
-                <div class="barbuttone flexbox" onclick="deleteParam()" style="margin: auto; margin-top: auto; margin-bottom: 0vh; height: auto; animation-duration: 0s;"><div class="barbuttontext"><b>-</b></div>
+                <div id="plusMinusParams" class="flexbox" style="margin-left: 5.5px; width: 40%; margin-top: 1vh; background-color: #00000060; padding: 12px; border-radius: 13px; align-items: center; justify-content: center; margin-left: auto; margin-right: auto;">
+                
+                
+                <div class="switchableButton" onclick="newParam()" style="width: 28%; border-top-left-radius: 12px; border-bottom-left-radius: 12px; margin: auto; height: auto; padding: 4px; height: 5vh;"><div class="barbuttontext" style="margin: auto"><b>+</b></div></div>
+                <div class="switchableButton" onclick="deleteParam()" style="width: 28%; margin: auto; height: auto; padding: 4px; height: 5vh;"><div class="barbuttontext" style="margin: auto"><b>-</b></div></div>
+                <div class="switchableButton" onclick="closeCommand()" style="width: 28%; border-top-right-radius: 12px; border-bottom-right-radius: 12px; margin: auto; height: auto; padding: 4px; height: 5vh;"><div class="barbuttontexta" style="margin: auto"><b>✕</b></div></div>
+                
+                
                 </div>
 
-                <div class="barbuttone" onclick="closeCommand()" style="margin-top: auto; margin-bottom: auto; width: 40px; animation-duration: 0s;"><div class="barbuttontexta">✕</div></div>
 
-                </div>
-                <div class="flexbox" id="storeParamAs" style="margin-top: 1vh; margin-bottom: -0.5vh; background-color: #00000060; padding: 0px; border-radius: 13px; height: auto; align-items: center; justify-content: center; margin-left: auto; margin-right: auto; width: 56%;">
+
+                <div class="flexbox" id="storeParamAs" style="margin-top: 1vh; margin-bottom: -0.5vh; background-color: #00000060; padding: 0px; border-radius: 13px; height: 9vh; align-items: center; justify-content: center; margin-left: auto; margin-right: auto; width: 50%;">
                     <div class="ring" style="width: 3vh; height: 3vh;"></div>
                 </div>
                 `
@@ -2046,7 +2041,7 @@ function switchObjs() {
 
             paramTile.innerHTML = `
             <div class="barbuttontexta" style="margin-top: -1vh;">Require Parameter?</div>
-            <div class="flexbox" style="width: 100vw; margin-top: -0.7vh; margin-left: auto; margin-right: auto;background-color: #00000030; border-radius: 10px; align-items: center; justify-content:center; padding: 5px;">
+            <div class="flexbox" style="width: 100%; margin-top: -0.7vh; margin-left: auto; margin-right: auto;background-color: #00000030; border-radius: 10px; align-items: center; justify-content:center; padding: 5px;">
             <div onclick="setReq(true, this)" id="rft" class="barbuttone">
             <div class="barbuttontexta">✓</div>
             </div>
@@ -2244,8 +2239,8 @@ function switchObjs() {
                     <div class="flexbox" style="background-color: #00000060; width: 95%; padding: 9px; margin-left: auto; margin-right: auto; border-radius: 12px; margin-top: 2vh;">
                     
                     <div class="barbutton" onclick="showButtons()" style="margin-top: auto; margin-bottom: auto;"><div class="barbuttontexta">Buttons</div></div>
-                    <div class="barbutton" style="margin-top: auto; margin-bottom: auto;"><div class="barbuttontexta">Action Rows</div></div>
-                    <div class="barbutton" style="margin-top: auto; margin-bottom: auto;"><div class="barbuttontexta">Errors</div></div>
+                    <div class="barbutton" style="margin-top: auto; margin-bottom: auto;"><div class="barbuttontexta">Action Rows (Unavailable)</div></div>
+                    <div class="barbutton" style="margin-top: auto; margin-bottom: auto;"><div class="barbuttontexta">Errors (Unavailable)</div></div>
 
                     </div>
                     <div class="sepbar"></div>
@@ -2274,7 +2269,7 @@ function switchObjs() {
                     <div style="background-color: #00000060; width: 40vw; height: 35vh; border-radius: 12px; padding: 12px;" class="flexbox">
                     <div class="barbuttontexta">
                     <b>READ ME!</b>
-                    You're currently running Studio Bot Maker version 2.2.1 - This is an unfinished build, and most things (such as the edit embed action) are unfinished - read more & release notes on RatWasHere/Studiobotmaker on github! 
+                    You're currently running Studio Bot Maker version 2.3.1 - This is an unfinished build, and most things (such as the edit embed action) are unfinished - read more & release notes on RatWasHere/Studiobotmaker on github! 
                     </div>
                     </div>
                     </div>
@@ -2300,6 +2295,123 @@ function switchObjs() {
             
             `
         }
+    function elementContentChecker(element, values) {
+        let maxLength = values.maxLength
+
+        if (values.isCommandName == true) {
+            let type = 'event'
+            if (datjson.commands[lastObj].type == 'action') {
+                console.log(datjson.commands[lastObj])
+                    switch(datjson.commands[lastObj].trigger) {
+                case 'slashCommand':
+                    type = 'slsh'
+                    break
+                case 'textCommand':
+                    type = 'txt'
+                break
+                case 'messageContent':
+                    type = 'msg'
+            }
+        }
+
+    if (type == 'event') {   
+        let text = element.innerText
+        
+        if (text.split('').length > maxLength) {
+            let finalText = ''
+
+            let count = 0
+
+            for (let character in text) {
+                    count++
+                if (count < maxLength) {
+                    finalText += text[character]
+                }
+            }
+            element.innerHTML = finalText
+            element.blur()
+        }
+     }
+
+     if (type == 'txt') {
+        let text = element.innerText
+
+        if (text.split('').length > maxLength) {
+            let finalText = ''
+
+            let count = 0
+
+            for (let character in text) {
+                    count++
+                if (count < maxLength) {
+                    finalText += text[character]
+                }
+            }
+            element.innerHTML = finalText
+            element.blur()
+        }
+     }
+
+     if (type == 'slsh') {
+        let text = element.innerText
+
+        if (text.split('').length > maxLength) {
+            let finalText = ''
+
+            let count = 0
+
+            for (let character in text) {
+                    count++
+                if (count < maxLength) {
+                    finalText += text[character]
+                }
+            }
+            element.innerHTML = finalText
+            element.blur()
+        }
+     }
+
+    } else {
+        if (values.noSpaces == true && values.fromBlur == true) {
+            if (element.innerText.split('').includes(' ')) {
+                element.innerText = element.innerText.replaceAll(' ', '')
+            }
+         }
+
+         let text = element.innerText
+
+         if (text.split('').length > maxLength) {
+             let finalText = ''
+ 
+             let count = 0
+ 
+             for (let character in text) {
+                     count++
+                 if (count < maxLength) {
+                     finalText += text[character]
+                 }
+             }
+             element.innerHTML = finalText
+             element.blur()
+         }
+    }
+    }
+
+
+/* 
+        if (element.innerText.split('').length > maxLength) {
+            let fk = element.innerText.split(''); 
+         let count = 0; element.innerHTML = ''; 
+         element.blur(); 
+         for (let i in fk) {
+             count++;
+            if (count < 25) {
+                element.innerHTML += fk[i]; element.focus();
+            } else { 
+                element.blur()
+            }
+     }} */
+
 function setProjectName(welm) {
     datjson.name = welm.innerText
     fs.writeFileSync(processPath + '\\AppData\\data.json', JSON.stringify(datjson, null, 2));
@@ -2314,16 +2426,6 @@ function setProjectName(welm) {
                 <div class="barbuttontext"><b>+</b></div>
                 </div> 
                 <br>
-                `
-                view.innerHTML += `
-                <div class="issue flexbox" style="width: 90%; margin-left: 0px; margin-right: auto;">
-                <div class="barbuttontext">
-                Link To Actions
-</div>
-<div class="barbutton" onclick="swipeToLeft()">
-<div class="barbuttontexta">⟩</div>
-</div>
-                </div>
                 `
                 for (let bar in datjson.buttons.bars) {
                     view.innerHTML += `
@@ -2799,4 +2901,179 @@ function closeMenu() {
         checkErrors()
     }    
 
+
+    let menu = null;
+
+window.oncontextmenu = function (event) {
+  showCustomMenu(event.clientX, event.clientY);
+  return false;     // cancel default menu
+}
+
+document.addEventListener('click', function(event) {
+  if (menu && !menu.contains(event.target)) {
+    menu.remove();
+    menu = null;
+  }
+});
+
+function showCustomMenu(x, y) {
+  if (!menu) {
+    menu = document.createElement('div')
+    menu.style.width = '15vw'
+    menu.style.height = '33vh'
+    menu.style.backgroundColor = '#00000060'
+    menu.style.borderRadius = '12px'
+    menu.style.backdropFilter = 'blur(12px)'
+    menu.style.position = 'fixed'
+    menu.style.top = y + 'px'
+    menu.style.left = x + 'px'
+    menu.style.overflowY = 'auto'
+    menu.id = 'customMenu'
+    document.body.appendChild(menu)
+    if (document.getElementById('cndcl')) {
+        menu.innerHTML = `
+        <div class="barbuttontexta" style="background-color: #FFFFFF15; border-top-left-radius: 12px; border-top-right-radius: 12px; border-bottom: solid 2px #FFFFFF30; padding: 2px;">Insert Variable</div>
+        <div class="zaction fullwidth" style="margin-top: 5px;"><div class="barbuttontexta">Var. Template</div></div>
+    `
+
+    if (document.activeElement.className == 'selectBar') {
+        var fieldSearch = require(`./AppData/Actions/${datjson.commands[lastObj].actions[lastAct].file}`).UI
+        let fieldOptions = fieldSearch.variableSettings
+        let options;
+
+        for (let field in fieldOptions) {
+            if (field == document.activeElement.id) {
+                options = fieldOptions[field]
+            }
+        }
+        let elementStoredAs;
+        for (let uilm in fieldSearch) {
+            if (uilm.startsWith('menuBar')) {
+                if (fieldSearch[uilm].extraField == document.activeElement.id) {
+                    elementStoredAs = fieldSearch[uilm].storeAs
+                }
+            }
+        }
+        let stf = options[datjson.commands[lastObj].actions[lastAct].data[elementStoredAs]]
+        let type = 2
+
+        if (stf == 'novars')  {
+            type = 1
+            menu.innerHTML = `
+            <div class="barbuttontexta" style="background-color: #FFFFFF15; border-top-left-radius: 12px; border-top-right-radius: 12px; border-bottom: solid 2px #FFFFFF30; padding: 2px;">Variables Incompatible</div>
+            `
+        }
+        if (stf == 'direct') {
+            type = 0
+        }
+
+        for (let action in datjson.commands[lastObj].actions) {
+            for (let UIelement in require(`./AppData/Actions/${datjson.commands[lastObj].actions[action].file}`).UI) {
+                    let data = require(`./AppData/Actions/${datjson.commands[lastObj].actions[action].file}`).UI
+                if (UIelement.endsWith(`!*`) || UIelement.endsWith('!')) {
+                var field;
+                    for (let fild in fieldSearch) {
+                        if (fieldSearch[fild] == document.activeElement.id && `${fild}` != 'preview') {
+                            field = fild
+                        }
+
+                    }
+    
+                    menu.innerHTML += `
+                    <div class="zaction fullwidth" onclick="setVariableIn('${document.activeElement.id}', ${type}, this.innerText, true)"><div class="barbuttontexta">${datjson.commands[lastObj].actions[action].data[data[UIelement]]}</div></div>
+                    `
+                }
+            }
+        }
+
+} else {
+    let raun = false;
+
+    for (let UIelement in require(`./AppData/Actions/${datjson.commands[lastObj].actions[lastAct].file}`).UI) {
+        if (require(`./AppData/Actions/${datjson.commands[lastObj].actions[lastAct].file}`).UI[UIelement] == document.activeElement.id) {
+            if (UIelement.endsWith('_actionGroup') || UIelement.endsWith('_actionGroup*')) {
+                var fieldSearch = require(`./AppData/Actions/${datjson.commands[lastObj].actions[lastAct].file}`).UI
+
+                
+                    menu.innerHTML = `
+                    <div class="barbuttontexta" style="background-color: #FFFFFF15; border-top-left-radius: 12px; border-top-right-radius: 12px; border-bottom: solid 2px #FFFFFF30; padding: 2px;">Insert Action Group</div>
+                    `
+                    for (let command in datjson.commands) {
+                        menu.innerHTML += `
+                        <div class="zaction fullwidth" onclick="setVariableIn('${document.activeElement.id}', 0, '${datjson.commands[command].name}')"><div class="barbuttontexta">${datjson.commands[command].name} | #${command}</div></div>
+                        `
+                    }
+                    raun = true
+        
+            }
+        }
+    }
+    if (raun == false) {
+    for (let action in datjson.commands[lastObj].actions) {
+        for (let UIelement in require(`./AppData/Actions/${datjson.commands[lastObj].actions[action].file}`).UI) {
+                let data = require(`./AppData/Actions/${datjson.commands[lastObj].actions[action].file}`).UI
+            if (UIelement.endsWith(`!*`) || UIelement.endsWith('!')) {
+            var field;
+            var fieldSearch = require(`./AppData/Actions/${datjson.commands[lastObj].actions[lastAct].file}`).UI
+                for (let fild in fieldSearch) {
+                    if (fieldSearch[fild] == document.activeElement.id && `${fild}` != 'preview') {
+                        field = fild
+                    }
+                }
+            
+                let variableAsType = 2;
+                if (field.endsWith('_direct*')) {
+                    variableAsType = 0
+                }
+                if (field.endsWith('_direct')) {
+                    variableAsType = 0
+                }
+                if (field.endsWith('_novars') || field.endsWith('_novars*')) {
+                    variableAsType = 1
+                    menu.innerHTML = `<div class="barbuttontexta" style="background-color: #FFFFFF15; border-top-left-radius: 12px; border-top-right-radius: 12px; border-bottom: solid 2px #FFFFFF30; padding: 2px;">Variables Incompatible</div>`
+                    return
+                }
+
+
+                    menu.innerHTML += `
+                    <div class="zaction fullwidth" onclick="setVariableIn('${document.activeElement.id}', ${variableAsType}, this.innerText)"><div class="barbuttontexta">${datjson.commands[lastObj].actions[action].data[data[UIelement]]}</div></div>
+                    `
+            }
+        }
+    }
+    }
+  }}
+}
+}
+function setVariableIn(elementId, type, varName) {
+    let element = document.getElementById(elementId)
+
+    if (type == 2) {
+        element.innerHTML += `\${tempVars('${varName}')}`
+        element.focus()
+        element.blur()
+        element.focus()
+        element.blur()
+        setTimeout(() => {
+            element.focus()
+            element.blur()
+        }, 100)
+    }
+        
+    if (type == 0) {
+        element.blur()
+        element.innerHTML = `${varName}`
+        element.focus()
+        element.blur()
+        element.focus()
+        element.blur()
+        setTimeout(() => {
+            element.focus()
+            element.blur()
+        }, 100)
+    }
+    if (type == 1) {
+        null
+    }
+}   
     

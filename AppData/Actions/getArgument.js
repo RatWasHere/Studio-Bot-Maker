@@ -1,6 +1,18 @@
 module.exports = {
     data: {"messageContent": "", "button": "✓", "name": "Get Argument", "ExtraData": "", "sendTo":"", "ButtonRow":"", "message":"Command Message", "messageF":"", "firstArgument":"TEST", "secondArgument":"EST", "elementAs":"Message*","ActionRow":"None", "embedVar":"", "guild":"Message Guild", "guildField":"", "storesAs":""},
-    UI: {"compatibleWith": ["Text"], "text": "Get Argument","sepbar44423":"sepbar", "btextmsg":"From", "menuBar1":{"choices":["Command Message", "Message*"], storeAs:"message", extraField:"messageF"}, "sepbarmsg":"sepb", "btextEmbVar":"From Argument #", "inputargument":"firstArgument", "sepbarargs":"", "btextArg":"To", "menuBar":{"choices":["None", "Argument #*", "End"], storeAs:"ActionRow", extraField:"guildField"}, "sepbarextrafield":"seb","btextstoreas":"Store As", "inputstoresas*":"storesAs", "preview":"storesAs", "previewName":"Store As"},
+    UI: {"compatibleWith": ["Text"], "text": "Get Argument","sepbar44423":"sepbar", "btextmsg":"From", "menuBar1":{"choices":["Command Message", "Message*"], storeAs:"message", extraField:"messageF"}, "sepbarmsg":"sepb", "btextEmbVar":"From Argument #", "inputargument":"firstArgument", "sepbarargs":"", "btextArg":"To", "menuBar":{"choices":["None", "Argument #*", "End"], storeAs:"ActionRow", extraField:"guildField"}, "sepbarextrafield":"seb","btextstoreas":"Store As", "inputstoresas!*":"storesAs", "preview":"storesAs", "previewName":"Store As",
+    "variableSettings":{
+        "messageF": {
+            "Message*": "direct", 
+            "Command Message": "novars",
+        },
+        "guildField": { 
+            "None": "novars",
+            "Argument #*": "novars",
+            "End": "novars"
+        }
+    }
+},
     run(values, message, uID, fs, client) {
         var output = ''
         if (values.message == 'Command Message') {

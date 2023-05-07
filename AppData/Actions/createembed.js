@@ -1,6 +1,6 @@
 module.exports = {
     data: {"storeAs": "", "name": "Create Embed", "ExtraData": "", "sendTo":"", "title": "", "authorName": "", "authorIcon":"", "embedColor":"#000000", "footerContent":"", "description":""},
-    UI: {"compatibleWith":["Any"], "texts": "Create Embed", "sepbar3":"sepbar", "btext9": "Embed Title", "input1*":"title","sepbarTitleColor":"", "btextColorText":"Color", "inputColor*":"embedColor","btextInputFooter":"Footer", "inputFooter":"footerContent", "sepbarEmbAuthor":"s", "btext1":"Author Name", "input7":"authorName", "btext4": "Author Icon URL", "input":"authorIcon", "sepbar44":"ddd", "btextdesctext":"Description", "largeInput":"description", "sepbarDescription":"", "btext4494":"Store As", "input44466": "storeAs", "preview": "storeAs", "previewName": "Store As"},
+    UI: {"compatibleWith":["Any"], "texts": "Create Embed", "sepbar3":"sepbar", "btext9": "Embed Title", "input1*":"title","sepbarTitleColor":"", "btextColorText":"Color", "inputColor*":"embedColor","btextInputFooter":"Footer", "inputFooter":"footerContent", "sepbarEmbAuthor":"s", "btext1":"Author Name", "input7":"authorName", "btext4": "Author Icon URL", "input":"authorIcon", "sepbar44":"ddd", "btextdesctext":"Description", "largeInput":"description", "sepbarDescription":"", "btext4494":"Store As", "input44466!*": "storeAs", "preview": "storeAs", "previewName": "Store As"},
     run(values, message, uID, fs) {
         let varTools = require(`../Toolkit/variableTools.js`)
         var tempVars = JSON.parse(fs.readFileSync('./AppData/Toolkit/tempVars.json', 'utf8'))

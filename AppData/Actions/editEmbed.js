@@ -1,5 +1,5 @@
 module.exports = {
-    data: {"messageContent": "", "button": "Edit Embed", "newEmbedVar":"", "name": "Edit Embed", "ExtraData": "", "sendTo":"", "ButtonRow":"", "ActionRow":"", "embedVar":""},
+    data: {"messageContent": "", "button": "Edit Embed", "newEmbedVar":"", "name": "Edit Embed", "ExtraData": "", "sendTo":"", "ButtonRow":"", "ActionRow":"", "embedVar":"", "actionRowElements":[]},
     UI: {"compatibleWith": ["Text", "Slash"], 
     "text": "Edit Embed","sepbar44423":"sepbar",
      "btextEmbVar":"Embed Variable", "inputEmbVar*":"embedVar",
@@ -11,7 +11,9 @@ module.exports = {
     async run(values, message, uID, fs, client) {
         const tempVars = JSON.parse(fs.readFileSync('./AppData/Toolkit/tempVars.json', 'utf8'));
         const varTools = require(`../Toolkit/variableTools.js`);
+        const interactionTools = require('../Toolkit/interactionTools.js')
+
       let embed = client.messages.cache.get(tempVars[uID][values.embedVar].id)
-      embed.edit({embeds: [tempVars[uID][values.newEmbedVar]]})
+      embed.edit({embeds: [tempVars[uID][values.newEmbedVar]], components: interactionTools.getButtons(values.actionRowElements)})
       }
     };

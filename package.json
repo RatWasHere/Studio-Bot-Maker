@@ -1,5 +1,5 @@
 {
-    "name": "studiobotmaker",
+    "name": "Studio Bot Maker",
     "main": "main.js",
     "author": "Rat",
     "description": "Create awesome Discord bots!",
@@ -60,5 +60,5 @@
         "release": "electron-builder"
 
     },
-    "version": "2.2.1"
+    "version": "2.3.1"
 }

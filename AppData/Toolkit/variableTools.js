@@ -26,9 +26,9 @@ module.exports = {
     },
     transf(text, uID, tmpVar) {
         let tempccc = JSON.stringify(tmpVar, null, 2)
-        var tempVars = JSON.parse(tempccc)
-        const tempVar = (variable) => {
-            return tempVars[uID][variable];
+        var tempVar = JSON.parse(tempccc)
+        const tempVars = (variable) => {
+            return tempVar[uID][variable];
           };
           let fext = text;
           if (fext.split('').includes('`')) {

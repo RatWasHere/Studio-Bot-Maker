@@ -4,7 +4,12 @@ module.exports = {
     "btext4":"Guild", "previewName":"Variable",
     "menuBar": {choices: ["Command Guild", "Guild*"], storeAs: "guild", extraField:"guildVariable"}, 
     "sepbarrole01":"", 
-    "btext1":"Role Variable", "input43":"roleVariable"
+    "btext1":"Role Variable", "input43":"roleVariable",
+    "variableSettings":{
+        "guildVariable": {
+            "Guild*": "direct", 
+            "Command Guild": "novars"
+        }}
 },
     run(values, message, uID, fs, client) {
         let guild;

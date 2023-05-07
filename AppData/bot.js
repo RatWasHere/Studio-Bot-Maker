@@ -14,7 +14,7 @@ try {
         fs.writeFileSync('./AppData/Toolkit/tempVars.json', '{}')
     });
     
-    const runActionArray =  (at, msg, client, actionBridge) => {
+    const runActionArray =  async (at, msg, client, actionBridge) => {
         var tempVars = JSON.parse(fs.readFileSync('./AppData/Toolkit/tempVars.json', 'utf8'))
         var date1 = new Date();
         var uniq = new Date(date1.getTime());            
@@ -34,7 +34,7 @@ try {
             }
         } else {
             let acfile = require(`./AppData/Actions/${data.commands[at].actions[action].file}`)
-             require(`./AppData/Actions/${data.commands[at].actions[action].file}`).run(data.commands[at].actions[action].data, msg, uniq, fs, client)
+              await require(`./AppData/Actions/${data.commands[at].actions[action].file}`).run(data.commands[at].actions[action].data, msg, uniq, fs, client, runActionArray)
                 if (data.commands[at].actions[data.commands[at].count] == data.commands[at].actions[action]) {
                 setTimeout(
                     () => {
@@ -49,13 +49,12 @@ try {
 
     /* END RUN ARRAY FUNCTION */
 }
-    client.on('messageCreate',  msg => {
+    client.on('messageCreate', async  msg => {
         if (msg.author.bot) return
         for (let i in data.commands) {
             if (data.commands[i].type == 'action') {
                 var tempVars = JSON.parse(fs.readFileSync('./AppData/Toolkit/tempVars.json', 'utf8'))
                 if (data.commands[i].trigger === 'textCommand') {
-    
     
             let message = msg.content.split(data.prefix)[1]
             let dcn = data.commands[i].name.toString()
@@ -82,7 +81,7 @@ try {
                         break
                     } else {
                         let acfile = require(`./AppData/Actions/${data.commands[i].actions[action].file}`)
-                         require(`./AppData/Actions/${data.commands[i].actions[action].file}`).run(data.commands[i].actions[action].data, msg, uniq, fs, client)
+                          await require(`./AppData/Actions/${data.commands[i].actions[action].file}`).run(data.commands[i].actions[action].data, msg, uniq, fs, client, runActionArray)
                             if (data.commands[i].actions[data.commands[i].count] == data.commands[i].actions[action]) {
                             setTimeout(
                                 () => {
@@ -125,7 +124,7 @@ try {
                                     break
                                 } else {
                                     let acfile = require(`./AppData/Actions/${data.commands[i].actions[action].file}`)
-                                     require(`./AppData/Actions/${data.commands[i].actions[action].file}`).run(data.commands[i].actions[action].data, msg, uniq, fs, client)
+                                     await require(`./AppData/Actions/${data.commands[i].actions[action].file}`).run(data.commands[i].actions[action].data, msg, uniq, fs, client, runActionArray)
                                         if (data.commands[i].actions[data.commands[i].count] == data.commands[i].actions[action]) {
                                         setTimeout(
                                             () => {
@@ -147,6 +146,7 @@ try {
         }
     });
     const {Events} = require('discord.js')
+
     let commands = []
     for (let i in data.commands) {
         if (data.commands[i].trigger == 'slashCommand' && data.commands[i].type == 'action') {
@@ -227,27 +227,31 @@ try {
             //.setName(data.commands[i].name)
             //.setDescription(description);
         }
-        if (data.commands[i].type == 'event') {
-            let process = require('process').cwd()
-
-            let tvars = require('./AppData/Toolkit/tempVars.json');
-            var date1 = new Date();
-            var uniq = new Date(date1.getTime());
-            tvars[uniq] = {}
-            fs.writeFileSync('./AppData/Toolkit/tempVars.json', JSON.stringify(tvars))
-            var tempVars = JSON.parse(fs.readFileSync('./AppData/Toolkit/tempVars.json', 'utf8'))
-
-                /* RUN ARRAY FUNCTION */
-
-                        /* ENDED RUN ARRAY FUNCTION */
 
 
 
-            let eventFile = require(`./AppData/Events/${data.commands[i].eventFile}`);
+            if (data.commands[i].type == 'event') {
+                let process = require('process').cwd()
+    
+                let tvars = require('./AppData/Toolkit/tempVars.json');
+                var date1 = new Date();
+                var uniq = new Date(date1.getTime());
+                tvars[uniq] = {}
+                fs.writeFileSync('./AppData/Toolkit/tempVars.json', JSON.stringify(tvars))
+                var tempVars = JSON.parse(fs.readFileSync('./AppData/Toolkit/tempVars.json', 'utf8'))
+    
+                    /* RUN ARRAY FUNCTION */
+    
+                            /* ENDED RUN ARRAY FUNCTION */
+    
+    
+    
+                let eventFile = require(`./AppData/Events/${data.commands[i].eventFile}`);
+    
+                 eventFile.run(data.commands[i].eventData, client, fs, runActionArray, i)  
+        }
 
-            eventFile.run(data.commands[i].eventData, client, fs, runActionArray, i)  
-    }
-    client.on(Events.InteractionCreate, interaction => {
+    client.on(Events.InteractionCreate, async interaction => {
         if (!interaction.isChatInputCommand()) return;
         for (let i in data.commands) {
             if (data.commands[i].trigger == 'slashCommand' && data.commands[i].type == 'action' && interaction.commandName.toLowerCase() == data.commands[i].name.toLowerCase()) {
@@ -260,10 +264,11 @@ try {
 
                 for (let action in data.commands[i].actions) {
 
-                    require(`./AppData/Actions/${data.commands[i].actions[action].file}`).run(data.commands[i].actions[action].data, interaction, uniq, fs, client)
+                    await require(`./AppData/Actions/${data.commands[i].actions[action].file}`).run(data.commands[i].actions[action].data, interaction, uniq, fs, client, runActionArray)
         }}
     }
-    });
+});
+
     const rest = new REST({ version: '9' }).setToken(data.btk);
     rest.put(Routes.applicationCommands(data.clientID), { body: commands })
         .then(() => console.log('Successfully registered slash commands.'))
