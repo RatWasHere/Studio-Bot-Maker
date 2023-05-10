@@ -14,6 +14,7 @@ module.exports = {
             "Message ID*": "indirect"
         }
        },
+       
        "input666!*":"storeAs", previewName: "Get", preview: "messageFrom"},
     run(values, message, uID, fs, client) {
         var msg;

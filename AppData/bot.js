@@ -29,7 +29,7 @@ try {
                     () => {
                 delete tempVars[uniq]
                 fs.writeFileSync('./AppData/Toolkit/tempVars.json', JSON.stringify(tempVars))
-                    }, 15
+                    }, 0
                 )
             }
         } else {
@@ -40,7 +40,7 @@ try {
                     () => {
                 delete tempVars[uniq]
                 fs.writeFileSync('./AppData/Toolkit/tempVars.json', JSON.stringify(tempVars))
-                    }, 15
+                    }, 0
                 )
 
             }
@@ -74,7 +74,7 @@ try {
                                 () => {
                             delete tvars[uniq]
                             fs.writeFileSync('./AppData/Toolkit/tempVars.json', JSON.stringify(tvars))
-                                }, 15
+                                }, 0
                             )
         
                         }
@@ -87,7 +87,7 @@ try {
                                 () => {
                             delete tvars[uniq]
                             fs.writeFileSync('./AppData/Toolkit/tempVars.json', JSON.stringify(tvars))
-                                }, 15
+                                }, 0
                             )
         
                         }
@@ -117,7 +117,7 @@ try {
                                             () => {
                                         delete tvars[uniq]
                                         fs.writeFileSync('./AppData/Toolkit/tempVars.json', JSON.stringify(tvars))
-                                            }, 15
+                                            }, 0
                                         )
                     
                                     }
@@ -130,7 +130,7 @@ try {
                                             () => {
                                         delete tvars[uniq]
                                         fs.writeFileSync('./AppData/Toolkit/tempVars.json', JSON.stringify(tvars))
-                                            }, 15
+                                            }, 0
                                         )
                     
                                     }
@@ -256,10 +256,43 @@ try {
         for (let i in data.commands) {
             if (data.commands[i].trigger == 'slashCommand' && data.commands[i].type == 'action' && interaction.commandName.toLowerCase() == data.commands[i].name.toLowerCase()) {
                 let tvars = require('./AppData/Toolkit/tempVars.json');
-
+                
                 var date1 = new Date();
-                var uniq = new Date(date1.getTime());        
+                var uniq = new Date(date1.getTime());   
                 tvars[uniq] = {}
+
+                if (data.commands[i].parameters != undefined && data.commands[i].parameters[0] != undefined) {
+                    for (let e in data.commands[i].parameters) {
+
+                    let parameterTypes = data.commands[i].parameters[e].type
+                    switch(parameterTypes) {
+                        case 'String':
+                             param = interaction.options.getString(values.paramName)
+                        break
+                        case 'Boolean': 
+                             param = interaction.options.getBoolean(values.paramName)
+                        break
+                        case 'User':
+                             param = interaction.options.getUser(values.paramName)
+                        break
+                        case 'Role':
+                            param = interaction.options.getRole(values.paramName)
+                       break
+                        case 'Channel':
+                             param = interaction.options.getChannel(values.paramName)
+                        break
+                        case 'Integer':
+                             param = interaction.options.getInteger(values.paramName)
+                        break
+                        case 'Mentionable':
+                            param = interaction.options.getMentionable(values.paramName)
+                       break
+                    }
+                    if (data.commands[i].parameters[e].storeAs != undefined) {
+                        tvars[uniq][data.commands[i].parameters[e].storeAs] = param
+                    }
+                     }
+                    }
                 fs.writeFileSync('./AppData/Toolkit/tempVars.json', JSON.stringify(tvars))
 
                 for (let action in data.commands[i].actions) {

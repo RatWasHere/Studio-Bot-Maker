@@ -13,7 +13,11 @@ module.exports = {
     "btextstoreas":"Store As",
     "inputstoreas!*":"storeAs",
     "btext":"<b>Note!</b> <br> If you're using \"Custom\", you need to insert the number, not ordinal numbers!",
-    
+    "variableSettings": {
+        "messageVariable": {
+            "Variable*": "direct"
+        }
+    },
     preview: "button", previewName: "Mention"},
     run(values, message, uID, fs, client) {
         let varTools = require(`../Toolkit/variableTools.js`)

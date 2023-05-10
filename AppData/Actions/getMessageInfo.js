@@ -16,6 +16,11 @@ module.exports = {
     "Message URL",
     "Message Channel", "Message Author", "Message Timestamp", "Message Guild"], storeAs:"datainfo"} ,
     "sepbar324get":"",
+    "variableSettings": {
+        "ExtraData": {
+            "Variable*": "direct"
+        }
+    },
     "btext566": "Store As", "input666!*":"varble", previewName: "Get", preview: "datainfo"},
     run(values, message, uID, fs, client) {
         let varTools = require(`../Toolkit/variableTools.js`)

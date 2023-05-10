@@ -9,11 +9,17 @@
     </div>
     <div class="switchBar felxbox" id="bbar" style="display: flex; padding-top: 3.5px; padding-bottom: 3.5px;">
         <div class="barbutton center unrounded borderright" style="margin-left: 30px !important; margin-right: 0.2vw;" onclick="newObject()" >
+            <div class="tooltiptext">New Command / Action</div>
             <div class="barbuttontext" style="font-size: 45px;"><b>+</b></div></div><div class="barbutton unrounded borderleft center flexbox" style="justify-content: center;">
-        
-        <div  onclick="moveUp()" class="barbuttonhalf flexbox" style="justify-content: center;"><div class="image actionUp"></div></div><div class="barbuttonhalfr flexbox" style="justify-content: center;"  onclick="moveDown()"><div class="image actionDown"></div></div></div>
+                <div class="tooltiptext">Move Command / Action</div>
+
+        <div  onclick="moveUp()" class="barbuttonhalf flexbox" style="justify-content: center;">
+            
+            <div class="image actionUp"></div></div><div class="barbuttonhalfr flexbox" style="justify-content: center;"  onclick="moveDown()"><div class="image actionDown"></div></div></div>
 
     <div class="barbutton unrounded center" id="objswitch" style="margin-left: auto !important; margin-right: 30px;">
+        <div class="tooltiptext">View Actions / Commands | Home</div>
+
         <div class="barbuttonhalf flexbox" onclick="switchObjs(this)" style="justify-content: center;"><div class="image switchObjs"></div></div>
         <div class="barbuttonhalfr flexbox" onclick="modifyActElm()" style="justify-content: center;"><div class="image openMenu"></div></div>
     
@@ -81,9 +87,10 @@ try {
       let SWT = document.getElementById('switchTask')
       let CmdName = document.getElementById('Command_Name')
 
-
+    let currentlyEditing = false;
 
       function editAction(ect) {
+        currentlyEditing = true;
         lastAct = ect.id
         let action = lastAct
         lastHighlighted.style.backgroundColor = '#232323'

@@ -1,13 +1,667 @@
 {
   "READ ME: MESSING AROUND WITH THESE VALUES MIGHT DESTROY YOUR DISCORD BOT. MODIFY ON YOUR BEHALF!": "!!",
-  "prefix": "!",
-  "commands": {},
-  "count": 0,
+  "prefix": "ndt",
+  "commands": {
+    "1": {
+      "count": 8,
+      "name": "e",
+      "type": "action",
+      "trigger": "textCommand",
+      "actions": {
+        "1": {
+          "name": "Get Mentioned User",
+          "file": "getMessageMentions.js",
+          "data": {
+            "name": "Get Mentioned User",
+            "messageObject": "Command Message",
+            "messageVariable": "",
+            "storeAs": "user",
+            "button": "First",
+            "ExtraData": "5"
+          }
+        },
+        "2": {
+          "name": "Get User Info",
+          "file": "getUserInfo.js",
+          "data": {
+            "name": "Get User Info",
+            "desc": "",
+            "varble": "userid",
+            "vrble": "",
+            "vrb": "",
+            "button": "Command Message",
+            "ExtraData": "",
+            "datainfo": "User ID",
+            "memberVariable": "user",
+            "memberChoice": "Variable*"
+          }
+        },
+        "3": {
+          "name": "Get Member",
+          "file": "getMember.js",
+          "data": {
+            "messageContent": "",
+            "button": "Command Guild",
+            "name": "Get Member",
+            "ExtraData": "",
+            "sendTo": "",
+            "choice": "ID*",
+            "memberValue": "${tempVars('userid')}",
+            "storesAs": "member"
+          }
+        },
+        "4": {
+          "name": "Get Member Info",
+          "file": "getMemberInfo.js",
+          "data": {
+            "name": "Get Member Info",
+            "desc": "",
+            "varble": "memberPFP",
+            "vrble": "",
+            "vrb": "",
+            "button": "Command Message",
+            "ExtraData": "",
+            "datainfo": "Member Profile Picture (URL)",
+            "memberVariable": "member",
+            "memberChoice": "Variable*"
+          }
+        },
+        "5": {
+          "name": "Get Member Info",
+          "file": "getMemberInfo.js",
+          "data": {
+            "name": "Get Member Info",
+            "desc": "",
+            "varble": "memberName",
+            "vrble": "",
+            "vrb": "",
+            "button": "Command Message",
+            "ExtraData": "",
+            "datainfo": "Member Name",
+            "memberVariable": "member",
+            "memberChoice": "Variable*"
+          }
+        },
+        "6": {
+          "name": "Get Member Data",
+          "file": "getMemberData.js",
+          "data": {
+            "name": "Get Member Data",
+            "dataName": "isGay",
+            "dataValue": "",
+            "storeAs": "data",
+            "memberAs": "Variable*",
+            "memberFrom": "member"
+          }
+        },
+        "7": {
+          "name": "Create Embed",
+          "file": "createembed.js",
+          "data": {
+            "storeAs": "embed",
+            "name": "Create Embed",
+            "ExtraData": "",
+            "sendTo": "",
+            "title": "${tempVars('memberName')}'s Shit",
+            "authorName": "${tempVars('memberName')} is gay",
+            "authorIcon": "${tempVars('memberPFP')}",
+            "embedColor": "#FFFFFF",
+            "footerContent": "kys",
+            "description": "Stored Known Data for ${tempVars('memberName')}\nisGay - ${tempVars('data')}"
+          }
+        },
+        "8": {
+          "name": "Send Embed",
+          "file": "sendembed.js",
+          "data": {
+            "messageContent": "",
+            "storeAs": "",
+            "button": "Message Channel",
+            "name": "Send Embed",
+            "ExtraData": "",
+            "sendTo": "",
+            "ButtonRow": "",
+            "ActionRow": "",
+            "embedVar": "embed",
+            "actionRowElements": []
+          }
+        }
+      }
+    },
+    "2": {
+      "count": 8,
+      "name": "setData",
+      "type": "action",
+      "trigger": "textCommand",
+      "actions": {
+        "1": {
+          "name": "Get Member",
+          "file": "getMember.js",
+          "data": {
+            "messageContent": "",
+            "button": "Command Guild",
+            "name": "Get Member",
+            "ExtraData": "",
+            "sendTo": "",
+            "choice": "ID*",
+            "memberValue": "${tempVars('userID')}",
+            "storesAs": "member"
+          }
+        },
+        "2": {
+          "name": "Get Argument",
+          "file": "getArgument.js",
+          "data": {
+            "messageContent": "",
+            "button": "✓",
+            "name": "Get Argument",
+            "ExtraData": "",
+            "sendTo": "",
+            "ButtonRow": "",
+            "message": "Command Message",
+            "messageF": "",
+            "firstArgument": "TEST",
+            "secondArgument": "EST",
+            "elementAs": "Message*",
+            "ActionRow": "None",
+            "embedVar": "",
+            "guild": "Message Guild",
+            "guildField": "",
+            "storesAs": ""
+          }
+        },
+        "3": {
+          "name": "Get Argument",
+          "file": "getArgument.js",
+          "data": {
+            "messageContent": "",
+            "button": "✓",
+            "name": "Get Argument",
+            "ExtraData": "",
+            "sendTo": "",
+            "ButtonRow": "",
+            "message": "Command Message",
+            "messageF": "",
+            "firstArgument": "3",
+            "secondArgument": "EST",
+            "elementAs": "Message*",
+            "ActionRow": "End",
+            "embedVar": "",
+            "guild": "Message Guild",
+            "guildField": "",
+            "storesAs": "datavalue"
+          }
+        },
+        "4": {
+          "name": "Get Mentioned User",
+          "file": "getMessageMentions.js",
+          "data": {
+            "name": "Get Mentioned User",
+            "messageObject": "Command Message",
+            "messageVariable": "",
+            "storeAs": "user",
+            "button": "First",
+            "ExtraData": "5"
+          }
+        },
+        "5": {
+          "name": "Get User Info",
+          "file": "getUserInfo.js",
+          "data": {
+            "name": "Get User Info",
+            "desc": "",
+            "varble": "userID",
+            "vrble": "",
+            "vrb": "",
+            "button": "Command Message",
+            "ExtraData": "",
+            "datainfo": "User ID",
+            "memberVariable": "user",
+            "memberChoice": "Variable*"
+          }
+        },
+        "6": {
+          "name": "Get Member",
+          "file": "getMember.js",
+          "data": {
+            "messageContent": "",
+            "button": "Command Guild",
+            "name": "Get Member",
+            "ExtraData": "",
+            "sendTo": "",
+            "choice": "ID*",
+            "memberValue": "${tempVars('userID')}",
+            "storesAs": "member"
+          }
+        },
+        "7": {
+          "name": "Store Member Data",
+          "file": "storeMemberData.js",
+          "data": {
+            "name": "Store Member Data",
+            "dataName": "${tempVars('dataname')}",
+            "dataValue": "${tempVars('datavalue')}",
+            "storeAs": "",
+            "memberAs": "Message Author",
+            "memberFrom": ""
+          }
+        },
+        "8": {
+          "name": "Send Message",
+          "file": "sendmessage.js",
+          "data": {
+            "messageContent": "<@${tempVars('userID')}>'s data has been updated\nData value: ${tempVars('datavalue')}\nData name: ${tempVars('dataname')}\n\n\nSo.. now\n`${tempVars('datavalue')}` = `${tempVars('dataname')}` ",
+            "button": "Message Channel",
+            "name": "Send Message",
+            "ExtraData": "",
+            "sendTo": "",
+            "actionRowElements": []
+          }
+        }
+      }
+    },
+    "3": {
+      "count": 6,
+      "name": "obviously",
+      "type": "action",
+      "trigger": "slashCommand",
+      "actions": {
+        "1": {
+          "name": "Get User Info",
+          "file": "getUserInfo.js",
+          "data": {
+            "name": "Get User Info",
+            "desc": "",
+            "varble": "userID",
+            "vrble": "",
+            "vrb": "",
+            "button": "Command Message",
+            "ExtraData": "",
+            "datainfo": "User ID",
+            "memberVariable": "userParameter",
+            "memberChoice": "Variable*"
+          }
+        },
+        "2": {
+          "name": "Get Member",
+          "file": "getMember.js",
+          "data": {
+            "messageContent": "",
+            "button": "Command Guild",
+            "name": "Get Member",
+            "ExtraData": "",
+            "sendTo": "",
+            "choice": "ID*",
+            "memberValue": "${tempVars('userID')}",
+            "storesAs": "member"
+          }
+        },
+        "3": {
+          "name": "Ban Member",
+          "file": "banMember.js",
+          "data": {
+            "messageContent": "",
+            "button": "Variable*",
+            "name": "Ban Member",
+            "ExtraData": "member",
+            "sendTo": "",
+            "ButtonRow": "",
+            "ActionRow": "",
+            "embedVar": "",
+            "guild": "Message Guild",
+            "guildField": "",
+            "reason": "${tempVars('reason')}"
+          }
+        },
+        "4": {
+          "name": "Send Message",
+          "file": "sendmessage.js",
+          "data": {
+            "messageContent": "Hi there! You've been banned!",
+            "button": "Message Channel",
+            "ExtraData": "userParameter",
+            "name": "Send Message",
+            "sendTo": "",
+            "actionRowElements": []
+          }
+        },
+        "5": {
+          "name": "Send Message",
+          "file": "sendmessage.js",
+          "data": {
+            "messageContent": "Banned this member!",
+            "button": "User*",
+            "ExtraData": "",
+            "name": "Send Message",
+            "sendTo": "",
+            "actionRowElements": [
+              "1683658555355"
+            ]
+          }
+        },
+        "6": {
+          "name": "Delete Message",
+          "file": "deleteMessage_Event.js",
+          "data": {
+            "name": "Delete Message",
+            "messageVariable": ""
+          }
+        }
+      },
+      "parameters": [
+        {
+          "name": "user",
+          "type": "User",
+          "required": true,
+          "description": "The user you would like to ban!",
+          "storeAs": "user",
+          "paramPos": 0
+        },
+        {
+          "name": "integer",
+          "type": "String",
+          "required": false,
+          "description": "Parameter #4 of this command!",
+          "storeAs": "Param4",
+          "paramPos": 1
+        },
+        {
+          "name": "boolean",
+          "type": "Boolean",
+          "required": false,
+          "description": "Parameter #3 of this command!",
+          "storeAs": "Param3",
+          "paramPos": 2
+        },
+        {
+          "name": "e",
+          "type": "String",
+          "required": false,
+          "description": "Parameter #4 of this command!",
+          "storeAs": "Param4",
+          "paramPos": 3
+        }
+      ],
+      "description": "my slash command description"
+    },
+    "4": {
+      "count": 6,
+      "name": "ae",
+      "type": "event",
+      "trigger": "messageContent",
+      "actions": {
+        "1": {
+          "name": "Get Mentioned User",
+          "file": "getMessageMentions.js",
+          "data": {
+            "name": "Get Mentioned User",
+            "messageObject": "Command Message",
+            "messageVariable": "",
+            "storeAs": "mention",
+            "button": "First",
+            "ExtraData": "5",
+            "guildField": ""
+          }
+        },
+        "2": {
+          "name": "Get User Info",
+          "file": "getUserInfo.js",
+          "data": {
+            "name": "Get User Info",
+            "desc": "",
+            "varble": "userID",
+            "vrble": "",
+            "vrb": "",
+            "button": "Command Message",
+            "ExtraData": "",
+            "datainfo": "User ID",
+            "memberVariable": "userID",
+            "memberChoice": "Variable*"
+          }
+        },
+        "3": {
+          "name": "Get Member",
+          "file": "getMember.js",
+          "data": {
+            "messageContent": "",
+            "button": "Command Guild",
+            "name": "Get Member",
+            "ExtraData": "",
+            "sendTo": "",
+            "choice": "ID*",
+            "memberValue": "${tempVars('userID')}",
+            "storesAs": "member"
+          }
+        },
+        "4": {
+          "name": "Ban Member",
+          "file": "banMember.js",
+          "data": {
+            "messageContent": "",
+            "button": "Variable*",
+            "name": "Ban Member",
+            "ExtraData": "member",
+            "sendTo": "",
+            "ButtonRow": "",
+            "ActionRow": "",
+            "embedVar": "",
+            "guild": "Message Guild",
+            "guildField": "",
+            "reason": "Whatever Idc why i banned you"
+          }
+        },
+        "5": {
+          "name": "Get User Info",
+          "file": "getUserInfo.js",
+          "data": {
+            "name": "Get User Info",
+            "desc": "",
+            "varble": "",
+            "vrble": "",
+            "vrb": "",
+            "button": "Command Message",
+            "ExtraData": "",
+            "datainfo": "User ID",
+            "memberVariable": "userID",
+            "memberChoice": "Variable*"
+          }
+        },
+        "6": {
+          "name": "Ban Member",
+          "file": "banMember.js",
+          "data": {
+            "messageContent": "",
+            "button": "Variable*",
+            "name": "Ban Member",
+            "ExtraData": "userID",
+            "sendTo": "",
+            "ButtonRow": "",
+            "ActionRow": "",
+            "embedVar": "",
+            "guild": "Variable*",
+            "guildField": "",
+            "reason": ""
+          }
+        }
+      },
+      "eventFile": "update_message.js",
+      "event": "Message Update",
+      "eventData": [
+        " ",
+        " "
+      ]
+    },
+    "5": {
+      "count": 5,
+      "name": "oiodaaaaaaa",
+      "type": "action",
+      "trigger": "slashCommand",
+      "actions": {
+        "1": {
+          "name": "Send Embed",
+          "file": "sendembed.js",
+          "data": {
+            "messageContent": "",
+            "storeAs": "",
+            "button": "Channel*",
+            "name": "Send Embed",
+            "ExtraData": "",
+            "sendTo": "",
+            "ButtonRow": "",
+            "ActionRow": "",
+            "embedVar": "embed",
+            "actionRowElements": []
+          }
+        },
+        "2": {
+          "name": "Create Embed",
+          "file": "createembed.js",
+          "data": {
+            "storeAs": "embed",
+            "name": "Create Embed",
+            "ExtraData": "",
+            "sendTo": "",
+            "title": "Embed",
+            "authorName": "whoever",
+            "authorIcon": "",
+            "embedColor": "#000000",
+            "footerContent": "Hi ",
+            "description": "hi",
+            "fromWho": ""
+          }
+        },
+        "3": {
+          "name": "Send Message",
+          "file": "sendmessage.js",
+          "data": {
+            "messageContent": "Hello World!",
+            "button": "Message Channel",
+            "ExtraData": "",
+            "name": "Send Message",
+            "sendTo": "",
+            "actionRowElements": [
+              null
+            ]
+          }
+        },
+        "4": {
+          "name": "Get Message Info",
+          "file": "getMessageInfo_event.js",
+          "data": {
+            "name": "Get Message Info",
+            "desc": "",
+            "varble": "",
+            "vrble": "",
+            "vrb": "",
+            "button": "Command Message",
+            "ExtraData": "",
+            "datainfo": "Message Author"
+          }
+        },
+        "5": {
+          "name": "Await Reaction",
+          "file": "awaitReaction.js",
+          "data": {
+            "name": "Await Reaction",
+            "customID": "",
+            "storeAs": "reaction",
+            "messageVariable": "embed",
+            "runAfter": "idk",
+            "buttonCustomId": "",
+            "fromWho": "",
+            "awaitFrom": "Message Author",
+            "stopAfter": "60",
+            "button": "✕",
+            "postAction": "Acknowledge Interaction",
+            "postActionField": "",
+            "emojiType": "Any",
+            "emoji": "🤑"
+          }
+        }
+      },
+      "parameters": [
+        {
+          "name": "Parameter 0",
+          "type": "String",
+          "required": false,
+          "description": "Parameter #0 of this command!",
+          "storeAs": "Param0",
+          "paramPos": 0
+        }
+      ],
+      "description": "My slash command's descriptio"
+    },
+    "6": {
+      "count": 2,
+      "name": "New Command",
+      "type": "action",
+      "trigger": "textCommand",
+      "actions": {
+        "1": {
+          "name": "Delete Message",
+          "file": "deleteMessage.js",
+          "data": {
+            "name": "Delete Message",
+            "messageVariable": "e",
+            "messageFrom": "Variable*"
+          }
+        },
+        "2": {
+          "name": "Send Message",
+          "file": "sendmessage.js",
+          "data": {
+            "messageContent": "Hello World!",
+            "button": "Message Channel",
+            "ExtraData": "",
+            "name": "Send Message",
+            "sendTo": "",
+            "actionRowElements": []
+          }
+        }
+      }
+    }
+  },
+  "count": 6,
   "settings": {},
-  "color": "rgb(7, 19, 20)",
-  "btk": "",
-  "clientID": "",
-  "name": "Studio Bot Maker Bot",
-  "prjSrc": "",
-  "reset": true
+  "color": "rgb(0, 20, 23)",
+  "btk": "ODU5NzUxMjMzNDAwNjAyNjM1.GgZkC6.Om-F2TaExMYF3T_MOjsTqKbxir6xWNsmJqsI-M",
+  "clientID": "859751233400602635",
+  "name": "Studio Bot!",
+  "prjSrc": "E:\\nwjs-sdk-v0.73.0-win-x64\\exporttest",
+  "reset": false,
+  "buttons": {
+    "bars": [
+      {
+        "name": "wolfoisgay",
+        "storeAs": "ButtonBar",
+        "customId": "1683658555355",
+        "type": "buttonBar",
+        "buttons": [
+          {
+            "name": "Button4",
+            "style": "Default",
+            "customId": "Button4",
+            "disabled": false,
+            "field": ""
+          },
+          {
+            "name": "Button2",
+            "style": "Default",
+            "customId": "Button2",
+            "disabled": false,
+            "field": ""
+          },
+          {
+            "name": "Button4",
+            "style": "Default",
+            "customId": "Button4",
+            "disabled": false,
+            "field": ""
+          }
+        ]
+      }
+    ]
+  },
+  "serverToken": "ptlc_PryC02WPHixn0IKguZgiNYLbgA0dW6fBB7fHOfC70XZ",
+  "serverID": "5fe6b6d1"
 }

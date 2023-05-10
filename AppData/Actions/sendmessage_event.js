@@ -1,6 +1,11 @@
 module.exports = {
     data: {"messageContent": "", "button": "Channel*", "name": "Send Message", "ExtraData": "", "sendTo":"",  "actionRowElements":[]},
-    UI: {"compatibleWith": ["Event"], "text": "Message Content", "largeInput": "messageContent", "ButtonBar": {"buttons": ["Channel*", "User*"], storeAs: "sendTo"}, preview: "messageContent", previewName: "Content"},
+    UI: {"compatibleWith": ["Event"],
+    ButtonBarChoices: {
+        "Channel*": "direct",
+        "User*": "direct"
+     },
+     "text": "Message Content", "largeInput": "messageContent", "ButtonBar": {"buttons": ["Channel*", "User*"], storeAs: "sendTo"}, preview: "messageContent", previewName: "Content"},
     run(values, message, uID, fs, client) {
         let tempVrz = JSON.parse(fs.readFileSync('./AppData/Toolkit/tempVars.json'));
         console.log(tempVrz, 'tempVrz')

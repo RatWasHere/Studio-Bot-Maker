@@ -1,7 +1,16 @@
 module.exports = {
     data: {"messageContent": "", "button": "Message Channel", "name": "Send Message", "ExtraData": "", "sendTo":"",  "actionRowElements":[]},
-    UI: {"compatibleWith": ["Text", "Slash"], "text": "Message Content", "largeInput": "messageContent", "ButtonBar": {"buttons": ["Message Channel", "Channel*", "User*"], storeAs: "sendTo"}, preview: "messageContent", previewName: "Content"},
+    UI: {"compatibleWith": ["Text", "Slash"], 
+    "text": "Message Content", "largeInput": "messageContent", 
+    "ButtonBar": {"buttons": ["Message Channel", "Channel*", "User*"], storeAs: "sendTo"},
+     preview: "messageContent", previewName: "Content",
+     ButtonBarChoices: {
+        "Channel*": "direct",
+        "User*": "direct"
+     }
+    },
     run(values, message, uID, fs, client) {
+
         let tempVrz = JSON.parse(fs.readFileSync('./AppData/Toolkit/tempVars.json'));
         let varTools = require(`../Toolkit/variableTools.js`)
         const interactionTools = require('../Toolkit/interactionTools.js')

@@ -15,7 +15,7 @@ Well, first off you need a way to create the bot, both in terms of the bot in it
 - The bot in itself
 - The bot's code 
 ### Reccomended Hosts 
-- A way to host the bot (Reccomended Bot Hosts: [BOTSHARD - Free](https://botshard.com/) | [Phantom Hosting](https://phantom-hosting.net/store/software-hosting) | [Bot-Hosting.net](https://bot-hosting.net/) | [Vexy Host](https://vexyhost.com/free-hosting/discord/))
+- A way to host the bot (Strongly Reccomended: [Phantom Hosting](https://phantom-hosting.net/store/software-hosting))  (Other Bot Hosts (Low-End, Slow): [BOTSHARD - Free](https://botshard.com/) |  | [Bot-Hosting.net](https://bot-hosting.net/) | [Vexy Host](https://vexyhost.com/free-hosting/discord/))
 
 ### If you're here then I already know you're going to create the bot via SBM, welcome to the team! 💖
 

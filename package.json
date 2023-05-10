@@ -11,14 +11,16 @@
     "build": {
         "appId": "com.ratapp.sbm",
         "publish": [
-          {
-            "provider": "github",
-            "owner": "RatWasHere",
-            "repo": "studiobotupdates"
-          }
+            {
+                "provider": "github",
+                "owner": "RatWasHere",
+                "repo": "studiobotupdates"
+            }
         ],
         "win": {
-            "publish": ["github"], 
+            "publish": [
+                "github"
+            ],
             "target": [
                 {
                     "target": "nsis",
@@ -31,6 +33,7 @@
     },
     "dependencies": {
         "@electron-forge/maker-base": "^6.1.0",
+        "axios": "^1.4.0",
         "discord-api-types": "^0.37.34",
         "discord.js": "^14.8.0",
         "electron-squirrel-startup": "^1.0.0",
@@ -38,7 +41,6 @@
         "fs": "^0.0.1-security",
         "fs-extra": "^11.1.1",
         "fse": "^4.0.1",
-        "node-fetch": "^3.3.1",
         "request": "^2.88.2",
         "unzipper": "^0.10.11",
         "update-electron-app": "^2.0.1"
@@ -58,7 +60,6 @@
         "pack": "electron-builder --dir",
         "dist": "electron-builder",
         "release": "electron-builder"
-
     },
     "version": "2.3.1"
 }

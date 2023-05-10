@@ -1,12 +1,12 @@
 module.exports = {
     data: {"name":"Get Parameter", "paramName":"", "storeAs":"", "button": "String", "choice":"String"},
     UI: {"compatibleWith": ["Slash"],"text": "Get Parameter",
-    "sepbar":"sbar", "btext1":"Parameter Name", "input43":"paramName",
-     "btext69":"Store As", "input777":"storeAs", "sepbar422":"sepbar",
+    "sepbar":"sbar", "btext1":"Parameter Name", "input43*":"paramName",
+     "btext69":"Store As", "input777!*":"storeAs", "sepbar422":"sepbar",
       "btext03":"Parameter Type",
        "menuBar": {choices: ["String", "Boolean", "Channel", "User", "Integer"], storeAs: "choice"},
      "sepbar534":"",
-     "btext":"<b>Note!</b> <br> - Inserting the wrong parameter type will return nothing <br> - If a parameter is not required, it will return 'undefined', use <span style='background-color: #00000060; padding: 3px; border-radius: 4px;'>Compare Variable</span> to see if an optional parameter has been used!", 
+     "btext":"<b>Note!</b> <br> This action is deprecated!", 
      "preview":"paramName", "previewName":"Name",
      
 },
