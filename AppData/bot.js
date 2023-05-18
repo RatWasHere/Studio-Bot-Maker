@@ -7,15 +7,22 @@ try {
     const { Routes } = require('discord-api-types/v9');
     let data = JSON.parse(fs.readFileSync('./AppData/data.json'))
     let msgFunction;
+    try {
     fs.writeFileSync('./AppData/Toolkit/tempVars.json', '{}')
-
+} catch(err) {
+    null
+}
     client.on('ready', () => {
         console.log('Studio Bot Maker V0.0.1 Project, started successfully!');
         fs.writeFileSync('./AppData/Toolkit/tempVars.json', '{}')
     });
     
     const runActionArray =  async (at, msg, client, actionBridge) => {
+        try {
         var tempVars = JSON.parse(fs.readFileSync('./AppData/Toolkit/tempVars.json', 'utf8'))
+    } catch (err) {
+        null
+    }
         var date1 = new Date();
         var uniq = new Date(date1.getTime());            
         tempVars[uniq] = actionBridge
@@ -309,4 +316,5 @@ try {
     
     client.login(data.btk);
     }} catch (err) {
-console.log('oops! Studio Bot Maker just got run over by an error, here\'s more about it so you can report it: ', err)    }
+console.log('oops! Studio Bot Maker just got run over by an error, here\'s more about it so you can report it: ', err)   
+}

@@ -18,7 +18,7 @@
             <div class="image actionUp"></div></div><div class="barbuttonhalfr flexbox" style="justify-content: center;"  onclick="moveDown()"><div class="image actionDown"></div></div></div>
 
     <div class="barbutton unrounded center" id="objswitch" style="margin-left: auto !important; margin-right: 30px;">
-        <div class="tooltiptext">View Actions / Commands | Home</div>
+        <div class="tooltiptext">Switch Between Actions / Commands | Home</div>
 
         <div class="barbuttonhalf flexbox" onclick="switchObjs(this)" style="justify-content: center;"><div class="image switchObjs"></div></div>
         <div class="barbuttonhalfr flexbox" onclick="modifyActElm()" style="justify-content: center;"><div class="image openMenu"></div></div>
@@ -52,6 +52,8 @@
 <div class="bottombar" onclick="modifyBar()" id="bottombar">•••</div>
 </div>
     <script src="./AppData/Kits/EditorBones.js"></script>
+    <script src="./AppData/Kits/ActionModules.js"></script>
+
     <script>
         const interactionTools = require('./AppData/Toolkit/interactionTools.js')
 const fese = require('fs')
@@ -110,7 +112,11 @@ try {
                 for (let dataElement in actionData) {
                     if (datjson.commands[lastObj].actions[lastAct].data[dataElement] == undefined) {
                         datjson.commands[lastObj].actions[lastAct].data[dataElement] = actionData[dataElement]
-                        fs.writeFileSync(datjson.prjSrc + '\\AppData\\data.json', JSON.stringify(datjson, null, 2))
+                        try {
+                            fs.writeFileSync(datjson.prjSrc + '\\AppData\\data.json', JSON.stringify(datjson, null, 2))
+                        } catch(err) {
+                            null
+                        }
                     }
                 }
             

@@ -1,6 +1,6 @@
 module.exports = {
     data: {"name": "Get Message Info","desc": "", "varble": "", "vrble":"", "vrb":"", "button":"Command Message", "ExtraData":"", "datainfo":"Message Content"},
-    UI: {"compatibleWith": ["Any"],"text1":"Get Message Info", "sepbar2":"sepber",
+    UI: {"compatibleWith": ["Text"],"text1":"Get Message Info", "sepbar2":"sepber",
     "btext33333333":"Get Message Via",
     "variableSettings": {
         "ExtraData": {

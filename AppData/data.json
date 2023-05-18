@@ -4,10 +4,10 @@
   "commands": {},
   "count": 0,
   "settings": {},
-  "color": "rgb(20, 20, 20)",
+  "color": "rgb(7, 19, 20)",
   "btk": "YOUR_BOTS_TOKEN",
   "clientID": "YOUR_BOTS_CLIENT_ID",
-  "name": "YOUR_BOTS_NAME",
+  "name": "Studio Bot!",
   "prjSrc": "",
-  "reset": true
+  "reset": false
 }

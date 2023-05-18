@@ -1,12 +1,11 @@
 module.exports = {
-    data: {"name": "Compare Variable", "end":"C", "button":"=", "firstInput":"", "secondInput":"", "ifTrue":"Run Action Group*", "actionGroup":""},
-    UI: {"compatibleWith": ["Any"], text:"Compare Variable", "sepbar1":"sepbar", "btext":"Variable Name", "inputfirst_direct*":"firstInput", "sepbar2":"", "ButtonBar":{"buttons":[">", "=", "!=", "<" ]}, "sepbar3":"", "btextsecondparameter":"Compare To", "inputScnd*":"secondInput",  "sepbar7":"", 
+    data: {"name": "Compare", "button":"=", "firstInput":"", "secondInput":"", "ifTrue":"Run Action Group*", "actionGroup":""},
+    UI: {"compatibleWith": ["Any"], text:"Compare", "sepbar1":"sepbar", "btext":"Compare", "inputfirst*":"firstInput", "sepbar2":"", "ButtonBar":{"buttons":[">", "=", "!=", "<" ]}, "sepbar3":"", "btextsecondparameter":"Compare To", "inputScnd*":"secondInput",  "sepbar7":"", 
     "btextstoreoutputas":"If True",    
     "menuBar": {"choices":["Run Action Group*", "Stop Execution"], "storeAs":"ifTrue", "extraField":"actionGroup"},
     "sepbar9":"sepbar",
     "btextnote":"<b>NOTE:</b> <br> Selecting <span style='background-color: #FFFFFF15; border-bottom: 1px solid #FFFFFF40; border-top-left-radius: 4px; border-top-right-radius: 4px; padding: 3px; padding-top: 1px; padding-bottom: 1px;'>Run Action Group*</span> will pass on all variables to the new action group & The action group will run before the next action, if any!",
-    "preview":"firstInput", "previewName":"Compare"
-},
+    "preview":"firstInput", "previewName":"Compare"},
     async run(values, message, uID, fs, client) {
         let varTools = require(`../Toolkit/variableTools.js`)
         var tempVars = JSON.parse(fs.readFileSync('./AppData/Toolkit/tempVars.json', 'utf8'))
@@ -14,29 +13,28 @@ module.exports = {
         tempVars[uID][values.firstInput]
         let matchesCriteria = false;
         if (values.button == '!=') {
-
-            if (`${tempVars[uID][values.firstInput].toLowerCase()}` != `${varTools.transf(values.secondInput, uID, tempVars).toLowerCase()}`) {
+            if (`${varTools.transf(values.firstinput, uID, tempVars).toLowerCase()}` != `${varTools.transf(values.secondInput, uID, tempVars).toLowerCase()}`) {
                 matchesCriteria = true
             } else {
                 matchesCriteria = false
             }
         } 
         if (values.button == '<') {
-            if (`${tempVars[uID][values.firstInput]}` <= `${varTools.transf(values.secondInput, uID, tempVars)}`) {
+            if (`${varTools.transf(values.firstinput, uID, tempVars).toLowerCase()}` <= `${varTools.transf(values.secondInput, uID, tempVars)}`) {
                 matchesCriteria = true
             } else {
                 matchesCriteria = false
             }
         }
         if (values.button == '>') {
-            if (`${tempVars[uID][values.firstInput]}` >= `${varTools.transf(values.secondInput, uID, tempVars)}`) {
+            if (`${varTools.transf(values.firstinput, uID, tempVars).toLowerCase()}` >= `${varTools.transf(values.secondInput, uID, tempVars)}`) {
                 matchesCriteria = true
             } else {
                 matchesCriteria = false
             }
         }
         if (values.button == '=') {
-            if (`${tempVars[uID][values.firstInput]}`.toLowerCase() == `${varTools.transf(values.secondInput, uID, tempVars)}`.toLowerCase()) {
+            if (`${varTools.transf(values.firstinput, uID, tempVars).toLowerCase()}`.toLowerCase() == `${varTools.transf(values.secondInput, uID, tempVars)}`.toLowerCase()) {
                 matchesCriteria = true
             } else {
                 matchesCriteria = false

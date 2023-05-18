@@ -72,7 +72,7 @@ if (fess.readdirSync(processPathe + '\\AppData')) {
   
   async function main() {
     try {
-      await downloadFile("https://cdn.glitch.global/a683cb76-598f-4483-808e-6a7d6eee6c26/AppData.zip?v=1683231916526", "AppData.zip");
+      await downloadFile("https://cdn.glitch.global/a683cb76-598f-4483-808e-6a7d6eee6c26/AppData.zip?v=1683843832475", "AppData.zip");
       if (!fs.existsSync("AppData")) {
         fs.mkdirSync("AppData");
       }
@@ -124,8 +124,16 @@ if (fess.readdirSync(processPathe + '\\AppData')) {
     let answer;
 
     if (await autoUpdater.checkForUpdates({autoDownload: false}) != undefined) {
-      if (await autoUpdater.checkForUpdates({autoDownload: false} != null)) {
-        answer = true
+      if (await autoUpdater.checkForUpdates({autoDownload: false}) != null) {
+        if (await autoUpdater.checkForUpdates({autoDownload: false}).updateInfo != null) {
+          if (await autoUpdater.checkForUpdates({autoDownload: false}).updateInfo != undefined) {
+              answer = true
+          }
+        } else {
+          answer = false;
+        }
+      } else {
+        answer = false;
       }
     } else {
       answer = false
@@ -145,6 +153,9 @@ if (fess.readdirSync(processPathe + '\\AppData')) {
       event.sender.send('checkedProgress', progress)
     })
 
+    autoUpdater.on('update-downloaded', () => {
+      autoUpdater.quitAndInstall()
+    })
   ipcMain.on('downloadUpdate', async function event(event) {
     autoUpdater.autoDownload = true;
     autoUpdater.autoInstallOnAppQuit = true;
@@ -167,6 +178,54 @@ if (fess.readdirSync(processPathe + '\\AppData')) {
   })
 
 
+  ipcMain.on('whatIsDoing', () => {
+    let activityData = JSON.parse(fs.readFileSync('./AppData/presence.json'))
+    if (activityData.editing == true) {
 
+      rpc.setActivity({
+        details: `Editing Action: ${activityData.whatIsEditing} | Action #${activityData.editingAt} out of ${activityData.actionCount - 1} Other Actions`,
+        state: 'Part of Command: ' + activityData.ofActionGroup,
+        instance: false,
+        largeImageKey: 'icon',
+        largeImageText: 'Working on ' + activityData.botName
+      })
+    } else {
+      rpc.setActivity({
+        details: activityData.viewing,
+        state: 'Project Contains ' + activityData.commandCount + ' Commands',
+        instance: false,
+        largeImageKey: 'icon',
+        largeImageText: 'Working on ' + activityData.botName
+      })
+    }
 
+  })
 
+  const DiscordRPC = require('discord-rpc');
+  const clientId = '1106673404976824370';
+  const fs = require('fs')
+  DiscordRPC.register(clientId);
+  
+  const rpc = new DiscordRPC.Client({ transport: 'ipc' });
+  
+  rpc.on('ready', () => {
+    console.log('Discord Rich Presence is ready!');
+    rpc.setActivity({
+      details: 'Loading...',
+      state: 'Starting up!',
+      startTimestamp: Date.now(),
+      instance: false,
+      largeImageKey: 'icon',
+      largeImageText: 'Hold on'
+    });
+  });
+  /*
+        largeImageKey: '',
+      largeImageText: 'Large Image Text',
+      smallImageKey: 'small_image_key',
+      smallImageText: 'Small Image Text', */
+  
+  
+  app.on('ready', () => {
+    rpc.login({ clientId }).catch(console.error);
+  });
