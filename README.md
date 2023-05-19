@@ -32,5 +32,5 @@ I guess we've just got to wait to see what happens in the future, as SBM is evol
 ![image](https://user-images.githubusercontent.com/100881234/235323688-6321316f-6880-4c41-8ddb-b32e5199e404.png)
 
 
-### **Action Rows!**
-![image](https://user-images.githubusercontent.com/100881234/235323709-c31108bd-f5bb-4f3f-8069-876af79e1de2.png)
+### **Discord Buttons!**
+![image](https://github.com/RatWasHere/Studio-Bot-Maker/assets/100881234/c1a54d70-2a3e-4b39-8244-f2564bbcbf49)
