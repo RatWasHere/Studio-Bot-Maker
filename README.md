@@ -9,7 +9,7 @@ The benefits of that are quite obvious: The end product is a well polished appli
 ### 🪚 What to expect whilst using SBM
 A visually overwhelming pleasure! You have no idea how much fine tuning went into every single little animation (seriously, I wasted like 10 days fine tuning each one of them, excepting the new ones) and the UI is ~~very human~~ very easy to understand once you get the hang of it! 
 Right.. regarding ease of use: It might seem like overcomplicated burning garbage (you gotta see the first iteration of it then 🥰). I swear it ain't at all, ~~trust me bro~~ 
-Whilst currently not many actions, every new update / release brings us more and more!
+As of now, there's currently 70 actions! Diversity at it's finest ✨
 
 ### 💮 Future of SBM 
 Whilst development seems slow (and hopefully steady!), SBM has much more going on under the hood each release that comes! Whilst not always performance updates, each update targets to improve Studio Bot Maker's performance by ~3% each time, by removing dead code and useless loops, synchronously adding tons more features, and usually way rounder edges to everything (double meanings, i meant: making everything feel way polished and finished) 
