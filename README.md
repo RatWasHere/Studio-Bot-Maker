@@ -1,4 +1,5 @@
 # Studio Bot Maker
+**Releases have been quiet recently, could it be something big is coming?**
 
 **🐛 A no code discord bot maker!**
 
