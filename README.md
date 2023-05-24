@@ -17,10 +17,10 @@ Right.. regarding ease of use: It might seem like overcomplicated burning garbag
 As of now, there's currently 70 actions! Diversity at it's finest ✨
 
 ### 💮 Future of SBM 
-Whilst development seems slow (and hopefully steady!), SBM has much more going on under the hood each release that comes! Whilst not always performance updates, each update targets to improve Studio Bot Maker's performance by ~3% each time, by removing dead code and useless loops, synchronously adding tons more features, and usually way rounder edges to everything (double meanings, i meant: making everything feel way polished and finished) 
+Whilst development seems slow (and hopefully steady!), SBM has much more going on under the hood each release that comes! Whilst not always performance updates, each update targets to improve Studio Bot Maker's current abilities, and at the same time adding tons more features, and usually way rounder edges to everything (double meanings, i meant: making everything feel way polished and finished) 
 
 ### 👯‍♂️ Aim of general experience 
-Studio Bot Maker isn't the most appealing app compared to [Discord Bot Maker](https://store.steampowered.com/app/682130/Discord_Bot_Maker/) and [Discord Bot Builder](https://store.steampowered.com/app/1119570/Discord_Bot_Builder/), but it's got some killer features over them! (although, kudos to the creator of Discord Bot Builder, since the developer of Discord Bot Maker wants to discontinue the app), guess the release of SBM will be just the right sign for the creator of Discord Bot Maker and every other bot maker app creator to retire! (Though, no pressure guys, finish up support for discord.js v14 first 😅 (Reminder SBM runs discord.js v14.8))
+Studio Bot Maker isn't the most appealing app compared to [Discord Bot Maker](https://store.steampowered.com/app/682130/Discord_Bot_Maker/) and [Discord Bot Builder](https://store.steampowered.com/app/1119570/Discord_Bot_Builder/), but it's got some killer features over them! 
 I guess we've just got to wait to see what happens in the future, as SBM is evolving steadily, but I sure as heck hope you have a good feeling about this app too!
 
 ### 🫡 Warning
