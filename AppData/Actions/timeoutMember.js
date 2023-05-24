@@ -42,7 +42,7 @@ module.exports = {
         if (values.button == 'Message Author') {
             member = guild.members.cache.get(message.author.id)
         } else {
-            member = guild.members.cache.get(tempVars[uID][varTools.transf(values.ExtraData, uID, tempVars)].id)
+            member = guild.members.cache.get(tempVars[uID][varTools.transf(values.ExtraData, uID, tempVars)].userId)
         }   
         let duration;
         switch (values.duration) {

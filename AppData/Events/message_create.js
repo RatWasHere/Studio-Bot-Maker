@@ -1,11 +1,11 @@
 module.exports = {
-    "name": "Channel Deleted", 
-    nameSchemes: ["Store Channel As"],
+    "name": "Message Create", 
+    nameSchemes: ["Store Message As"],
     inputSchemes: 1,
     run(UI, client, fs, actionRunner, atWhat) {
         var tempVars = JSON.parse(fs.readFileSync('./AppData/Toolkit/tempVars.json', 'utf8'))
 
-        client.on('channelDelete', (msg) => {
+        client.on('messageCreate', (msg) => {
             actionRunner(atWhat, msg, client, {
                 [UI[0]]: msg
             }, true)

@@ -5,7 +5,7 @@ module.exports = {
       "Channel*": "direct",
       "User*": "direct"
    },
-    "btextEmbVar":"Embed Variable", "inputEmbVar":"embedVar", "sepbarEmbVar":"", "btext55553333334546426":"Send To", "ButtonBar": {"buttons": ["Channel*", "User*"], storeAs: "sendTo"}, "sepbar33235":"", "btext63555":"Button Row", "input":"ButtonRow", "btext6423":"Action Row", "input555533333":"ActionRow", preview: "embedVar", previewName: "Embed"},
+    "btextEmbVar":"Embed Variable", "inputEmbVar":"embedVar", "sepbarEmbVar":"", "btext55553333334546426":"Send To", "ButtonBar": {"buttons": ["Channel*", "User*"], storeAs: "sendTo"}, preview: "embedVar", previewName: "Embed"},
     async run(values, message, uID, fs, client) {
         const tempVars = JSON.parse(fs.readFileSync('./AppData/Toolkit/tempVars.json', 'utf8'));
         const varTools = require(`../Toolkit/variableTools.js`);

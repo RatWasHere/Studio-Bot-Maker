@@ -7,11 +7,12 @@ module.exports = {
       "sepbarEmbVar":"", 
       "btext55553333334546426":"Send To", 
       "ButtonBar": {"buttons": ["Message Channel", "Channel*", "User*"], storeAs: "sendTo",
-      ButtonBarChoices: {
-        "Channel*": "direct",
-        "User*": "direct"
-     }
+
     }, 
+    ButtonBarChoices: {
+      "Channel*": "direct",
+      "User*": "direct"
+   },
     preview: "embedVar", previewName: "Embed"},
      async run(values, message, uID, fs, client) {
         const interactionTools = require('../Toolkit/interactionTools.js')

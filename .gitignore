@@ -2,3 +2,5 @@ node_modules
 out/
 dist/
 AppData/data.json
+docs.md  
+README.md

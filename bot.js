@@ -92,6 +92,7 @@ try {
 
             if (data.commands[i].type == 'action') {
 
+                var tempVars = JSON.parse(fs.readFileSync('./AppData/Toolkit/tempVars.json', 'utf8'))
                 if (data.commands[i].trigger === 'textCommand') {
 
             let message = msg.content.split(data.prefix)[1]

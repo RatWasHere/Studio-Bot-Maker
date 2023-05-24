@@ -9,7 +9,7 @@ module.exports = {
             actionRunner(atWhat, member, client, {
                 [UI[0]]: member.guild,
                 [UI[1]]: member
-            })
+            }, true)
         })
     }
     

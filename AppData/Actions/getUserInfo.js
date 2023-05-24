@@ -11,9 +11,9 @@ module.exports = {
     async run(values, message, uID, fs, client) {
         let varTools = require(`../Toolkit/variableTools.js`)
         var tempVars = JSON.parse(fs.readFileSync('./AppData/Toolkit/tempVars.json', 'utf8'))
-        var user;
+        let user = message.user;
         if (values.memberChoice == 'Message Author') {
-            user = message.author
+            null
         } else {
             user = client.users.cache.get(varTools.transf(tempVars[uID][values.memberVariable].id, uID, tempVars));
         }

@@ -34,7 +34,7 @@
         <div class="sepbar"></div>
         <div id="commandActions" class="baction noanims" style="width: 90%; padding: 5px; margin-bottom: 10px;">Using 0 Actions</div>
         <div class="flexbox" style="height: 5%; justify-content: center;">
-            <div id="rawData" class="barbuttond borderright" onclick="switchGroups()" style="width: 30%; padding-left: 0px; padding-right: 0px;"><div class="barbuttontexta" id="wedf" >Group Trigger</div></div>
+            <div id="rawData" class="barbuttond borderright" onclick="switchGroups()" style="width: 30%; padding-left: 0px; padding-right: 0px;"><div class="barbuttontexta" id="wedf">Type</div></div>
         <div id="rawData" class="barbuttond bordercenter" onclick="duplicate()" style="width: 30%; padding-left: 0px; padding-right: 0px;"><div class="barbuttontexta">Duplicate</div></div>
         <div id="rawData" class="barbuttond borderleft" onclick="commandOptions()" style="width: 30%; padding-left: 0px; padding-right: 0px;"><div class="barbuttontexta">Options</div></div>
     </div>
@@ -130,7 +130,21 @@ try {
                     htmle = `${htmle} <div class="largeInput" contentEditable="true" id="${UIdata[e]}">${datjson.commands[lastObj].actions[lastAct].data[UIdata[e]]}</div>`
                 }
                 if (ems.startsWith('input')) {
-                    htmle = `${htmle} <div class="input" style="animation-name: startFrominput; animation-duration: 0.4s;" contentEditable="true" id="${UIdata[e]}">${datjson.commands[lastObj].actions[lastAct].data[UIdata[e]]}</div>`
+                    if (ems.endsWith('_actionGroup') || ems.endsWith('_actionGroup*')) {
+                        let cmd = 'None'
+                        for (let command in datjson.commands) {
+                            if (datjson.commands[command].customId == datjson.commands[lastObj].actions[lastAct].data[UIdata[e]]) {
+                                cmd = datjson.commands[command].name
+                            }
+                        }
+                        htmle = `${htmle} <div class="input borderbottomz" onblur="updateFoundActionGroup(this)" onchange="updateFoundActionGroup(this)" contentEditable="true" id="${UIdata[e]}">${datjson.commands[lastObj].actions[lastAct].data[UIdata[e]]}</div>
+                        <div class="actionGroupSelector bordertopz" onclick="document.getElementById('${UIdata[e]}').focus(); setTimeout( () => {showCustomMenu(getOffset(document.getElementById('${UIdata[e]}')).left + 10, getOffset(document.getElementById('${UIdata[e]}')).top + 50)}, 300)">
+                            <div class="barbuttontexta">Selected: ${cmd}</div>
+                        </div>
+                        `
+                    } else {
+                        htmle = `${htmle} <div class="input" contentEditable="true" id="${UIdata[e]}">${datjson.commands[lastObj].actions[lastAct].data[UIdata[e]]}</div>`
+                    }
                 }
                 if (ems.startsWith('sepbar')) {
                     htmle = `${htmle} <div class="sepbars"></div>`
@@ -181,7 +195,31 @@ try {
                            console.log(thenm, "thenm")
                             htmle = `${htmle}<div class="baction" id="${lastAct}" style="animation-name: appearfadenmt; width: 90% !important; text-align: left; border-radius: 12px; border-bottom-left-radius: 0px; border-bottom: solid 2px #FFFFFF40; padding-bottom: 0px; border-bottom-right-radius: 0px; padding-left: 0px; padding-right: 0px; margin-bottom: 6px; padding-left: 24px !important; " onclick="openChoices('${UIdata[ems].storeAs}', this, '${thenm}', '${ems}')">${UIdata[ems].choices[option]}</div>`
                             if (UIdata[ems].choices[option].endsWith('*')) {
-                                htmle = `${htmle} <div class="selectBar" onblur="saveField('${UIdata[ems].extraField}', '${UIdata[ems].storeAs}')" onkeyup="saveField('${UIdata[ems].extraField}', '${UIdata[ems].storeAs}')" id="${thenm}" contenteditable="true">${datjson.commands[lastObj].actions[lastAct].data[UIdata[ems].extraField]}</div>`
+
+                                if (UIdata.variableSettings[UIdata[ems].extraField][UIdata[ems].choices[option]] == 'actionGroup') {
+                                    htmle = `${htmle} <div class="selectBar" style="border-radius: 0px;" onblur="saveField('${UIdata[ems].extraField}', '${UIdata[ems].storeAs}'); updateFoundActionGroup(this)" onkeyup="saveField('${UIdata[ems].extraField}', '${UIdata[ems].storeAs}')" id="${thenm}" contenteditable="true">${datjson.commands[lastObj].actions[lastAct].data[UIdata[ems].extraField]}</div>
+                                    
+                                    `
+
+                                    let cmd = 'None'
+                                    for (let command in datjson.commands) {
+                                        if (datjson.commands[command].customId == datjson.commands[lastObj].actions[lastAct].data[UIdata[e]]) {
+                                            cmd = datjson.commands[command].name
+                                        }
+                                    }
+                                    htmle = `${htmle}
+                                    <div class="actionGroupSelectorB bordertopz" id="${thenm}Selector" onclick="document.getElementById('${thenm}').focus(); setTimeout( () => {showCustomMenu(getOffset(document.getElementById('${thenm}')).left + 10, getOffset(document.getElementById('${thenm}')).top + 50)}, 300)">
+                                        <div class="barbuttontexta">Selected: ${cmd}</div>
+                                    </div>
+                                    `
+
+
+
+                                } else {
+
+                                    htmle = `${htmle} <div class="selectBar" onblur="saveField('${UIdata[ems].extraField}', '${UIdata[ems].storeAs}')" onkeyup="saveField('${UIdata[ems].extraField}', '${UIdata[ems].storeAs}')" id="${thenm}" contenteditable="true">${datjson.commands[lastObj].actions[lastAct].data[UIdata[ems].extraField]}</div>`
+                                }
+                            
                             }
                         }
                     }
@@ -207,6 +245,7 @@ try {
                 ` + ' <div class="smalltext blk" style="margin-top: 14px; text-align: center; font-size: 18px;">Action Of ' + datjson.commands[lastObj].name + ' <br></div> <div class="smalltext blk" style="text-align: center">✓ = Save | ✕ = Discard</div>'
         document.getElementById('cndcl').onclick = () => {restoreTo(dfs, pinHTML)  }
         ActionTile.className = 'actionBar'
+        edutor.className = 'actionBar'
         edutor.style.overflowY = 'auto'
         document.getElementById('bottombar').style.opacity = '0%'
         document.getElementById('bottombar').remove()
@@ -256,6 +295,7 @@ try {
         if (butt.innerText.endsWith('*') && !oldButton.innerText.endsWith('*')) {
             var extrda = document.createElement('div')
             extrda.className = 'inputB'
+            extrda.innerHTML = datjson.commands[lastObj].actions[lastAct].data.ExtraData
             extrda.contentEditable = 'true'
             extrda.id = 'ExtraData'
             extrda.style.animationName = 'startFrominput'

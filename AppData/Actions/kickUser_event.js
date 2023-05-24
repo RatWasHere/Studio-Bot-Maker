@@ -14,12 +14,12 @@ module.exports = {
         let guild;
             guild = client.guilds.cache.get(tempVars[uID][varTools.transf(values.guildField, uID, tempVars)].id)
         let member;
-            member = guild.members.cache.get(tempVars[uID][varTools.transf(values.ExtraData, uID, tempVars)].id)
+            member = guild.members.cache.get(tempVars[uID][varTools.transf(values.ExtraData, uID, tempVars)].userId)
 
         if (values.reason == '') {
             member.kick()
         } else {
-            member.kick(varTools.transf(values.reason, uID, tempVars))
+            member.kick({reason: varTools.transf(values.reason, uID, tempVars)})
         }
     
 

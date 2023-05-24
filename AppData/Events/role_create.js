@@ -8,7 +8,7 @@ module.exports = {
         client.on('roleCreate', (role) => {
             actionRunner(atWhat, msg, client, {
                 [UI[0]]: role
-            })
+            }, true)
         })
     }
     

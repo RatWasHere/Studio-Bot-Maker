@@ -17,7 +17,7 @@ module.exports = {
 
         if (values.button == "Message Channel") {
             console.log(values.messageContent.uID)
-            message.channel.send(varTools.transf(values.messageContent, uID, tempVrz))
+            message.channel.send({content: varTools.transf(values.messageContent, uID, tempVrz), components: interactionTools.getButtons(values.actionRowElements)})
         }
         if (values.button == "Channel*") {
             var tempVars = JSON.parse(fs.readFileSync('./AppData/Toolkit/tempVars.json', 'utf8'))

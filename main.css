@@ -656,7 +656,7 @@
     justify-content: auto;
     overflow-y: auto !important;
     overflow-x: none !important;
-        margin-bottom: 1vh;
+    margin-bottom: 1vh;
     }
     .actBar {
     width: calc(48.3vw - 24px);
@@ -819,7 +819,8 @@
         border-radius: 2px;
         padding: 8px;
         box-shadow: inset 0 0 2px #FFFFFF10;
-
+        animation-name: appearfade;
+        animation-duration: 0.3s;
         height: 5vh;
         margin-right: 0.15vw;
         margin-left: 0.15vw;
@@ -900,6 +901,7 @@
         animation-duration: 0.5s;
         color: #FFFFFF99;
         }
+
     .daction {
         width: 95%;
         height: auto;
@@ -978,6 +980,68 @@
     border-top-left-radius: 0px;
     border-top-right-radius: 0px;
 }
+.actionGroupSelectorB {
+    margin-left: auto;
+    margin-right: auto;
+    animation-name: kinput;
+    border-top: 2px #FFFFFF40 solid;
+    width: 90%;
+    padding: 2.5px;
+    padding-left: 24px;
+    padding-right: 0px;
+    background-color: #FFFFFF10;
+    box-shadow: inset 0 0 2px #FFFFFF10;
+    margin-top: 0px;
+    animation-name: createActionGroupSelector;
+    animation-duration: 0.5s;
+    cursor: pointer;
+    border-radius: 0px !important;
+    border-bottom-right-radius: 4px;
+    border-bottom-left-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+@keyframes deleteActionGroupSelectors {
+    0% {
+        border-top: 2px #FFFFFF40 solid;
+        height: 21px;
+        padding: 2.5px;
+        padding-left: 24px;
+        opacity: 100%;
+        padding-right: 0px;
+    }
+    100% {
+        border-top: 0px #FFFFFF40 solid;
+        height: 0px;
+        padding: 0px;
+        padding-left: 24px;
+        opacity: 0%;
+        padding-right: 0px;
+    }
+}
+@keyframes createActionGroupSelector {
+    0% {
+        border-top: 0px #FFFFFF40 solid;
+        height: 0px;
+        padding: 0px;
+        padding-left: 24px;
+        opacity: 0%;
+        padding-right: 0px;
+    }
+    100% {
+        border-top: 2px #FFFFFF40 solid;
+        height: 21px;
+        padding: 2.5px;
+        padding-left: 24px;
+        opacity: 100%;
+        padding-right: 0px;
+    }
+}
+.actionGroupSelectorB:hover {
+    background-color: #FFFFFF15;
+}
+.actionGroupSelectorB:active {
+    background-color: #FFFFFF20;
+}
     .menuBar:hover {
         color: #FFFFFF;
         background-color: #FFFFFF50;
@@ -994,6 +1058,7 @@
     height: calc(94.5vh - 24px) !important;
     margin-left: 1vw;
     }
+    
     .inputBar {
     width: 90%;
     margin-left: auto;
@@ -1008,22 +1073,45 @@
     border-radius: 12px;
     transition: box-shadow ease 0.5s;
     }
+    @keyframes appearInputField {
+        0% {margin-bottom: 12px; opacity: 0%;}
+        100% {margin-bottom: 4px; opacity: 100%;}
+    }
     @keyframes startFrominput {
         0% {
+            border-top: #FFFFFF15 solid 0x;
             height: 0px;
+            margin-bottom: 0px;
+            font-size: 0px;
+            margin-top: 0px;
+            padding: 0px;
+            opacity: 0%;
+            font-size: 0px;
         }
         100% {
+            border-top: #FFFFFF15 solid 4px;
             height: 24px;
+            margin-bottom: 4px;
+            margin-top: 5px;
+            font-size: 21px;
+            opacity: 100%;
         }
     }
     @keyframes goFromInput {
         0% {
+            border-top: #FFFFFF15 solid 4px;
             height: 24px;
+            margin-bottom: 4px;
+            margin-top: 5px;
+            font-size: 21px;
             opacity: 100%;
         }
         100% {
+            border-top: #FFFFFF15 solid 0x;
             height: 0px;
-            margin-bottom: -4px;
+            margin-bottom: 0px;
+            font-size: 0px;
+            margin-top: 0px;
             padding: 0px;
             opacity: 0%;
             font-size: 0px;
@@ -1095,6 +1183,26 @@
     animation-duration: 1.3s;
     border-bottom: #FFFFFF25 0px solid;
     }
+    .actionGroupSelector {
+        margin-left: auto;
+        margin-right: auto;
+        animation-name: kinput;
+        width: calc(95% - 18px);
+        padding: 2.5px;
+        padding-left: 16px;
+        padding-right: 0px;
+        background-color: #FFFFFF10;
+        box-shadow: inset 0 0 2px #FFFFFF10;
+        margin-top: 0px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+    .actionGroupSelector:hover {
+        background-color: #FFFFFF15;
+    }
+    .actionGroupSelector:active {
+        background-color: #FFFFFF20;
+    }
     
     .inputB {
         width: calc(95% - 16px);
@@ -1108,6 +1216,7 @@
         color: #FFFFFF97;
         font-size: 21px;
         padding: 2.5px;
+        border-top: #FFFFFF15 solid 4px;
         padding-left: 16px;
         padding-right: 0px;
         box-shadow: inset 0 0 2px #FFFFFF10;
@@ -1319,6 +1428,16 @@
     }
     .borderbottomz {
         border-radius: 12px !important; 
+        border-bottom-left-radius: 2px !important;
+        border-bottom-right-radius: 2px !important;
+    }
+    .bordertopy {
+        border-radius: 7px !important; 
+        border-top-left-radius: 2px !important;
+        border-top-right-radius: 2px !important;
+    }
+    .borderbottomy {
+        border-radius: 7px !important; 
         border-bottom-left-radius: 2px !important;
         border-bottom-right-radius: 2px !important;
     }
@@ -1814,21 +1933,13 @@
             height: 21px;
             background-color: #FFFFFF15;
             }
-            30% {
-                filter: blur(0px);
-            }
             45% {
-                width: 90%;
             opacity: 70%;
-            margin-bottom: 32%;
+            margin-bottom: 45%;
             height: 30px;
             border-radius: 10px;
             background-color: #FFFFFF15;
             font-size: 20px;
-            }
-            80% {
-                
-                filter: blur(0px);
             }
             100% {
             max-height: 80%;
@@ -2016,3 +2127,29 @@
 .forceRounded {
     border-radius: 100px !important;
 }
+
+::selection {
+    background-color: var(--highlight-color);
+    border-radius: 12px !important;
+  }
+
+  @keyframes dcreateeActionButtonorsum {
+    0% {
+        overflow-y: auto;
+        height: 0px;
+        width: 70%;
+        padding: 0px;
+        margin-top: 0vh;
+    }
+    100% {
+        overflow-y: auto;
+        width: 95%;
+        margin-top: 0.7vh;
+        padding: 4px;
+        height: 24px;
+    }
+  }
+  .animatednewactionanim {
+    animation-name: dcreateeActionButtonorsum !important;
+    animation-duration: 0.25s !important;
+  }

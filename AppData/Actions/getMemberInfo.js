@@ -30,9 +30,6 @@ module.exports = {
             case 'Member Name':
                 tempVars[uID][values.varble] = user.user.username
             break
-            case 'Member Discriminator':
-                tempVars[uID][values.varble] = client.users.cache.get(varTools.transf(user.userId, uID, tempVars)).discriminator
-            break 
             case 'Member Profile Picture (URL)': 
                 tempVars[uID][values.varble] = user.displayAvatarURL()
             break

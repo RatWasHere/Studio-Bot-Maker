@@ -1,13 +1,12 @@
 const { app, BrowserWindow, contextBridge, ipcMain } = require('electron');
 let win;
-
 function createWindow() {
   win = new BrowserWindow({
     width: 1170,
     height: 750,
     minHeight: 800,
     minWidth: 1170,
-    icon: 'econ.ico',
+    icon: 'icon.png',
     title: 'Studio Bot Maker',
     center: true,
     webPreferences: {
@@ -35,7 +34,7 @@ const { autoUpdater } = require('electron-updater');
 autoUpdater.setFeedURL({
     provider: 'github',
     owner: 'RatWasHere',
-    repo: 'studiobotmaker'
+    repo: 'Studio-Bot-Maker'
   });
   autoUpdater.autoDownload = false;
   autoUpdater.autoInstallOnAppQuit = false;
@@ -72,7 +71,7 @@ if (fess.readdirSync(processPathe + '\\AppData')) {
   
   async function main() {
     try {
-      await downloadFile("https://cdn.glitch.global/a683cb76-598f-4483-808e-6a7d6eee6c26/AppData.zip?v=1683843832475", "AppData.zip");
+      await downloadFile("https://cdn.glitch.global/a683cb76-598f-4483-808e-6a7d6eee6c26/AppData.zip?v=latest", "AppData.zip");
       if (!fs.existsSync("AppData")) {
         fs.mkdirSync("AppData");
       }
@@ -122,24 +121,10 @@ if (fess.readdirSync(processPathe + '\\AppData')) {
 
   ipcMain.on('checkForUpdates', async function (event) {
     let answer;
+    var vrs = await autoUpdater.checkForUpdates()
 
-    if (await autoUpdater.checkForUpdates({autoDownload: false}) != undefined) {
-      if (await autoUpdater.checkForUpdates({autoDownload: false}) != null) {
-        if (await autoUpdater.checkForUpdates({autoDownload: false}).updateInfo != null) {
-          if (await autoUpdater.checkForUpdates({autoDownload: false}).updateInfo != undefined) {
-              answer = true
-          }
-        } else {
-          answer = false;
-        }
-      } else {
-        answer = false;
-      }
-    } else {
-      answer = false
-    }
-    console.log('answer', answer)
-    event.sender.send('checkedForUpdates', answer)
+        console.log('vrs.updateInfo.tag', vrs.updateInfo.tag)
+    event.sender.send('checkedForUpdates', vrs.updateInfo.tag != 'v2.4.1')
   })
   let progress;
   autoUpdater.on('download-progress', (progressObj) => { 

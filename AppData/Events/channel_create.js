@@ -8,7 +8,7 @@ module.exports = {
         client.on('channelCreate', (msg) => {
             actionRunner(atWhat, msg, client, {
                 [UI[0]]: msg
-            })
+            }, true)
         })
     }
     

@@ -9,7 +9,7 @@ module.exports = {
             actionRunner(atWhat, msg1, client, {
                 [UI[0]]: msg1,
                 [UI[1]]: msg2
-            })
+            }, true)
         })
     }
     

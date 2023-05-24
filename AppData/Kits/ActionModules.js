@@ -36,7 +36,8 @@ function newObject() {
                         "name": "Send Message"
                     }
                   }
-                }
+                },
+                "customId": new Date().getTime()
         }
         delete require.cache[`./AppData/data.json`];
         datjson.commands[datjson.count +1] = newAct

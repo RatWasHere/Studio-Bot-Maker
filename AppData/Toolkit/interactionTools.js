@@ -13,12 +13,24 @@ module.exports = {
         tempVars[uID][`${uID}_stop`] = true;
         fs.writeFileSync('./tempVars.json', JSON.stringify(tempVars))
     },
+    async runCommand(id, actionRunner, uID, client, message) {
+      const datjson = require('../data.json');
+      for (let command in datjson.commands) {
+        if (datjson.commands[command].customId == id) {
+                await actionRunner(command, message, client, uID)
+        }
+      }
+    },
     getButtons(storedAs) {
         const datjson = require('../data.json');
         var components = [];
-        for (const elementStored of storedAs) {
+
+        for (const ffsfaokpg in storedAs) {
+          let elementStored = storedAs[ffsfaokpg]
+          let foundElement = false;
           for (const bar of datjson.buttons.bars) {
-            if (bar.customId === elementStored) {
+            if (bar.customId == elementStored) {
+              foundElement = true;
               const buttons = bar.buttons;
               let barComponents = [];
               for (let button of buttons) {
@@ -81,7 +93,40 @@ module.exports = {
             }
 
           }
+          if (foundElement == false) {
+            for (let row in datjson.rows) {
+              if (datjson.rows[row].customId == elementStored) {
+                const {StringSelectMenuBuilder, StringSelectMenuOptionBuilder, ActionRowBuilder} = require('discord.js')
+                  foundElement = true;
+                  const componentRow = new StringSelectMenuBuilder({
+                    customId: datjson.rows[row].customId,
+                    minValues: datjson.rows[row].minSelectable,
+                    maxValues: datjson.rows[row].maxSelectable,
+                    placeholder: datjson.rows[row].placeholder
+                  })
+                  let rowComponents = []
+
+                  for (let component of datjson.rows[row].options) {
+                    componentRow.addOptions(
+                      new StringSelectMenuOptionBuilder({
+                        label: component.label,
+                        value: component.customValue,
+                        description: component.description,
+                      })
+                    )
+                  }
+                  components.push(
+                    new ActionRowBuilder()
+                    .addComponents(componentRow)
+                  )
+              }
+            }
+          }
+          if (foundElement == false) {
+            console.log('Converting to action rows >>> Cannot find Menu/Button option ' + elementStored)
+          }
         }
+        console.log(components)
         return components
 
       }

@@ -41,12 +41,6 @@ module.exports = {
     "sepbarstopwaitingafter":"",
     "btextstopwaitingafter":"Stop Waiting After (seconds)",
     "inputstopwaitingafter_novars*":"stopAfter",
-    "sepbarwaitafteroc":"",
-
-    "btextwaitonce":"One-Time only",
-    "ButtonBar": {
-        "buttons": ["✓", "✕"]
-    },
 
 "sepbarsstoreinteractionsas":"",
     "btextfinakly":"Store Reaction As",
@@ -72,16 +66,15 @@ module.exports = {
 
     },
 
-    async run(values, inter, uID, fs, client) { 
+    async run(values, inter, uID, fs, client, runActionArray) { 
         const tempVars = JSON.parse(fs.readFileSync('./AppData/Toolkit/tempVars.json', 'utf8'));
         const varTools = require(`../Toolkit/variableTools.js`)
       let message = client.channels.cache.get(tempVars[uID][values.messageVariable].channelId).messages.cache.get(tempVars[uID][values.messageVariable].id)
-        const collector = message.createReactionCollector({ time: values.stopAfter * 1000 });
+        const collector = message.createReactionCollector({ time: parseFloat(values.stopAfter) * 1000 });
         var collectedAt = []
         let timesRan = 0;
         collector.on('collect', async (interaction, interactionAuthor) => {
             
-            let timesRun = 1
             let trueEmoji = false;
             if (values.emojiType == "Any") {
                 trueEmoji = true;
@@ -107,40 +100,24 @@ module.exports = {
                     break;
             }
             let foundCommand = false;
-            if (isAuthor == true && collectedAt.includes(interaction.createdTimestamp) == false) {
+            if (isAuthor == true && collectedAt.includes(interaction.createdTimestamp) == false && trueEmoji == true) {
                 collectedAt.push(interaction.createdTimestamp)
 
                 let datjson = require('../data.json')
-                for (let command in datjson.commands) {
-                    if (trueEmoji == true && datjson.commands[command].name.toLowerCase() == values.runAfter.toLowerCase() && foundCommand == false) {
-                        foundCommand = true
-                        for (let action in datjson.commands[command].actions) {
-                            if (timesRun <= datjson.commands[command].count) {
-                                if (timesRan == 0) {
-                                    let actFile = require(`./${datjson.commands[command].actions[action].file}`)
-                                    let vls = datjson.commands[command].actions[action].data
-                                    await actFile.run(vls, inter, uID, fs, client)
-                                    timesRun++
-                                }
-                                if (values.button == "✓") {
-                                    timesRan++
-                                }
-                        } else {
+                const interactionTools = require(`../Toolkit/interactionTools.js`)
+                await interactionTools.runCommand(values.runAfter, runActionArray, uID, client, inter, fs)
+
+
                             if (values.storeAs != "") {
                                 tempVars[uID] = {
                                     ...tempVars[uID],
-                                    [values.storeAs]: interaction
+                                    [values.storeAs]: interaction.values
                                 }
 
                                 fs.writeFileSync('./AppData/Toolkit/tempVars.json', JSON.stringify(tempVars), 'utf8')
                             }
                             return Promise.resolve(null).then(() => null);
                         }
-                    
-                    }
-                    }
-                }
-            }
         });
 
         setTimeout(() => {

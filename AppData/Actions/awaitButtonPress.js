@@ -32,11 +32,6 @@ module.exports = {
     "sepbarstopwaitingafter":"",
     "btextstopwaitingafter":"Stop Waiting After (seconds)",
     "inputstopwaitingafter_novars*":"stopAfter",
-    "sepbarwaitafteroc":"",
-    "btextwaitonce":"One-Time Use",
-    "ButtonBar": {
-        "buttons": ["✓", "✕"]
-    },
     "sepbarwaitonceithink":"",
     "btext0033": "Post-Interaction",
     "menuBar2":{"choices":["Acknowledge Interaction", "Do Nothing"],
@@ -67,16 +62,16 @@ module.exports = {
 
     },
 
-    async run(values, inter, uID, fs, client) { 
+    async run(values, inter, uID, fs, client, runActionArray) { 
         const tempVars = JSON.parse(fs.readFileSync('./AppData/Toolkit/tempVars.json', 'utf8'));
         const varTools = require(`../Toolkit/variableTools.js`)
+        const { ComponentType } = require('discord.js')
+
       let message = client.channels.cache.get(tempVars[uID][values.messageVariable].channelId).messages.cache.get(tempVars[uID][values.messageVariable].id)
-        const collector = message.createMessageComponentCollector({ time: values.stopAfter * 1000 });
+        const collector = message.createMessageComponentCollector({ time: parseFloat(values.stopAfter) * 1000, componentType: ComponentType.Button });
         var collectedAt = []
         let timesRan = 0;
         collector.on('collect', async (interaction) => {
-            console.log('collected')
-            let timesRun = 1
 
             if (interaction.component.customId == values.customID) {
             let isAuthor = false;
@@ -92,29 +87,18 @@ module.exports = {
                     isAuthor = interaction.user.id == user.id;
                     break;
             }
+            console.log('interaction user id' + interaction.user.id, 'interaction author id' + inter.author.id, "match" + interaction.user.id==inter.author.id)
             let foundCommand = false;
             if (isAuthor == true && collectedAt.includes(interaction.createdTimestamp) == false) {
                 collectedAt.push(interaction.createdTimestamp)
+                const interactionTools = require(`../Toolkit/interactionTools.js`)
+                await interactionTools.runCommand(values.runAfter, runActionArray, uID, client, inter, fs)
 
-                let datjson = require('../data.json')
-                for (let command in datjson.commands) {
-                    if (datjson.commands[command].name.toLowerCase() == values.runAfter.toLowerCase() && foundCommand == false) {
-                        foundCommand = true
-                        for (let action in datjson.commands[command].actions) {
-                            if (timesRun <= datjson.commands[command].count) {
-                                if (timesRan == 0) {
-                                    let actFile = require(`./${datjson.commands[command].actions[action].file}`)
-                                    let vls = datjson.commands[command].actions[action].data
-                                    await actFile.run(vls, inter, uID, fs, client)
-                                    timesRun++
-                                }
-                                if (values.button == "✓") {
-                                    timesRan++
-                                }
-                        } else {
-                            if(values.postAction == "Acknowledge Interaction") {
+
+                            if (values.postAction == "Acknowledge Interaction") {
                                 interaction.deferUpdate()
                             }
+
                             if (values.storeAs != "") {
                                 tempVars[uID] = {
                                     ...tempVars[uID],
@@ -125,12 +109,7 @@ module.exports = {
                             }
                             return Promise.resolve(null).then(() => null);
                         }
-                    
-                    }
-                    }
-                }
-            }}
-        });
+                }        });
 
         setTimeout(() => {
             delete collectedAt

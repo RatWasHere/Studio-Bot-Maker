@@ -2,7 +2,7 @@ module.exports = {
     data: {"name": "Delete Message", "messageVariable": ""},
     UI: {"compatibleWith": ["Event", "Slash"],"text1":"Delete Message", "sepbar2":"sepber",
     "btext33333333":"Message Variable",
-    "input4": "messageVariable", 
+    "input4_direct": "messageVariable", 
      previewName: "Message Var", preview: "messageVariable"},
 
     run(values, message, uID, fs, client) {

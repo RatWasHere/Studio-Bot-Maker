@@ -19,7 +19,9 @@ module.exports = {
 
        "sepbarsstoreinteractionsas":"",
        "btextfinakly":"Store Reaction As",
-       "inputfinakly_novars!":"storeAs"
+       "inputfinakly_novars!":"storeAs",
+       "preview":"emoji",
+       "previewName":"Emoji"
 
     },
 

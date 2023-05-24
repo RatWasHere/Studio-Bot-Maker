@@ -40,7 +40,6 @@ module.exports = {
     getVariable(name, uID) {
             let tempVars = require(`../Toolkit/tempVars.json`);
             return tempVars[uID][name];
-
     },
 
 }

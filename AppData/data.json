@@ -5,9 +5,9 @@
   "count": 0,
   "settings": {},
   "color": "rgb(7, 19, 20)",
-  "btk": "YOUR_BOTS_TOKEN",
-  "clientID": "YOUR_BOTS_CLIENT_ID",
-  "name": "Studio Bot!",
+  "btk": "",
+  "clientID": "",
+  "name": "Studio Bot Maker Bot",
   "prjSrc": "",
-  "reset": false
+  "reset": true
 }

@@ -26,13 +26,13 @@ module.exports = {
         if (values.button == 'Message Author') {
             member = guild.members.cache.get(message.author.id)
         } else {
-            member = guild.members.cache.get(tempVars[uID][varTools.transf(values.ExtraData, uID, tempVars)].id)
+            member = guild.members.cache.get(tempVars[uID][varTools.transf(values.ExtraData, uID, tempVars)].userId)
         }   
 
         if (values.reason == '') {
             member.ban()
         } else {
-            member.ban(varTools.transf(values.reason, uID, tempVars))
+            member.ban({reason: varTools.transf(values.reason, uID, tempVars)})
         }
     
 

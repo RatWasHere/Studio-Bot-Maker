@@ -6,7 +6,7 @@
     "window": {
         "min_width": 1170,
         "min_height": 790,
-        "icon": "econ.ico"
+        "icon": "icon.png"
     },
     "build": {
         "appId": "com.ratapp.sbm",
@@ -14,7 +14,7 @@
             {
                 "provider": "github",
                 "owner": "RatWasHere",
-                "repo": "studiobotupdates"
+                "repo": "Studio-Bot-Maker"
             }
         ],
         "win": {
@@ -36,7 +36,7 @@
         "axios": "^1.4.0",
         "discord-api-types": "^0.37.34",
         "discord-rpc": "^4.0.1",
-        "discord.js": "^14.8.0",
+        "discord.js": "^14.11.0",
         "electron-squirrel-startup": "^1.0.0",
         "electron-updater": "^5.3.0",
         "fs": "^0.0.1-security",
@@ -62,5 +62,5 @@
         "dist": "electron-builder",
         "release": "electron-builder"
     },
-    "version": "2.3.1"
+    "version": "2.4.1"
 }
