@@ -62,7 +62,7 @@ ipcRenderer.on('checkedForUpdates', (event, arg) => {
         ` 
         ipcRenderer.send('downloadUpdate')
         let progressBar = document.getElementById('progressBar')
-        progressBar.style.transition = 'width 04s. ease-out';
+        progressBar.style.transition = 'width 0.4s ease-out';
         setInterval(() => {
             ipcRenderer.send('checkProgress')
             ipcRenderer.on('checkedProgress', function (event, reply) {
@@ -72,7 +72,7 @@ ipcRenderer.on('checkedForUpdates', (event, arg) => {
                     ipcRenderer.send('quitAndInstall')
                 }
             })
-        }, 50)
+        }, 250)
   }, 600)
 
 }

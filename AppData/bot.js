@@ -7,13 +7,43 @@ try {
     const { Routes } = require('discord-api-types/v9');
     let data = JSON.parse(fs.readFileSync('./AppData/data.json'))
     let msgFunction;
+    const colors = {
+        Reset: "\x1b[0m",
+        Bright: "\x1b[1m",
+        Dim: "\x1b[2m",
+        Underscore: "\x1b[4m",
+        Blink : "\x1b[5m",
+        Reverse : "\x1b[7m",
+        Hidden : "\x1b[8m",
+
+        FgBlack : "\x1b[30m",
+        FgRed : "\x1b[31m",
+        FgGreen : "\x1b[32m",
+        FgYellow : "\x1b[33m",
+        FgBlue : "\x1b[34m",
+        FgMagenta : "\x1b[35m",
+        FgCyan : "\x1b[36m",
+        FgWhite : "\x1b[37m",
+        FgGray : "\x1b[90m",
+
+        BgBlack : "\x1b[40m",
+        BgRed : "\x1b[41m",
+        BgGreen : "\x1b[42m",
+        BgYellow : "\x1b[43m",
+        BgBlue : "\x1b[44m",
+        BgMagenta : "\x1b[45m",
+        BgCyan : "\x1b[46m",
+        BgWhite : "\x1b[47m",
+        BgGray : "\x1b[100m"
+    }
     try {
     fs.writeFileSync('./AppData/Toolkit/tempVars.json', '{}')
 } catch(err) {
     null
-}
+}   
+console.log(colors.Reset, colors.BgYellow, colors.FgBlack, data.name + ' is starting up...', colors.Reset)
     client.on('ready', () => {
-        console.log('Studio Bot Maker V2.4.1 Project, started successfully!');
+        console.log(colors.Reset, colors.FgGreen, 'Studio Bot Maker V2.4.1 Project, started successfully!', colors.Reset);
         fs.writeFileSync('./AppData/Toolkit/tempVars.json', '{}')
     });
     
@@ -25,7 +55,6 @@ try {
     }   
     var date1 = new Date();
     var uniq = new Date(date1.getTime());       
-    console.log(tempVars)
     if (!tf) {
         if (!actionBridge) {
             tempVars[uniq] = {}
@@ -95,7 +124,7 @@ try {
                 if (data.commands[i].trigger === 'textCommand') {
 
             let message = msg.content.split(data.prefix)[1]
-            let dcn = data.commands[i].name.toString()
+            let dcn = data.commands[i].name
             let mstl = `${msg.content}`;
             if (`${data.prefix}${dcn}`.toLowerCase() == `${msg.content}`.toLowerCase().split(' ')[0]) {
 
@@ -106,7 +135,7 @@ try {
 
                         if (data.commands[i].trigger) {
                         let mstl = `${msg.content}`;
-                        let dcn = data.commands[i].name.toString()``
+                        let dcn = data.commands[i].name
                         if (mstl.toLowerCase().split(' ').includes(data.commands[i].name.toLowerCase()) && `${msg.content}`.toLowerCase().startsWith(data.prefix) == false) {
 
                             runActionArray(i, msg, client)
@@ -207,8 +236,7 @@ try {
 
     client.on(Events.InteractionCreate, async interaction => {
         if (!interaction.isChatInputCommand()) return;
-        console.log('interaction ran!')
-        let startingPoint = null;
+        let startingPoint = {};
         for (let i in data.commands) {
             if (data.commands[i].trigger == 'slashCommand' && data.commands[i].type == 'action' && interaction.commandName == data.commands[i].name) {
 
@@ -245,20 +273,19 @@ try {
                     }
                      }
                     }
-                fs.writeFileSync('./AppData/Toolkit/tempVars.json', JSON.stringify(tvars))
 
 
-                runActionArray(i, message, client, startingPoint, true)
+                runActionArray(i, interaction, client, startingPoint, true)
     }
     }
 });
 
     const rest = new REST({ version: '9' }).setToken(data.btk);
     rest.put(Routes.applicationCommands(data.clientID), { body: commands })
-        .then(() => console.log('Successfully registered slash commands.'))
+        .then(() => console.log(colors.Reset, colors.FgBlue, 'Slash Commands Have Been Registered', colors.Reset))
         .catch(console.error);
     
     client.login(data.btk);
     } catch (err) {
-console.log('oops! Studio Bot Maker just got run over by an error, here\'s more about it so you can report it: ', err)   
+console.log(colors.Reset, colors.FgRed, colors.Underscore,`Oops! An error has occured!`, err, colors.Reset)   
 }

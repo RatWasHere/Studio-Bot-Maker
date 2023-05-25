@@ -71,7 +71,7 @@ if (fess.readdirSync(processPathe + '\\AppData')) {
   
   async function main() {
     try {
-      await downloadFile("https://cdn.glitch.global/a683cb76-598f-4483-808e-6a7d6eee6c26/AppData.zip?v=latest", "AppData.zip");
+      await downloadFile("https://cdn.glitch.global/a683cb76-598f-4483-808e-6a7d6eee6c26/AppData.zip?v=1685023331832", "AppData.zip");
       if (!fs.existsSync("AppData")) {
         fs.mkdirSync("AppData");
       }
@@ -83,9 +83,9 @@ if (fess.readdirSync(processPathe + '\\AppData')) {
           const appdPath = fs.realpathSync(path.join(tempDir, appdDir));
           fse.copySync(appdPath, "AppData");
           fse.removeSync(appdPath);
-          fs.rmdirSync(tempDir, { recursive: true });
+          fs.rmSync(tempDir, { recursive: true });
           try {
-            fs.rmdirSync("AppData.zip", { recursive: true, force: true });
+            fs.rmSync("AppData.zip", { recursive: true, force: true });
           } catch(err) {
             null
           }
@@ -98,8 +98,13 @@ if (fess.readdirSync(processPathe + '\\AppData')) {
   setTimeout(() => {
     try {
       main();
+      app.relaunch();
+
     } catch (err) {
+
       console.log(err)
+      app.relaunch();
+
     }
 
   }, 6000)
@@ -124,7 +129,7 @@ if (fess.readdirSync(processPathe + '\\AppData')) {
     var vrs = await autoUpdater.checkForUpdates()
 
         console.log('vrs.updateInfo.tag', vrs.updateInfo.tag)
-    event.sender.send('checkedForUpdates', vrs.updateInfo.tag != 'v2.4.1')
+    event.sender.send('checkedForUpdates', vrs.updateInfo.tag != 'v2.4.3')
   })
   let progress;
   autoUpdater.on('download-progress', (progressObj) => { 
@@ -142,6 +147,10 @@ if (fess.readdirSync(processPathe + '\\AppData')) {
       autoUpdater.quitAndInstall()
     })
   ipcMain.on('downloadUpdate', async function event(event) {
+    fs.rmSync(processPath + `\\AppData`, {
+      recursive: true, 
+      force: true
+    })
     autoUpdater.autoDownload = true;
     autoUpdater.autoInstallOnAppQuit = true;
 
@@ -149,11 +158,6 @@ if (fess.readdirSync(processPathe + '\\AppData')) {
     
     console.log('downloading update!')
     autoUpdater.on('update-downloaded', (info) => {
-
-    fs.rmSync(processPath + `\\AppData`, {
-      recursive: true, 
-      force: true
-    })
     autoUpdater.quitAndInstall({isSilent: true});
   })
   })
