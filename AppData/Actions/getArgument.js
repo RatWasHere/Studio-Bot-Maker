@@ -1,25 +1,30 @@
 module.exports = {
-    data: {"messageContent": "", "button": "✓", "name": "Get Argument", "ExtraData": "", "sendTo":"", "ButtonRow":"", "message":"Command Message", "messageF":"", "firstArgument":"TEST", "secondArgument":"EST", "elementAs":"Message*","ActionRow":"None", "embedVar":"", "guild":"Message Guild", "guildField":"", "storesAs":""},
-    UI: {"compatibleWith": ["Text"], "text": "Get Argument","sepbar44423":"sepbar", "btextmsg":"From", "menuBar1":{"choices":["Command Message", "Message*"], storeAs:"message", extraField:"messageF"}, "sepbarmsg":"sepb", "btextEmbVar":"From Argument #", "inputargument":"firstArgument", "sepbarargs":"", "btextArg":"To", "menuBar":{"choices":["None", "Argument #*", "End"], storeAs:"ActionRow", extraField:"guildField"}, "sepbarextrafield":"seb","btextstoreas":"Store As", "inputstoresas!*":"storesAs", "preview":"storesAs", "previewName":"Store As",
+    data: {"name": "Get Argument", "message":"Command Message", "messageFrom":"", "firstArgument":"", "secondArgument":"", "elementAs":"Variable*", "guild":"Message Guild", "argumentParameter":"", "storesAs":"", "ArgumentFrom":  "Argument #*"},
+    UI: {"compatibleWith": ["Text"], "text": "Get Argument","sepbar44423":"sepbar", "btextmsg":"Get Message Via", "menuBar1":{"choices":["Command Message", "Variable*"], storeAs:"message", extraField:"messageFrom"}, "sepbarmsg":"sepb", "btextEmbVar":"From Argument #", "inputargument":"firstArgument", "sepbarargs":"", "btextArg":"To", "menuBar":{"choices":["None", "Argument #*", "End"], storeAs:"ArgumentFrom", extraField:"argumentParameter"}, "sepbarextrafield":"seb","btextstoreas":"Store As", "inputstoresas!*":"storesAs", "preview":"storesAs", "previewName":"Store As",
     "variableSettings":{
-        "messageF": {
-            "Message*": "direct", 
+        "messageFrom": {
+            "Variable*": "direct", 
             "Command Message": "novars",
         },
-        "guildField": { 
+        "argumentParameter": { 
             "None": "novars",
             "Argument #*": "novars",
             "End": "novars"
         }
     }
 },
-    run(values, message, uID, fs, client) {
+    run(values, inter, uID, fs, client) {
         var output = ''
+        let message;
         if (values.message == 'Command Message') {
-            if (values.ActionRow == 'None') {
+            message = inter;
+        } else {
+            message = tempVars[uID][values.messageFrom]
+        }
+            if (values.ArgumentFrom == 'None') {
                 output = message.content.split(' ')[parseFloat(values.firstArgument)]
             } 
-            if (values.ActionRow == 'Argument #*') {
+            if (values.ArgumentFrom == 'Argument #*') {
                 let fd =  message.content.split(' ')
                 var argumentsParsed = 0
                 for (let argument in fd) {
@@ -29,14 +34,14 @@ module.exports = {
                         // increment the arguments parsed
 
                         // if the arguments parsed are smaller or equal to the end argument's number
-                        if (argumentsParsed <= parseFloat(values.guildField)) {
+                        if (argumentsParsed <= parseFloat(values.argumentParameter)) {
                             output = `${output} ${fd[argument]}`
                         }
                     }
                 }
 
             }
-            if (values.ActionRow == 'End') {
+            if (values.ArgumentFrom == 'End') {
                 let specificIndex = parseFloat(values.firstArgument);
                 let words = message.content.substring(specificIndex).split(" ").join(" ");
 
@@ -51,6 +56,6 @@ module.exports = {
               };
               fs.writeFileSync('./AppData/Toolkit/tempVars.json', JSON.stringify(tempVars), 'utf8')
 
-        }
+        
     }
 }

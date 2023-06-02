@@ -3,49 +3,84 @@
     <meta charset="utf8">
     <div style="justify-content: center; width: 100%; align-content: center; margin-left: auto; margin-right: auto; align-items: center; justify-items: center;">
 <div class="flexbox fbh">
-    <div style="flex: none;">
-    <div class="actionBar" id="actionbar" style="z-index: 2;">
+    <div style="flex: none; overflow-x: auto; width: 48.3vw;">
+        <div id="animationArea">
+    <div class="actBarHalf actbartop" id="commandbar" style="z-index: 2;">
 
     </div>
-    <div class="switchBar felxbox" id="bbar" style="display: flex; padding-top: 3.5px; padding-bottom: 3.5px;">
-        <div class="barbutton center unrounded borderright" style="margin-left: 30px !important; margin-right: 0.2vw;" onclick="newObject()" >
-            <div class="tooltiptext">New Command / Action</div>
-            <div class="barbuttontext" style="font-size: 45px;"><b>+</b></div></div><div class="barbutton unrounded borderleft center flexbox" style="justify-content: center;">
-                <div class="tooltiptext">Move Command / Action</div>
+    <div class="actbartoolbar flexbox actbarbottom" style="margin-bottom: 2vh; align-items: center; justify-content: center;">
+        <div style="margin-right: auto; margin-left: 1vw;">
+        <div class="barbuttontexta">Groups</div>
+        </div> 
+        
+        <div style="margin-left: auto; margin-right: 1vw" class="flexbox" style="align-items: center; justify-content: center;">
+            <div class="barbuttone borderrightz" onclick="lastType = 0; newObject();" style="width: 2.7vw; height: 3.5vh;">
+                <div class="image add"></div>
+            </div>
+            <div class="barbuttone bordercenter" onclick="lastType = 0; moveUp();" style="margin-left: 0.12vw; margin-right: 0.12vw; width: 2.7vw; height: 3.5vh;">
+                <div class="image actionUp"></div>
+            </div>
+        <div class="barbuttone borderleftz" onclick="lastType = 0; moveDown();" style="width: 2.7vw; height: 3.5vh;">
+            <div class="image actionDown"></div>
+        </div>
+        </div>       </div>
+    <div class="actBarHalf actbartop" id="actionbar">
 
-        <div  onclick="moveUp()" class="barbuttonhalf flexbox" style="justify-content: center;">
-            
-            <div class="image actionUp"></div></div><div class="barbuttonhalfr flexbox" style="justify-content: center;"  onclick="moveDown()"><div class="image actionDown"></div></div></div>
-
-    <div class="barbutton unrounded center" id="objswitch" style="margin-left: auto !important; margin-right: 30px;">
-        <div class="tooltiptext">Switch Between Actions / Commands | Home</div>
-
-        <div class="barbuttonhalf flexbox" onclick="switchObjs(this)" style="justify-content: center;"><div class="image switchObjs"></div></div>
-        <div class="barbuttonhalfr flexbox" onclick="modifyActElm()" style="justify-content: center;"><div class="image openMenu"></div></div>
+    </div>
     
-    </div></div>
-    
+    <div class="actbartoolbar flexbox actbarbottom" style="align-items: center; justify-content: center;">
+        <div style="margin-right: auto; margin-left: 1vw;">
+        <div class="barbuttontexta" id="actionsOf">Actions of </div>
+        </div> 
+        
+        <div style="margin-left: auto; margin-right: 1vw" class="flexbox" style="align-items: center; justify-content: center;">
+            <div class="barbuttone borderrightz" onclick="lastType = 1; editAction(document.getElementById('Action' + lastAct));" style="width: 2.7vw; height: 3.5vh;">
+                <div class="imagefull editAction"></div>
+            </div>
+            <div class="barbuttone bordercenter" onclick="lastType = 1; newObject();" style="width: 2.7vw; height: 3.5vh; margin-left: 0.12vw; margin-right: 0.12vw;">
+                <div class="image add"></div>
+            </div>
+            <div class="barbuttone bordercenter" onclick="lastType = 1; moveUp();" style="margin-left: 0.12vw; margin-right: 0.12vw; width: 2.7vw; height: 3.5vh;">
+                <div class="image actionUp"></div>
+            </div>
+        <div class="barbuttone borderleftz" onclick="lastType = 1; moveDown();" style="width: 2.7vw; height: 3.5vh;">
+            <div class="image actionDown"></div>
+        </div>
+        </div>
+    </div>
+</div>
 
 </div>
-    <div id="edutor" class="actionBar fullsize">
-        <br>
-        <div class="text clsr">Group Name</div>
-        <div class="inputBar" contenteditable="true" id="Command_Name" onkeydown="elementContentChecker(this, {maxLength: 31, isCommandName: true})" onblur="updateName(this)"></div>
-        <div class="sepbar"></div>
-        <div id="commandActions" class="baction noanims" style="width: 90%; padding: 5px; margin-bottom: 10px;">Using 0 Actions</div>
-        <div class="flexbox" style="height: 5%; justify-content: center;">
+    <div id="edutor" class="fullsize">
+        <div id="animationEditor" style="height: 100%;">
+        <div class="tile borderbottomz" style="background: linear-gradient(0deg, #FFFFFF10, #FFFFFF15)">
+        <div class="text clsr" style="margin-top: 0px;">Group Name</div>
+        <div class="inputBar" style="width: 96%; border-radius: 9px; margin: auto;" contenteditable="true" id="Command_Name" onkeydown="elementContentChecker(this, {maxLength: 31, isCommandName: true})" onblur="updateName(this)"></div>
+    </div>
+        <div class="tile bordertop" style="background: linear-gradient(0deg, #FFFFFF15, #FFFFFF10)">
+        <div id="commandActions" class="baction noanims" style="width: 90%; padding: 5px; margin-top: 0px; margin-bottom: 10px;">Using 0 Actions</div>
+        <div class="flexbox" style="height: 5vh; justify-content: center; margin-bottom: 0.5vh;">
             <div id="rawData" class="barbuttond borderright" onclick="switchGroups()" style="width: 30%; padding-left: 0px; padding-right: 0px;"><div class="barbuttontexta" id="wedf">Type</div></div>
         <div id="rawData" class="barbuttond bordercenter" onclick="duplicate()" style="width: 30%; padding-left: 0px; padding-right: 0px;"><div class="barbuttontexta">Duplicate</div></div>
         <div id="rawData" class="barbuttond borderleft" onclick="commandOptions()" style="width: 30%; padding-left: 0px; padding-right: 0px;"><div class="barbuttontexta">Options</div></div>
-    </div>
+    </div></div>
+    
         <div class="sepbar"></div>
+        <div class="tile" style="height: 50%; background-color: unset; background: linear-gradient(0deg, #FFFFFF15, #FFFFFF10)">
+
         <div class="tiled" id="tld">
             <div class="tiledbottom" id="status">✓ • No Issues Found</div>
             <br>
             <div class="flexbox" id="issues"></div>
             <br>
         </div>
+        </div>
+        <div class="barbuttone" onclick="modifyActElm()" style="margin-top: 2vh; width: 6vw;">
+            <div class="barbuttontexta">Home</div>
+        </div>
+</div></div>
 </div>
+
     </div>
 
 
@@ -85,7 +120,7 @@ try {
             }
         }, 500)
     }
-      let ActionTile = document.getElementById('actionbar');
+      let ActionTile = document.getElementById('commandbar');
       let SWT = document.getElementById('switchTask')
       let CmdName = document.getElementById('Command_Name')
 
@@ -93,22 +128,21 @@ try {
 
       function editAction(ect) {
         currentlyEditing = true;
-        lastAct = ect.id
-        let action = lastAct
-        lastHighlighted.style.backgroundColor = '#232323'
-        let edutor = document.getElementById('edutor');
-        let bbar = document.getElementById('bbar')
-        edutor.style.animationDuration = '0.6s'
-        edutor.style.animationName = 'moveFrom'
-        bbar.style.animationDuration = '0.6s'
-        bbar.style.animationName = 'moveunder'
-        ActionTile.style.animationDuration = '0.6s'
+        lastAct = ect.id.split('Action')[1]
+
+        let commandDisplay = document.getElementById('animationArea');
+        commandDisplay.style.animationName = 'moveToTheRight'
+        commandDisplay.style.animationDuration = '0.35s'
+
+        let editorOptions = document.getElementById('edutor')
+        editorOptions.style.animationName = 'moveToTheLeft'
+        editorOptions.style.animationDuration = '0.35s'
+
         document.getElementById('bottombar').style.animationName = 'fadeout'
         document.getElementById('bottombar').style.animationDuration = '0.4s'
-        ActionTile.style.animationName = 'moveFrom'
             pinHTML = edutor.innerHTML;
             let htmle = "<br>"
-            let actionData = require(`${processPath}\\AppData\\Actions\\${datjson.commands[lastObj].actions[ect.id].file}`).data 
+            let actionData = require(`${processPath}\\AppData\\Actions\\${datjson.commands[lastObj].actions[lastAct].file}`).data 
                 for (let dataElement in actionData) {
                     if (datjson.commands[lastObj].actions[lastAct].data[dataElement] == undefined) {
                         datjson.commands[lastObj].actions[lastAct].data[dataElement] = actionData[dataElement]
@@ -120,7 +154,7 @@ try {
                     }
                 }
             
-            let UIdata = require(`${processPath}\\AppData\\Actions\\${datjson.commands[lastObj].actions[ect.id].file}`).UI
+            let UIdata = require(`${processPath}\\AppData\\Actions\\${datjson.commands[lastObj].actions[lastAct].file}`).UI
             console.log(UIdata)
             for (let e in UIdata) {
                 console.log(UIdata[e], datjson.commands[lastObj].actions[lastAct].data)
@@ -203,7 +237,7 @@ try {
 
                                     let cmd = 'None'
                                     for (let command in datjson.commands) {
-                                        if (datjson.commands[command].customId == datjson.commands[lastObj].actions[lastAct].data[UIdata[e]]) {
+                                        if (datjson.commands[command].customId == datjson.commands[lastObj].actions[lastAct].data[UIdata[ems].extraField]) {
                                             cmd = datjson.commands[command].name
                                         }
                                     }
@@ -240,30 +274,52 @@ try {
               setTimeout(() => {
                 edutor.innerHTML = htmle;
                 var dfs = ActionTile.innerHTML;
-                ActionTile.innerHTML = '<br><div class="text blk" style="text-align: center;">Currently Editing <br> <div class="center halftransparent" id="actionName00"> ' + datjson.commands[lastObj].actions[lastAct].name + '</div></div> <br> <div class="flexbox" style="align-content: center; margin-left: auto; margin-right: auto; width: 90%; justify-content: center;"><div class="barbutton borderright"  onclick="save_changes(\'' + lastAct + '\')"><br><div id="saveobjects69" class="image save"></div></div><div class="barbutton borderleft center" id="cndcl"> <div class="barbuttontext">✕</div></div></div> <div class="daction noanim" style="width: 45%" onclick="selectAction()" id="cakt"><div>Change Action</div></div>' + `
+                ActionTile.className = 'actionBar'
+                edutor.className = 'actionBar'
+                edutor.style.overflowY = 'auto'
+                document.getElementById('bottombar').style.opacity = '0%'
+                document.getElementById('bottombar').remove()
+                ActionTile.innerHTML = `
+                <div style="margin-top: -12px;margin-left: -12px;padding: 0px;background-color: #00000040;width: calc(100% + 24px);margin-right:  -12px; padding-top: 6px; padding-bottom: 2px; margin-bottom: 1vh;">
+                ` +  '<div class="text blk" style="text-align: center;">Currently Editing <br> <div class="center halftransparent" id="actionName00"> ' + datjson.commands[lastObj].actions[lastAct].name + '</div></div></div> <div class="flexbox" style="align-content: center; margin-left: auto; margin-right: auto; width: 90%; justify-content: center;"><div class="barbutton borderright"  onclick="save_changes(\'' + lastAct + '\')"><br><div id="saveobjects69" class="image save"></div></div><div class="barbutton borderleft center" id="cndcl"> <div class="barbuttontext">✕</div></div></div> <div class="daction noanim" style="width: 45%" onclick="selectAction()" id="cakt"><div>Change Action</div></div>' + `
                 <div id="actionElements" style="margin-top: auto;"></div>
-                ` + ' <div class="smalltext blk" style="margin-top: 14px; text-align: center; font-size: 18px;">Action Of ' + datjson.commands[lastObj].name + ' <br></div> <div class="smalltext blk" style="text-align: center">✓ = Save | ✕ = Discard</div>'
-        document.getElementById('cndcl').onclick = () => {restoreTo(dfs, pinHTML)  }
-        ActionTile.className = 'actionBar'
-        edutor.className = 'actionBar'
-        edutor.style.overflowY = 'auto'
-        document.getElementById('bottombar').style.opacity = '0%'
-        document.getElementById('bottombar').remove()
-        bbar.style.opacity = '0%'
+                <div style="margin-bottom: -12px;margin-left: -12px;padding: 0px;background-color: #00000040;width: calc(100% + 24px);margin-right:  -12px; padding-bottom: 12px; margin-top: 1vh;">
+                ` + ' <div class="smalltext blk" style="margin-top: 14px; text-align: center; font-size: 18px;">Action Of ' + datjson.commands[lastObj].name + ' <br></div> <div class="smalltext blk" style="text-align: center">✓ = Save | ✕ = Discard</div></div>'
+       setTimeout(() => {
+        try {
+            document.getElementById('cndcl').onclick = () => {restoreTo(dfs, pinHTML)}
+        } catch(err) {
+            null
+        }
+       }, 50)
 
-            }, 330)
+
+            }, 280)
+            setTimeout(() => {
+                document.getElementById('edutor').style.animationName = 'comeToTheLeft1'
+                document.getElementById('edutor').style.animationDuration = '0.35s'
+                commandDisplay.style.animationName = 'comeToTheRight1'
+                commandDisplay.style.animationDuration = '0.35s'
+                setTimeout(() => {
+                    commandDisplay.style.animationName = ''
+                commandDisplay.style.animationDuration = ''
+                editorOptions.style.animationName = ''
+                editorOptions.style.animationDuration = ''
+                document.getElementById('edutor').style.animationDuration = ''
+                document.getElementById('edutor').style.animationName = ''
+                }, 350)
+            }, 340)
               setTimeout(()=> {
+
+
+
                 if (document.getElementById('bottombar')) {
                     document.getElementById('bottombar').remove()
                 }
-            edutor.style.animationDuration = ''
-            edutor.style.animationName = ''
             ActionTile.style.animationDuration = ''
             ActionTile.style.animationName = ''
-            bbar.style.animationDuration = ''
-            bbar.style.animationName = ''
             fs.writeFileSync(processPath + '\\AppData\\data.json', JSON.stringify(datjson, null, 2))
-            if (datjson.commands[lastObj].actions[action].data.actionRowElements != undefined) {
+            if (datjson.commands[lastObj].actions[lastAct].data.actionRowElements != undefined) {
                 let viewActionRowElements = document.getElementById('actionElements');
                 viewActionRowElements.onclick = () => {
                     showAvailableSlots(viewActionRowElements)
@@ -271,15 +327,14 @@ try {
                 viewActionRowElements.className = 'zaction noanim'
                 viewActionRowElements.style.width = '45%'
                 viewActionRowElements.style.marginRight = 'auto'
-    viewActionRowElements.style.marginLeft = 'auto'
-    viewActionRowElements.style.marginTop = 'auto'
+                viewActionRowElements.style.marginLeft = 'auto'
+                viewActionRowElements.style.marginTop = 'auto'
                 viewActionRowElements.innerHTML = '<div class="barbuttontexta fade">Action Rows</div>'
             }
             delete UIdata
             delete htmle 
             delete edutor
-            delete bbar
-              }, 610)
+              }, 390)
     }
 
 
@@ -383,13 +438,13 @@ try {
             datjson.commands[lastObj].name = output.trim()
             
         if (lastType == 0) {
-            document.getElementById(lastObj).innerHTML = `<div id="name">${output.trim()}</div> <div style="opacity: 50%; margin-left: 7px;"> | ${Object.keys(datjson.commands[lastObj].actions).length} Actions</div> <div class="deleteActionButton forceRounded" onclick="deleteObject(this)">✕</div>`
+            document.getElementById(`Group${lastObj}`).innerHTML = `<div id="name">${output.trim()}</div> <div style="opacity: 50%; margin-left: 7px;"> | ${Object.keys(datjson.commands[lastObj].actions).length} Actions</div> <div class="deleteActionButton forceRounded" onclick="deleteObject(this)">✕</div>`
         }
         }
         if (type == 'event') {
             datjson.commands[lastObj].name = mnt.innerText
             if (lastType == 0) {
-            document.getElementById(lastObj).innerHTML = `<div id="name">${mnt.innerText}</div> <div style="opacity: 50%; margin-left: 7px;"> | ${Object.keys(datjson.commands[lastObj].actions).length} Actions</div> <div class="deleteActionButton forceRounded" onclick="deleteObject(this)">✕</div>`
+            document.getElementById(`Group${lastObj}`).innerHTML = `<div id="name">${mnt.innerText}</div> <div style="opacity: 50%; margin-left: 7px;"> | ${Object.keys(datjson.commands[lastObj].actions).length} Actions</div> <div class="deleteActionButton forceRounded" onclick="deleteObject(this)">✕</div>`
             }
         }
         if (type == 'slsh') {
@@ -397,7 +452,7 @@ try {
             let output = text.replaceAll('&nbsp;', "").replaceAll(" ", "")
             datjson.commands[lastObj].name = output.toLowerCase().trim()    
             if (lastType == 0) {
-            document.getElementById(lastObj).innerHTML = `<div id="name">${output.toLowerCase().trim()}</div> <div style="opacity: 50%; margin-left: 7px;"> | ${Object.keys(datjson.commands[lastObj].actions).length} Actions</div> <div class="deleteActionButton forceRounded" onclick="deleteObject(this)">✕</div>`
+            document.getElementById(`Group${lastObj}`).innerHTML = `<div id="name">${output.toLowerCase().trim()}</div> <div style="opacity: 50%; margin-left: 7px;"> | ${Object.keys(datjson.commands[lastObj].actions).length} Actions</div> <div class="deleteActionButton forceRounded" onclick="deleteObject(this)">✕</div>`
         }
         }
 
@@ -408,6 +463,37 @@ try {
 
         switchObjs()
         switchObjs()
-        highlight(document.getElementById('1'), true, true)
+         /* function highlight(element) {
+        
+        if (element.id.startsWith('Group') == true) {
+            document.getElementById(`Group${lastObj}`).style.backgroundColor = '#FFFFFF15';
+            element.style.backgroundColor = '#FFFFFF25';
+            document.getElementById('Command_Name').innerHTML = element.innerText.split('|')[0];
+            lastObj = element.id.split('Group')[1]
+            refreshActions();
+            
+            if (datjson.commands[lastObj].type == 'action') {
+                console.log(datjson.commands[lastObj])
+                    switch(datjson.commands[lastObj].trigger) {
+                case 'slashCommand':
+                    ddaf = 'Slash Command'
+                    break
+                case 'textCommand':
+                    ddaf = 'Text Command'
+                break
+                case 'messageContent':
+                    ddaf = 'Message'
+            }
+    
+            document.getElementById('commandActions').innerHTML = `Type: ${ddaf} • ${datjson.commands[lastObj].count} Actions Used`  
+            } else {
+                document.getElementById('commandActions').innerHTML = `Event • ${datjson.commands[lastObj].count} Actions Used`
+            }
+            checkErrors()
+            closeCommand()
+        } 
+    }*/
+        highlight(document.getElementById('Group1'), true, true)
+        
         </script>
     </html>

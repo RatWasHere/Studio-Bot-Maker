@@ -1,14 +1,12 @@
 module.exports = {
-    data: {"name":"Create List Element", "ListName":"", "checkFor":"Text*", "toAdd":"", "storeAs":""},
+    data: {"name":"Delete List Element", "ListName":"", "elementPosition":""},
 
     UI: {"compatibleWith":["Any"], 
-    "text": "Create List Element", 
+    "text": "Delete List Element", 
     "sepbar":"", 
     "btext":"List Name", "input*":"ListName", 
     "sepbar0":"",
-    "btext1":"Element Value", "input1*":"toAdd",
-    "sepbar1":"",
-    "btext2":"Store Element Position As", "input2!":"storeAs",
+    "btext1":"Element Position", "input1*":"elementPosition",
     "preview":"toAdd", "previewName":"Value"},
     
     async run(values, interaction, uID, fs, actionRunner) { 
@@ -17,7 +15,7 @@ module.exports = {
         let list = tempVars[uID][varTools.transf(values.ListName)]
 
         list.push(varTools.transf(values.toAdd, uID, tempVars));
-        tempVars[uID][varTools.transf(values.storeAs, uID, tempVars)] = list.length - 1
+        tempVars[uID][varTools.transf(values.storeAs, uID, tempVars)].splice(varTools.transf(elementPosition, uID, tempVars), 1)
 
         fs.writeFileSync('./AppData/Toolkit/tempVars.json', JSON.stringify(tempVars), 'utf8')
     }

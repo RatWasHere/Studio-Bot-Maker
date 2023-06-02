@@ -1,16 +1,31 @@
 module.exports = {
-    data: {"messageContent": "", "button": "Variable*", "name": "Ban Member", "ExtraData": "", "sendTo":"", "ButtonRow":"", "ActionRow":"", "embedVar":"", "guild":"Message Guild", "guildField":"", "reason":""},
-    UI: {"compatibleWith": ["Text", "Slash"], "text": "Ban Member","sepbarEmbVar":"", "btextmember":"Member", "menuBar1": {"choices": ["Message Author", "Variable*"], storeAs: "button", extraField: "ExtraData"}, "sepbarmenus":"sepbar", "btextmenus":"Guild", "menuBar2":{"choices": ["Message Guild", "Variable*"], storeAs: "guild", extraField: "guildField"}, "sepbarguildidk":"", "btextreason":"Reason", "inputreason":"reason", preview: "button", previewName: "Ban",
-    "variableSettings":{
-        "ExtraData": {
-            "Variable*": "direct", 
-            "Message Author": "novars"
-        },
-        "guildField": {
-            "Variable*": "direct",
-            "Message Guild": "novars"
+    data: {"messageContent": "", "memberFrom": "Variable*", "name": "Ban Member", 
+    "memberVariable": "",
+    "guild":"Message Guild", "guildField":"", "reason":""},
+    UI: {"compatibleWith": ["Text", "Slash"],
+
+     "text": "Ban Member", "sepbar":"",
+
+      "btext":"Member",
+       "menuBar": {"choices": ["Message Author", "Variable*"], storeAs: "memberFrom", extraField: "memberVariable"}, 
+
+       "sepbar1":"sepbar",
+
+        "btext1":"Guild", "menuBar1":{"choices": ["Message Guild", "Variable*"],
+        storeAs: "guild", extraField: "guildField"}, 
+
+        "sepbar2":"", "btext2":"Reason", 
+        "input":"reason", 
+        preview: "memberFrom", previewName: "Ban",
+        "variableSettings": {
+            "memberVariable": {
+                "Variable*":"direct"
+            },
+            "guildField": {
+                "Variable*": "direct"
+            }
         }
-    }
+
 },
     run(values, message, uID, fs, client) {
         let varTools = require(`../Toolkit/variableTools.js`)
@@ -23,10 +38,10 @@ module.exports = {
             guild = client.guilds.cache.get(tempVars[uID][varTools.transf(values.guildField, uID, tempVars)].id)
         }
         let member;
-        if (values.button == 'Message Author') {
+        if (values.memberFrom == 'Message Author') {
             member = guild.members.cache.get(message.author.id)
         } else {
-            member = guild.members.cache.get(tempVars[uID][varTools.transf(values.ExtraData, uID, tempVars)].userId)
+            member = guild.members.cache.get(tempVars[uID][varTools.transf(values.memberVariable, uID, tempVars)].userId)
         }   
 
         if (values.reason == '') {

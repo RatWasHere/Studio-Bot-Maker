@@ -14,7 +14,7 @@ module.exports = {
     "postAction":"Acknowledge Interaction"
 },
 
-    UI: {"compatibleWith":["Text", "Slash"], 
+    UI: {"compatibleWith":["Event"], 
     "text":"Await Select Menu", "sepbar3":"",
      "btext33333333":"Select Menu Custom ID",
       "input1_novars":"customID",
@@ -23,7 +23,7 @@ module.exports = {
         "input5034_direct*":"messageVariable",
         "sepbar423032":"",
      "btext2":"Await Interaction From", 
-     "menuBar":{"choices":["Event"],
+     "menuBar":{"choices":["User*", "Anybody"],
       storeAs: "awaitFrom", extraField:"fromWho"},  
 
       "sepbar0":"", 
@@ -52,7 +52,6 @@ module.exports = {
         "fromWho": {
             "User*": "direct", 
             "Anybody": "novars",
-            "Message Author": "novars"
         },
         "postActionField": {
             "Acknowledge Interaction":  "novars",
@@ -71,12 +70,15 @@ module.exports = {
       let message = client.channels.cache.get(tempVars[uID][values.messageVariable].channelId).messages.cache.get(tempVars[uID][values.messageVariable].id)
       const collector = message.createMessageComponentCollector({
         componentType: ComponentType.StringSelect,
-        time: parseFloat(values.stopAfter) * 1000,
+        max: 1,
+        time: parseFloat(values.stopAfter) * 1000
     });
             var collectedAt = []
             let finishedRunning = false;
 
         let timesRan = 0;
+        let toolkit = require('../Toolkit/interactionTools.js');
+        let toolKey = toolkit.preventDeletion(uID);
         collector.on('collect', async (interaction) => {
             console.log('collected')
             if (interaction.customId == values.customID) {
@@ -116,11 +118,11 @@ module.exports = {
 
                                 fs.writeFileSync('./AppData/Toolkit/tempVars.json', JSON.stringify(tempVars), 'utf8')
                             }
-                            return Promise.resolve(null).then(() => null);
-            }}
+                        }}
         });
 
         setTimeout(() => {
             delete collectedAt
+            toolkit.leak(uID, toolKey)
         }, values.stopAfter * 1000)
 }}

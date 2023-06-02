@@ -73,11 +73,14 @@ module.exports = {
       const collector = message.createMessageComponentCollector({
         componentType: ComponentType.StringSelect,
         time: parseFloat(values.stopAfter) * 1000,
+        max: 1
     });
             var collectedAt = []
             let finishedRunning = false;
 
         let timesRan = 0;
+        let toolkit = require('../Toolkit/interactionTools.js');
+        let toolKey = toolkit.preventDeletion(uID);
         collector.on('collect', async (interaction) => {
             console.log('collected')
             if (interaction.customId == values.customID) {
@@ -111,12 +114,12 @@ module.exports = {
                     interaction.deferUpdate()
                 }   
 
-
                             
             }}
         });
 
         setTimeout(() => {
             delete collectedAt
+            toolkit.leak(uID, toolKey)
         }, values.stopAfter * 1000)
 }}

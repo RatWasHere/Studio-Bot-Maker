@@ -31,7 +31,7 @@ module.exports = {
     },
 
       "preview":"memberAs", 
-      "previewName":"Member"},
+      "previewName":"User"},
 
    async run(values, message, uID, fs, client) { 
         let varTools = require(`../Toolkit/variableTools.js`)

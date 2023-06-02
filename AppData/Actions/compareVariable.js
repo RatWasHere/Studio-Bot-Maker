@@ -2,7 +2,7 @@ module.exports = {
     data: {"name": "Compare Variable", "end":"C", "button":"=", "firstInput":"", "secondInput":"", "ifTrue":"Run Action Group*", "actionGroup":"", "group":"", "ifFalse":"Nothing"},
     UI: {"compatibleWith": ["Any"], text:"Compare Variable", "sepbar1":"sepbar", "btext":"Variable Name", "inputfirst_direct*":"firstInput", "sepbar2":"", "ButtonBar":{"buttons":[">", "=", "!=", "<" ]}, "sepbar3":"", "btextsecondparameter":"Compare To", "inputScnd*":"secondInput",  "sepbar7":"", 
     "btextstoreoutputas":"If True",    
-    "menuBar": {"choices":["Run Action Group*", "Stop Execution"], "storeAs":"ifTrue", "extraField":"actionGroup"},
+    "menuBar": {"choices":["Run Action Group*", "Stop Execution", "Nothing"], "storeAs":"ifTrue", "extraField":"actionGroup"},
     "sepbars33":"e",
     "btext01":"If False",
     "menuBar1": {"choices": ["Run Action Group*", "Stop Execution", "Nothing"], "storeAs": "ifFalse", "extraField": "group"},

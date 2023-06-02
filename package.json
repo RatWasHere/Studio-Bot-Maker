@@ -1,5 +1,6 @@
 {
     "name": "studiobotmaker",
+    "productName": "Studio Bot Maker",
     "main": "main.js",
     "author": "Rat",
     "description": "Create awesome Discord bots!",
@@ -8,19 +9,20 @@
         "min_height": 790,
         "icon": "icon.png"
     },
+    "repository": "https://github.com/RatWasHere/Studio-Bot-Maker",
+    "publish": {
+        "provider": "github",
+        "releaseType": "release"
+    },
     "build": {
         "appId": "com.ratapp.sbm",
-        "publish": [
-            {
+        "publish": "github",
+        "win": {
+            "publish": {
                 "provider": "github",
                 "owner": "RatWasHere",
                 "repo": "Studio-Bot-Maker"
-            }
-        ],
-        "win": {
-            "publish": [
-                "github"
-            ],
+             },
             "target": [
                 {
                     "target": "nsis",
@@ -43,8 +45,8 @@
         "fs-extra": "^11.1.1",
         "fse": "^4.0.1",
         "request": "^2.88.2",
-        "unzipper": "^0.10.11",
-        "update-electron-app": "^2.0.1"
+        "simple-updater": "^0.0.3",
+        "unzipper": "^0.10.11"
     },
     "devDependencies": {
         "@electron-forge/cli": "^6.0.5",
@@ -60,7 +62,8 @@
         "start": "electron .",
         "pack": "electron-builder --dir",
         "dist": "electron-builder",
-        "release": "electron-builder"
+        "release": "electron-builder",
+        "cert": "electron-builder create-self-signed-cert -p StudioCertificate"
     },
-    "version": "2.4.3"
+    "version": "2.5.1"
 }

@@ -70,9 +70,12 @@ module.exports = {
         const tempVars = JSON.parse(fs.readFileSync('./AppData/Toolkit/tempVars.json', 'utf8'));
         const varTools = require(`../Toolkit/variableTools.js`)
       let message = client.channels.cache.get(tempVars[uID][values.messageVariable].channelId).messages.cache.get(tempVars[uID][values.messageVariable].id)
-        const collector = message.createReactionCollector({ time: parseFloat(values.stopAfter) * 1000 });
+        const collector = message.createReactionCollector({ max: 1, time: parseFloat(values.stopAfter) * 1000 });
         var collectedAt = []
         let timesRan = 0;
+
+        let toolkit = require('../Toolkit/interactionTools.js');
+        let toolKey = toolkit.preventDeletion(uID);
         collector.on('collect', async (interaction, interactionAuthor) => {
             
             let trueEmoji = false;
@@ -89,12 +92,9 @@ module.exports = {
                     isAuthor = true;
                     break;
                 case "Message Author":
-                    console.log(interaction)
                     isAuthor = interactionAuthor.id == inter.author.id;
                     break;
                 case "User*":
-                    console.log(interaction)
-
                     let user = client.users.cache.get(tempVars[uID][varTools.transf(values.fromWho, uID, tempVars)].id)
                     isAuthor = interactionAuthor.id == user.id;
                     break;
@@ -116,11 +116,12 @@ module.exports = {
 
                                 fs.writeFileSync('./AppData/Toolkit/tempVars.json', JSON.stringify(tempVars), 'utf8')
                             }
-                            return Promise.resolve(null).then(() => null);
                         }
         });
 
         setTimeout(() => {
-            delete collectedAt
+            delete collectedAt;
+            toolkit.leak(uID, toolKey)
+
         }, values.stopAfter * 1000)
 }}

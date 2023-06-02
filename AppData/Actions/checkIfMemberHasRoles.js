@@ -1,34 +1,20 @@
 module.exports = {
-    data: {"name": "Check Member Permission",
-    "whatToRun": "Nothing", "whatNotToRun": "End Action Array",
-     "whatTo": "", "whatNot": "", "permission":"Admin",
-      "memberVariable":"", "memberChoice":"Message Author"},
+    data: {"name": "Check If Member Has Role",
+    "roleVariable":"",
+    "whatToRun": "Nothing", "whatNotToRun": "End Action Array", "whatTo": "", "whatNot": "", "memberVariable":"", "memberChoice":"Message Author"},
     UI: {"compatibleWith": ["Text", "Slash"], 
-    "variableSettings": {
-        "memberVariable": {
-            "Message Author": "novars",
-            "Variable*": "direct"
-        },
-        "whatNot": {
-            "Run Action Group*": "actionGroup"
-        },
-        "whatTo": {
-            "Run Action Group*": "actionGroup"
-        }
-    },
     
-    "text1":"Check Member Permission",
+    "text1":"Check If Member Has Role",
      "sepbar2":"sepber", 
      "btext33333333":"Get Member From",
       "menuBar1":{"choices": ["Message Author", "Variable*"], storeAs:"memberChoice", extraField:"memberVariable"},
         "sepbarbutton":"",
-         "btextwhatto":"Check Permission", 
-         "menuBar2":{"choices":["Admin", "Booster", "Kick", "Ban", "Timeout", "Deafen", "Manage Messages","Manage Roles", "Manage Channels"], storeAs:"permission"},
-       
+         "btextwhatto":"Role Variable", 
+            "input_direct":"roleVariable",
          "sepbarbutton2132": "",
 
 
-        "btextwhatToRun":"If Member Has Permission",
+        "btextwhatToRun":"If Member Has Role",
           "menuBarwhattoddo": {
             choices: ["End Action Array", "Run Action Group*", "Nothing"],
             storeAs: "whatToRun",
@@ -37,7 +23,7 @@ module.exports = {
 
           "sepbarbutton21332": "",
 
-          "btextwhattoddo":"If Member Doesn't Have Permission",
+          "btextwhattoddo":"If Member Doesn't Have Role",
           "menuBarwhadfDttodo": {
             choices: ["End Action Array", "Run Action Group*", "Nothing"],
             storeAs: "whatNotToRun",
@@ -54,10 +40,16 @@ module.exports = {
                 "Variable*": "direct"
             },
         },
-
         "invisible":"",
-        previewName: "Check For", preview: "whatToRun",
-
+        previewName: "Role Variable", preview: "roleVariable",
+        "variableSettings": {
+            "whatNot": {
+                "Run Action Group*": "actionGroup"
+            },
+            "whatTo": {
+                "Run Action Group*": "actionGroup"
+            }
+        }
         },
 
     async run(values, message, uID, fs, client, runActionArray) {
@@ -71,60 +63,12 @@ module.exports = {
         const guild = client.guilds.cache.get(varTools.transf(tempVars[uID][values.memberVariable].guildId, uID, tempVars));
         user = guild.members.cache.get(varTools.transf(tempVars[uID][values.memberVariable].userId, uID, tempVars));
         }
-    let hasPermission = false
+        let hasRole = false
 
-    switch(values.permission) {
-        case 'Admin': 
-            if (user.hasPermission('ADMINISTRATOR')) {
-                hasPermission = true
-            }
-        break
-        case 'Booster': 
-            if (user.premiumSince) {
-                hasPermission = true
-            }
-        break
-        case 'Kick':
-            if (user.hasPermission('KICK_MEMBERS')) {
-                hasPermission = true
-            }
-        break
-        case 'Ban':
-            if (user.hasPermission('BAN_MEMBERS')) {
-                hasPermission = true
-            }
-        break
-        case 'Timeout':
-            if (user.hasPermission('TIMEOUT_MEMBERS')) {
-                hasPermission = true
-            }
-        break
-        case 'Deafen':
-            if (user.hasPermission('DEAFEN_MEMBERS')) {
-                hasPermission = true
-            }
-            break
-            
-        case 'Manage Roles':
-            if (user.hasPermission('MANAGE_ROLES')) {
-                hasPermission = true
-            }
-            break
-            
-        case 'Manage Channels':
-            if (user.hasPermission('MANAGE_CHANNELS')) {
-                hasPermission = true
-            }
-            break
-        case 'Manage Messages': 
-        if (user.hasPermission('MANAGE_MESSAGES')) {
-            hasPermission = true
+        if (member.roles.cache.has(tempVars[uID][varTools.transf(values.roleVariable)].id)) {
+            hasRole = true
         }
-            break
-
-    }
-
-    if (hasPermission == true) {
+    if (hasRole == true) {
         if (values.whatToRun == 'Run Action Array*') {
                 const interactionTools = require(`../Toolkit/interactionTools.js`)
                 await interactionTools.runCommand(values.whatTo, runActionArray, uID, client, message, fs)

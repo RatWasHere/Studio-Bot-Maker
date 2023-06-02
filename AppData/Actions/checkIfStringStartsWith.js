@@ -1,5 +1,6 @@
 module.exports = {
-    data: {"name":"Check If String Starts With", "string":"", "start":"", "ifTrue":"Run Action Group*", "actionGroup":""},
+    data: {"name":"Check If String Starts With",
+     "string":"", "start":"", "ifTrue":"Run Action Group*", "actionGroup":""},
     UI: {"compatibleWith":["Any"], 
     
     "text": "Check If String Starts With","sepbar":"sbar",

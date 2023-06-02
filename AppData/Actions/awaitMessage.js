@@ -1,49 +1,39 @@
 module.exports = {
-    data: {"name":"Await Reaction", 
-    "customID":"", 
+    data: {"name":"Await Message", 
     "storeAs":"", 
-    "messageVariable":"",
+    "messageFrom":"Message Channel",
+    "messageChannel":"",
     "runAfter":"",
-    "buttonCustomId":"",
     "fromWho":"",
-    "awaitFrom": "Anybody",
+    "awaitFrom": "Message Author",
     "stopAfter":"60",
     "button": "✓",
-    "postAction": "Do Nothing",
-    "postActionField": "",
-    "postAction":"Acknowledge Interaction",
-    "emojiType":"Any",
-    "emoji":"",
+    "storeAs":""
 },
 
-    UI: {"compatibleWith":["Event"], 
+    UI: {"compatibleWith":["Text", "Slash"], 
     "text":"Await Reaction", "sepbar3":"",
-     "btext33333333":"Reaction Emoji",
-      "menuBar34": {
-        "choices": [
-            "Any",
-            "Custom*"
-        ],
-        storeAs: "emojiType",
-        extraField: "emoji"
-      },
-       "sepbar12":"",
-        "btext5034":"Message/Embed Variable",
-        "input5034_direct*":"messageVariable",
-        "sepbar423032":"",
-     "btext2":"Await Reaction From", 
-     "menuBar44":{"choices":["Anybody", "User*"],
+     "btext2":"Await Message From", 
+     "menuBar44":{"choices":["Anybody", "Message Author", "User*"],
       storeAs: "awaitFrom", extraField:"fromWho"},  
 
       "sepbar0":"", 
-    "btext34423531":"Once Reacted, Run Action Group", 
+      "btext12":"Await Message In",
+      "menuBarchannel": {
+        "choices": ["Message Channel", "Channel*"],
+        "storeAs":"messageFrom",
+        "extraField": "messageChannel"
+      },
+      "sepbar13":"",
+    "btext34423531":"Once Message Was Sent, Run Action Group", 
     "input42_actionGroup*":"runAfter",
+
     "sepbarstopwaitingafter":"",
     "btextstopwaitingafter":"Stop Waiting After (seconds)",
     "inputstopwaitingafter_novars*":"stopAfter",
 
 "sepbarsstoreinteractionsas":"",
-    "btextfinakly":"Store Reaction As",
+    "btextfinakly":"Store Message As",
     "inputfinakly_novars!":"storeAs",
 
 
@@ -58,9 +48,8 @@ module.exports = {
             "Anybody": "novars",
             "Message Author": "novars"
         },
-        "emoji": {
-            "Any": "novars",
-            "Custom*": "novars"
+        "messageChannel": {
+            "Channel*": "actionGroup"
         }
     }
 
@@ -69,8 +58,13 @@ module.exports = {
     async run(values, inter, uID, fs, client, runActionArray) { 
         const tempVars = JSON.parse(fs.readFileSync('./AppData/Toolkit/tempVars.json', 'utf8'));
         const varTools = require(`../Toolkit/variableTools.js`)
-      let message = client.channels.cache.get(tempVars[uID][values.messageVariable].channelId).messages.cache.get(tempVars[uID][values.messageVariable].id)
-        const collector = message.createReactionCollector({ max: 1, time: parseFloat(values.stopAfter) * 1000 });
+      let channel;
+      if (values.messageFrom == 'Message Channel') {
+            channel = inter.channel;
+      } else {
+            channel = tempVars[uID][varTools.transf(values.messageChannel)]
+      }
+        const collector = channel.createMessageCollector({ max: 1, time: parseFloat(values.stopAfter) * 1000 });
         var collectedAt = []
         let timesRan = 0;
         let toolkit = require('../Toolkit/interactionTools.js');
@@ -102,6 +96,7 @@ module.exports = {
             if (isAuthor == true && collectedAt.includes(interaction.createdTimestamp) == false && trueEmoji == true) {
                 collectedAt.push(interaction.createdTimestamp)
 
+                let datjson = require('../data.json')
                 const interactionTools = require(`../Toolkit/interactionTools.js`)
                 await interactionTools.runCommand(values.runAfter, runActionArray, uID, client, inter, fs)
 
@@ -109,7 +104,7 @@ module.exports = {
                             if (values.storeAs != "") {
                                 tempVars[uID] = {
                                     ...tempVars[uID],
-                                    [values.storeAs]: interaction.values
+                                    [values.storeAs]: interaction
                                 }
 
                                 fs.writeFileSync('./AppData/Toolkit/tempVars.json', JSON.stringify(tempVars), 'utf8')
@@ -120,5 +115,6 @@ module.exports = {
         setTimeout(() => {
             delete collectedAt
             toolkit.leak(uID, toolKey)
+
         }, values.stopAfter * 1000)
 }}

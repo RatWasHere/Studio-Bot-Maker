@@ -59,8 +59,9 @@ console.log(colors.Reset, colors.BgYellow, colors.FgBlack, data.name + ' is star
         if (!actionBridge) {
             tempVars[uniq] = {}
         } else {
-           // tempVars[uniq] = JSON.parse(JSON.stringify(tempVars[actionBridge]))
-           uniq = actionBridge;
+            console.log(actionBridge + 'actionbrige')
+            console.log(actionBridge, JSON.parse(fs.readFileSync('./AppData/Toolkit/tempVars.json', 'utf8')))
+            tempVars[uniq] = JSON.parse(JSON.stringify(tempVars[actionBridge]))
         }
     } else {
         tempVars[uniq] = actionBridge
@@ -78,6 +79,9 @@ console.log(colors.Reset, colors.BgYellow, colors.FgBlack, data.name + ' is star
                             delete tempVars[uniq]
                             fs.writeFileSync('./AppData/Toolkit/tempVars.json', JSON.stringify(tempVars, null, 2))
                         } else {
+                            if (actionBridge) {
+                                delete tempVars[actionBridge]
+                            }
                             setTimeout(() => {
                                 delete tempVars[uniq]
                                 fs.writeFileSync('./AppData/Toolkit/tempVars.json', JSON.stringify(tempVars, null, 2))
@@ -86,9 +90,7 @@ console.log(colors.Reset, colors.BgYellow, colors.FgBlack, data.name + ' is star
                         }
 
             }
-        }
-    
-    } catch (err) {}
+        } } catch (err) {}
 
         if (keepGoing == true) {
             try {
@@ -98,17 +100,14 @@ console.log(colors.Reset, colors.BgYellow, colors.FgBlack, data.name + ' is star
         }
     }
     }
-        if (tempVars[uniq][`${uniq}preventDeletion$`] && tempVars[uniq][`${uniq}preventDeletion$`].length != 0) {
-            let interval = setInterval(() => {
-                let variableCheckTool = JSON.parse(fs.readFileSync(require('process').cwd() + '\\AppData\\Toolkit\\tempVars.json'))
-                if (variableCheckTool[uniq][`${uniq}preventDeletion$`].length == 0) {
-                    delete variableCheckTool[uniq];
-                    fs.writeFileSync(require('process').cwd() + '\\AppData\\Toolkit\\tempVars.json', JSON.stringify(variableCheckTool))
-                }
-                clearInterval(interval)
-            }, 5000)
-        }
-
+    if (!tf) {
+        delete tempVars[actionBridge]
+        delete tempVars[uniq]
+        fs.writeFileSync('./AppData/Toolkit/tempVars.json', JSON.stringify(tempVars, null, 2))
+    } else {
+        delete tempVars[uniq];
+        fs.writeFileSync('./AppData/Toolkit/tempVars.json', JSON.stringify(tempVars, null, 2))
+    }
 
 
     }

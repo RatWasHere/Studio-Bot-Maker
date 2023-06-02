@@ -6,16 +6,16 @@ module.exports = {
     "btext4":"Guild", "previewName":"Guild",
      "menuBar": {choices: ["Command Guild", "Guild*"], storeAs: "guild", extraField:"guildVariable"}, 
     "sepbarrole01":"", 
-    "btext1":"Role Name", "input43":"roleName",  
+    "btext1":"Role Name", "input43*":"roleName",  
     "sepbarcolorname":"",
     "btextcolorname": "Role Color",
-    "inputcolor":"color",
+    "inputcolor*":"color",
 "sepbardisplayrole?":"",
     "btexthoist":"Display Role Separately?",
     "ButtonBar": {"buttons":["✓", "✕"]},
     "sepbarstoreas":"",
     "btextstoreas":"Store As",
-    "inputstoreas_novars*":"storeAs",
+    "inputstoreas_novars!*":"storeAs",
     "variableSettings":{
         "guildVariable": {
             "Guild*": "direct", 
@@ -39,12 +39,12 @@ module.exports = {
         } else {
             hoist = true;
         }
-        let role = {
+        let roleOpts = {
             name: values.roleName,
             color: parseInt(values.color.replace("#", ""), 16),
             hoisted: hoist
         }
-        guild.roles.create(roleOptions).then((role) => {
+        guild.roles.create(roleOpts).then((role) => {
             if (values.storeAs != '') {
 
 

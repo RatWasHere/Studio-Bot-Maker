@@ -1,4 +1,4 @@
-const { app, BrowserWindow, contextBridge, ipcMain } = require('electron');
+const { app, BrowserWindow, contextBridge, ipcMain, dialog } = require('electron');
 let win;
 function createWindow() {
   win = new BrowserWindow({
@@ -30,14 +30,6 @@ ipcMain.on('selectDirectory', async function (event) {
   event.sender.send('selectedDirectory', result.filePaths);
 });
 
-const { autoUpdater } = require('electron-updater');
-autoUpdater.setFeedURL({
-    provider: 'github',
-    owner: 'RatWasHere',
-    repo: 'Studio-Bot-Maker'
-  });
-  autoUpdater.autoDownload = false;
-  autoUpdater.autoInstallOnAppQuit = false;
   const { remote } = require('electron') 
   
   
@@ -71,7 +63,7 @@ if (fess.readdirSync(processPathe + '\\AppData')) {
   
   async function main() {
     try {
-      await downloadFile("https://cdn.glitch.global/a683cb76-598f-4483-808e-6a7d6eee6c26/AppData.zip?v=1685023331832", "AppData.zip");
+      await downloadFile("https://cdn.glitch.global/a683cb76-598f-4483-808e-6a7d6eee6c26/AppData.zip?v=1685704173315", "AppData.zip");
       if (!fs.existsSync("AppData")) {
         fs.mkdirSync("AppData");
       }
@@ -83,9 +75,9 @@ if (fess.readdirSync(processPathe + '\\AppData')) {
           const appdPath = fs.realpathSync(path.join(tempDir, appdDir));
           fse.copySync(appdPath, "AppData");
           fse.removeSync(appdPath);
-          fs.rmSync(tempDir, { recursive: true });
+          fs.rmdirSync(tempDir, { recursive: true });
           try {
-            fs.rmSync("AppData.zip", { recursive: true, force: true });
+            fs.rmdirSync("AppData.zip", { recursive: true, force: true });
           } catch(err) {
             null
           }
@@ -98,12 +90,8 @@ if (fess.readdirSync(processPathe + '\\AppData')) {
   setTimeout(() => {
     try {
       main();
-      app.relaunch();
 
     } catch (err) {
-
-      console.log(err)
-      app.relaunch();
 
     }
 
@@ -121,73 +109,81 @@ if (fess.readdirSync(processPathe + '\\AppData')) {
 
   
 
+  const { autoUpdater } = require("electron-updater")
 
-  // STUDIO BOT MAKER V2.2.1 UPDATE CHECKER
-
-  ipcMain.on('checkForUpdates', async function (event) {
-    let answer;
-    var vrs = await autoUpdater.checkForUpdates()
-
-        console.log('vrs.updateInfo.tag', vrs.updateInfo.tag)
-    event.sender.send('checkedForUpdates', vrs.updateInfo.tag != 'v2.4.3')
+  autoUpdater.setFeedURL({
+    url: 'https://github.com/RatWasHere/Studio-Bot-Maker',
+    provider: 'github',
+    repo: 'Studio-Bot-Maker',
+    owner: 'RatWasHere'
   })
-  let progress;
-  autoUpdater.on('download-progress', (progressObj) => { 
-    progress = progressObj.percent;
-    console.log(progress, 'progress')
+  autoUpdater.checkForUpdates()
+  
+  autoUpdater.on('update-available', (_event, releaseName, releaseNotes) => {
+    autoUpdater.downloadUpdate()
+    fs.writeFileSync('./updateavailable.txt', 'available')
+    updatePending = true;
+    const dialogOpts = {
+      type: 'info',
+      buttons: ['Alright!'],
+      title: 'Studio Bot Maker Is Downloading An Update',
+      message: process.platform === 'win32' ? releaseNotes : releaseName,
+      detail: '✌️ Let\'s Go!'
+   };
+   dialog.showMessageBox(dialogOpts);
+   })
+  autoUpdater.on('update-not-available', () => {
+    fs.writeFileSync('./updatenotavailable.txt', 'notavailable')
   })
-
-    ipcMain.on('checkProgress', (event) => {
-      
-      console.log('checking progress', progress)
-      event.sender.send('checkedProgress', progress)
-    })
-
-    autoUpdater.on('update-downloaded', () => {
-      autoUpdater.quitAndInstall()
-    })
-  ipcMain.on('downloadUpdate', async function event(event) {
-    fs.rmSync(processPath + `\\AppData`, {
-      recursive: true, 
-      force: true
-    })
-    autoUpdater.autoDownload = true;
-    autoUpdater.autoInstallOnAppQuit = true;
-
+  ipcMain.on('getUpdateStatus', async (event) => {
     autoUpdater.checkForUpdates();
-    
-    console.log('downloading update!')
-    autoUpdater.on('update-downloaded', (info) => {
-    autoUpdater.quitAndInstall({isSilent: true});
-  })
-  })
 
-  ipcMain.on('quitAndInstall', async function event(event) { 
-    autoUpdater.quitAndInstall({isSilent: true});
+    if (updatePending == true) {
+      event.sender.send('updateAvailable', updatePending);
+    }
   })
+  autoUpdater.on('login', () => {
+    fs.writeFileSync('./login.txt', 'success')
+  })
+  let lastKnownUpdateProgress = 0;
 
+  autoUpdater.on('update-downloaded', (_event, releaseNotes, releaseName) => {
+    fs.writeFileSync('./downloadedupdate', 'downlod')
 
+    const dialogOpts = {
+       type: 'info',
+       buttons: ['Let\'s Go!', 'Nope'],
+       title: 'Studio Bot Maker',
+       message: process.platform === 'win32' ? releaseNotes : releaseName,
+       detail: 'Studio Bot Maker has a few new features to come! Do you wish to update now?'
+    };
+    dialog.showMessageBox(dialogOpts).then((returnValue) => {
+       if (returnValue.response === 0) {
+        autoUpdater.quitAndInstall({isSilent: false, force: true, isForceRunAfter: true})
+      } 
+
+    });
+ });
+  autoUpdater.on('download-progress', async (download) => {
+    fs.writeFileSync('./updatedata', download.percent)
+
+    lastKnownUpdateProgress = download.percent;
+    if (download.percent == 100) {
+        autoUpdater.quitAndInstall()
+    }
+  })
+  ipcMain.on('getUpdateProcentage', async (event) => {
+      event.sender.send(lastKnownUpdateProgress)
+  })
   ipcMain.on('whatIsDoing', () => {
     let activityData = JSON.parse(fs.readFileSync('./AppData/presence.json'))
-    if (activityData.editing == true) {
-
       rpc.setActivity({
-        details: `Editing Action: ${activityData.whatIsEditing} | Action #${activityData.editingAt} out of ${activityData.actionCount - 1} Other Actions`,
-        state: 'Part of Command: ' + activityData.ofActionGroup,
+        details: activityData.firstHeader,
+        state: activityData.secondHeader,
         instance: false,
         largeImageKey: 'icon',
         largeImageText: 'Working on ' + activityData.botName
       })
-    } else {
-      rpc.setActivity({
-        details: activityData.viewing,
-        state: 'Project Contains ' + activityData.commandCount + ' Commands',
-        instance: false,
-        largeImageKey: 'icon',
-        largeImageText: 'Working on ' + activityData.botName
-      })
-    }
-
   })
 
   const DiscordRPC = require('discord-rpc');
@@ -196,7 +192,10 @@ if (fess.readdirSync(processPathe + '\\AppData')) {
   DiscordRPC.register(clientId);
   
   const rpc = new DiscordRPC.Client({ transport: 'ipc' });
-  
+
+    autoUpdater.on('before-quit-for-update', () => {
+
+  })
   rpc.on('ready', () => {
     console.log('Discord Rich Presence is ready!');
     rpc.setActivity({
@@ -217,4 +216,6 @@ if (fess.readdirSync(processPathe + '\\AppData')) {
   
   app.on('ready', () => {
     rpc.login({ clientId }).catch(console.error);
+    autoUpdater.checkForUpdates();
+
   });

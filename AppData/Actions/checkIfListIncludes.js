@@ -1,5 +1,9 @@
 module.exports = {
-    data: {"name":"Check If List Includes", "ListName":"", "checkFor":"Text*", "toCheck":"", "whatToDo":"Run Action Group*", "toRun":"", "whatNotToDo":"Stop Execution", "notToRun":""},
+    data: {"name":"Check If List Includes",
+     "ListName":"", "checkFor":"Text*", 
+     "toCheck":"", "whatToDo":"Run Action Group*", 
+     "toRun":"", "whatNotToDo":"Stop Execution",
+     "notToRun":""},
 
 
     UI: {"compatibleWith":["Any"], 

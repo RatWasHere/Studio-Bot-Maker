@@ -3,7 +3,6 @@
 // discord.js objects, with ease!
 
 
-const fs = require('fs')
 module.exports = {
     studio: {"API": "0", "Version": "1"},
     
@@ -126,8 +125,31 @@ module.exports = {
             console.log('Converting to action rows >>> Cannot find Menu/Button option ' + elementStored)
           }
         }
-        console.log(components)
         return components
 
+      },
+      preventDeletion(uID) {
+        const fs = require('fs')
+        var tempVars = JSON.parse(fs.readFileSync(require('process').cwd() + '\\AppData\\Toolkit\\tempVars.json'))
+        let toAdd = new Date().getTime()
+        if (tempVars[uID][`${uID}preventDeletion$`]) {
+          tempVars[uID][`${uID}preventDeletion$`][`${toAdd}`] = " "
+          return
+        } else {
+          tempVars[uID][`${uID}preventDeletion$`] = { [`${toAdd}`]: " " }
+        }
+        fs.writeFileSync(require('process').cwd() + '\\AppData\\Toolkit\\tempVars.json', JSON.stringify(tempVars))
+        return toAdd
+
+      },
+      leak(uID, customTimestamp) {
+        const fs = require('fs')
+        var tempVars = JSON.parse(fs.readFileSync(require('process').cwd() + '\\AppData\\Toolkit\\tempVars.json'))
+        try {
+          delete tempVars[uID][`${uID}preventDeletion$`][`${customTimestamp}`]
+          fs.writeFileSync(require('process').cwd() + '\\AppData\\Toolkit\\tempVars.json', JSON.stringify(tempVars))
+        } catch (err) {
+          null
+        }
       }
 }

@@ -1,5 +1,5 @@
 module.exports = {
-    data: {"name": "Wait","desc": "", "varble": "", "amountOfTime":"Seconds*", "time":"", "actionRowElements":[]},
+    data: {"name": "Wait", "amountOfTime":"Seconds*", "time":""},
     UI: {"compatibleWith": ["Any"], "text1":"Wait", "sepbar2setwait":"", 
     "btext00":"Amount Of Time", "menuBar":{"choices": ["Minutes*", "Hours*", "Seconds*"], 
     "storeAs":"amountOfTime", "extraField":"time"}, "sepbar120":"",

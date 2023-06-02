@@ -68,9 +68,11 @@ module.exports = {
         const { ComponentType } = require('discord.js')
 
       let message = client.channels.cache.get(tempVars[uID][values.messageVariable].channelId).messages.cache.get(tempVars[uID][values.messageVariable].id)
-        const collector = message.createMessageComponentCollector({ time: parseFloat(values.stopAfter) * 1000, componentType: ComponentType.Button });
+        const collector = message.createMessageComponentCollector({ max: 1, time: parseFloat(values.stopAfter) * 1000, componentType: ComponentType.Button });
         var collectedAt = []
         let timesRan = 0;
+        let toolkit = require('../Toolkit/interactionTools.js');
+        let toolKey = toolkit.preventDeletion(uID);
         collector.on('collect', async (interaction) => {
 
             if (interaction.component.customId == values.customID) {
@@ -92,7 +94,7 @@ module.exports = {
             if (isAuthor == true && collectedAt.includes(interaction.createdTimestamp) == false) {
                 collectedAt.push(interaction.createdTimestamp)
                 let datjson = require('../data.json')
-                for (let command in datjson.commands) {
+            
                     const interactionTools = require(`../Toolkit/interactionTools.js`)
                     await interactionTools.runCommand(values.runAfter, runActionArray, uID, client, inter, fs)
 
@@ -104,17 +106,20 @@ module.exports = {
                             if (values.storeAs != "") {
                                 tempVars[uID] = {
                                     ...tempVars[uID],
-                                    [values.storeAs]: interaction
+                                    [values.storeAs]: {
+                                        author: interaction.author,
+                                        createdTimestamp: interaction.createdTimestamp
+                                    }
                                 }
 
                                 fs.writeFileSync('./AppData/Toolkit/tempVars.json', JSON.stringify(tempVars), 'utf8')
                             }
-                            return Promise.resolve(null).then(() => null);
-                        }
                 }}
        });
+       setTimeout(() => {
+        delete collectedAt;
+        toolkit.leak(uID, toolKey)
+    }, values.stopAfter * 1000)
 
-        setTimeout(() => {
-            delete collectedAt
-        }, values.stopAfter * 1000)
+    await collectorPromise
 }}

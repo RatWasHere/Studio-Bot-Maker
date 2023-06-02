@@ -1,12 +1,12 @@
-![image](https://github.com/RatWasHere/Studio-Bot-Maker/assets/100881234/69285a64-b9d8-4f66-9711-47155db43974)
+![image](https://github.com/RatWasHere/Studio-Bot-Maker/assets/100881234/2e255e0f-d8ba-4768-a1ed-a24776c6c884)
 
 # Studio Bot Maker
-**✌️ 420th edition**
+**✌️ Honorable Mentions - [Phantom Hosting](https://l.linklyhq.com/l/1nohw)**
+<a href="https://l.linklyhq.com/l/1nohw" target="_blank"><img src="https://github-production-user-asset-6210df.s3.amazonaws.com/100881234/242099266-b6439c2d-958b-47bf-b10d-13e78d9fe5cd.png"></a>
 
-![image](https://github.com/RatWasHere/Studio-Bot-Maker/assets/100881234/7d6aed08-664a-4988-a54c-93ad93ee32a4)
 
-**🐛 A no code discord bot maker!**
-
+### **🐛 A no code discord bot maker!**
+<a href="https://www.producthunt.com/posts/studio-bot-maker?utm_source=badge-featured&utm_medium=badge&utm_souce=badge-studio&#0045;bot&#0045;maker" target="_blank"><img src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=396865&theme=dark" alt="Studio&#0032;Bot&#0032;Maker - A&#0032;no&#0032;code&#0032;Discord&#0032;bot&#0032;maker | Product Hunt" style="width: 250px; height: 54px;" width="250" height="54" /></a>
 ### Sooo... what is Studio Bot Maker?
 ~~Isn't it obvious~~ Right... SBM (Studio Bot Maker) is a complete rival to other paid alternatives on Steam, with the benefit of knowing everything is tested before release (except actions sometimes, there's only me workin on this thing & I don't have all the time in the world! 🥲) 
 The benefits of that are quite obvious: The end product is a well polished application with a great taste in looks. ~~(maybe not)~~
@@ -32,8 +32,8 @@ Studio Bot Maker requires significant brain usage, please do not complain the ap
 ## Highlights & Features!
 
 ### **Summarized Controls, One Place For Everything!**
-![image](https://user-images.githubusercontent.com/100881234/235323655-3fecbed6-6f78-4f64-b5dc-cfa6131923c5.png)
-(Buttons above signify: create command/action, move command/action up/down, switch between commands and actions (F1, Tab), open home)
+![image](https://github.com/RatWasHere/Studio-Bot-Maker/assets/100881234/e48da719-ab54-48fe-8fd9-26d2e467baa2)
+
 
 ### **Quick Fixes, Error Checker!**
 ![image](https://user-images.githubusercontent.com/100881234/235323688-6321316f-6880-4c41-8ddb-b32e5199e404.png)

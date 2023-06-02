@@ -3,8 +3,8 @@ module.exports = {
     "dataName":"",
     "dataValue": "",
      "storeAs":"",
-     "memberAs":"Message Author",
-      "memberFrom":""},
+     "userAs":"Message Author",
+      "userFrom":""},
      
     UI: {"compatibleWith":["Text", "Slash"], 
     "text":"Store User Data", 
@@ -13,7 +13,7 @@ module.exports = {
 
      "btext00guild":"Get User From",
       "menuBar":{"choices":["Message Author", "Variable*"], 
-      storeAs:"memberAs", extraField:"memberFrom"},
+      storeAs:"userAs", extraField:"userFrom"},
 
       "sepbar134324121232":"",  
 
@@ -24,13 +24,13 @@ module.exports = {
        "input341*":"dataValue",
 
       "variableSettings":{
-        "memberFrom": {
+        "userFrom": {
             "Variable*": "direct", 
             "Message Author": "novars"
         }
     },
 
-      "preview":"memberAs", 
+      "preview":"userAs", 
       "previewName":"User"},
 
    async run(values, message, uID, fs, client) { 
@@ -42,11 +42,11 @@ module.exports = {
         let secondValue = varTools.transf(values.dataName, uID, tempVars)
         var onArr = "users"
 
-        if (values.memberAs == 'Message Author') {
+        if (values.userAs == 'Message Author') {
             user = message.author.id
         } else {
                 guild = ''
-                user = tempVars[uID][values.memberFrom].id
+                user = tempVars[uID][values.userFrom].id
         }
         if (storedData[onArr][guild + user]) {
             storedData[onArr][guild + user] = {

@@ -1,15 +1,15 @@
 module.exports = {
-    data: {"name":"Remove Role", "memberChoice":"", "storeAs":"", "addTo":"Message Author", "efadd":""},
+    data: {"name":"Remove Role", "memberChoice":"", "storeAs":"", "addTo":"Message Author", "memberVariable":""},
     UI: {"compatibleWith":["Text", "Slash"], "text":"Remove Role",
-     "sepbar3":"", "btext33333333":"Role Variable", 
+     "sepbar3":"", "btext":"Role Variable", 
      "input1_direct*":"memberChoice", "sepbar12":"", 
-     "btext2":"Remove From",
+     "btext1":"Remove From",
       "menuBar":{"choices":["Message Author", "Member*"], 
-      storeAs: "addTo", extraField:"efadd"}, 
+      storeAs: "addTo", extraField:"memberVariable"}, 
      "sepbar0":"", "preview":"memberChoice", "previewName":"Role",
      "variableSettings": [
         {
-            "efadd": {
+            "memberVariable": {
                 "Member*": "direct", 
                 "Message Author": "novars"
             }
@@ -24,7 +24,7 @@ module.exports = {
         if (values.addTo == 'Message Author') {
             user = message.author.id
         } else {
-            user = tempVars[uID][values.efadd].userId
+            user = tempVars[uID][values.memberVariable].userId
         }
        let role = client.guilds.cache.get(tempVars[uID][values.memberChoice].guild).roles.cache.get(tempVars[uID][values.memberChoice].id) 
        let member = client.guilds.cache.get(tempVars[uID][values.memberChoice].guild).members.cache.get(user) 

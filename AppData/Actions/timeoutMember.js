@@ -1,5 +1,10 @@
 module.exports = {
-    data: {"messageContent": "", "button": "Variable*", "name": "Timeout Member", "ExtraData": "", "sendTo":"", "ButtonRow":"", "ActionRow":"", "embedVar":"", "guild":"Message Guild", "guildField":"", "reason":"", "duration":"Minute(s)*", "howMuch":""},
+    data: {
+     "button": "Variable*",
+      "name": "Timeout Member", "ExtraData": "", 
+        "guild":"Message Guild", 
+        "guildField":"", "reason":"", 
+        "duration":"Minute(s)*", "howMuch":""},
     UI: {"compatibleWith": ["Text", "Slash"], 
     "text": "Timeout Member","sepbarEmbVar":"",
      "btextmember":"Member",
