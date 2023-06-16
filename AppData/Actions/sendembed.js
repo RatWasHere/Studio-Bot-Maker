@@ -7,7 +7,7 @@ module.exports = {
       "sepbarEmbVar":"", 
       "btext55553333334546426":"Send To", 
       "ButtonBar": {"buttons": ["Message Channel", "Channel*", "User*"], storeAs: "sendTo",
-
+  
     }, 
     ButtonBarChoices: {
       "Channel*": "direct",

@@ -43,7 +43,7 @@ try {
 }   
 console.log(colors.Reset, colors.BgYellow, colors.FgBlack, data.name + ' is starting up...', colors.Reset)
     client.on('ready', () => {
-        console.log(colors.Reset, colors.FgGreen, 'Studio Bot Maker V2.4.1 Project, started successfully!', colors.Reset);
+        console.log(colors.Reset, colors.FgGreen, 'Studio Bot Maker V2.5.3 Project, started successfully!', colors.Reset);
         fs.writeFileSync('./AppData/Toolkit/tempVars.json', '{}')
     });
     

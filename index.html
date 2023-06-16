@@ -1,6 +1,19 @@
 <html>
     <link rel="stylesheet" href="main.css">
     <meta charset="utf8">
+    <div class="sidebar" style="display: none;">
+        <div class="sidebartext">Dashboard</div>
+        <div class="sidebarbutton flexbox outlined">
+            <div class="image switchObjs noanims;" style="width: 2vw; height: 2vw; margin-left: 1vw;"></div>
+            <div class="sidebartext">
+                Dashboard</div>
+        </div>
+        <div class="sidebarbutton flexbox" onclick="initSetup()" >
+            <div class="image save noanims;"style="width: 2vw; height: 2vw; margin-left: 1vw;"></div>
+            <div class="sidebartext">
+                Setup</div>
+        </div>
+    </div>
     <div style="justify-content: center; width: 100%; align-content: center; margin-left: auto; margin-right: auto; align-items: center; justify-items: center;">
 <div class="flexbox fbh">
     <div style="flex: none; overflow-x: auto; width: 48.3vw;">
@@ -88,6 +101,8 @@
 </div>
     <script src="./AppData/Kits/EditorBones.js"></script>
     <script src="./AppData/Kits/ActionModules.js"></script>
+    <script src="./AppData/Kits/MiscScripts.js"></script>
+    <script src="./AppData/Kits/BotStartup.js" type="module"></script>
 
     <script>
         const interactionTools = require('./AppData/Toolkit/interactionTools.js')
@@ -171,13 +186,13 @@ try {
                                 cmd = datjson.commands[command].name
                             }
                         }
-                        htmle = `${htmle} <div class="input borderbottomz" onblur="updateFoundActionGroup(this)" onchange="updateFoundActionGroup(this)" contentEditable="true" id="${UIdata[e]}">${datjson.commands[lastObj].actions[lastAct].data[UIdata[e]]}</div>
+                        htmle = `${htmle} <div class="input borderbottomz" oninput="validateInput(event)" onblur="updateFoundActionGroup(this)" onchange="updateFoundActionGroup(this)" contentEditable="true" id="${UIdata[e]}">${datjson.commands[lastObj].actions[lastAct].data[UIdata[e]]}</div>
                         <div class="actionGroupSelector bordertopz" onclick="document.getElementById('${UIdata[e]}').focus(); setTimeout( () => {showCustomMenu(getOffset(document.getElementById('${UIdata[e]}')).left + 10, getOffset(document.getElementById('${UIdata[e]}')).top + 50)}, 300)">
                             <div class="barbuttontexta">Selected: ${cmd}</div>
                         </div>
                         `
                     } else {
-                        htmle = `${htmle} <div class="input" contentEditable="true" id="${UIdata[e]}">${datjson.commands[lastObj].actions[lastAct].data[UIdata[e]]}</div>`
+                        htmle = `${htmle} <div class="input" oninput="validateInput(event)" contentEditable="true" id="${UIdata[e]}">${datjson.commands[lastObj].actions[lastAct].data[UIdata[e]]}</div>`
                     }
                 }
                 if (ems.startsWith('sepbar')) {
@@ -209,7 +224,7 @@ try {
                             ButtonBar = `${ButtonBar}<div onclick="Bselect(this, '${lastAct}')" class="switchableButton" style="width: 23%; background-color: #FFFFFF20; ${extraOptions}" id="${button}"><div class="barbuttontexta" style="margin: auto;">${button}</div></div>`
                             lastButton = button
                             if (button.endsWith('*')) {
-                                extraElements = `${extraElements} <div class="inputB" style="animation-name: startFrominput; animation-duration: 0.3s;" id="ExtraData" contenteditable="true">${datjson.commands[lastObj].actions[lastAct].data.ExtraData}</div>`
+                                extraElements = `${extraElements} <div class="inputB" oninput="validateInput(event)" style="animation-name: startFrominput; animation-duration: 0.3s;" id="ExtraData" contenteditable="true">${datjson.commands[lastObj].actions[lastAct].data.ExtraData}</div>`
                             }
                         } else {
                             ButtonBar = `${ButtonBar}<div onclick="Bselect(this, '${lastAct}')" class="switchableButton" style="${extraOptions}" id="${button}"><div class="barbuttontexta" style="margin: auto;">${button}</div></div>`
@@ -251,7 +266,7 @@ try {
 
                                 } else {
 
-                                    htmle = `${htmle} <div class="selectBar" onblur="saveField('${UIdata[ems].extraField}', '${UIdata[ems].storeAs}')" onkeyup="saveField('${UIdata[ems].extraField}', '${UIdata[ems].storeAs}')" id="${thenm}" contenteditable="true">${datjson.commands[lastObj].actions[lastAct].data[UIdata[ems].extraField]}</div>`
+                                    htmle = `${htmle} <div class="selectBar" oninput="validateInput(event)" onblur="saveField('${UIdata[ems].extraField}', '${UIdata[ems].storeAs}')" onkeyup="saveField('${UIdata[ems].extraField}', '${UIdata[ems].storeAs}')" id="${thenm}" contenteditable="true">${datjson.commands[lastObj].actions[lastAct].data[UIdata[ems].extraField]}</div>`
                                 }
                             
                             }
@@ -273,24 +288,30 @@ try {
             }
               setTimeout(() => {
                 edutor.innerHTML = htmle;
-                var dfs = ActionTile.innerHTML;
-                ActionTile.className = 'actionBar'
+                var dfs = document.getElementById('animationArea').innerHTML;
+                dfs = dfs;
+                var area = document.getElementById('animationArea');
                 edutor.className = 'actionBar'
                 edutor.style.overflowY = 'auto'
                 document.getElementById('bottombar').style.opacity = '0%'
                 document.getElementById('bottombar').remove()
-                ActionTile.innerHTML = `
+                area.innerHTML = `
+                <div class="actionBar">
                 <div style="margin-top: -12px;margin-left: -12px;padding: 0px;background-color: #00000040;width: calc(100% + 24px);margin-right:  -12px; padding-top: 6px; padding-bottom: 2px; margin-bottom: 1vh;">
                 ` +  '<div class="text blk" style="text-align: center;">Currently Editing <br> <div class="center halftransparent" id="actionName00"> ' + datjson.commands[lastObj].actions[lastAct].name + '</div></div></div> <div class="flexbox" style="align-content: center; margin-left: auto; margin-right: auto; width: 90%; justify-content: center;"><div class="barbutton borderright"  onclick="save_changes(\'' + lastAct + '\')"><br><div id="saveobjects69" class="image save"></div></div><div class="barbutton borderleft center" id="cndcl"> <div class="barbuttontext">✕</div></div></div> <div class="daction noanim" style="width: 45%" onclick="selectAction()" id="cakt"><div>Change Action</div></div>' + `
                 <div id="actionElements" style="margin-top: auto;"></div>
                 <div style="margin-bottom: -12px;margin-left: -12px;padding: 0px;background-color: #00000040;width: calc(100% + 24px);margin-right:  -12px; padding-bottom: 12px; margin-top: 1vh;">
-                ` + ' <div class="smalltext blk" style="margin-top: 14px; text-align: center; font-size: 18px;">Action Of ' + datjson.commands[lastObj].name + ' <br></div> <div class="smalltext blk" style="text-align: center">✓ = Save | ✕ = Discard</div></div>'
+                ` + ' <div class="smalltext blk" style="margin-top: 14px; text-align: center; font-size: 18px;">Action Of ' + datjson.commands[lastObj].name + ' <br></div> <div class="smalltext blk" style="text-align: center">✓ = Save | ✕ = Discard</div></div></div>'
        setTimeout(() => {
         try {
+            customHTMLdfs = dfs
+            customHTMLreturn = pinHTML
+
             document.getElementById('cndcl').onclick = () => {restoreTo(dfs, pinHTML)}
         } catch(err) {
             null
         }
+
        }, 50)
 
 
@@ -322,7 +343,7 @@ try {
             if (datjson.commands[lastObj].actions[lastAct].data.actionRowElements != undefined) {
                 let viewActionRowElements = document.getElementById('actionElements');
                 viewActionRowElements.onclick = () => {
-                    showAvailableSlots(viewActionRowElements)
+                    controlActionRows()
                 }
                 viewActionRowElements.className = 'zaction noanim'
                 viewActionRowElements.style.width = '45%'
@@ -340,7 +361,6 @@ try {
 
 
     function Bselect(butt, action) {
-        console.log('eeeeeee')
         let edutor = document.getElementById('edutor')
         let oldButton = document.getElementById(lastButton);
         oldButton.style.backgroundColor = '';
@@ -355,6 +375,9 @@ try {
             extrda.id = 'ExtraData'
             extrda.style.animationName = 'startFrominput'
             extrda.style.animationDuration = '0.3s'
+            extrda.oninput = (event) => {
+                validateInput(event)
+            }
             butt.parentNode.appendChild(extrda) 
         }
         if (!butt.innerText.endsWith('*') && oldButton.innerText.endsWith('*')) {
@@ -463,36 +486,6 @@ try {
 
         switchObjs()
         switchObjs()
-         /* function highlight(element) {
-        
-        if (element.id.startsWith('Group') == true) {
-            document.getElementById(`Group${lastObj}`).style.backgroundColor = '#FFFFFF15';
-            element.style.backgroundColor = '#FFFFFF25';
-            document.getElementById('Command_Name').innerHTML = element.innerText.split('|')[0];
-            lastObj = element.id.split('Group')[1]
-            refreshActions();
-            
-            if (datjson.commands[lastObj].type == 'action') {
-                console.log(datjson.commands[lastObj])
-                    switch(datjson.commands[lastObj].trigger) {
-                case 'slashCommand':
-                    ddaf = 'Slash Command'
-                    break
-                case 'textCommand':
-                    ddaf = 'Text Command'
-                break
-                case 'messageContent':
-                    ddaf = 'Message'
-            }
-    
-            document.getElementById('commandActions').innerHTML = `Type: ${ddaf} • ${datjson.commands[lastObj].count} Actions Used`  
-            } else {
-                document.getElementById('commandActions').innerHTML = `Event • ${datjson.commands[lastObj].count} Actions Used`
-            }
-            checkErrors()
-            closeCommand()
-        } 
-    }*/
         highlight(document.getElementById('Group1'), true, true)
         
         </script>

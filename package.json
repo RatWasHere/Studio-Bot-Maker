@@ -18,6 +18,8 @@
         "appId": "com.ratapp.sbm",
         "publish": "github",
         "win": {
+            "certificateFile": "./dist/StudioBotCertificate.pfx",
+            "allowToChangeInstallationDirectory":"true",
             "publish": {
                 "provider": "github",
                 "owner": "RatWasHere",
@@ -31,7 +33,12 @@
                     ]
                 }
             ]
-        }
+        },
+        "nsis": {
+            "oneClick": false,
+            "perMachine": false,
+            "allowToChangeInstallationDirectory": true
+          }
     },
     "dependencies": {
         "@electron-forge/maker-base": "^6.1.0",
@@ -55,7 +62,7 @@
         "@electron-forge/maker-squirrel": "^6.0.5",
         "@electron-forge/maker-zip": "^6.0.5",
         "@electron-forge/publisher-github": "^6.0.5",
-        "electron": "^23.1.2",
+        "electron": "^25.0.1",
         "electron-builder": "^23.6.0"
     },
     "scripts": {
@@ -65,5 +72,5 @@
         "release": "electron-builder",
         "cert": "electron-builder create-self-signed-cert -p StudioCertificate"
     },
-    "version": "2.5.1"
+    "version": "2.6.0"
 }

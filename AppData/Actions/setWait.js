@@ -15,46 +15,25 @@ module.exports = {
     }
     },
     run(values, message, uID, fs, client) {
+        const variableTools = require('../Toolkit/variableTools')
+        let tempVars = require('../Toolkit/tempVars.json')
+        var timeAmount = parseFloat(variableTools.transf(values.time, uID))
         let time;
         switch(values.amountOfTime) {
             case 'Seconds*': 
-            time = 1000 * parseFloat(values.time)
+            time = 1000 * timeAmount
             break
             case 'Minutes*': 
-            time = 1000 * 60 * parseFloat(values.time)
+            time = 1000 * 60 * timeAmount
             break
             case 'Hours*': 
-            time = 1000 * 60 * 60 * parseFloat(values.time)
+            time = 1000 * 60 * 60 * timeAmount
             break
         }
-        var tempVars = JSON.parse(fs.readFileSync('./AppData/Toolkit/tempVars.json', 'utf8'))
-
-        tempVars[uID] = {
-            ...tempVars[uID],
-            [`ACTIONARRAY_stop`]: true
-          };
-          fs.writeFileSync('./AppData/Toolkit/tempVars.json', JSON.stringify(tempVars), 'utf8')
-        setTimeout(() => {
-
-    
-            tempVars[uID] = {
-                ...tempVars[uID],
-                [`ACTIONARRAY_stop`]: false
-              };
-              fs.writeFileSync('./AppData/Toolkit/tempVars.json', JSON.stringify(tempVars), 'utf8')
-              let datjson = require('../data.json')
-              
-                for (let command in datjson.commands) {
-                    if (datjson.commands[command].name.toLowerCase() == values.actionGroup.toLowerCase()) {
-                        for (let action in datjson.commands[command].actions) {
-                            let actFile = require(`./${datjson.commands[command].actions[action].file}`)
-                            let vls = datjson.commands[command].actions[action].data
-                            actFile.run(vls, message, uID, fs, client)
-                        }
-                    }
-                }
-        }, time)
-
-
+        const delayPromise = new Promise((resolve) => {
+            setTimeout(resolve, time);
+          });
+          
+          delayPromise
     }
 }

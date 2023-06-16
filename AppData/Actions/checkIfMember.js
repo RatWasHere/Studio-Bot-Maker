@@ -19,7 +19,7 @@ module.exports = {
     
     "text1":"Check Member Permission",
      "sepbar2":"sepber", 
-     "btext33333333":"Get Member From",
+     "btext":"Get Member From",
       "menuBar1":{"choices": ["Message Author", "Variable*"], storeAs:"memberChoice", extraField:"memberVariable"},
         "sepbarbutton":"",
          "btextwhatto":"Check Permission", 
@@ -56,18 +56,16 @@ module.exports = {
         },
 
         "invisible":"",
-        previewName: "Check For", preview: "whatToRun",
+        previewName: "Check For", preview: "permission",
 
         },
 
     async run(values, message, uID, fs, client, runActionArray) {
-
+        const { PermissionsBitField } = require('discord.js');
         let varTools = require(`../Toolkit/variableTools.js`)
         var tempVars = JSON.parse(fs.readFileSync('./AppData/Toolkit/tempVars.json', 'utf8'))
-        var user;
-        if (values.memberChoice == 'Message Author') {
-            user = message.member
-        } else {
+        var user = message.member
+        if (values.memberChoice != 'Message Author') {
         const guild = client.guilds.cache.get(varTools.transf(tempVars[uID][values.memberVariable].guildId, uID, tempVars));
         user = guild.members.cache.get(varTools.transf(tempVars[uID][values.memberVariable].userId, uID, tempVars));
         }
@@ -75,7 +73,7 @@ module.exports = {
 
     switch(values.permission) {
         case 'Admin': 
-            if (user.hasPermission('ADMINISTRATOR')) {
+            if (user.permissions.has(PermissionsBitField.Flags.Administrator)) {
                 hasPermission = true
             }
         break
@@ -85,39 +83,39 @@ module.exports = {
             }
         break
         case 'Kick':
-            if (user.hasPermission('KICK_MEMBERS')) {
+            if (user.permissions.has(PermissionsBitField.Flags.KickMembers)) {
                 hasPermission = true
             }
         break
         case 'Ban':
-            if (user.hasPermission('BAN_MEMBERS')) {
+            if (user.permissions.has(PermissionsBitField.Flags.BanMembers)) {
                 hasPermission = true
             }
         break
         case 'Timeout':
-            if (user.hasPermission('TIMEOUT_MEMBERS')) {
+            if (user.permissions.has(PermissionsBitField.Flags.ModerateMembers)) {
                 hasPermission = true
             }
         break
         case 'Deafen':
-            if (user.hasPermission('DEAFEN_MEMBERS')) {
+            if (user.permissions.has(PermissionsBitField.Flags.DeafenMembers)) {
                 hasPermission = true
             }
             break
             
         case 'Manage Roles':
-            if (user.hasPermission('MANAGE_ROLES')) {
+            if (user.permissions.has(PermissionsBitField.Flags.ManageRoles)) {
                 hasPermission = true
             }
             break
             
         case 'Manage Channels':
-            if (user.hasPermission('MANAGE_CHANNELS')) {
+            if (user.permissions.has(PermissionsBitField.Flags.ManageChannels)) {
                 hasPermission = true
             }
             break
         case 'Manage Messages': 
-        if (user.hasPermission('MANAGE_MESSAGES')) {
+        if (user.permissions.has(PermissionsBitField.Flags.ManageMessages)) {
             hasPermission = true
         }
             break
@@ -125,7 +123,7 @@ module.exports = {
     }
 
     if (hasPermission == true) {
-        if (values.whatToRun == 'Run Action Array*') {
+        if (values.whatToRun == 'Run Action Group*') {
                 const interactionTools = require(`../Toolkit/interactionTools.js`)
                 await interactionTools.runCommand(values.whatTo, runActionArray, uID, client, message, fs)
             }
@@ -142,7 +140,7 @@ module.exports = {
             }
     } else {
 
-        if (values.whatNotToRun == 'Run Action Array*') {
+        if (values.whatNotToRun == 'Run Action Group*') {
             const interactionTools = require(`../Toolkit/interactionTools.js`)
             await interactionTools.runCommand(values.whatNot, runActionArray, uID, client, message, fs)
         }
@@ -155,4 +153,5 @@ module.exports = {
 
         }
 
-}}}
+}
+}}

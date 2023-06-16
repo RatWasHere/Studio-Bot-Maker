@@ -152,18 +152,18 @@ if (fess.readdirSync(processPathe + '\\AppData')) {
 
     const dialogOpts = {
        type: 'info',
-       buttons: ['Let\'s Go!', 'Nope'],
+       buttons: ['Update Now!', 'Nope'],
        title: 'Studio Bot Maker',
        message: process.platform === 'win32' ? releaseNotes : releaseName,
        detail: 'Studio Bot Maker has a few new features to come! Do you wish to update now?'
     };
     dialog.showMessageBox(dialogOpts).then((returnValue) => {
-       if (returnValue.response === 0) {
-        autoUpdater.quitAndInstall({isSilent: false, force: true, isForceRunAfter: true})
+       if (returnValue.response == 0) {
+        autoUpdater.quitAndInstall({isSilent: false, force: true})
       } 
-
     });
  });
+ autoUpdater.autoInstallOnAppQuit = true;
   autoUpdater.on('download-progress', async (download) => {
     fs.writeFileSync('./updatedata', download.percent)
 

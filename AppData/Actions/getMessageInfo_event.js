@@ -10,6 +10,7 @@ module.exports = {
         var msg;
         var tempVars = JSON.parse(fs.readFileSync('./AppData/Toolkit/tempVars.json', 'utf8'))
             msg = tempVars[uID][values.ExtraData]
+        console.log(msg)
     switch(values.toGet) {
             case 'Message Content':
                 tempVars[uID][values.storeAs] = msg.content
@@ -31,5 +32,6 @@ module.exports = {
             break
         } 
         fs.writeFileSync('./AppData/Toolkit/tempVars.json', JSON.stringify(tempVars), 'utf8')
+
     }
 }

@@ -1,5 +1,5 @@
 module.exports = {
-    data: {"messageContent": "", "storeAs":"", "button": "Message Channel", "name": "Send Message", "ExtraData": "", "sendTo":"",  "actionRowElements":[]},
+    data: {"messageContent": "", "storeAs":"", "button": "Message Channel", "name": "Send Message", "ExtraData": "", "sendTo":"",  "actionRowElements":[], "actionRows": []},
     UI: {"compatibleWith": ["Text", "Slash"], "text": "Send Message", "sepbar": "",
     "btext": "Message Content", "largeInput": "messageContent",      "sepbar0":"",
 

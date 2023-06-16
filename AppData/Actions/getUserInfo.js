@@ -1,34 +1,39 @@
 module.exports = {
-    data: {"name": "Get User Info","desc": "", "varble": "", "vrble":"", "vrb":"", "button":"Command Message", "ExtraData":"", "datainfo":"User ID", "memberVariable":"", "memberChoice":"Message Author"},
-    UI: {"compatibleWith": ["Text", "Slash"], "text1":"Get User Info", "sepbar2":"sepber","btext33333333":"Get User From", "menuBar1":{"choices": ["Message Author", "Variable*"], storeAs:"memberChoice", extraField:"memberVariable"}, "sepbarbutton":"", "btextwhatto":"Get", "menuBar2":{"choices":["User Name", "User ID", "User Profile Picture (URL)"], storeAs:"datainfo"}, "sepbarbtext":"","btext566": "Store As", "input666!*":"varble",
+    data: {"name": "Get User Info","desc": "", "storeAs": "", "toGet":"User ID", "memberVariable":"", "memberChoice":"Message Author"},
+    UI: {"compatibleWith": ["Text", "Slash"],
+     "text":"Get User Info", "sepbar":"","btext":"Get User From",
+      "menuBar":{"choices": ["Message Author", "Variable*"], storeAs:"memberChoice", extraField:"memberVariable"}
+      , "sepbar1":"", "btext1":"Get", "menuBar0":{"choices":["User Name", "User ID",
+       "User Profile Picture (URL)"], storeAs:"toGet"}, "sepbar2":"","btext2": "Store As", 
+       "input!*":"storeAs",
     "variableSettings": {
         "memberVariable": {
             "Message Author": "novars",
             "Variable*": "direct"
         }
     },
-    previewName: "Get", preview: "datainfo"},
+    previewName: "Get", preview: "toGet"},
     async run(values, message, uID, fs, client) {
         let varTools = require(`../Toolkit/variableTools.js`)
         var tempVars = JSON.parse(fs.readFileSync('./AppData/Toolkit/tempVars.json', 'utf8'))
-        let user = message.user;
+        let user = message.author;
         if (values.memberChoice == 'Message Author') {
             null
         } else {
-            user = client.users.cache.get(varTools.transf(tempVars[uID][values.memberVariable].id, uID, tempVars));
+            user = client.users.cache.get(tempVars[uID][varTools.transf(values.memberVariable, uID, tempVars)].id, uID, tempVars);
         }
-    switch(values.datainfo) {
+    switch(values.toGet) {
             case 'User Name':
-                tempVars[uID][values.varble] = user.username
+                tempVars[uID][values.storeAs] = user.username
             break
             case 'User Discriminator':
-                tempVars[uID][values.varble] = user.discriminator
+                tempVars[uID][values.storeAs] = user.discriminator
             break 
             case 'User Profile Picture (URL)': 
-                tempVars[uID][values.varble] = user.displayAvatarURL()
+                tempVars[uID][values.storeAs] = user.displayAvatarURL()
             break
             case 'User ID':
-                tempVars[uID][values.varble] = user.id
+                tempVars[uID][values.storeAs] = user.id
             break
         } 
         await fs.writeFileSync('./AppData/Toolkit/tempVars.json', JSON.stringify(tempVars), 'utf8')

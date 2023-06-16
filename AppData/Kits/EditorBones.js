@@ -46,9 +46,6 @@ document.onkeydown = function(event) {
     datjson.reset = false;
     fs.writeFileSync('C:\\ProgramData\\studiodata.json', JSON.stringify(datjson, null, 2))
 }
-
-if (datjson.prjSrc == '') {
-}
 }
     function refreshActions() {
         var delay = 0;
@@ -72,7 +69,7 @@ if (datjson.prjSrc == '') {
                     }
                   }
             } catch (err) {
-                quickie = `Error (Please delete)`
+                quickie = `Error`
             }
         
 
@@ -85,7 +82,13 @@ if (datjson.prjSrc == '') {
               extrf = 'bordercentere';
             }
         
-            document.getElementById('actionbar').innerHTML += `<div id="Action${action}" onmouseenter="lastHovered = this" onmouseleave="lastHovered = null;" class="action textToLeft ${extrf}" style="animation-delay: ${delay * 3}0ms" ondblclick="editAction(this)" onclick="highlight(this)">${datjson.commands[lastObj].actions[action].name} <div style="opacity: 50%; margin-left: 7px;"> ${`  ${quickdata.previewName}`}: ${quickie}${dts}</div> <div class="deleteActionButton" onclick="deleteObject(this)">✕</div>`;
+            document.getElementById('actionbar').innerHTML += `
+            
+            <div id="Action${action}" onmouseenter="lastHovered = this" draggable="true" ondragleave="handleActionDragEnd(this)" ondragend="handleActionDrop()" ondragover="actionDragOverHandle(event, this)" ondragstart="handleActionDrag(this)" onmouseleave="lastHovered = null;" class="action textToLeft ${extrf}" style="animation-delay: ${delay * 3}0ms" ondblclick="editAction(this)" onclick="highlight(this)">
+            ${datjson.commands[lastObj].actions[action].name}
+             <div style="opacity: 50%; margin-left: 7px;">
+              ${`  ${quickdata.previewName}`}: ${quickie}${dts}</div>
+             <div class="deleteActionButton" onclick="deleteObject(this)">✕</div>`;
         
             if (action === lastAct) {
               setTimeout(() => {
@@ -141,6 +144,25 @@ if (datjson.prjSrc == '') {
             }
             checkErrors()
             closeCommand()
+            let lastCheckedAction = null;
+            for (let action in datjson.commands[lastObj].actions) {
+                lastCheckedAction = action;
+            }
+            if (datjson.commands[lastObj].count != datjson.commands[lastObj].actions.length || datjson.commands[lastObj].count != lastCheckedAction) {
+                console.log('fix, error')
+                let filteredEntries = Object.entries(datjson.commands[lastObj].actions);
+                let newJson = {};
+                let newCount = 0;
+                for (let i = 0; i < filteredEntries.length; i++) {
+                    newCount++
+                  newJson[i + 1] = filteredEntries[i][1];
+                }
+                datjson.commands[lastObj].count = newCount
+                datjson.commands[lastObj].actions = newJson;
+                refreshActions()
+                wast()
+
+            }
         } else {
             try {
             document.getElementById(`Action${lastAct}`).style.backgroundColor = '#FFFFFF15';
@@ -176,7 +198,7 @@ function switchObjs() {
                 }
               }
         } catch (err) {
-            quickie = `Error (Please delete)`
+            quickie = `Error`
         }
     
 
@@ -216,132 +238,12 @@ function switchObjs() {
         null
     }
     }
-    
-function closeSlots() {
-    elm = document.getElementById('actionElements')
-    elm.style.animationName = 'showBarsButton'
-    elm.style.width = '45%'
-    elm.style.height = ''
-    elm.style.borderRadius = '6px'
-    elm.style.marginBottom = '0px'
-    elm.style.animationDuration = '0.6s'
-    elm.innerHTML = '<div class="barbuttontexta">Action Rows</div>'
-    elm.style.backgroundColor = '#FFFFFF15'
-    setTimeout(() => {
-        elm.onclick = () => {
-            showAvailableSlots(elm)
-        }
-    })
-} 
-function showAvailableSlots(elm) {
-    let arrfd = []
-    let fdr = datjson.commands[lastObj].actions[lastAct].data.actionRowElements
-    let i = 0
-    elm.onclick = () => {}
-    let newPush = ``
-    elm.style.animationName = 'showButtonBars'
-    elm.innerHTML = 'Action Rows'
-    elm.style.width = '90%'
-    elm.style.height = '45%'
-    elm.style.borderRadius = '20px'
-    elm.style.marginBottom = '5px'
-    elm.style.animationDuration = '0.5s'
-    elm.style.backgroundColor = '#00000060'
-    setTimeout(() => {
-        document.getElementById('actionElements').innerHTML = `
-
-        <div class="barbuttone noanims"  style="width: 95%; margin-top: 10px; margin-bottom: 10px;" onclick="closeSlots()"><div class="barbuttontexta">Close</div></div>
-
-        `
-    }, 220)
-    setTimeout(() => {
-        let toCompensateFor = 0;
-
-        for (let elm in fdr) {
-            let FoundMatch = false
-            for (let bar in datjson.buttons.bars) {
-
-                if (datjson.buttons.bars[bar].customId == fdr[elm]){
-                    FoundMatch = true
-                    var buttonColors = ''
-                    for (let button in datjson.buttons.bars[bar].buttons) {
-                        switch (datjson.buttons.bars[bar].buttons[button].style) {
-                            case 'Default': 
-                            buttonColors = `${buttonColors}<div style="width: 12px; opacity: 50%; height: 12px; margin-right: 3px; background-color: #695dfb; border-radius: 100px;"></div>`
-                            break
-                            case 'Success': 
-                            buttonColors = `${buttonColors}<div style="width: 12px; opacity: 50%; height: 12px; margin-right: 3px; background-color: #5fb77a; border-radius: 100px;"></div>`
-                            break
-                            case 'Danger': 
-                            buttonColors = `${buttonColors}<div style="width: 12px; opacity: 50%; height: 12px; margin-right: 3px; background-color: #de4447; border-radius: 100px;"></div>`
-                            break
-                            case 'Neutral': 
-                            buttonColors = `${buttonColors}<div style="width: 12px; opacity: 50%; height: 12px; margin-right: 3px; background-color: #50545d; border-radius: 100px;"></div>`
-                            break
-                            case 'Link': 
-                            buttonColors = `${buttonColors}<div style="width: 12px; opacity: 50%; height: 12px; margin-right: 3px; background-color: #FFFFFF90; border-radius: 100px;"></div>`
-                            break
-                        }
-                    }
-                    document.getElementById('actionElements').innerHTML += `
-                    <div class="issue noanims flexbox textToLeft" onclick="getActionRow(${bar}, ${toCompensateFor})" style="background-color: #FFFFFF15; border-bottom: none;">
-                    <div class="barbuttontexta textToLeft" style="margin-left: 12px; margin-right: auto;">${datjson.buttons.bars[bar].name}</div>
-                    <div style="margin: auto; align-items: center; justify-content: center;" class="flexbox">${buttonColors}</div>
-                    <div class="barbuttond" onmousedown="ridButton(${toCompensateFor - 1})" style="margin-left: auto; margin-right: 0px; margin-top: auto; margin-bottom: auto; height: 30px; width: 30px; border-radius: 8px;"><div class="barbuttontexta">✕</div></div>
-                    </div>
-                    `
-                }
-            }   
-
-            for (let row in datjson.rows) {
-                if (datjson.rows[row].customId == fdr[elm]) {
-                    FoundMatch = true;
-                    document.getElementById('actionElements').innerHTML += `
-                    <div class="issue noanims flexbox textToLeft" onclick="getActionRow(${row}, ${toCompensateFor})" style="background-color: #FFFFFF15; border-bottom: none;">
-                    <div class="barbuttontexta textToLeft" style="margin-left: 12px; margin-right: auto;">${datjson.rows[row].name}</div>
-                    <div class="barbuttontexta" style="margin: auto; background-color: #00000040; padding: 7px; border-radius: 6px;">${datjson.rows[row].options.length} Options</div>
-                    <div class="barbuttond" onmousedown="ridButton(${toCompensateFor - 1})" style="margin-left: auto; margin-right: 0px; margin-top: auto; margin-bottom: auto; height: 30px; width: 30px; border-radius: 8px;"><div class="barbuttontexta">✕</div></div>
-                    </div>
-                    `
-                }
-            }
-
-            if (FoundMatch == false) {
-                datjson.commands[lastObj].actions[lastAct].data.actionRowElements.splice(elm, 1)
-            } else {
-                toCompensateFor++
-            }
-        }
-        while (toCompensateFor < 5) {
-            document.getElementById('actionElements').innerHTML += `
-            <div class="issue fade flexbox" onclick="getActionRow(null, null)" style="background-color: #FFFFFF15; border: 2px dashed #FFFFFF20;">
-            <div class="barbuttontexta">Empty Slot</div>
-            </div>
-            `           
-             toCompensateFor++
-
-        }
-        document.getElementById('actionElements').innerHTML += "<br>"
-        
-    }, 380)
-    elm.innerHTML = `
-    <div style="background-color: #FFFFFF15; border-radius: 12px; padding: 7px;">
-    <div class="barbuttontexta"></div>
-    </div>
-    `
-}
 function ridButton(atIndex) {
     datjson.commands[lastObj].actions[lastAct].data.actionRowElements.splice(atIndex, 1)
     fs.writeFileSync(processPath +'\\AppData\\data.json', JSON.stringify(datjson, null, 2));
     showAvailableSlots(document.getElementById('actionElements'))
-
 }
 function getActionRow(bar, atIndex) {
-    let trv = true
-    if (bar == null) {
-        trv = false
-    }
-
     let elm = document.getElementById('actionElements')
     elm.innerHTML = `<div class="barbuttontexta" style="margin: 5px; margin-bottom: -5px;">Select An Action Row </div> <div class="sepbars"></div>
     <div class="flexbox" style="align-items: center; width: 95%; justify-content: center; margin: auto; margin-bottom: 2vh;">
@@ -377,120 +279,6 @@ function getActionRow(bar, atIndex) {
         `
     }
 }
-function showActRows(atIndex) {
-    let elm = document.getElementById('actionElements')
-    elm.innerHTML = `<div class="barbuttontexta" style="margin: 5px; margin-bottom: -5px;">Select An Action Row </div> <div class="sepbars"></div>
-    <div class="flexbox" style="align-items: center; width: 95%; justify-content: center; margin: auto; margin-bottom: 2vh;">
-    <div class="barbuttone" onclick="showActRows(${atIndex})" style="width: 45%;"><div class="barbuttontexta">Buttons</div></div>
-    <div class="barbuttone" onclick="showMenuBars(${atIndex})" style="width: 45%;"><div class="barbuttontexta">Select Menus</div></div>
-    </div>
-    `
-    elm.style.overflowY = 'auto'
-    let fdr = datjson.commands[lastObj].actions[lastAct].data.actionRowElements
-    for (let bar in datjson.buttons.bars) {
-        var buttonColors = ''
-        for (let button in datjson.buttons.bars[bar].buttons) {
-            switch (datjson.buttons.bars[bar].buttons[button].style) {
-                case 'Default': 
-                buttonColors = `${buttonColors}<div style="width: 12px; opacity: 50%; height: 12px; margin-right: 3px; background-color: #695dfb; border-radius: 100px;"></div>`
-                break
-                case 'Success': 
-                buttonColors = `${buttonColors}<div style="width: 12px; opacity: 50%; height: 12px; margin-right: 3px; background-color: #5fb77a; border-radius: 100px;"></div>`
-                break
-                case 'Danger': 
-                buttonColors = `${buttonColors}<div style="width: 12px; opacity: 50%; height: 12px; margin-right: 3px; background-color: #de4447; border-radius: 100px;"></div>`
-                break
-                case 'Neutral': 
-                buttonColors = `${buttonColors}<div style="width: 12px; opacity: 50%; height: 12px; margin-right: 3px; background-color: #50545d; border-radius: 100px;"></div>`
-                break
-                case 'Link': 
-                buttonColors = `${buttonColors}<div style="width: 12px; opacity: 50%; height: 12px; margin-right: 3px; background-color: #FFFFFF90; border-radius: 100px;"></div>`
-                break
-            }
-        }
-        elm.innerHTML += `
-        <div class="issue flexbox" onclick="setButtoenBar(${bar}, ${atIndex})" style="height: auto; border-bottom: none; box-shadow: none; background-color: #ffffff15; height: 4vh; align-content: center; justify-items: center;" onclick="selectbar(${bar}, ${atIndex})">${datjson.buttons.bars[bar].name} - ${datjson.buttons.bars[bar].buttons.length} Buttons <div style="margin-left: 12px; align-items: center; justify-content: center;" class="flexbox">${buttonColors}</div></div>
-        `
-    }
-}
-function showMenuBars(atIndex) {
-    let elm = document.getElementById('actionElements')
-    elm.innerHTML = `<div class="barbuttontexta" style="margin: 5px; margin-bottom: -5px;">Select An Action Row </div> <div class="sepbars"></div>
-    <div class="flexbox" style="align-items: center; width: 95%; justify-content: center; margin-right: auto; margin-left: auto; margin-top: 2vh; margin-bottom: 2vh;">
-    <div class="barbuttone" onclick="showActRows(${atIndex})" style="width: 45%;"><div class="barbuttontexta">Buttons</div></div>
-    <div class="barbuttone" onclick="showMenuBars(${atIndex})" style="width: 45%;"><div class="barbuttontexta">Select Menus</div></div>
-    </div>
-
-    `
-    elm.style.overflowY = 'auto'
-    let fdr = datjson.commands[lastObj].actions[lastAct].data.actionRowElements
-    for (let row in datjson.rows) {
-        elm.innerHTML += `
-        <div class="issue flexbox" onclick="setMenuBar(${row}, ${atIndex})" style="height: auto; border-bottom: none; box-shadow: none; background-color: #ffffff15; height: 4vh; align-content: center; justify-items: center;">
-        ${datjson.rows[row].name}
-        </div>
-        `
-    }
-}
-function setMenuBar(bar, atIndex) {
-    if (atIndex == null) {
-        datjson.commands[lastObj].actions[lastAct].data.actionRowElements.push(datjson.rows[bar].customId)
-    } else {
-        datjson.commands[lastObj].actions[lastAct].data.actionRowElements[atIndex] = datjson.rows[bar].customId
-    }
-    fs.writeFileSync(processPath +'\\AppData\\data.json', JSON.stringify(datjson, null, 2));
-
-    showAvailableSlots(document.getElementById('actionElements'))
-}
-
-
-
-function setButtoenBar(bar, atIndex) {
-    if (atIndex == null) {
-        datjson.commands[lastObj].actions[lastAct].data.actionRowElements.push(datjson.buttons.bars[bar].customId)
-    } else {
-        datjson.commands[lastObj].actions[lastAct].data.actionRowElements[atIndex] = datjson.buttons.bars[bar].customId
-    }
-    fs.writeFileSync(processPath +'\\AppData\\data.json', JSON.stringify(datjson, null, 2));
-
-    showAvailableSlots(document.getElementById('actionElements'))
-}
-function showButtonBars(elm) {
-    elm.style.animationName = 'showButtonBars'
-    elm.style.width = '90%'
-    elm.style.height = '45%'
-    elm.style.borderRadius = '20px'
-    elm.style.marginBottom = '5px'
-    elm.style.animationDuration = '0.4s'
-    elm.style.backgroundColor = '#00000060'
-    setTimeout(() => {
-        elm.innerHTML = ''
-    }, 200)
-    setTimeout(() => {  
-        elm.style.animationName = ''
-        elm.className = 'zaction noanims'
-    }, 410
-    )
-    setTimeout(() => {
-        for (let bar in datjson.buttons.bars) {
-            let endResult = `<div class="fade slower" style="width: 98%; margin-right: auto;  margin-left: auto; background-color: #FFFFFF15; border-radius: 7px; height: auto;"> 
-            <div style="background-color: #00000040; border-radius: 7px; padding: 6px;"><div class="barbuttontexta">${datjson.buttons.bars[bar].name}</div></div><div style="margin-top: 4px; margin-bottom: 4px;" class="flexbox">`   
-            for (let button in datjson.buttons.bars[bar].buttons) {
-                endResult = `${endResult}
-                <div class="barbuttond unhoverable flexbox" style="height: auto; padding: 5px; padding-bottom: 5px; width: 17%; margin-left: 1px;"><div class="barbuttontexta">${datjson.buttons.bars[bar].buttons[button].name}</div></div>
-                `
-            }
-            endResult = `${endResult}
-            </div></div>
-            `
-            console.log(endResult)
-            elm.innerHTML += `<div style="margin-top: 2%;"></div>${endResult}`
-        }
-    }, 210)
-
-}
-
-
 
     function openBar(iftr) {
         let bottombar = document.getElementById('bottombar')
@@ -591,16 +379,16 @@ function showButtonBars(elm) {
         editorOptions.style.animationName = 'moveToTheLeft'
         editorOptions.style.animationDuration = '0.35s'
         
-        let commandDisplay = document.getElementById('animationArea').parentElement
+        let commandDisplay = document.getElementById('animationArea')
 
         commandDisplay.style.animationName = 'moveToTheRight'
         commandDisplay.style.animationDuration = '0.35s'
 
             setTimeout (() => {
                 document.getElementById('edutor').className = 'fullsize'
+                document.getElementById('animationArea').innerHTML = to
                 editorOptions.innerHTML = fo;
-                ActionTile.innerHTML = ''
-                ActionTile.className = 'actBarHalf actbartop'
+
                 refreshActions()
                 refreshGroups()
                 editorOptions.style.animationName = 'comeToTheLeft1'
@@ -631,11 +419,6 @@ function showButtonBars(elm) {
             }, 690)
 
     }
-
-    
-
-
-    
 
     function switchGroups() {
             let bottombar = document.getElementById('bottombar')
@@ -882,7 +665,6 @@ function showButtonBars(elm) {
             switchObjs()
         }, 100) 
         }
-
     }
     function setCmd() {
             datjson.commands[lastObj].type = 'action'
@@ -902,19 +684,23 @@ function showButtonBars(elm) {
         fs.writeFileSync(processPath + '\\AppData\\data.json', JSON.stringify(datjson, null, 2));
         checkErrors()
     }
-
-
-
-
+    var intervalCheck = 210;
     setInterval(() => {
-        
-// Clear the cache for the module
-        const v1 = JSON.stringify(datjson)
-        const v2 = v1
+        const time = new Date().getTime()
         delete datjson
 
         var datjson = JSON.parse(JSON.stringify(JSON.parse(fs.readFileSync(processPath + '\\AppData\\data.json'))));
-    }, 160)
+        const time1 = new Date().getTime()
+        if (time1 - time > 30) {
+            intervalCheck = 240
+        } 
+        if (time1 - time < 30) {
+            intervalCheck = 150
+        }
+        if (time1 - time > 100) {
+            intervalCheck = 350
+        }
+    }, intervalCheck)
 
 
     function selectAction() {
@@ -1186,8 +972,6 @@ function showButtonBars(elm) {
                         }
                     }
                 }
-
-
                 if (ems.startsWith('text')) {
                     htmle = `${htmle} <div class="text">${UIdata[e]}</div>`
                 }
@@ -1200,7 +984,6 @@ function showButtonBars(elm) {
                 if (ems.startsWith('invisible')) {
                     htmle = `${htmle} <div class="none"></div>`
                 }
-
             }
 
             edutor.innerHTML = htmle
@@ -1229,11 +1012,13 @@ function showButtonBars(elm) {
                 }
             }
                 }
+                
         function saveField(fieldId, sa) {
             let field = document.getElementById(fieldId) 
             datjson.commands[lastObj].actions[lastAct].data[fieldId] = field.innerText;
             fs.writeFileSync(processPath + '\\AppData\\data.json', JSON.stringify(datjson, null, 2))
         }
+
         Element.prototype.appendBefore = function (element) {
             element.parentNode.insertBefore(this, element);
           },false;
@@ -1284,6 +1069,9 @@ function showButtonBars(elm) {
                         pending.onContentUpdate = () => {
                             saveField(menuElement, storeAs)
                         }
+                        pending.oninput = (event) => {
+                            validateInput(event)
+                        }
 
      }
             }
@@ -1306,7 +1094,6 @@ function showButtonBars(elm) {
                         pending.onblur  = () => {
                             saveField(menuElement, storeAs)
                             updateFoundActionGroup(pending)
-
                         }
                         pending.oncontentupdate = () => {
                             saveField(menuElement, storeAs)
@@ -1376,9 +1163,6 @@ function showButtonBars(elm) {
                 }
             }
         }
-          
-          
-          
         
         function closeMenu(elmett, nht, storesAs) {
             elmett.innerHTML = nht
@@ -1387,12 +1171,10 @@ function showButtonBars(elm) {
             elmett.onclick = () => {openChoices(storesAs, elmett)}
         }
         function openChoices(storesAs, pElm, dElement, elementStores) {
-            // pElm is the parent element
             const elmdf = pElm.innerHTML
             const elmd = elmdf
             const plmdf1 = pElm.innerHTML
             const plmdf = plmdf1 
-            // emnf is the child element displaying the remaining other options
             let chk = require(`./AppData/Actions/${datjson.commands[lastObj].actions[lastAct].file}`).UI[elementStores].choices;
             for (let option in require(`./AppData/Actions/${datjson.commands[lastObj].actions[lastAct].file}`).UI[elementStores].choices) {
                 if (chk[option] != plmdf) {
@@ -1534,27 +1316,7 @@ function showButtonBars(elm) {
         }, 490)
         } 
         
-        function checkForUpdate() {
-            openBar()
-            setTimeout (() => {
-                let bottombar = document.getElementById('bottombar')
-                bottombar.innerHTML = `
-                <div class="flexbox" style="height: 100%;">
-                <div class="ring">
-                <div class="ring" style="height: 7vh; width: 7vh; margin-top: 0.25vh;  animation-delay: 0.8s; animation-duration: 1.8s;"></div>
-                </div>
-                <br>
-                <div class="barbuttontexta">Checking For Updates</div>
-                </div>
-                `
-            }, 470)
-        }
 
-        /* ipcRenderer.send('selectDirectory');
-        
-         ipcRenderer.on('selectedDirectory', function (event, dir) {
-          console.log(dir);
-        }); */
 
         function sltPrj() {
             const ipcRenderer = require('electron').ipcRenderer;
@@ -1604,7 +1366,7 @@ function showButtonBars(elm) {
             editorOptions.style.marginLeft = '-100vw'
             document.body.innerHTML += `
             <div class="actbar" style="margin-top: -95vh; padding: 0px; margin-left: auto; margin-right: auto; position: relative; background: linear-gradient(45deg, #FFFFFF15 0%, #FFFFFF01 150%); box-shadow: #00000035 0px 0px 12px;">
-            <div class="barbuttone" style="margin-left: 1vw; margin-top: 1vw; width: 7vw;" onclick="location.reload()"><div class="barbuttontexta">Cancel</div></div>
+            <div class="barbuttone" style="margin-left: 1vw; margin-top: 1vw; width: 7vw;" onclick="unexportBot(this)"><div class="barbuttontexta">Cancel</div></div>
 
             <div class="barbuttontext" style="margin-top: 3vh; text-align: center;">Export Project</div>
             <div class="sepbars"></div>
@@ -1631,8 +1393,7 @@ function showButtonBars(elm) {
             delete editorOptions;
         }
         function unexportBot(elm) {
-            console.log(elm.parentElement)
-            // elm.parentElement.remove()
+            elm.parentElement.remove()
             let commandDisplay = document.getElementById('animationArea');
             commandDisplay.style.animationName = 'comeToTheRight1'
             commandDisplay.style.animationDuration = '0.35s'
@@ -1755,39 +1516,7 @@ function showButtonBars(elm) {
                     for (let acf in datjson.commands) {
                         acrnum = parseFloat(acrnum) + parseFloat(datjson.commands[acf].count)
                     }
-                fs.writeFileSync(exportFOlder + '\\FirstTimeSetup.bat', `
-                @echo off
 
-                REM Check if Node.js is installed
-                node -v >nul 2>&1
-                IF %ERRORLEVEL% NEQ 0 (
-                  echo Node.js is not installed. Installing...
-                
-                  REM Download and run the Node.js installer
-                  curl -o nodeinstaller.msi https://nodejs.org/dist/latest/win-x64/nodejs-latest-win-x64.msi
-                  msiexec /i nodeinstaller.msi
-                
-                  REM Verify the installation
-                  node -v >nul 2>&1
-                  IF %ERRORLEVEL% NEQ 0 (
-                    echo Failed to install Node.js. Aborting.
-                    pause
-                    exit /b
-                  )
-                )
-                
-                REM Install dependencies using npm
-                npm install
-                
-                REM Run your bot.js file
-                call :runBot
-                goto :eof
-                
-                :runBot
-                pushd %~dp0
-                node bot.js
-                popd
-                `)
                 for (let action in actions) {
                     counnt++
                         await fs.writeFileSync(exportFolder + '\\AppData\\Actions\\' + actions[action], fs.readFileSync(processPath + '\\AppData\\Actions\\' + actions[action]))
@@ -1862,7 +1591,7 @@ function showButtonBars(elm) {
         }
 
         }, 120000)
-
+ /*
         let elm = document.createElement('div')
         elm.className = 'issue'
         elm.id = 'saveProjectnotif'
@@ -1892,7 +1621,7 @@ function showButtonBars(elm) {
            let spn = document.getElementById('saveProjectnotif')
            spn.remove()
         }, 3000)
-
+*/
         function commandOptions() {
             let commandOptions = document.getElementById('commandActions')
             commandOptions.className = 'baction'
@@ -1921,16 +1650,22 @@ function showButtonBars(elm) {
                     }
                 commandOptions.innerHTML = `
                 <div class="btext">Command Description</div>
-                <div class="input" contenteditable="true" onkeyup="elementContentChecker(this, {maxLength: 32}); setDescription(this)" onblur="elementContentChecker(this, {maxLength: 32, fromBlur: true}); setDescription(this)">${hm}</div>
-                
-                <div class="btext">Parameters</div>
-                <div id="sepfx" class="flexbox" style="margin-bottom: 1vh; margin-left: calc(auto + 2.5px); margin-right: auto; width: 100%; height: 100%;">
+                <input class="input" style="padding: 12.5px;"
+                onkeydown="if (event.key != 'Backspace') return this.value.split('').length < 32;" oninput="setDescription(this)" value="${hm}">
+
+
+                <div id="sepfx" class="flexbox" style="margin-left: calc(auto + 2.5px); margin-right: auto; width: 100%; height: 100%;">
                 <div></div>
-                <div id="parameterTile" style="border-top-left-radius: 12px; overflow-y: auto; border-bottom-left-radius: 12px; background-color: #00000030; padding: 12px; margin-left: auto; margin-right: 1%; width: calc(40% - 24px); height: 100%; justify-content: center; align-items: center; height: calc(25vh - 24px);">
+                    <div style="width: 40%; margin-left: auto; margin-right: 1%;">
+                <div style="border-radius: 12px; border-bottom-left-radius: 2px; border-bottom-right-radius: 2px; margin-bottom: 1%; width: calc(100% - 12px); padding: 6px; padding-top: 1.5px; padding-bottom: 1.5px; background-color: #FFFFFF10;">                
+                <div class="btext">Parameters</div>
+                </div>
+                <div class="bordertopz" id="parameterTile" style="border-top-left-radius: 12px; border-bottom-right-radius: 2px !important; overflow-y: auto; border-bottom-left-radius: 12px; background-color: #00000030; padding: 12px; margin-left: auto; width: calc(100% - 24px); justify-content: center; align-items: center; height: calc(25vh - 24px - 1% - 26px);">
                 
                 </div>
+            </div>
 
-                <div id="plTile" class="flexbox" style="border-top-right-radius: 12px; border-bottom-right-radius: 12px;background-color: #00000030;padding: 12px;margin-right: auto;width: calc(55% - 24px);height: 100%;align-items: center;overflow-y: auto; height: calc(25vh - 24px);">
+                <div id="plTile" class="flexbox" style="border-top-right-radius: 12px; border-top-left-radius: 12px; border-bottom-right-radius: 12px;background-color: #00000030;padding: 12px;margin-right: auto;width: calc(55% - 24px);height: 100%;align-items: center;overflow-y: auto; height: calc(25vh - 24px);">
                     <div class="barbuttontexta flexbox" style="margin: auto;">⟨  <span style="margin-left: 6vw"></span> Select A Parameter!</div>
                 </div>
 
@@ -2081,8 +1816,9 @@ function showButtonBars(elm) {
             let nht = fr.innerHTML 
 
             datjson.commands[lastObj].eventData[id] = nht
-            fs.writeFileSync(processPath +'/AppData/data.json', JSON.stringify(datjson, null, 2));
+            wast()
         }
+
         function newParam() {
             let paramParent = document.getElementById('parameterTile')
             let f = 0;
@@ -2155,7 +1891,7 @@ function showButtonBars(elm) {
             <div class="flexbox" style="width: 100%; margin-left: auto; margin-right: auto;background-color: #00000030; border-radius: 7px; align-items: center; justify-content:center; padding: 3px;">
             <div class="barbuttontexta textLefttextLeft">Name</div>
 
-            <div class="input textLeft" onblur="elementContentChecker(this, {fromBlur: true, maxLength: 15, noSpaces: true, noCaps: true}); storeParamName(this);" style="margin: 0.5vw; margin-top: 0vw;" onkeyup="elementContentChecker(this, {maxLength: 15})" contenteditable="true">${datjson.commands[lastObj].parameters[spl].name}</div>
+            <input class="input textLeft" oninput="storeParamName(this)" onkeydown="return event.key !== ' '; if (event.key != 'Backspace') return this.value.split('').length < 32" style="margin: 0.5vw; margin-top: 0vw;" onkeyup="elementContentChecker(this, {maxLength: 15})" contenteditable="true" value="${datjson.commands[lastObj].parameters[spl].name}">
             </div>
             <div class="sepbars"></div>
             <div class="flexbox" style="width: 100%; margin-left: auto; margin-right: auto;background-color: #00000030; border-radius: 7px; align-items: center; justify-content:center; padding: 3px;">
@@ -2190,7 +1926,6 @@ function showButtonBars(elm) {
             spas.innerHTML = `
             <div class="barbuttontexta">Parameter Description</div>
             <div class="input " onkeyup="if (this.innerText.split('').length > 31) {let fk = this.innerText.split(''); let count = 0; this.innerHTML = ''; this.blur(); for (let i in fk) { count++; if (count < 31) {this.innerHTML += fk[i]; this.focus();}else {this.blur()} }}; storeParamDesc(this)" contenteditable="true" style="margin: 2px; margin-top: -15px; padding-left: 2px; padding-right: 2px; padding-top: 2px; padding-bottom: -25px; overflow-y: none; overflow-x: auto; height: 25px;">${datjson.commands[lastObj].parameters[lastParam.split('Param')[0]].description}</div>
-            
             `
             switch (datjson.commands[lastObj].parameters[spl].type) {
                 case 'String':
@@ -2226,24 +1961,19 @@ function showButtonBars(elm) {
 
         function storeParamStored(wh) {
             datjson.commands[lastObj].parameters[lastParam.split('Param')[0]].storeAs = wh.innerText
-            fs.writeFileSync(processPath +'/AppData/data.json', JSON.stringify(datjson, null, 2));
-
+            wast()
         }
         function storeParamName(wh) {
-            document.getElementById(lastParam).innerHTML = wh.innerText
+            document.getElementById(lastParam).innerHTML = wh.value
             datjson.commands[lastObj].parameters[lastParam.split('Param')[0]].name = wh.innerText
-            fs.writeFileSync(processPath +'/AppData/data.json', JSON.stringify(datjson, null, 2));
-
+            wast()
         }
         function storeParamDesc(wh) {
             datjson.commands[lastObj].parameters[lastParam.split('Param')[0]].description = wh.innerText
-            fs.writeFileSync(processPath +'/AppData/data.json', JSON.stringify(datjson, null, 2));
-
+            wast()
         }
 
         function setPrm(wut) {
-
-
             switch (datjson.commands[lastObj].parameters[parseFloat(lastParam.split('Param')[0])].type) {
                 case 'String':
                     document.getElementById('strng').style.backgroundColor = '#FFFFFF15'
@@ -2269,11 +1999,8 @@ function showButtonBars(elm) {
             }
 
             datjson.commands[lastObj].parameters[lastParam.split('Param')[0]].type = wut.innerHTML
-            fs.writeFileSync(processPath +'/AppData/data.json', JSON.stringify(datjson, null, 2));
+            wast()
             wut.style.backgroundColor = '#FFFFFF20'
-
-
-
         }
         function paramify(what) {
             let paramPosition = what.id.split('Param')[0]
@@ -2282,9 +2009,7 @@ function showButtonBars(elm) {
                 what.innerText = ' '
                 datjson.commands[lastObj].parameters[parseFloat(paramPosition)].name = ' '
             }
-            
-            
-            fs.writeFileSync(processPath +'/AppData/data.json', JSON.stringify(datjson, null, 2));
+            wast()
         }
         function setReq(bln, what) {
             let paramPosition = lastParam.split('Param')[0]
@@ -2299,21 +2024,19 @@ function showButtonBars(elm) {
                 document.getElementById('rff').style.backgroundColor = '#FFFFFF25'
                 datjson.commands[lastObj].parameters[parseFloat(paramPosition)].required = true
             }
-            fs.writeFileSync(processPath +'/AppData/data.json', JSON.stringify(datjson, null, 2));
-
+            wast()
         }
 
         function setDescription(e) {
-            console.log('settingdescription!')
             if (datjson.commands[lastObj].description) {
-                datjson.commands[lastObj].description = e.innerText
+                datjson.commands[lastObj].description = e.value
             } else {
                 datjson.commands[lastObj] = {
                     ...datjson.commands[lastObj],
-                    description: e.innerText
+                    description: e.value
                 }
             }
-            fs.writeFileSync(processPath +'/AppData/data.json', JSON.stringify(datjson, null, 2));
+            wast()
         }
 
         function closeCommand() {
@@ -2343,7 +2066,6 @@ function showButtonBars(elm) {
                 }
             }, 200)
         }
-        // UNFINISHED.
         function modifyActElm() {
             openBar(true)
 
@@ -2481,18 +2203,10 @@ function showButtonBars(elm) {
             if (!datjson.serverToken) {
                 showPhantomUnset()
             }
-// Replace YOUR_API_KEY with your CLIENT API key
         const apiKey = datjson.serverToken;
 
-// Base URL for the Pterodactyl API
+
         const baseURL = 'https://game.phantom-hosting.net/api/client';
-
-// Create an axios instance with the base URL and the API key in the headers
-
-
-
-
-// Function to retrieve the user's account information
 
         try {
             const axiosInstance = axios.create({
@@ -2646,8 +2360,7 @@ function showButtonBars(elm) {
                 console.error(error);
               });
             
-//BOT_JS_FILE
-axios({
+    axios({
     method: 'put',
     url: `https://game.phantom-hosting.net/api/client/servers/${datjson.serverID}/startup/variable`,
     headers: {
@@ -2871,243 +2584,67 @@ axios({
     }
 
 
-/* 
-        if (element.innerText.split('').length > maxLength) {
-            let fk = element.innerText.split(''); 
-         let count = 0; element.innerHTML = ''; 
-         element.blur(); 
-         for (let i in fk) {
-             count++;
-            if (count < 25) {
-                element.innerHTML += fk[i]; element.focus();
-            } else { 
-                element.blur()
-            }
-     }} */
+
 
 function setProjectName(welm) {
     datjson.name = welm.innerText
-    fs.writeFileSync(processPath + '\\AppData\\data.json', JSON.stringify(datjson, null, 2));
-
+    wast()
 }
-        function showButtons() {
-            let view = document.getElementById('actElmsig')
-            if (datjson.buttons) {
-                view.innerHTML = `                <div class="flexbox" style="margin-bottom: 2.5vh;">
-
-                <div class="barbuttond center borderrightz" onclick="switchToHome()" style="margin-left: auto; height: 3vh; width: 30px;">
-                <div class="image backArrow">
-                
-                </div>
-                </div>
-                <div class="barbuttond center borderleftz" onclick="switchToHome()" style="width: 70px; height: 3vh; margin-right: 1vw; margin-left: 0.3vw;">
-                <div class="barbuttontexta">
-                Home
-                </div>
-                </div>
-                </div>
-                <div class="barbuttond" onclick="newButtonBar()" style="margin-left: auto; position: sticky; top: 11; bottom: 1; border-radius: 1000px; width: 50px; height: 50px; margin-bottom: -10vh;">
-                
-                <div class="barbuttontext"><b>+</b></div>
-                </div> 
-
-                <br>
-                <div id="ActionRows" class="flexbox" style="align-items: center; justify-content: center; width: 95%;"></div>
-                `
-                for (let bar in datjson.buttons.bars) {
-                    var buttonColors = ''
-                    for (let button in datjson.buttons.bars[bar].buttons) {
-                        switch (datjson.buttons.bars[bar].buttons[button].style) {
-                            case 'Default': 
-                            buttonColors = `${buttonColors}<div style="width: 4vw; opacity: 50%; height: 3vh; margin-right: 0.5vw; background-color: #695dfb; border-radius: 7px;"></div>`
-                            break
-                            case 'Success': 
-                            buttonColors = `${buttonColors}<div style="width: 4vw; opacity: 50%; height: 3vh; margin-right: 0.5vw; background-color: #5fb77a; border-radius: 7px;"></div>`
-                            break
-                            case 'Danger': 
-                            buttonColors = `${buttonColors}<div style="width: 4vw; opacity: 50%; height: 3vh; margin-right: 0.5vw; background-color: #de4447; border-radius: 7px;"></div>`
-                            break
-                            case 'Neutral': 
-                            buttonColors = `${buttonColors}<div style="width: 4vw; opacity: 50%; height: 3vh; margin-right: 0.5vw; background-color: #50545d; border-radius: 7px;"></div>`
-                            break
-                            case 'Link': 
-                            buttonColors = `${buttonColors}<div style="width: 4vw; opacity: 50%; height: 3vh; margin-right: 0.5vw; background-color: #FFFFFF90; border-radius: 7px;"></div>`
-                            break
-                        }
-                    }
-                    document.getElementById('ActionRows').innerHTML += `
-                    <div class="issue" style="width: 47%; margin-left: 0px; margin-right: auto;">
-                        <div class="flexbox" style="padding: 9px; background-color: #FFFFFF10; border-radius: 6px; "><div style="height: 3vh"></div>${buttonColors}</div>    
-                    <div class="barbuttontext">
-                        ${datjson.buttons.bars[bar].name}
-                        </div>
-                        <div class="barbuttontexta">
-                        Buttons:
-                        ${datjson.buttons.bars[bar].buttons.length}
-                        </div>
-                        <div class="flexbox">
-                        <div  class="flexbox hoverablez" style="padding: 9px; width: 100%; border-radius: 6px;" onclick="editButtons('${bar}')">
-                        <div class="barbuttontexta">Modify</div>
-                        </div>
-                        </div>
-
-                    </div>
-                    `
-                } 
-            } else {
-                view.innerHTML = `
-                <div class="barbuttontexta">No Button Bars Initiated</div>
-                <div class="barbutton flexbox" onclick="buildButtons(); showButtons()" style="margin: auto;">
-                <div class="barbuttontexta">Build</div>
-                </div>
-                `
-            }
-        }
-
-
-
-
-        function newButtonBar() {
-            let tme = new Date().getTime()
-            let newBar = {name: "Bar",
-             storeAs:"ButtonBar",
-             customId: `${tme}`,
-             type: "buttonBar",
-              buttons: []}
-
-        datjson.buttons.bars.push(newBar)
-
-        fs.writeFileSync(processPath + '\\AppData\\data.json', JSON.stringify(datjson, null, 2));
-            var br;
-            document.getElementById('ActionRows').innerHTML = ''
-        for (let bar in datjson.buttons.bars) {
-
-            var buttonColors = ''
-            for (let button in datjson.buttons.bars[bar].buttons) {
-                switch (datjson.buttons.bars[bar].buttons[button].style) {
-                    case 'Default': 
-                    buttonColors = `${buttonColors}<div style="width: 4vw; opacity: 50%; height: 3vh; margin-right: 0.5vw; background-color: #695dfb; border-radius: 7px;"></div>`
-                    break
-                    case 'Success': 
-                    buttonColors = `${buttonColors}<div style="width: 4vw; opacity: 50%; height: 3vh; margin-right: 0.5vw; background-color: #5fb77a; border-radius: 7px;"></div>`
-                    break
-                    case 'Danger': 
-                    buttonColors = `${buttonColors}<div style="width: 4vw; opacity: 50%; height: 3vh; margin-right: 0.5vw; background-color: #de4447; border-radius: 7px;"></div>`
-                    break
-                    case 'Neutral': 
-                    buttonColors = `${buttonColors}<div style="width: 4vw; opacity: 50%; height: 3vh; margin-right: 0.5vw; background-color: #50545d; border-radius: 7px;"></div>`
-                    break
-                    case 'Link': 
-                    buttonColors = `${buttonColors}<div style="width: 4vw; opacity: 50%; height: 3vh; margin-right: 0.5vw; background-color: #FFFFFF90; border-radius: 7px;"></div>`
-                    break
-                }
-            }
-            if (datjson.buttons.bars[bar].customId == newBar.customId) {
-                document.getElementById('ActionRows').innerHTML += `
-                <div class="issue animatedBar" style="width: 47%; margin-left: 0px; margin-right: auto;">
-                    <div class="flexbox" style="padding: 9px; background-color: #FFFFFF10; border-radius: 6px; "><div style="height: 3vh"></div>${buttonColors}</div>    
-                <div class="barbuttontext">
-                    ${datjson.buttons.bars[bar].name}
-                    </div>
-                    <div class="barbuttontexta">
-                    Buttons:
-                    ${datjson.buttons.bars[bar].buttons.length}
-                    </div>
-                    <div  class="flexbox hoverablez" style="padding: 9px; border-radius: 6px;" onclick="editButtons('${bar}')">
-                    <div class="barbuttontexta">Modify</div>
-                    </div>
-                </div>
-                `
-            } else {
-
-            document.getElementById('ActionRows').innerHTML += `
-            <div class="issue noanims" style="width: 47%; margin-left: 0px; margin-right: auto;">
-                <div class="flexbox" style="padding: 9px; background-color: #FFFFFF10; border-radius: 6px; "><div style="height: 3vh"></div>${buttonColors}</div>    
-            <div class="barbuttontext">
-                ${datjson.buttons.bars[bar].name}
-                </div>
-                <div class="barbuttontexta">
-                Buttons:
-                ${datjson.buttons.bars[bar].buttons.length}
-                </div>
-                <div  class="flexbox hoverablez" style="padding: 9px; border-radius: 6px;" onclick="editButtons('${bar}')">
-                <div class="barbuttontexta">Modify</div>
-                </div>
-            </div>
-            `
-        }}
-        let view = document.getElementById('actElmsig')
-        // animatedBar
-        /* document.getElementById('ActionRows').innerHTML += `
-                    <div class="issue" style="width: 47%; margin-left: 0px; margin-right: auto; border-bottom: 3px solid #FFFFFF20; box-shadow: unset;">
-                        <div class="flexbox" style="padding: 9px; background-color: #FFFFFF10; border-radius: 6px; "><div style="height: 3vh"></div></div>    
-                    <div class="barbuttontext">
-                        ${newBar.name}
-                        </div>
-                        <div class="barbuttontexta">
-                        Buttons:
-                        0
-                        </div>
-                        <div  class="flexbox hoverablez" style="padding: 9px; border-radius: 6px;" onclick="editButtons('${br}')">
-                        <div class="barbuttontexta">Modify</div>
-                        </div>
-                    </div>
-        ` */ 
-        }
         function createButton(bar) {
-            if (datjson.buttons.bars[bar].buttons.length >= 5) return;
-            let ba = datjson.buttons.bars[bar]
+            if (datjson.commands[lastObj].actions[lastAct].data.actionRows[bar].components.length >= 5) return;
+            let ba = datjson.commands[lastObj].actions[lastAct].data.actionRows[bar]
             if (lastButt) {
                 lastButt.style.backgroundColor = ''
             }
             let newBtn = {
-                name: "Button" + parseFloat(datjson.buttons.bars[bar].buttons.length + 1),
+                name: "Button" + parseFloat(ba.components.length + 1),
                 style: "Default",
-                customId: "Button" + parseFloat(datjson.buttons.bars[bar].buttons.length + 1),
+                customId: "Button" + parseFloat(ba.components.length + 1),
                 disabled: false,
-                field: ""
+                field: "",
+                runs: ""
             }
 
             document.getElementById('buttonsDisplay').innerHTML = ''
-            for (let button in ba.buttons) {
-                    
+            for (let button in ba.components) {
+
                 let endProduct = 'bordercenter'
-                if (ba.buttons[parseFloat(button) + 1] == undefined) {
-                    endProduct = 'bordercenter'
-                }
-                if (ba.buttons[parseFloat(button) - 1] == undefined) {
+                if (ba.components[parseFloat(button) - 1] == undefined) {
                     endProduct = 'borderright'
                 }
-
+                if (ba.components[parseFloat(button) + 1] == undefined) {
+                    endProduct = 'borderleft'
+                }
                 document.getElementById('buttonsDisplay').innerHTML += `
-                <div class="barbuttond noanims ${endProduct}" onclick="buttonIfy(${button}, ${bar}, this)" style="width: 17%;">
-                <div class="barbuttontexta" id="${bar}${button}BUT">${ba.buttons[button].name}</div>
+                <div class="barbuttond noanims ${endProduct}" onclick="buttonIfy(${button}, ${bar}, this)" draggable="true" ondragover="buttonDragOver(event, ${button})" ondragstart="buttonDragStart(event, ${button})" ondragend="ButtonDrop(${button}, ${bar})" style="width: 17%;">
+                <div class="barbuttontexta" id="${bar}${button}BUT">${ba.components[button].name}</div>
                 </div> 
                 `
             }
+            datjson.commands[lastObj].actions[lastAct].data.actionRows[bar].components.push(newBtn)
+            wast()
             document.getElementById('buttonsDisplay').innerHTML += `
             <div class="barbuttond startWidening borderleft" style="width: 17%;">
             <div class="barbuttontexta" >${newBtn.name}</div>
             </div> 
             `
-            datjson.buttons.bars[bar].buttons.push(newBtn)
             fs.writeFileSync(processPath + '\\AppData\\data.json', JSON.stringify(datjson, null, 2));
             setTimeout(() => {
                 document.getElementById('buttonsDisplay').innerHTML = ''
-                for (let button in ba.buttons) {
+                for (let button in ba.components) {
                     
                     let endProduct = 'bordercenter'
-                    if (ba.buttons[parseFloat(button) + 1] == undefined) {
+                    if (ba.components[parseFloat(button) + 1] == undefined) {
                         endProduct = 'borderleft'
                     }
-                    if (ba.buttons[parseFloat(button) - 1] == undefined) {
+                    if (ba.components[parseFloat(button) - 1] == undefined) {
                         endProduct = 'borderright'
                     }
     
 
                     document.getElementById('buttonsDisplay').innerHTML += `
-                    <div class="barbuttond noanims ${endProduct}" onclick="buttonIfy(${button}, ${bar}, this)" style="width: 17%;">
-                    <div class="barbuttontexta" id="${bar}${button}BUT">${ba.buttons[button].name}</div>
+                    <div class="barbuttond noanims ${endProduct}" onclick="buttonIfy(${button}, ${bar}, this)" draggable="true" ondragover="buttonDragOver(event, ${button})" ondragstart="buttonDragStart(event, ${button})" ondragend="ButtonDrop(${button}, ${bar})" style="width: 17%;">
+                    <div class="barbuttontexta" id="${bar}${button}BUT">${ba.components[button].name}</div>
                     </div> 
                     `
                 }
@@ -3118,96 +2655,29 @@ function setProjectName(welm) {
             <div class="barbuttontexta center">Select A Button!</div>`
         }
 
-        function deleteButton(bar) {
-            
-        }
         let lastButt;
-        function editButtons(bar) {
-            let ba = datjson.buttons.bars[bar]
-            let view = document.getElementById('actElmsig')
 
-                let storedVi = view.innerHTML;
-                let storedView = storedVi;
-
-            view.innerHTML = `
-            <div class="barbuttontext center textToLeft flexbox" style="margin-top: -3.5vh; margin-right: auto; margin-left: 12px;">Editing <div style="margin-left: 10px;"></div> <span style="opacity: 50%;">${ba.name}</span>
-            <div class="flexbox" style="margin-left: auto; margin-right: 12px;">
-<div class="barbuttond center" onclick="showButtons(${bar})" style="width: 30px;">
-<div class="barbuttontexta">
-⟨
-</div>
-</div>
-            <div class="barbuttond center" style="width: 70px;" onclick="deleteBtBar(${bar})">
-            <div class="barbuttontexta">
-            Delete
-            </div>
-            </div>
-</div>
-            </div><br>
-                        <div class="flexbox" style="width: 95%; margin-left: auto; margin-right: auto; min-height: 9vh; height: 9vh; background-color: #00000060; border-radius: 12px; padding: 10px;">
-            <div style="align-items: center; justify-content: center; margin: auto;">
-            <div class="barbuttontexta">Button Bar Name</div>
-            <div class="input" style="width: 35vw;" contenteditable="true" onkeyup="storeName(${bar}, this)">${datjson.buttons.bars[bar].name}</div>
-            </div>
-            <div class="fade" style="width: 3px; height: 90%; margin: auto; background-color: #FFFFFF30;"></div><br>
-
-            <div style="align-items: center; justify-content: center; margin: auto;">
-                        <div class="barbuttontexta">Store Bar As</div>
-            <div class="input" style="width: 35vw;" contenteditable="true" onkeyup="storeBarAs(${bar}, this)">${datjson.buttons.bars[bar].storeAs}</div>
-
-            </div>
-            </div>
-
-
-            `
-            view.innerHTML += `
-<br>
-       <div class="barbuttond" onclick="createButton(${bar})" style="width: 50px; height: 50px; margin-left: auto; margin-right: 4.5vw; border-radius: 1000px; margin-bottom: -5vh; backdrop-filter: blur(72px); background-color: ${datjson.color};">
-            <div class="barbuttontext"><b>+</b></div>
-            </div> 
-            <div class="flexbox borderbottomz" style="width: calc(95% - 30px); margin-left: auto; margin-right: auto; min-height: 6vh; height: 6vh; background-color: #00000060; border-radius: 12px; padding: 15px; margin-bottom: 0.5vh;" id="buttonsDisplay"></div>
-            <div class="flexbox bordertopz" style="width: calc(95% - 20px); margin-left: auto; margin-right: auto; min-height: 33vh; height: 33vh; background-color: #00000060; border-radius: 12px; padding: 10px; justify-content: center; align-items: center;" id="buttonsEditor">
-            <div class="barbuttontexta center">Select A Button!</div>
-            </div>
-
-            `
-            for (let button in ba.buttons) {
-
-                let endProduct = 'bordercenter'
-                if (ba.buttons[parseFloat(button) - 1] == undefined) {
-                    endProduct = 'borderright'
-                }
-                if (ba.buttons[parseFloat(button) + 1] == undefined) {
-                    endProduct = 'borderleft'
-                }
-                document.getElementById('buttonsDisplay').innerHTML += `
-                <div class="barbuttond ${endProduct}" onclick="buttonIfy(${button}, ${bar}, this)" style="width: 17%;">
-                <div class="barbuttontexta" id="${bar}${button}BUT">${ba.buttons[button].name}</div>
-                </div> 
-                `
-            }
-        }
         function deleteBtnBar(buttone, bar) {
-            let ba = datjson.buttons.bars[bar]
-            datjson.buttons.bars[bar].buttons.splice(buttone, 1)
+            let ba = datjson.commands[lastObj].actions[lastAct].data.actionRows[bar]
+            datjson.commands[lastObj].actions[lastAct].data.actionRows[bar].components.splice(buttone, 1)
             fs.writeFileSync(processPath + '\\AppData\\data.json', JSON.stringify(datjson, null, 2));
             document.getElementById(`${bar}${buttone}BUT`).parentNode.classList.add('startShrinking')
 
             setTimeout(() => {
                 document.getElementById('buttonsDisplay').innerHTML = ''
-                for (let button in ba.buttons) {
+                for (let button in ba.components) {
                     
                     let endProduct = 'bordercenter'
-                    if (ba.buttons[parseFloat(button) - 1] == undefined) {
+                    if (ba.components[parseFloat(button) - 1] == undefined) {
                         endProduct = 'borderright'
                     }
     
-                    if (ba.buttons[parseFloat(button) + 1] == undefined) {
+                    if (ba.components[parseFloat(button) + 1] == undefined) {
                         endProduct = 'borderleft'
                     }
                     document.getElementById('buttonsDisplay').innerHTML += `
                     <div class="barbuttond noanims ${endProduct}" onclick="buttonIfy(${button}, ${bar}, this)" style="width: 17%;">
-                    <div class="barbuttontexta" id="${bar}${button}BUT">${ba.buttons[button].name}</div>
+                    <div class="barbuttontexta" id="${bar}${button}BUT">${ba.components[button].name}</div>
                     </div> 
                     `
                 }
@@ -3218,583 +2688,9 @@ function setProjectName(welm) {
             }, 350)
 
         }
-        function deleteBtBar(bar) {
-            let ba = datjson.buttons.bars[bar]
-            datjson.buttons.bars.splice(bar, 1)
-            fs.writeFileSync(processPath + '\\AppData\\data.json', JSON.stringify(datjson, null, 2));
-            document.getElementById('buttonsDisplay').innerHTML = ''
-            showButtons()
-        }
-        function storeBarAs(bar, meh) {
-            datjson.buttons.bars[bar].storeAs = meh.innerText
-            fs.writeFileSync(processPath + '\\AppData\\data.json', JSON.stringify(datjson, null, 2));
-        }
-        function buttonIfy(button, bar, what) {
-            let buttonEditor = document.getElementById('buttonsEditor')
-            let ba = datjson.buttons.bars[bar]
-
-            if (lastButt != null || lastButt != undefined) {
-                lastButt.style.backgroundColor = ''
-            }
-            what.style.backgroundColor = '#FFFFFF25'
-
-            lastButt = what;
-            buttonEditor.innerHTML = `
-            <div>
-            <div class="borderbottomz" style="padding: 6px; border-radius: 12px; background-color: #FFFFFF09; margin-bottom: 0.65vh;">
-            <div class="barbuttontexta fade">Button Label</div>
-            <div class="input" style="width: 35vw; margin-bottom: 0px;" contenteditable="true" onblur="elementContentChecker(this, {maxLength: 32})" onkeyup="elementContentChecker(this, {maxLength: 32}); buttonren(${button}, this, ${bar})">${ba.buttons[button].name}</div>
-            </div>
-            <div class="bordertopz" style="padding: 6px; border-radius: 12px; background-color: #FFFFFF09;">
-            <div class="barbuttontexta fade">Custom ID</div>
-            <div class="input" style="width: 35vw; margin-bottom: 0px;" onkeyup="buttonID(${button}, this, ${bar})"  contenteditable="true">${ba.buttons[button].customId}</div>
-            </div>
-            <div class="barbuttone fade flexbox" style="margin-left: auto; margin-right: auto; margin-top: 22px;" onclick="deleteBtnBar(${button}, ${bar})"> 
-            <div class="barbuttontexta">Delete</div>
-            <div style="background-color: #f04747; opacity: 50%; width: 7px; height: 7px; border-radius: 100px; margin: auto; margin-right: 12px;"></div>
-            </div>
-            </div>
-
-            <div class="fade borderbottom" style="width: 3px; height: 90%; margin: auto; margin-left: 3vw; margin-right: 3vw; background-color: #FFFFFF30;"></div><br>
-            <div>
-
-                <div class="barbuttontexta">Button Style</div>
-                <div class="tiled borderbottomz" style="width: calc(95% + 10px); margin-bottom: 0.5vh; height: 12vh; padding: 0px; padding-top: 7px;">
-                <div class="zaction borderbottomz textToLeft" id="DefaultStyle" onclick="styledButton(this, ${bar}, ${button})"><div style="margin-left: 10px;"> </div> Default <div style="background-color: #5865f2; width: 12px; height: 12px; border-radius: 100px; margin: auto; margin-right: 12px;"></div></div>
-                <div class="zaction bordercenter textToLeft" id="SuccessStyle" onclick="styledButton(this, ${bar}, ${button})"><div style="margin-left: 10px;"> </div> Success <div style="background-color: #43b581; width: 12px; height: 12px; border-radius: 100px; margin: auto; margin-right: 12px;"></div></div>
-                <div class="zaction bordercenter textToLeft" id="DangerStyle" onclick="styledButton(this, ${bar}, ${button})"><div style="margin-left: 10px;"> </div> Danger <div style="background-color: #f04747; width: 12px; height: 12px; border-radius: 100px; margin: auto; margin-right: 12px;"></div></div>
-                <div class="zaction bordercenter textToLeft" id="NeutralStyle" onclick="styledButton(this, ${bar}, ${button})"><div style="margin-left: 10px;"> </div> Neutral <div style="background-color: #4f545c; width: 12px; height: 12px; border-radius: 100px; margin: auto; margin-right: 12px;"></div></div>
-                <div class="zaction bordertopz textToLeft" id="LinkStyle" style="margin-bottom: 10px;" onclick="styledButton(this, ${bar}, ${button}, true)"><div style="margin-left: 10px;"> </div> Link <div style="background-color: #4f545c; width: 12px; height: 12px; border-radius: 100px; margin: auto; margin-right: 12px;"></div></div>
-
-                </div>
-                <div class="flexbox bordertopz" style="align-items: center; justify-content: center; background-color: #FFFFFF10; border-radius: 9px; padding: 16px; padding-right: 4px; padding-top: 4px; padding-bottom: 4px; width: calc(95% - 10px); margin: auto;">
-
-                <div class="barbuttontexta">Disabled?</div>
-                <div class="barbuttone fade borderright" style="margin-right: 0.2vw; border-radius: 8px;" id="enabledbutton" onclick="toggleButton(${bar}, ${button}, true)"><div class="barbuttontexta">✓</div></div>
-                <div class="barbuttone fade borderleft"  style="margin-left: 0vw; border-radius: 8px;" id="disabledbutton" onclick="toggleButton(${bar}, ${button}, false)"><div class="barbuttontexta">✕</div></div>
-</div>           
-<div id="dpfgs"></div>
-<div id="dpfg" style="width: 35vw;">
-</div>
-           </div>
-                `
-                if (datjson.buttons.bars[bar].buttons[button].disabled == true) {
-                    document.getElementById('disabledbutton').style.backgroundColor = ''
-                    document.getElementById('enabledbutton').style.backgroundColor = '#FFFFFF25'
-                } else {
-                    document.getElementById('disabledbutton').style.backgroundColor = '#FFFFFF25'
-                    document.getElementById('enabledbutton').style.backgroundColor = ''
-                }
-                switch (datjson.buttons.bars[bar].buttons[button].style) {
-                    case 'Default': 
-                    document.getElementById('DefaultStyle').style.backgroundColor = '#FFFFFF25'
-                    setLinked(false, bar, button)
-
-                    break
-
-                    case 'Success': 
-                    document.getElementById('SuccessStyle').style.backgroundColor = '#FFFFFF25'
-                    setLinked(false, bar, button)
-
-                    break
-
-                    case 'Danger': 
-                    document.getElementById('DangerStyle').style.backgroundColor = '#FFFFFF25'
-                    setLinked(false, bar, button)
-
-
-                    break
-
-                    case 'Neutral': 
-                    document.getElementById('NeutralStyle').style.backgroundColor = '#FFFFFF25'
-                    setLinked(false, bar, button)
-
-                    break
-
-                    case 'Link': 
-                    document.getElementById('LinkStyle').style.backgroundColor = '#FFFFFF25'
-                    setLinked(true, bar, button)
-
-                    break
-                }
-        } 
-        function setLinked(trfa, bar, button) {
-            console.log('setting linked!')
-            let dpfg = document.getElementById('dpfg')
-            if (trfa == true) {
-                document.getElementById('dpfgs').className = 'sepbars'
-                dpfg.innerHTML = `
-                <div class="barbuttontexta">Link</div>
-                <div class="input" style="width: 35vw;" id="customLinked" contenteditable="true" style="min-height: 25px;" onkeyup="setCustomLinked(this, ${bar}, ${button})">${datjson.buttons.bars[bar].buttons[button].field}</div> 
-                `
-            } 
-            if (trfa == false) {
-                document.getElementById('dpfgs').className = 'sepbars'
-                dpfg.innerHTML = `
-                <div class="barbuttontexta">Emoji (Format: emojiName:emojiId)</div>
-                <div class="input" style="width: 35vw;" id="customLinked" contenteditable="true" style="min-height: 25px;" onkeyup="setCustomLinked(this, ${bar}, ${button})">${datjson.buttons.bars[bar].buttons[button].field}</div> 
-                `
-            }
-        }
-        function setCustomLinked(toWhat, bar, button) {
-            datjson.buttons.bars[bar].buttons[button].field = toWhat.innerText
-            fs.writeFileSync(processPath + '\\AppData\\data.json', JSON.stringify(datjson, null, 2));
-        }
-        function toggleButton(bar, button, nw) {
-            datjson.buttons.bars[bar].buttons[button].disabled = nw
-
-            if (nw == true) {
-                document.getElementById('disabledbutton').style.backgroundColor = ''
-                document.getElementById('enabledbutton').style.backgroundColor = '#FFFFFF25'
-            } else {
-                document.getElementById('enabledbutton').style.backgroundColor = ''
-                document.getElementById('disabledbutton').style.backgroundColor = '#FFFFFF25'
-
-            }
-            fs.writeFileSync(processPath + '\\AppData\\data.json', JSON.stringify(datjson, null, 2));
-
-        }
-        function styledButton(what, bar, button) {
-            document.getElementById(datjson.buttons.bars[bar].buttons[button].style + 'Style').style.backgroundColor = ''
-
-            document.getElementById(`${what.innerText}Style`).style.backgroundColor = '#FFFFFF25'
-            datjson.buttons.bars[bar].buttons[button].style = `${what.innerText}`
-            if (datjson.buttons.bars[bar].buttons[button].style == 'Link') {
-                setLinked(true, bar, button)
-            } else {
-                setLinked(false, bar, button)
-            }
-            fs.writeFileSync(processPath + '\\AppData\\data.json', JSON.stringify(datjson, null, 2));
-
-        }
-        function buttonren(button, element, bar) {
-            datjson.buttons.bars[bar].buttons[button].name = element.innerText
-            fs.writeFileSync(processPath + '\\AppData\\data.json', JSON.stringify(datjson, null, 2));
-            document.getElementById(`${bar}${button}BUT`).innerHTML = element.innerText
-        }
-        function buttonID(button, element, bar) {
-            datjson.buttons.bars[bar].buttons[button].customId = element.innerText
-            fs.writeFileSync(processPath + '\\AppData\\data.json', JSON.stringify(datjson, null, 2));
-        }
-        function storeName(bar, meh) {
-            datjson.buttons.bars[bar].name = meh.innerText
-            fs.writeFileSync(processPath + '\\AppData\\data.json', JSON.stringify(datjson, null, 2));
-        }
-        function buildButtons() {
-            datjson = {
-                ...datjson,
-                buttons: {
-                bars: [
-                    {name: "Bar", storeAs:"ButtonBar", buttons: []}
-                ]}
-            }
-            fs.writeFileSync(processPath + '\\AppData\\data.json', JSON.stringify(datjson, null, 2));
-        }
-
-
-
-
-function closeMenu() {
-
-
-        let bottombar = document.getElementById('bottombar')
-        bottombar.style.animationDuration = '0.4s'
-        bottombar.style.animationName = 'menuExpand';
-        bottombar.style.height = ''
-        bottombar.style.width = ''
-        bottombar.style.backdropFilter = ''
-        bottombar.style.marginTop = ''
-        bottombar.style.border = ''
-        bottombar.style.marginLeft = ''
-        bottombar.style.borderRadius = ''
-        bottombar.style.backgroundColor = ''
-        bottombar.style.padding = ''
-        bottombar.style.paddingTop = ''
-        bottombar.style.paddingBottom = ''
-
-          setTimeout(() => {
-            bottombar.onclick = () => {
-                modifyBar()
-            }
-          }, 500)
-
-        setTimeout(() => {
-            bottombar.innerHTML = '•••'
-            bottombar.style.animationName = ''
-            bottombar.style.animationDuration = ''
-        }, 400)
-
-    }
-
-    function handleKeybind(keyEvent) {
-        if (keyEvent.key == 'Escape') {
-            if (document.getElementById('bottombar') == undefined || document.getElementById('bottombar') == null) {
-                null
-            } else {
-                if (document.getElementById('bottombar').style.width == '40%') {
-                    unmodify()
-                }
-                if (document.getElementById('bottombar').style.width == '100vw') {
-                    closeMenu()
-                }
-            }
-        }
-        if (keyEvent.key == 'F1') {
-            if (document.getElementById('bottombar') == undefined || document.getElementById('bottombar') == null) {
-                save_changes(lastAct)
-            } else {
-                switchObjs()
-            }
-        }
-        if (keyEvent.key == 'Tab') {
-            if (document.getElementById('bottombar') == undefined || document.getElementById('bottombar') == null) {
-                selectAction()
-            } else {
-                switchObjs()
-            }
-        }
-        if (keyEvent.key == 'XÆ-12' && keyEvent.shiftKey == true) {
-            /* This... is elon musk */
-            if (document.getElementById('bottombar') == undefined || document.getElementById('bottombar') == null) {
-            console.log('deletion!')
-            } else {
-                console.log('deletion')
-                if (lastType == 0) {
-                 deleteObject(document.getElementById(lastObj))
-                } else {
-                    deleteObject(document.getElementById(lastAct))
-                }
-            }
-        }
-    }
-
-
 
     let menu = null;
-    let lastY;
-    let lastX;
 
-window.oncontextmenu = function (event) {
-  showCustomMenu(event.clientX, event.clientY);
-  return false;     // cancel default menu
-}
-
-document.addEventListener('click', function(event) {
-  if (menu && !menu.contains(event.target)) {
-    menu.remove();
-    menu = null;
-  }
-});
-function getOffset(el) {
-    const rect = el.getBoundingClientRect();
-    return {
-      left: rect.left + window.scrollX,
-      top: rect.top + window.scrollY
-    };
-  }
-  function updateFoundActionGroup(ofWhat) {
-    console.log('kys')
-    let cmd = 'None'
-    for (let command in datjson.commands) {
-        if (datjson.commands[command].customId == ofWhat.innerText) {
-            cmd = datjson.commands[command].name
-        }
-    }
-    console.log(ofWhat.nextElementSibling)
-    ofWhat.nextElementSibling.innerHTML = `
-    <div class="barbuttontexta">Selected: ${cmd}</div>`
-  }
-function showCustomMenu(x, y) {
-
-  if (!menu) {
-    
-    menu = document.createElement('div')
-    menu.style.width = '15vw'
-    menu.style.height = '33vh'
-    menu.style.backgroundColor = '#00000060'
-    menu.style.borderRadius = '12px'
-    menu.style.backdropFilter = 'blur(12px)'
-    menu.style.position = 'fixed'
-    menu.style.top = y + 'px'
-    menu.style.left = x + 'px'
-    menu.style.overflowY = 'auto'
-    menu.id = 'customMenu'
-    document.body.appendChild(menu)
-    
-    if (document.getElementById('cndcl')) {
-        menu.innerHTML = `
-        <div class="barbuttontexta" style="background-color: #FFFFFF15; border-top-left-radius: 12px; border-top-right-radius: 12px; border-bottom: solid 2px #FFFFFF30; padding: 2px;">Insert Variable</div>
-        <div class="zaction fullwidth" style="margin-top: 5px;"><div class="barbuttontexta">Var. Template</div></div>
-    `
-
-    if (document.activeElement.className == 'selectBar') {
-
-        var fieldSearch = require(`./AppData/Actions/${datjson.commands[lastObj].actions[lastAct].file}`).UI
-        let fieldOptions = fieldSearch.variableSettings
-        let options;
-
-        for (let field in fieldOptions) {
-            if (field == document.activeElement.id) {
-                options = fieldOptions[field]
-            }
-        }
-        let elementStoredAs;
-        for (let uilm in fieldSearch) {
-            if (uilm.startsWith('menuBar')) {
-                if (fieldSearch[uilm].extraField == document.activeElement.id) {
-                    elementStoredAs = fieldSearch[uilm].storeAs
-                }
-            }
-        }
-        let stf = options[datjson.commands[lastObj].actions[lastAct].data[elementStoredAs]]
-        let type = 2
-
-        if (stf == 'novars')  {
-            type = 1
-            menu.innerHTML = `
-            <div class="barbuttontexta" style="background-color: #FFFFFF15; border-top-left-radius: 12px; border-top-right-radius: 12px; border-bottom: solid 2px #FFFFFF30; padding: 2px;">Variables Incompatible</div>
-            `
-        }
-        if (stf == 'direct') {
-            type = 0
-        }
-        if (datjson.commands[lastObj].type == 'event') {
-            try {
-                if (require('./AppData/Events/' + datjson.commands[lastObj].eventFile).inputSchemes == 2) {
-                    menu.innerHTML += `
-                    <div class="zaction fullwidth" onclick="setVariableIn('${document.activeElement.id}', ${type}, this.innerText, true)"><div class="barbuttontexta">${datjson.commands[lastObj].eventData[0]}</div></div>
-                    `
-                    menu.innerHTML += `
-                    <div class="zaction fullwidth" onclick="setVariableIn('${document.activeElement.id}', ${type}, this.innerText, true)"><div class="barbuttontexta">${datjson.commands[lastObj].eventData[1]}</div></div>
-                    `
-                } else {
-                    menu.innerHTML += `
-                    <div class="zaction fullwidth" onclick="setVariableIn('${document.activeElement.id}', ${type}, this.innerText, true)"><div class="barbuttontexta">${datjson.commands[lastObj].eventData[0]}</div></div>
-                    `
-                }} catch(err) {null}
-        } else {
-            if (datjson.commands[lastObj].trigger == 'slashCommand') {
-                for (let parameter of datjson.commands[lastObj].parameters) {
-                    menu.innerHTML += `
-                    <div class="zaction fullwidth" onclick="setVariableIn('${document.activeElement.id}', ${type}, this.innerText, true)"><div class="barbuttontexta">${parameter.storeAs}</div></div>
-                    `
-                }
-            }
-        }
-
-
-        for (let action in datjson.commands[lastObj].actions) {
-            for (let UIelement in require(`./AppData/Actions/${datjson.commands[lastObj].actions[action].file}`).UI) {
-                    let data = require(`./AppData/Actions/${datjson.commands[lastObj].actions[action].file}`).UI
-                if (UIelement.endsWith(`!*`) || UIelement.endsWith('!')) {
-                var field;
-                    for (let fild in fieldSearch) {
-                        if (fieldSearch[fild] == document.activeElement.id && `${fild}` != 'preview') {
-                            field = fild
-                        }
-
-                    }
-    
-                    menu.innerHTML += `
-                    <div class="zaction fullwidth" onclick="setVariableIn('${document.activeElement.id}', ${type}, this.innerText, true)"><div class="barbuttontexta">${datjson.commands[lastObj].actions[action].data[data[UIelement]]}</div></div>
-                    `
-                }
-            }
-        }
-
-        if (stf == 'actionGroup') {
-            var fieldSearch = require(`./AppData/Actions/${datjson.commands[lastObj].actions[lastAct].file}`).UI
-
-            
-                menu.innerHTML = `
-                <div class="barbuttontexta" style="background-color: #FFFFFF15; border-top-left-radius: 12px; border-top-right-radius: 12px; border-bottom: solid 2px #FFFFFF30; padding: 2px;">Insert Action Group</div>
-                `
-                for (let command in datjson.commands) {
-                    menu.innerHTML += `
-                    <div class="zaction fullwidth" onclick="setVariableIn('${document.activeElement.id}', 0, '${datjson.commands[command].customId}')"><div class="barbuttontexta">${datjson.commands[command].name} | #${command}</div></div>
-                    `
-                }
-                raun = true
-    
-        }
-
-
-} else {
-    if (document.activeElement.className == "inputB") {
-        
-        let type = 2
-        try {
-        if (require('./AppData/Actions/' + datjson.commands[lastObj].actions[lastAct].file).UI.ButtonBarChoices[lastButton]== "direct") {
-            type = 0
-        }
-        if (require('./AppData/Actions/' + datjson.commands[lastObj].actions[lastAct].file).UI.ButtonBarChoices[lastButton] == "novars") {
-            type = 1
-        }
-
-    } catch(err) {}
-    if (datjson.commands[lastObj].type == 'event') {
-        console.log('event!')
-            if (require('./AppData/Events/' + datjson.commands[lastObj].eventFile).inputSchemes == 2) {
-                menu.innerHTML += `
-                <div class="zaction fullwidth" onclick="setVariableIn('${document.activeElement.id}', ${type}, this.innerText, true)"><div class="barbuttontexta">${datjson.commands[lastObj].eventData[0]}</div></div>
-                `
-                menu.innerHTML += `
-                <div class="zaction fullwidth" onclick="setVariableIn('${document.activeElement.id}', ${type}, this.innerText, true)"><div class="barbuttontexta">${datjson.commands[lastObj].eventData[1]}</div></div>
-                `
-            } else {
-                menu.innerHTML += `
-                <div class="zaction fullwidth" onclick="setVariableIn('${document.activeElement.id}', ${type}, this.innerText, true)"><div class="barbuttontexta">${datjson.commands[lastObj].eventData[0]}</div></div>
-                `
-            }
-    }
-        for (let action in datjson.commands[lastObj].actions) {
-            for (let UIelement in require(`./AppData/Actions/${datjson.commands[lastObj].actions[action].file}`).UI) {
-                    let data = require(`./AppData/Actions/${datjson.commands[lastObj].actions[action].file}`).UI
-                if (UIelement.endsWith(`!*`) || UIelement.endsWith('!')) {
-                var field;
-                    for (let fild in fieldSearch) {
-                        if (fieldSearch[fild] == document.activeElement.id && `${fild}` != 'preview') {
-                            field = fild
-                        }
-
-                    }
-    
-                    menu.innerHTML += `
-                    <div class="zaction fullwidth" onclick="setVariableIn('${document.activeElement.id}', ${type}, this.innerText, true)"><div class="barbuttontexta">${datjson.commands[lastObj].actions[action].data[data[UIelement]]}</div></div>
-                    `
-                }
-            }
-        }
-    }   else {
-    let raun = false;
-
-    for (let UIelement in require(`./AppData/Actions/${datjson.commands[lastObj].actions[lastAct].file}`).UI) {
-        if (require(`./AppData/Actions/${datjson.commands[lastObj].actions[lastAct].file}`).UI[UIelement] == document.activeElement.id) {
-            if (UIelement.endsWith('_actionGroup') || UIelement.endsWith('_actionGroup*')) {
-                var fieldSearch = require(`./AppData/Actions/${datjson.commands[lastObj].actions[lastAct].file}`).UI
-
-                
-                    menu.innerHTML = `
-                    <div class="barbuttontexta" style="background-color: #FFFFFF15; border-top-left-radius: 12px; border-top-right-radius: 12px; border-bottom: solid 2px #FFFFFF30; padding: 2px;">Insert Action Group</div>
-                    `
-                    for (let command in datjson.commands) {
-                        menu.innerHTML += `
-                        <div class="zaction fullwidth" onclick="setVariableIn('${document.activeElement.id}', 0, '${datjson.commands[command].customId}')"><div class="barbuttontexta">${datjson.commands[command].name} | #${command}</div></div>
-                        `
-                    }
-                    raun = true
-        
-            }
-        }
-    }
-    if (raun == false) {
-        var field;
-        var fieldSearch = require(`./AppData/Actions/${datjson.commands[lastObj].actions[lastAct].file}`).UI
-            for (let fild in fieldSearch) {
-                if (fieldSearch[fild] == document.activeElement.id && `${fild}` != 'preview') {
-                    field = fild
-                }
-            }
-        let type = 2;
-        if (field.endsWith('_direct*')) {
-            type = 0
-        }
-        if (field.endsWith('_direct')) {
-            type = 0
-        }
-        if (field.endsWith('_novars') || field.endsWith('_novars*') || field.endsWith('_novars*!') || field.endsWith('_novars!')) {
-            type = 1
-            menu.innerHTML = `<div class="barbuttontexta" style="background-color: #FFFFFF15; border-top-left-radius: 12px; border-top-right-radius: 12px; border-bottom: solid 2px #FFFFFF30; padding: 2px;">Variables Incompatible</div>`
-            return
-        }
-        if (datjson.commands[lastObj].type == 'event') {
-            console.log('event!')
-                if (require('./AppData/Events/' + datjson.commands[lastObj].eventFile).inputSchemes == 2) {
-                    menu.innerHTML += `
-                    <div class="zaction fullwidth" onclick="setVariableIn('${document.activeElement.id}', ${type}, this.innerText, true)"><div class="barbuttontexta">${datjson.commands[lastObj].eventData[0]}</div></div>
-                    `
-                    menu.innerHTML += `
-                    <div class="zaction fullwidth" onclick="setVariableIn('${document.activeElement.id}', ${type}, this.innerText, true)"><div class="barbuttontexta">${datjson.commands[lastObj].eventData[1]}</div></div>
-                    `
-                } else {
-                    menu.innerHTML += `
-                    <div class="zaction fullwidth" onclick="setVariableIn('${document.activeElement.id}', ${type}, this.innerText, true)"><div class="barbuttontexta">${datjson.commands[lastObj].eventData[0]}</div></div>
-                    `
-                }
-            } else {
-                if (datjson.commands[lastObj].trigger == 'slashCommand') {
-                    for (let parameter of datjson.commands[lastObj].parameters) {
-                        menu.innerHTML += `
-                        <div class="zaction fullwidth" onclick="setVariableIn('${document.activeElement.id}', ${type}, this.innerText, true)"><div class="barbuttontexta">${parameter.storeAs}</div></div>
-                        `
-                    }
-                }
-            }
-        delete type;
-        delete fieldSearch;
-        delete field;
-    for (let action in datjson.commands[lastObj].actions) {
-        for (let UIelement in require(`./AppData/Actions/${datjson.commands[lastObj].actions[action].file}`).UI) {
-                let data = require(`./AppData/Actions/${datjson.commands[lastObj].actions[action].file}`).UI
-            if (UIelement.endsWith(`!*`) || UIelement.endsWith('!')) {
-            var field;
-            var fieldSearch = require(`./AppData/Actions/${datjson.commands[lastObj].actions[lastAct].file}`).UI
-                for (let fild in fieldSearch) {
-                    if (fieldSearch[fild] == document.activeElement.id && `${fild}` != 'preview') {
-                        field = fild
-                    }
-                }
-            
-                let variableAsType = 2;
-                if (field.endsWith('_direct*')) {
-                    variableAsType = 0
-                }
-                if (field.endsWith('_direct')) {
-                    variableAsType = 0
-                }
-                if (field.endsWith('_novars') || field.endsWith('_novars*') || field.endsWith('_novars*!') || field.endsWith('_novars!')) {
-                    variableAsType = 1
-                    menu.innerHTML = `<div class="barbuttontexta" style="background-color: #FFFFFF15; border-top-left-radius: 12px; border-top-right-radius: 12px; border-bottom: solid 2px #FFFFFF30; padding: 2px;">Variables Incompatible</div>`
-                    return
-                }
-
-
-                    menu.innerHTML += `
-                    <div class="zaction fullwidth" onclick="setVariableIn('${document.activeElement.id}', ${variableAsType}, this.innerText)"><div class="barbuttontexta">${datjson.commands[lastObj].actions[action].data[data[UIelement]]}</div></div>
-                    `
-            }
-        }
-    }
-    }
-  }}
-
-
-
-
-
-} else {
-    menu.innerHTML = `       
-    <div class="barbuttontexta" style="background-color: #FFFFFF15; border-top-left-radius: 12px; border-top-right-radius: 12px; border-bottom: solid 2px #FFFFFF30; padding: 2px;">Quick Options</div>
-    <div class="zaction fullwidth" style="" onclick="searchCommand()"><div class="barbuttontexta">Search Command</div></div>
-    <div class="zaction fullwidth" style=""><div class="barbuttontexta">Search Action</div></div>
-    <div class="zaction fullwidth" style="" onclick="modifyActElm()"><div class="barbuttontexta">Home</div></div>
-    <div class="zaction fullwidth" style="" onclick="exportProject()"><div class="barbuttontexta">Export Bot</div></div>
-    <div class="zaction fullwidth" style="" onclick="savePrj(); uploadDataToPhantom()"><div class="barbuttontexta">Save</div></div>
-
-    `
-    if (lastHovered) {
-        menu.innerHTML += `
-        <div class="zaction fullwidth" style="" onclick="()"><div class="barbuttontexta">Duplicate</div></div>
-        `
-        if (lastHovered.id.startsWith('Group')) {
-            menu.innerHTML += `
-            <div class="zaction fullwidth" style="" onclick="switchGroups()"><div class="barbuttontexta">Type</div></div>
-            `
-        }
-    }
-  }
-}
-}
 function saveSelection() {
     if (window.getSelection) {
         sel = window.getSelection();
@@ -3819,27 +2715,50 @@ function insertTextAtCaret(text) {
         document.selection.createRange().text = text;
     }
 }
+function validateInput(event) {
+    const div = event.target;
+    const text = div.textContent;
+    
+    // Save the current cursor position
+    const selection = window.getSelection();
+    const range = selection.getRangeAt(0);
+    const offset = range.startOffset;
+  
+    // Remove image tags
+    const sanitizedText = text.replace(/<img\b[^>]*>/gi, '');
+  
+    // Update the content of the div with sanitized text
+    div.innerHTML = sanitizedText;
+    
+    // Restore the cursor position
+    const updatedRange = document.createRange();
+    updatedRange.setStart(div.firstChild, offset);
+    updatedRange.collapse(true);
+    selection.removeAllRanges();
+    selection.addRange(updatedRange);
+  }
+ 
+  
+  
+  
+  
+  
+  
+  
 
-function restoreSelection(range) {
-    if (range) {
-        if (window.getSelection) {
-            sel = window.getSelection();
-            sel.removeAllRanges();
-            sel.addRange(range);
-        } else if (document.selection && range.select) {
-            null
-        }
-    }
-}
+
+
+
+
+
+
 function setVariableIn(elementId, type, varName) {
     let element = document.getElementById(elementId)
-
+    
     if (type == 2) {
         let toRestoreTo1 = saveSelection();
         let toRestoreTo = toRestoreTo1
         insertTextAtCaret("${tempVars('" + varName + "')}")
-        // restoreSelection(toRestoreTo)
-        // element.innerHTML += `\${tempVars('${varName}')}`
         element.focus()
         element.blur()
         element.focus()
@@ -3852,11 +2771,7 @@ function setVariableIn(elementId, type, varName) {
         
     if (type == 0) {
         element.blur()
-
-        
         element.innerHTML = `${varName}`
-        element.focus()
-        element.blur()
         element.focus()
         element.blur()
         setTimeout(() => {
@@ -3864,43 +2779,30 @@ function setVariableIn(elementId, type, varName) {
             element.blur()
         }, 100)
     }
-    if (type == 1) {
-        null
-    }
 }   
-    
-setInterval(async () => {
-    let presence = {}
-    if (currentlyEditing == true) {
-        presence.firstHeader = `Modifying Action #${lastAct} - ${datjson.commands[lastObj].actions[lastAct].data.name}`
-        presence.secondHeader = `Under ${datjson.commands[lastObj].name}`
-        presence.botName = datjson.name
-    } else {
-        presence.firstHeader = `Viewing Commands - ${datjson.count} Commands in total`
-        presence.secondHeader = `Highlighted: ${datjson.commands[lastObj].name} - ${datjson.commands[lastObj].count} actions`
-        presence.botName = datjson.name
-    }
-    await fs.writeFileSync(processPath + '\\AppData\\presence.json', JSON.stringify(presence))
-    ipcRenderer.send('whatIsDoing');
-
-}, 5000)
-let lastRow;
 
 function showReow(rowPosition) {
     lastRow = rowPosition; 
+    document.getElementById('actElmsig').style.animationName = 'marginbounce'
+    document.getElementById('actElmsig').style.animationDuration = '0.3s'
+    document.getElementById('actElmsig').style.transition = 'opacity 0.3s ease'
+    document.getElementById('actElmsig').style.opacity = '0%'
 
-
-
-    let view = document.getElementById('actElmsig')
+    let view = document.getElementById('actElmsig');
+    let rows = datjson.commands[lastObj].actions[lastAct].data.actionRows
+    setTimeout(() => {
+        document.getElementById('actElmsig').style.opacity = '100%'
+        document.getElementById('actElmsig').style.animationName = ''
+        document.getElementById('actElmsig').style.animationDuration = ''
         view.innerHTML = `
-        <div class="flexbox" style="align-items: center; justify-content: center; margin-top: -2.25vh; margin-bottom: 0.5vh;">
+        <div class="flexbox" style="align-items: center; justify-content: center; margin-top: 4vh; margin-bottom: 0.5vh;">
         <div class="flexbox" style="margin-left: auto; margin-right: 12px;">
-        <div class="barbuttond center" onclick="showActionRows()" style="width: 30px;">
+        <div class="barbuttond center" onclick="controlActionRows(true)" style="width: 30px;">
         <div class="barbuttontexta">
         ⟨
         </div>
         </div>
-                    <div class="barbuttond center" style="width: 70px;" onclick="deleteRowBar(${rowPosition})">
+                    <div class="barbuttond center flexbox" style="width: 70px;" onclick="deleteRowBar(${rowPosition})">
                     <div class="barbuttontexta">
                     Delete
                     </div>
@@ -3909,28 +2811,28 @@ function showReow(rowPosition) {
 
 
 
-        <div class="flexbox borderbottom" style="margin: auto; margin-top: 3vh; background-color: #00000060; width: calc(93vw - 24px) ; height: 40vh; padding: 12px; border-radius: 12px;">
+        <div class="flexbox borderbottom" style="margin: auto; margin-top: 2vh; background-color: #FFFFFF08; width: calc(93vw - 24px) ; height: 40vh; padding: 12px; border-radius: 12px;">
         <div style="width: 45%; margin-left: auto; margin-right: 2.5%; height: 40vh" class="flexbox">
     <div style="width: 100%;">
-    <div class="borderbottomz" style="width: 100%; background-color: #FFFFFF10; padding: 4px;">
+    <div class="borderbottomz" style="width: 100%; background-color: #FFFFFF09; padding: 4px;">
         <div class="barbuttontexta">
         Row Name
         </div>
-        <div class="input" contenteditable="true" style="height: 24px; margin-top: 0px;" onkeyup="elementContentChecker(this, {maxLength: 32}); datjson.rows[${rowPosition}].name = this.innerText; wast();">${datjson.rows[rowPosition].name}</div>
+        <div class="input" contenteditable="true" style="height: 24px; margin-top: 0px;" onkeyup="elementContentChecker(this, {maxLength: 32}); datjson.commands[lastObj].actions[lastAct].data.actionRows[${rowPosition}].name = this.innerText; wast();">${datjson.commands[lastObj].actions[lastAct].data.actionRows[rowPosition].name}</div>
         </div>
-        <div class="bordercenter" style="width: 100%; background-color: #FFFFFF10; padding: 4px; margin-top: 0.5vh; margin-bottom: 0.5vh;">
+        <div class="bordercenter" style="width: 100%; background-color: #FFFFFF09; padding: 4px; margin-top: 0.5vh; margin-bottom: 0.5vh;">
 
         <div class="barbuttontexta">
         Row Placeholder
         </div>
-        <div class="input" contenteditable="true" style="height: 24px; margin-top: 0px;" onkeyup="elementContentChecker(this, {maxLength: 32}); datjson.rows[${rowPosition}].placeholder = this.innerText; wast();">${datjson.rows[rowPosition].placeholder}</div>
+        <div class="input" contenteditable="true" style="height: 24px; margin-top: 0px;" onkeyup="elementContentChecker(this, {maxLength: 32}); datjson.commands[lastObj].actions[lastAct].data.actionRows[${rowPosition}].placeholder = this.innerText; wast();">${datjson.commands[lastObj].actions[lastAct].data.actionRows[rowPosition].placeholder}</div>
         </div>
-        <div class="bordertopz" style="width: 100%; background-color: #FFFFFF10; padding: 4px;">
+        <div class="bordertopz" style="width: 100%; background-color: #FFFFFF09; padding: 4px;">
 
         <div class="barbuttontexta">
         Row Custom ID
         </div>
-        <div class="input" contenteditable="true" style="height: 24px; margin-top: 0px;" onkeyup="elementContentChecker(this, {maxLength: 32}); datjson.rows[${rowPosition}].customId = this.innerText; wast();">${datjson.rows[rowPosition].customId}</div>
+        <div class="input" contenteditable="true" style="height: 24px; margin-top: 0px;" onkeyup="elementContentChecker(this, {maxLength: 32}); datjson.commands[lastObj].actions[lastAct].data.actionRows[${rowPosition}].customId = this.innerText; wast();">${datjson.commands[lastObj].actions[lastAct].data.actionRows[rowPosition].customId}</div>
         </div>
 
         
@@ -3942,20 +2844,20 @@ function showReow(rowPosition) {
 
             <div class="flexbox borderbottomz" style="background-color: #FFFFFF10;  padding: 4px; margin-top: auto; margin-bottom: 0.5vh; border-radius: 12px;">
             <div class="barbuttontexta">Minimum Selectable Options</div>
-            <div class="flexbox" style="background-color: #FFFFFF10; border-radius: 9px; width: 9vw; padding: 4px;">
-            <div class="barbuttontexta hoverablez" onclick="setLowerMinOpt()" style="margin-right: auto; margin-left: 0vw; width: 2vw; border-radius: 4px; padding: 3px;">⟨</div>
-            <div class="barbuttontexta" id="minSelectable">${datjson.rows[lastRow].minSelectable}</div>
-            <div class="barbuttontexta hoverablez" onclick="setHigherMinOpt()" style="margin-left: auto; margin-right: 0vw; width: 2vw; border-radius: 4px; padding: 3px;">⟩</div>
+            <div class="flexbox" style="background-color: none; border-radius: 9px; width: 9vw; padding: 4px;">
+            <div class="barbuttontexta hoverablez" onclick="setLowerMinOpt()" style="margin-right: auto; margin-left: 0vw; width: 2vw; border-radius: 4px; padding: 3px; background-color: #FFFFFF10;">⟨</div>
+            <div class="barbuttontexta" id="minSelectable">${rows[lastRow].minSelectable}</div>
+            <div class="barbuttontexta hoverablez" onclick="setHigherMinOpt()" style="margin-left: auto; margin-right: 0vw; width: 2vw; border-radius: 4px; padding: 3px; background-color: #FFFFFF10;">⟩</div>
             </div>
             </div> 
 
 
             <div class="flexbox bordertopz" style="background-color: #FFFFFF10; padding: 4px;">
             <div class="barbuttontexta">Maximum Selectable Options</div>
-            <div class="flexbox" style="background-color: #FFFFFF10; border-radius: 9px; width: 9vw; padding: 4px;">
-            <div onclick="setLowerMaxOpt()" class="barbuttontexta hoverablez" style="margin-right: auto; margin-left: 0vw; width: 2vw; border-radius: 4px; padding: 3px;">⟨</div>
-            <div class="barbuttontexta" id="maxSelectable">${datjson.rows[lastRow].maxSelectable}</div>
-            <div onclick="setHigherMaxOpt()" class="barbuttontexta hoverablez" style="margin-left: auto; margin-right: 0vw; width: 2vw; border-radius: 4px; padding: 3px;">⟩</div>
+            <div class="flexbox" style="background-color: none; border-radius: 9px; width: 9vw; padding: 4px;">
+            <div onclick="setLowerMaxOpt()" class="barbuttontexta hoverablez" style="margin-right: auto; margin-left: 0vw; width: 2vw; border-radius: 4px; padding: 3px; background-color: #FFFFFF10;">⟨</div>
+            <div class="barbuttontexta" id="maxSelectable">${rows[lastRow].maxSelectable}</div>
+            <div onclick="setHigherMaxOpt()" class="barbuttontexta hoverablez" style="margin-left: auto; margin-right: 0vw; width: 2vw; border-radius: 4px; padding: 3px; background-color: #FFFFFF10;">⟩</div>
             </div>
             </div> 
             </div>
@@ -3966,7 +2868,7 @@ function showReow(rowPosition) {
     <div style="width: 45%; height: 20vh; margin-left: auto; margin-right: 2.5%;">
     <div class="flexbox" style="margin-bottom: 1vh;">
     <div class="barbuttontexta textToLeft" style="text-align: left; align-text: left; margin-left: 1vw;">Options</div>
-    <div style="width: 4vw; border-radius: 6px; margin-left: auto;" class="hoverablex" onclick="newRowOption()">
+    <div style="width: 5vh; height: 5vh; margin-bottom: 1vh; border-radius: 1000px; margin-left: auto;" class="flexbox hoverablex" onclick="newRowOption()">
     <div class="barbuttontext"><b>+</b></div>
     </div>
     </div>
@@ -3975,29 +2877,16 @@ function showReow(rowPosition) {
     </div>    </div>
 
         </div>
-        <div class="flexbox bordertop" id="actionMenuOption" style="margin: auto; margin-top: 0.5vh; background-color: #00000060; width: calc(93vw - 24px) ; height: 30vh; padding: 12px; border-radius: 12px;">
+        <div class="flexbox bordertop" id="actionMenuOption" style="margin: auto; margin-top: 0.5vh; background-color: #FFFFFF07; width: calc(93vw - 24px) ; height: 30vh; padding: 12px; border-radius: 12px;">
         <div class="barbuttontexta">Select or create a custom row to start the fun!</div>
         </div>
         `
-
-    showMenuOptions()
-    }
-    function deleteRowBar(row) {
-            datjson.rows.splice(row, 1)
-            fs.writeFileSync(processPath + '\\AppData\\data.json', JSON.stringify(datjson, null, 2));
-            showActionRows()
-    }
-    function deleteRowOption(row, option) {
-        document.getElementById(option + 'MenuOption')
-        datjson.rows[row].options.splice(option, 1)
-        fs.writeFileSync(processPath + '\\AppData\\data.json', JSON.stringify(datjson, null, 2));
-        document.getElementById('actionMenuOption').innerHTML = 
-        `
-        <div class="barbuttontexta">Select or create a custom row to start the fun!</div>
-        `
-        document.getElementById('actionRowEditor').innerHTML = ''
         showMenuOptions()
-}
+
+    }, 350)
+
+    }
+
     let lastMenuOption;
     /* 
     
@@ -4009,7 +2898,7 @@ function showReow(rowPosition) {
             <div class="zaction lessbrithb" id="roleType" onclick="selectStringType('role')"><div class="barbuttontexta">Role</div></div>
             <div class="zaction lessbrithb" id="mentionableType" onclick="selectStringType('mentionable')"><div class="barbuttontexta">Mentionable</div></div>
             </div> 
-                    let lastRowType = datjson.rows[lastRow].customType
+                    let lastRowType = datjson.commands[lastObj].actions[lastAct].data.actionRows[lastRow].customType
         document.getElementById(lastRowType + 'Type').style.backgroundColor = '#FFFFFF20';
             */
            function editMenuOption(option) {
@@ -4028,37 +2917,32 @@ function showReow(rowPosition) {
             let view = document.getElementById('actionMenuOption')
 
             view.innerHTML = `
-            <div class="borderright flexbox" style="width: 47%; background-color: #FFFFFF10; padding: 12px; border-radius: 7px;">
+            <div class="borderright flexbox" style="width: 47%; background-color: #FFFFFF08; padding: 12px; border-radius: 7px;">
             <div style="margin: auto; width: 100%;">
-            <div class="borderbottom" style="width: 100%; height: auto; background-color: #00000040; padding-top: 0.75vh; padding-bottom: 0.75vh; margin-bottom: 0.50vh;">
+            <div class="borderbottom" style="width: 100%; height: auto; background-color: #00000020; padding-top: 0.75vh; padding-bottom: 0.75vh; margin-bottom: 0.50vh;">
 
             <div class="barbuttontexta">Option Label</div>
             
-            <div class="input" contenteditable="true" onblur="elementContentChecker(this, {maxLength: 32, fromBlur: true}); datjson.rows[${lastRow}].options[${option}].label = this.innerText; wast(); document.getElementById('${option}MenuOption').innerText = this.innerText" onkeyup="elementContentChecker(this, {maxLength: 32}); datjson.rows[${lastRow}].options[${option}].label = this.innerText; wast(); document.getElementById('${option}MenuOption').innerText = this.innerText">
-            ${datjson.rows[lastRow].options[option].label}
+            <div class="input" contenteditable="true" onblur="elementContentChecker(this, {maxLength: 32, fromBlur: true}); datjson.commands[lastObj].actions[lastAct].data.actionRows[${lastRow}].options[${option}].label = this.innerText; wast(); document.getElementById('${option}MenuOption').innerText = this.innerText" onkeyup="elementContentChecker(this, {maxLength: 32}); datjson.commands[lastObj].actions[lastAct].data.actionRows[${lastRow}].options[${option}].label = this.innerText; wast(); document.getElementById('${option}MenuOption').innerText = this.innerText">
+            ${datjson.commands[lastObj].actions[lastAct].data.actionRows[lastRow].options[option].label}
             </div>
             </div>
-            <div class="bordercenter" style="width: 100%; height: auto; background-color: #00000040; padding-top: 0.75vh; padding-bottom: 0.75vh;">
+            <div class="bordercenter" style="width: 100%; height: auto; background-color: #00000020; padding-top: 0.75vh; padding-bottom: 0.75vh;">
 
             <div class="barbuttontexta">Option Description</div>
-            
-            <div class="input" contenteditable="true" onkeyup="elementContentChecker(this, {maxLength: 32, fromBlur: true}); datjson.rows[${lastRow}].options[${option}].description = this.innerText; wast()">
-            ${datjson.rows[lastRow].options[option].description}
+            <input class="input" style="margin-bottom: 0px;" onkeydown=" /* return event.key !== ' ';  */ if (event.key != 'Backspace') return this.value.split('').length < 32;" oninput="datjson.commands[lastObj].actions[lastAct].data.actionRows[${lastRow}].options[${option}].description = this.value; wast()" contenteditable="true" value="${datjson.commands[lastObj].actions[lastAct].data.actionRows[lastRow].options[option].description}" placeholder="Reccomended">
+
             </div>
-            </div>
-            <div class="bordertop" style="width: 100%; height: auto; background-color: #00000040; padding-bottom: 0.75vh; padding-top: 0.75vh; margin-top: 0.50vh;">
+            <div class="bordertop" style="width: 100%; height: auto; background-color: #00000020; padding-bottom: 0.75vh; padding-top: 0.75vh; margin-top: 0.50vh;">
 
             <div class="barbuttontexta">Option Custom ID (Value)</div>
-            
-            <div class="input" contenteditable="true" onkeyup="elementContentChecker(this, {maxLength: 32, fromBlur: true}); datjson.rows[${lastRow}].options[${option}].customValue = this.innerText; wast()">
-            ${datjson.rows[lastRow].options[option].customValue}
-            </div>
+            <input class="input" style="margin-bottom: 0px;" onkeydown=" /* return event.key !== ' ';  */ if (event.key != 'Backspace') return this.value.split('').length < 32;" oninput="datjson.commands[lastObj].actions[lastAct].data.actionRows[${lastRow}].options[${option}].customValue = this.value; wast()" contenteditable="true" value="${datjson.commands[lastObj].actions[lastAct].data.actionRows[lastRow].options[option].customValue}" placeholder="Required, cannot be seen by anybody else">
             </div>
             </div>
 </div>
 
 
-            <div class="borderleft flexbox" style="width: 47%; margin-left: 0.3vw; padding: 12px; background-color: #FFFFFF10; border-radius: 7px;">
+            <div class="borderleft flexbox" style="width: 47%; margin-left: 0.3vw; padding: 12px; background-color: #FFFFFF08; border-radius: 7px;">
             <div style="margin: auto; width: 100%;">
             <div class="barbuttontexta">Controls</div>
 
@@ -4072,186 +2956,40 @@ function showReow(rowPosition) {
             <div class="barbuttond borderleft" style="height: 5vh; width: 3vw;">
             <div class="actionDown image"></div>
             </div>
+            <div class="hoverablez" onclick="setButtonRun(this, ${option}, ${lastRow}, true)" style="margin-top: 1vh; width: 40vw; margin-right: auto; margin-left: auto; border-radius: 12px; border-bottom-left-radius: 2px; border-bottom-right-radius: 2px; padding: 8px;">
+            <div class="barbuttontexta">Once Interacted With, Run Action Group:</div>
+            </div>
+            <div class="bordertopz" style="background-color: #FFFFFF10; margin-top: 0.3vh;width: 40vw; margin-right: auto; margin-left: auto; border-radius: 12px; border-bottom-left-radius: 2px; border-bottom-right-radius: 2px; padding: 8px;" id="runButtonWhat" onclick="setButtonRun(this, ${option}, ${lastRow}, true)">
+            </div>
 </div></div>
 
            </div>
             `
+            setRunningElement(datjson.commands[lastObj].actions[lastAct].data.actionRows[lastRow].options[option].runs)
            }
-    function showMenuOptions(ifNew) {
-        let view = document.getElementById('actionRowEditor');
-            for (let option in datjson.rows[lastRow].options) {
-                let opts = datjson.rows[lastRow].options[option]
-
-                if (!ifNew) {
-                    view.innerHTML += `
-                    <div onclick="editMenuOption(${option})" style="border-left: 7px #FFFFFF20 solid; background-color: #ffffff10; width: 95%; margin-right: auto; margin-left: auto; padding: 4px; margin-top: 0.7vh; border-radius: 6px;">
-                    <div id="${option}MenuOption" class="barbuttontexta">${opts.label}</div>
-                    </div>
-                    `
-                } else {
-                    if (datjson.rows[lastRow].options[parseFloat(option) + 1] == undefined) {
-                        view.innerHTML += `
-                        <div class="animatednewactionanim" onclick="editMenuOption(${option})" style="border-left: 7px #FFFFFF20 solid; background-color: #ffffff10; width: 95%; margin-right: auto; margin-left: auto; padding: 4px; margin-top: 0.7vh; border-radius: 6px;">
-                        <div id="${option}MenuOption" class="barbuttontexta">${opts.label}</div>
-                        </div>
-                        `
-                    } else {
-                        view.innerHTML += `
-                        <div onclick="editMenuOption(${option})" style="border-left: 7px #FFFFFF20 solid; background-color: #ffffff10; width: 95%; margin-right: auto; margin-left: auto; padding: 4px; margin-top: 0.7vh; border-radius: 6px;">
-                        <div id="${option}MenuOption" class="barbuttontexta">${opts.label}</div>
-                        </div>
-                        `
-                    }
-                }
-
-            }
-    }
-    function newRowOption() {
-
-        let newRow = {
-            label: "♾️ Anything",
-            description: "✨ Click me!",
-            customValue: "anything"
-        }
-        datjson.rows[lastRow].options.push(newRow)
-        wast()
-        document.getElementById('actionMenuOption').innerHTML = 
-        `
-        <div class="barbuttontexta">Select or create a custom row to start the fun!</div>
-        `
-        document.getElementById('actionRowEditor').innerHTML = ''
-        showMenuOptions(true)    }
-
-    function setHigherMinOpt() {
-        let minElm = document.getElementById('minSelectable')
-        let maxElm = document.getElementById('maxSelectable')
-        if (parseFloat(minElm.innerText) + 1 > parseFloat(maxElm.innerText)) return;
-        datjson.rows[lastRow].minSelectable = datjson.rows[lastRow].minSelectable + 1
-        wast()
-        minElm.innerText = datjson.rows[lastRow].minSelectable
-    }
-    function setLowerMinOpt() {
-        let minElm = document.getElementById('minSelectable')
-        let maxElm = document.getElementById('maxSelectable')
-        if (parseFloat(minElm.innerText) - 1 == 0) return;
-
-        datjson.rows[lastRow].minSelectable = datjson.rows[lastRow].minSelectable - 1
-        wast()
-        minElm.innerText = datjson.rows[lastRow].minSelectable
-    }
-
-    function setHigherMaxOpt() {
-        let minElm = document.getElementById('minSelectable')
-        let maxElm = document.getElementById('maxSelectable')
-        if (parseFloat(maxElm.innerText) + 1 == 25) return;
-        if (datjson.rows[lastRow].options.length < parseFloat(maxElm.innerText) + 1) return;
-
-        datjson.rows[lastRow].maxSelectable = datjson.rows[lastRow].maxSelectable + 1
-        wast()
-        maxElm.innerText = datjson.rows[lastRow].maxSelectable
-    }
-    function setLowerMaxOpt() {
-        let minElm = document.getElementById('minSelectable')
-        let maxElm = document.getElementById('maxSelectable')
-        if (parseFloat(maxElm.innerText) -1 == 0) return 
-        datjson.rows[lastRow].maxSelectable = datjson.rows[lastRow].maxSelectable - 1
-        wast()
-        maxElm.innerText = datjson.rows[lastRow].maxSelectable
-    }
-    function selectStringType(type) {
-        let lastRowType = datjson.rows[lastRow].customType
-        document.getElementById(lastRowType + 'Type').style.backgroundColor = '#FFFFFF10';
-        document.getElementById(type + 'Type').style.backgroundColor = '#FFFFFF20'
-        datjson.rows[lastRow].customType = type
-    }
 
 
-function showActionRows() {
-    let view = document.getElementById('actElmsig')
-    if (datjson.rows) {
-        view.innerHTML = ` 
-                       <div class="flexbox" style="margin-bottom: 2.5vh;">
+let lastDraggedRow;
 
-        <div class="barbuttond center borderrightz" onclick="switchToHome()" style="margin-left: auto; height: 3vh; width: 30px;">
-        <div class="image backArrow">
-        
-        </div>
-        </div>
-        <div class="barbuttond center borderleftz" onclick="switchToHome()" style="width: 70px; height: 3vh; margin-right: 1vw; margin-left: 0.3vw;">
-        <div class="barbuttontexta">
-        Home
-        </div>
-        </div>
-        </div>
-        <div class="barbuttond" onclick="newActionRow()" style="margin-left: auto; position: sticky; top: 11; bottom: 1; border-radius: 1000px; width: 50px; height: 50px; margin-bottom: -10vh;">
-        
-        <div class="barbuttontext"><b>+</b></div>
-        </div> 
+function draggedOverRow(event, rowPosition) {
+    event.preventDefault()
+    lastDraggedRow = rowPosition
+}
+function handleDraggedRow(event, rowPosition) {
+}
+function handleRowDrag(event, rowPosition) {
+    let datajson1 = JSON.parse(fs.readFileSync(processPath + '\\AppData\\data.json'));
+    let datajson0 = datajson1;
+    let dragNewElement = datajson0.commands[lastObj].actions[lastAct].data.actionRows[rowPosition];
+    // index, 0, item
+    
+    datjson.commands[lastObj].actions[lastAct].data.actionRows = array_move(datjson.commands[lastObj].actions[lastAct].data.actionRows, rowPosition, lastDraggedRow)
 
-        <br>
-        <div id="ActionRows" class="flexbox" style="align-items: center; justify-content: center; width: 95%;"></div>
-        `
-        for (let row in datjson.rows) {
-            document.getElementById('ActionRows').innerHTML += `
-            <div style="width: 45%; margin-right: 3%; border-radius: 16px; padding: 9px; background-color: #00000060">
-            <div class="barbuttontexta">${datjson.rows[row].name}</div>
-            <div class="flexbox" style="width: 100%; margin-bottom: 1vh; margin-top: 1vh;">
-            <div class="flexbox borderrightz" style="align-items: center; justify-content: center; width: 44%; padding: 12px; margin-right: 0.3vw; background-color: #FFFFFF10;  border-radius: 12px;">
-            <div class="barbuttontexta">${datjson.rows[row].options.length} Options</div>
-            </div>
-            <div class="flexbox borderleftz" style="align-items: center; justify-content: center; width: 44%; padding: 12px; background-color: #FFFFFF10; border-radius: 12px;">
-            <div class="barbuttontexta">Maximum Selectable: ${datjson.rows[row].maxSelectable}</div>
-            <div class="barbuttontexta">Minimum Selectable: ${datjson.rows[row].minSelectable}</div>
-            </div>
-            </div>
-            <div class="barbuttond" onclick="showReow(${row})" style="width: calc(88% + 42px); padding: 6px; margin: auto;">
-            <div class="barbuttontexta">
-            Edit</div></div>
-            </div>
-            `
-        } 
-    } else {
-        view.innerHTML = `
-        <div class="barbuttontexta">No Select Menus Initiated</div>
-        <div class="barbutton flexbox" onclick="buildRows(); showActionRows()" style="margin: auto;">
-        <div class="barbuttontexta">Build</div>
-        </div>
-        `
-    }
+    wast()
+    lastDraggedRow = null;
+    controlActionRows(true)
 }
 
-
-function buildRows() {
-    datjson = {
-        ...datjson,
-        rows: []
-    }
-    fs.writeFileSync(processPath + '\\AppData\\data.json', JSON.stringify(datjson, null, 2));
-}
-
-function newActionRow() {
-    let tme = new Date().getTime()
-    let newBar = {
-    name: "Action Row",
-     customId: `${tme}`,
-     type: "actionRow",
-     customType: "custom",
-     storeAs: "",
-     options: [],
-     placeholder: "🔍 Select Something!",
-     minSelectable: 1,
-     maxSelectable: 1
-    }
-
-datjson.rows.push(newBar)
-fs.writeFileSync(processPath + '\\AppData\\data.json', JSON.stringify(datjson, null, 2));
-showActionRows()
-
-}
-
-function wast() {
-    fs.writeFileSync(processPath + '\\AppData\\data.json', JSON.stringify(datjson, null, 2));
-}
 const { spawn } = require('child_process');
 
 
@@ -4265,7 +3003,7 @@ function toggleBot() {
     botIsOn = false;
     console.log('Bot stopped');
   } else {
-    fs.readFileSync(procesPath + '\\AppData\\firstTimeSetup.bat')
+    fs.readFileSync(processPath + '\\AppData\\firstTimeSetup.bat')
     botLog = ''
     spawn('node', ['bot.js']);
     botProcess = spawn('node', ['bot.js']);
@@ -4288,3 +3026,7 @@ if (datjson.commands['1'].customId == undefined) {
         }
     }
 }
+
+
+let customHTMLdfs;
+let customHTMLreturn;

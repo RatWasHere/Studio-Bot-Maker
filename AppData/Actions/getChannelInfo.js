@@ -1,5 +1,5 @@
 module.exports = {
-    data: {"name": "Get Channel Info", "channelVia":"Message Channel", "channelFrom":"", "get":"Channel Name", "storeAs":""},
+    data: {"name": "Get Channel Info", "channelVia":"Message Channel", "channelFrom":"", "get":"Channel Name"},
     UI: {"compatibleWith": ["Text", "Slash"], 
     "text":"Get Channel Info", "sepbar":"",
 
@@ -10,9 +10,7 @@ module.exports = {
 
     "btext0":"Get",
     "menuBar0": {choices: ["Channel Name", "Channel ID", "Channel Description", "Channel Topic", "Channel URL", "Channel Server"]},
-    "sepbar1":"",
-    "btext1":"Store As",
-    "input":"storeAs",
+
     previewName: "Get", preview: "datainfo"},
     async run(values, message, uID, fs, client) {
 
@@ -46,7 +44,7 @@ module.exports = {
                 output = channel.id
             break
         }
-        tempVars[uID][varTools.transf(values.storeAs, uID, tempVars)] = output
+    
         await fs.writeFileSync('./AppData/Toolkit/tempVars.json', JSON.stringify(tempVars), 'utf8')
 
     

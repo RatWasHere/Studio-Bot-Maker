@@ -861,6 +861,26 @@
    
        color: #FFFFFF99;
        }
+       @keyframes giggle {
+        0% {
+            transform: rotate(0deg)
+        }
+        25% {
+            transform: rotate(-2deg)
+        }
+        75% {
+            transform: rotate(2deg)
+        }
+        100% {
+            transform: rotate(0deg)
+        }
+       }
+
+       .goofyhovereffect {
+        animation-name: giggle;
+        animation-duration: 0.3s !important;
+        animation-iteration-count: infinite !important;
+       }
        .zaction {
            height: auto;
            width: 95%;
@@ -1263,18 +1283,20 @@
        margin-right: auto;
        margin-bottom: 4px;
        color: #FFFFFF97;
-       overflow-y: visible; 
+       overflow-x: auto; 
        cursor: text;
+       height: 24px;
        transition: background-color ease-in 0.3s;
        font-size: 21px;
        padding: 2.5px;
        padding-left: 16px;
+       white-space: nowrap;
        padding-right: 0px;
        box-shadow: inset 0 0 2px #FFFFFF10;
        animation-name: kinput;
        animation-duration: 1.3s;
        border-bottom: #FFFFFF25 0px solid;
-       }
+    }
        .actionGroupSelector {
            margin-left: auto;
            margin-right: auto;
@@ -1308,7 +1330,7 @@
            color: #FFFFFF97;
            font-size: 21px;
            padding: 2.5px;
-           border-top: #FFFFFF15 solid 4px;
+           border-top: #FFFFFF15 solid 4px !important;
            padding-left: 16px;
            padding-right: 0px;
            box-shadow: inset 0 0 2px #FFFFFF10;
@@ -1734,16 +1756,62 @@
        .textToLeft {
        -align: left !important;
        align-items: flex;
+       text-align: left !important;
        flex-direction: row;
        }
        .textLeft {
-           text-align: left;
+           text-align: left !important;
+       }
+       .action:hover .deleteActionButton {
+        width: 50px;
+        animation-name: biggerXbutton;
+        font-size: 16px;
+        height: 24px;
+        padding: 0px;
+        padding-top: 0px;
+        padding-bottom: 0px;
+       }
+       @keyframes smallerXbutton {
+        0% {
+            font-size: 16px;
+            padding: 0px;
+            padding-top: 0px;
+            padding-bottom: 0px;
+            height: 24px;
+        }
+        100% {
+            height: 16px;
+            padding: 2px;
+            padding-top: 4px;
+            padding-bottom: 4px;
+            font-size: 12px;
+    }
+       }
+       @keyframes biggerXbutton {
+        100% {
+            font-size: 16px;
+            padding: 0px;
+            padding-top: 0px;
+            padding-bottom: 0px;
+            height: 24px;
+        }
+        0% {
+            height: 16px;
+            padding: 2px;
+            padding-top: 4px;
+            padding-bottom: 4px;
+            font-size: 12px;
+        }
        }
        .deleteActionButton {
-       width: 50px;
+        width: 22px;
+        animation-name: smallerXbutton;
+        animation-duration: 0.2s;
        cursor: pointer;
-   
-       height: 24px;
+       height: 16px;
+       padding: 2px;
+       padding-top: 4px;
+       padding-bottom: 4px;
        margin-top: auto;
        margin-bottom: auto;
        border-radius: 7px;
@@ -1753,14 +1821,12 @@
        box-shadow: inset 0 0 2px #FFFFFF20;
        color: #FFFFFF80;
        margin-right: 0px;
-       font-size: 16px;
+       font-size: 12px;
        z-index: 1;
+       text-align: center;
        margin-left: auto;
-       transition: background-color 0.3s ease;
-       transition: width 0.3s ease;
-   
-       transition: height 0.3s ease;
-       transition: margin-right 0.3s ease;
+       transition: width 0.2s ease; 
+
        }
        @keyframes det {
            0% {
@@ -1795,7 +1861,8 @@
            }
        }
        .deleteActionButton:hover {
-           background-color: #2d2d2d;
+           background-color: #00000070;
+           width: 50px !important;
        }
        .actionButton {
            width: 50px;
@@ -1832,6 +1899,11 @@
            animation-duration: 0.5s;
            margin-left: -50px;
        }
+
+       .deleteActionButton:active {
+            width: 55px !important;
+       }
+
        .barbut {
        height: 85%;
        width: 115px;
@@ -1890,12 +1962,14 @@
        .halftransparent {
        opacity: 75%;
        }
+       
        .flexbox {
        display: flex;
        flex-direction: row;
        flex-wrap: wrap;
        justify-content: center;
        }
+
        [contenteditable] {
        outline: 0px solid transparent;
        }
@@ -1952,6 +2026,25 @@
            height: 70%;
            opacity: 70%;
            text-align: center;
+       }
+       @keyframes marginbounce {
+            0% { 
+                margin-top: -98vh;
+            }
+            50% {
+                margin-top: -94vh;
+            }
+            100% {
+                margin-top: -98vh;
+            }
+       }
+       @keyframes marginbouncesecondpart {
+        0% {
+            margin-top: -94vh;
+        }
+        100% {
+            margin-top: -98vh;
+        }
        }
        .imagefull {
            margin: auto;
@@ -2131,6 +2224,12 @@
            animation-name: savedldk2;
            animation-duration: 0.75s;
        }
+       .savenm {
+        background-image: url(./AppData/save.png);
+        width: 100%;
+        height: 100%;
+        opacity: 20%;
+    }
        .backArrow {
            background-image: url(./AppData/backArrow.png);
            width: 110%;
@@ -2291,4 +2390,137 @@
        animation-name: dcreateeActionButtonorsum !important;
        animation-duration: 0.25s !important;
      }
-   
+
+     input {
+        transition: border 0.4s;
+        border: inherit;
+        margin: inherit;
+        margin-left: inherit;
+        margin-right: inherit;
+        margin-top: inherit;
+        margin-bottom: inherit;
+        margin: inherit;
+        display: block; 
+        padding: inherit;
+     }
+     input:focus {
+        border: inherit;
+        outline: none;
+        background-color: inherit;
+     }
+     input:active {
+        border: inherit;
+        background-color: inherit;
+        outline: none;
+     }
+     @keyframes fromlighttodark {
+        0%{ 
+            background-color: #FFFFFF10;  
+        }
+        100% {
+            background-color: #00000050;  
+        }
+     }
+     @keyframes fromdarktolight {
+        100%{ 
+            background-color: #FFFFFF10;  
+        }
+        0% {
+            background-color: #00000050;  
+        }
+     }
+     .sidebar {
+        position: fixed;
+        margin-top: -2vh;
+        margin-left: -1.7vw; 
+        height: 100vh;
+        width: 1vw;
+        transition: width 0.2s ease;
+        z-index: 2147483647;
+        animation-name: fromdarktolight;
+        animation-duration: 0.2s;
+        backdrop-filter: blur(12px);
+        background-color: #FFFFFF10;
+
+     }
+     .sidebar:hover {
+        width: 15vw;
+        background-color: #00000050;
+        animation-name: fromlighttodark;
+     }
+     .sidebartext {
+        font-size: 0px;
+        transition: font-size 0.1s ease;
+        color: #949494;
+        text-align: center;
+        margin: auto;
+        margin-right: 1vw;
+        margin-left: 1vw;
+     }
+     .sidebar:hover .sidebartext {
+        font-size: 2vh;
+     }
+     .sidebarbutton {
+        width: 0vw;
+        height: auto;
+        margin-left: auto;
+        margin-right: auto;
+        transition: width 0.4s ease;
+        background-color: #FFFFFF10;
+        padding: 6px;
+        border-radius: 6px;
+        cursor: pointer;
+        margin-top: 1vh;
+        box-shadow: inset 0 0 2px #FFFFFF10;
+     }
+     .sidebar:hover .sidebarbutton {
+        width: calc(14vw - 12px);
+     }
+     .sidebarbutton:hover {
+        transition: background-color 0.3s ease;
+        background-color: #FFFFFF15;
+     }
+     .outlined {
+        outline: #FFFFFF30 solid 2px;
+     }
+     @keyframes snaptoscale {
+        0% {
+            opacity: 0%;
+            transform: scale(0.5);
+        }
+        50% {
+            opacity: 100%;
+        }
+        100% {
+            opacity: 100%;
+            transform: scale(1);
+        }
+     }
+     .settingspane {
+        animation-name: snaptoscale;
+        animation-duration: 0.4s;
+        width: 90vw;
+        height: 90vh;
+        margin: auto;
+        align-self: center;
+        justify-self: center;
+        background-color: #FFFFFF09;
+        margin-top: -98vh;
+        border-radius: 12px;
+        overflow: auto;
+        border-top-left-radius: 0px;
+        position: absolute;
+        z-index: 2147483627;
+     }
+     .pad {
+        padding: 12px;
+        border-radius: 12px;
+     }
+     .bpad {
+        padding-top: 4px !important;
+        padding-bottom: 4px !important;
+        height: 28px !important;
+     }
+     .ml {
+        margin-left: 1vw;
+     }

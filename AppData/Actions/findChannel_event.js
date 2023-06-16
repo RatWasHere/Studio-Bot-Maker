@@ -32,7 +32,7 @@ module.exports = {
         }
         let filter;
         if (values.findVia == 'Channel Name*') {
-            filter = m => m.name == varTools.transf(values.via, uID, tempVars)
+            filter = m.name.includes(varTools.transf(values.via, uID, tempVars))
         } else {
             filter = m => m.id == varTools.transf(values.via, uID, tempVars)
         }
