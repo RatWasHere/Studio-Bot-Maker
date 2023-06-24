@@ -1,4 +1,4 @@
-# WORKING ON A BIG UPDATE. CURRENT STATE OF SBM WILL BE MODIFIED.
+# WORKING ON A BIG UPDATE.
 ![image](https://github.com/RatWasHere/Studio-Bot-Maker/assets/100881234/2e255e0f-d8ba-4768-a1ed-a24776c6c884)
 
 # Studio Bot Maker
