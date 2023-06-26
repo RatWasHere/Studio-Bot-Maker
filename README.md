@@ -1,7 +1,6 @@
 # EVERYTHING SUBJECT TO CHANGE: WORKING ON A BIG UPDATE!
 ![image](https://github.com/RatWasHere/Studio-Bot-Maker/assets/100881234/2e255e0f-d8ba-4768-a1ed-a24776c6c884)
 # Studio Bot Maker
-## [Support Guild](https://discord.gg/2Ss44CZdvv)
 **✌️ Partner Of - [Phantom Hosting](https://l.linklyhq.com/l/1nohw)**
 <a href="https://l.linklyhq.com/l/1nohw" target="_blank"><img src="https://github-production-user-asset-6210df.s3.amazonaws.com/100881234/242099266-b6439c2d-958b-47bf-b10d-13e78d9fe5cd.png"></a>
 
