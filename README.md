@@ -1,4 +1,4 @@
-# EVERYTHING SUBJECT TO CHANGE: WORKING ON A BIG UPDATE!
+# Check Out [V3.0.0-Pre](https://github.com/RatWasHere/Studio-Bot-Maker/releases/tag/v3.0.0)
 ![image](https://github.com/RatWasHere/Studio-Bot-Maker/assets/100881234/2e255e0f-d8ba-4768-a1ed-a24776c6c884)
 # Studio Bot Maker
 **✌️ Partner Of - [Phantom Hosting](https://l.linklyhq.com/l/1nohw)**
