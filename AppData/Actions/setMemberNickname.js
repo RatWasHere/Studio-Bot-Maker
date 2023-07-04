@@ -22,21 +22,16 @@ module.exports = {
             }
         }
         },
-    run(values, message, uID, fs, client) {
+    run(values, message, uID, fs, client, actionContextBridge) {
         let varTools = require(`../Toolkit/variableTools.js`)
         var tempVars = JSON.parse(fs.readFileSync('./AppData/Toolkit/tempVars.json', 'utf8'))
-        let guild;
-
-        if (values.guild == 'Message Guild') {
-            guild = message.guild
-        } else {
-            guild = client.guilds.cache.get(tempVars[uID][varTools.transf(values.guildField, uID, tempVars)].id)
-        }
+        let guild = actionContextBridge.guild;
+        
         let member;
         if (values.button == 'Message Author') {
-            member = guild.members.cache.get(message.author.id)
+            member = guild.getMember(message.author.id)
         } else {
-            member = guild.members.cache.get(tempVars[uID][varTools.transf(values.ExtraData, uID, tempVars)].id)
+            member = guild.getMember(tempVars[uID][varTools.transf(values.ExtraData, uID, tempVars)].id)
         }   
 
         if (values.reason == '') {
@@ -44,7 +39,5 @@ module.exports = {
         } else {
             member.setNickname(varTools.transf(values.reason, uID, tempVars))
         }
-    
-
     }
 }

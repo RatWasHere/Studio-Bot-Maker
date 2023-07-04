@@ -3,7 +3,7 @@ module.exports = {
     "storeAs":"",
     "messageID":""
 },
-    UI: {"compatibleWith": ["Event", "Slash"],
+    UI: {"compatibleWith": ["Event", "Slash", "DM"],
     "text1":"Get Message", "sepbar001":"",
      "btextMenubr":"Message ID", 
      "input03":"messageID",
@@ -14,7 +14,7 @@ module.exports = {
             const varTools = require(`../Toolkit/variableTools.js`)
 
 
-            tempVars[uID][values.storeAs] = client.messages.cache.get(varTools.transf(values.messageID, uID, tempVars))
+            tempVars[uID][values.storeAs] = client.messages.get(varTools.transf(values.messageID, uID, tempVars))
 
         fs.writeFileSync('./AppData/Toolkit/tempVars.json', JSON.stringify(tempVars), 'utf8')
 

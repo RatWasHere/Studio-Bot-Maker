@@ -1,82 +1,78 @@
 module.exports = {
-    data: {"name": "Compare", "button":"=", "firstInput":"", "secondInput":"", "ifTrue":"Run Action Group*", "actionGroup":"", "ifFalse":"Nothing", "group":""},
-    UI: {"compatibleWith": ["Any"], text:"Compare", "sepbar1":"sepbar", "btext":"Compare", "inputfirst*":"firstInput", "sepbar2":"", "ButtonBar":{"buttons":[">", "=", "!=", "<" ]}, "sepbar3":"", "btextsecondparameter":"Compare To", "inputScnd*":"secondInput",  "sepbar7":"", 
-    "btextstoreoutputas":"If True",    
-    "menuBar": {"choices":["Run Action Group*", "Stop Execution", "Nothing"], "storeAs":"ifTrue", "extraField":"actionGroup"},
-    "sepbars33":"e",
-    "btext01":"If False",
-    "menuBar1": {"choices": ["Run Action Group*", "Stop Execution", "Nothing"], "storeAs": "ifFalse", "extraField": "group"},
-    "sepbar9":"sepbar",
-    "btextnote":"<b>NOTE:</b> <br> Selecting <span style='background-color: #FFFFFF15; border-bottom: 1px solid #FFFFFF40; border-top-left-radius: 4px; border-top-right-radius: 4px; padding: 3px; padding-top: 1px; padding-bottom: 1px;'>Run Action Group*</span> will pass on all variables to the new action group & The action group will run before the next action, if any!",
-    "preview":"firstInput", "previewName":"Compare",
-    "variableSettings": {
-        "actionGroup": {
-            "Run Action Group*": "actionGroup"
-        },
-        "group": {
-            "Run Action Group*": "actionGroup"
-        }
-    }
+    data: {"name": "Compare", "button":"=", "firstInput":"", "secondInput":"", "runIfTrue": {}, "runIfFalse": {}},
+    UI: {"compatibleWith": ["Any"],
+
+    text:"Compare", "sepbar":"", 
+
+    "btext":"Compare",
+    "input*":"firstInput",
+
+    "sepbar":"",
+    "ButtonBar":{"buttons":[">", "=", "!=", "<" ]},
+    "sepbar0":"", 
+
+    "btext0":"Compare To", 
+    "input0*":"secondInput",
+
+    "sepbar1":"",
+    "btext1":"If True",
+    "actions": "runIfTrue",
+    "sepbar2":"e",
+    "btext2":"If False",
+    "actions0": "runIfFalse",
+
+    "preview":"firstInput", "previewName":"Compare"
 },
-    async run(values, message, uID, fs, client, runActionArray) {
+    async run(values, message, uID, fs, client, actionRunner) {
         let varTools = require(`../Toolkit/variableTools.js`)
         var tempVars = JSON.parse(fs.readFileSync('./AppData/Toolkit/tempVars.json', 'utf8'))
-        tempVars[uID][values.firstInput]
-        tempVars[uID][values.firstInput]
+
         let matchesCriteria = false;
-        if (values.button == '!=') {
-            if (`${varTools.transf(values.firstinput, uID, tempVars).toLowerCase()}` != `${varTools.transf(values.secondInput, uID, tempVars).toLowerCase()}`) {
-                matchesCriteria = true
-            } else {
-                matchesCriteria = false
-            }
-        } 
-        if (values.button == '<') {
-            if (`${varTools.transf(values.firstinput, uID, tempVars).toLowerCase()}` <= `${varTools.transf(values.secondInput, uID, tempVars)}`) {
-                matchesCriteria = true
-            } else {
-                matchesCriteria = false
-            }
+
+        let firstValue = `${varTools.transf(values.firstinput, uID, tempVars).toLowerCase()}`
+        let secondValue = `${varTools.transf(values.secondInput, uID, tempVars).toLowerCase()}`
+
+        switch (values.button) {
+            case '!=':
+                if (firstValue != secondValue) {
+                    matchesCriteria = true
+                } else {
+                    matchesCriteria = false
+                }
+            break
+
+            case '=':
+                if (firstValue == secondValue) {
+                    matchesCriteria = true
+                } else {
+                    matchesCriteria = false
+                }
+            break
+
+            case '>':
+                if (firstValue > secondValue) {
+                    matchesCriteria = true
+                } else {
+                    matchesCriteria = false
+                }
+            break
+
+            case '<':
+                if (firstValue < secondValue) {
+                    matchesCriteria = true
+                } else {
+                    matchesCriteria = false
+                }
+            break
         }
-        if (values.button == '>') {
-            if (`${varTools.transf(values.firstinput, uID, tempVars).toLowerCase()}` >= `${varTools.transf(values.secondInput, uID, tempVars)}`) {
-                matchesCriteria = true
-            } else {
-                matchesCriteria = false
-            }
-        }
-        if (values.button == '=') {
-            if (`${varTools.transf(values.firstinput, uID, tempVars).toLowerCase()}`.toLowerCase() == `${varTools.transf(values.secondInput, uID, tempVars)}`.toLowerCase()) {
-                matchesCriteria = true
-            } else {
-                matchesCriteria = false
-            }
-        }
-        
+
         if (matchesCriteria == true) {
-           if (values.ifTrue == 'Stop Execution') {
-            tempVars[uID] = {
-                ...tempVars[uID],
-                [`ACTIONARRAY_stop`]: true
-              }; 
-           } 
-           if (values.ifTrue == 'Run Action Group*') {
-            const interactionTools = require(`../Toolkit/interactionTools.js`)
-            await interactionTools.runCommand(values.actionGroup, runActionArray, uID, client, message, fs)
-           }
+            actionRunner(values.runIfTrue, message, client, tempVars[uID], true);
         } else {
-            if (values.ifFalse == 'Stop Execution') {
-                tempVars[uID] = {
-                    ...tempVars[uID],
-                    [`ACTIONARRAY_stop`]: true
-                  }; 
-               } 
-               if (values.ifFalse == 'Run Action Group*') {
-                const interactionTools = require(`../Toolkit/interactionTools.js`)
-                await interactionTools.runCommand(values.group, runActionArray, uID, client, message, fs)
-               }
+            actionRunner(values.runIfFalse, message, client, tempVars[uID], true);
         } 
-          fs.writeFileSync('./AppData/Toolkit/tempVars.json', JSON.stringify(tempVars), 'utf8')
+        
+        fs.writeFileSync('./AppData/Toolkit/tempVars.json', JSON.stringify(tempVars), 'utf8')
 
     }
 }

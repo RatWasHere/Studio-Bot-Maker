@@ -1,0 +1,112 @@
+<html>
+    <link rel="stylesheet" href="main.css">
+    <meta charset="utf8">
+    <div style="width: 100vw; overflow: auto; height: 100vh; margin-top: -8px; margin-left: -8px; filter: blur(22px); border-radius: 14px; transition: scale 0.3s ease, filter 0.5s ease; scale: 0.1;" id="everything_container">
+    <div id="editorContent" style="height: 90vh; width: 100vw; background-color: #FFFFFF10; overflow: auto;">
+        <div class="ring"></div>
+    </div>
+    <div id="selectorMenu" class="flexbox" style="height: 10vh; justify-content: left; width: 100vw; background-color: #FFFFFF08;">
+        <div class="barbuttontexta" id="action-name"></div>
+    <div class="barbuttonshift flexbox" style="margin-right: 1vw; width: 13vw; margin-left: auto;" onclick="closeWindow()">
+        <div class="image checkmark" style="width: 30% !important; height: 30px !important; margin: auto !important;"></div>
+        <div class="barbuttontexta">Done</div>
+    </div>
+    </div>
+</div>
+    <script src="./AppData/Kits/Loader.js"></script>
+<script>
+    var datjson = JSON.parse(fs.readFileSync('./AppData/data.json'))
+    let themeColor = datjson.color
+    document.getElementById('everything_container').style.background = `linear-gradient(45deg, ${themeColor} 0%, #121212 170%)`
+    document.body.style.padding = '0px !important';
+    document.body.style.paddingTop = '0px !important';
+    document.body.style.paddingBottom = '0px !important';
+    document.body.style.paddingLeft = '0px !important';
+    document.body.style.paddingRight = '0px !important';
+    document.body.style.borderRadius = '12px'
+    document.onkeydown=function(event) {
+        if (event.key.toLowerCase() == 's' && event.ctrlKey == true) {
+            closeWindow()
+        }
+        if (event.key == 'Tab' && event.ctrlKey == true) {
+            closeWindow()
+        }
+        if (event.key.toLowerCase() == 'q' && event.ctrlKey == true) {
+            save()
+            closeWindow()
+        }
+    }
+    const { ipcRenderer } = require('electron');
+
+    let action;
+    let time;
+    let actions;
+    let actionType;
+    let actionUI;
+    let awaitingStoreFrom;
+    let variables;
+    let isActionMenu = true;
+    ipcRenderer.on('data', (event, data, windowTime) => {
+        actionType = data.actionType;
+        variables = data.variables;
+        console.log(data)
+        time = windowTime;
+        document.getElementById('everything_container').style.scale = '1'
+        document.getElementById('everything_container').style.filter = 'blur(0px)'
+        actions = data
+        action = data
+        
+        actionFile = data;
+        for (let dataElement in actionFile.data) {
+            if (action.data[dataElement] == undefined) {
+                action.data[dataElement] = actionData[dataElement]
+            }
+        }
+        actionUI = actionFile.UI;
+        document.getElementById('action-name').innerHTML = 'Editing <span style="opacity:50%">' + data.name + '</span>';
+        document.getElementById('editorContent').innerHTML = `<br>` + getUIelements(actionUI, action)
+    })
+    function closeWindow() {
+    document.getElementById('everything_container').style.scale = '0'
+    document.body.style.transition = 'all 0.2s ease'
+    document.body.style.backgroundColor = '#FFFFFF00'
+    document.getElementById('everything_container').style.filter = 'blur(40px)'
+    let savedData = save()
+    setTimeout(() => {
+        ipcRenderer.send(`${time}`, {
+        event: 'customReceived',
+        data: savedData
+    });
+    }, 450)
+    }
+
+    function save() {
+    for (let i in actionUI) {
+       let element = actionUI[i]
+       if (element != 'preview' || element != 'previewName' || !element.StartsWith('invisible')) {
+        if (i == 'ButtonBar') {
+            if (action.data.button.endsWith('*')) {
+                action.data.ExtraData = document.getElementById('ExtraData').innerText
+            }
+        } else {
+            if (i.startsWith('text') || i.startsWith('menuBar') || i == 'preview' || i.startsWith('actions') || i.startsWith('customMenu') ||i == 'previewName' || i.startsWith('sepbar') || i.startsWith('btext') || i.startsWith('invisible')) {} else {
+                try {
+                    if (i.split(' ').includes('custom')) {
+                        action.data[element] = document.getElementById(element).value;
+                    } else {
+                        action.data[element] = document.getElementById(element).innerText;
+                    }
+                } catch(err) {}
+            }
+        }
+       }
+    }
+
+        return action.data
+    }
+</script>
+<script src="./AppData/Kits/EditorComponents.js"></script>
+<script src="./AppData/Kits/EditorScripts.js"></script>
+<script src="./AppData/Kits/SmartUI.js"></script>
+<script src="./AppData/Kits/variableInsertion.js"></script>
+</html>

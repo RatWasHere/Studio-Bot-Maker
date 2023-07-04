@@ -6,9 +6,9 @@ module.exports = {
 },
 
     UI: {"compatibleWith":["Text", "Slash"], 
-    "text":"Add Reaction", "sepbar3":"",
-     "btext33333333":"Reaction Emoji",
-    "input03_novars*": "emoji",
+    "text":"Add Reaction", "sepbar":"",
+    "btext":"Reaction Emoji",
+    "input custom emoji *": "emoji",
        "sepbar12":"",
         "btext5034":"Message/Embed Variable",
         "input5034_direct*":"messageVariable",
@@ -28,7 +28,7 @@ module.exports = {
     async run(values, inter, uID, fs, client) { 
         const tempVars = JSON.parse(fs.readFileSync('./AppData/Toolkit/tempVars.json', 'utf8'));
         const varTools = require(`../Toolkit/variableTools.js`)
-      let message = client.channels.cache.get(tempVars[uID][values.messageVariable].channelId).messages.cache.get(tempVars[uID][values.messageVariable].id)
+      let message = client.getChannel(tempVars[uID][values.messageVariable].channelId).messages.get(tempVars[uID][values.messageVariable].id)
         await message.react(values.emoji).then(async reaction => {
             if (values.storeAs != "") {
                 tempVars[uID] = {

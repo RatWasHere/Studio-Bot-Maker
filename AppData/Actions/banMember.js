@@ -1,18 +1,13 @@
 module.exports = {
-    data: {"messageContent": "", "memberFrom": "Variable*", "name": "Ban Member", 
-    "memberVariable": "",
-    "guild":"Message Guild", "guildField":"", "reason":""},
+    data: {"messageContent": "", "memberFrom": "Variable*", "name": "Ban Member", "memberVariable": "", "reason":""},
     UI: {"compatibleWith": ["Text", "Slash"],
 
      "text": "Ban Member", "sepbar":"",
 
-      "btext":"Member",
-       "menuBar": {"choices": ["Message Author", "Variable*"], storeAs: "memberFrom", extraField: "memberVariable"}, 
+      "btext":"Get Member Via",
+       "menuBar": {"choices": ["Command Author", "Variable*", "Member ID*"], storeAs: "memberFrom", extraField: "memberVariable"}, 
 
        "sepbar1":"sepbar",
-
-        "btext1":"Guild", "menuBar1":{"choices": ["Message Guild", "Variable*"],
-        storeAs: "guild", extraField: "guildField"}, 
 
         "sepbar2":"", "btext2":"Reason", 
         "input":"reason", 
@@ -20,36 +15,30 @@ module.exports = {
         "variableSettings": {
             "memberVariable": {
                 "Variable*":"direct"
-            },
-            "guildField": {
-                "Variable*": "direct"
             }
         }
 
 },
-    run(values, message, uID, fs, client) {
-        let varTools = require(`../Toolkit/variableTools.js`)
-        var tempVars = JSON.parse(fs.readFileSync('./AppData/Toolkit/tempVars.json', 'utf8'))
-        let guild;
+    run(values, message, uID, fs, client, actionContextBridge) {
+        let varTools = require(`../Toolkit/variableTools.js`);
+        var tempVars = JSON.parse(fs.readFileSync('./AppData/Toolkit/tempVars.json', 'utf8'));
 
-        if (values.guild == 'Message Guild') {
-            guild = message.guild
-        } else {
-            guild = client.guilds.cache.get(tempVars[uID][varTools.transf(values.guildField, uID, tempVars)].id)
-        }
+        let guild = actionContextBridge.guild;
         let member;
-        if (values.memberFrom == 'Message Author') {
-            member = guild.members.cache.get(message.author.id)
-        } else {
-            member = guild.members.cache.get(tempVars[uID][varTools.transf(values.memberVariable, uID, tempVars)].userId)
-        }   
+        if (values.memberFrom == 'Command Author') {
+            member = guild.getMember(message.author.id)
+        } 
+        if (values.memberFrom == 'Variable*') {
+            member = guild.getMember(tempVars[uID][varTools.transf(values.memberVariable, uID, tempVars)].id)
+        }
+        if (values.memberFrom == 'Member ID*') {
+            member = guild.getMember(varTools.transf(values.memberVariable, uID, tempVars))
+        }
 
         if (values.reason == '') {
             member.ban()
         } else {
             member.ban({reason: varTools.transf(values.reason, uID, tempVars)})
         }
-    
-
     }
 }

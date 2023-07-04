@@ -1,7 +1,7 @@
 module.exports = {
     data: {"name":"Get Mentioned User", "messageVariable":"", "button":"First", "ExtraData":"5", 
 "storeAs":""},
-    UI: {"compatibleWith": ["Event", "Slash"], "text": "Get Message Mention","sepbarEmbVar":"", 
+    UI: {"compatibleWith": ["Event", "Slash", "DM"], "text": "Get Message Mention","sepbarEmbVar":"", 
     
     "btextmember":"Message Variable", "inputd_direct*":"messageVariable", 
     "sepbarmenus":"sepbar",
@@ -17,7 +17,7 @@ module.exports = {
         let varTools = require(`../Toolkit/variableTools.js`)
         var tempVars = JSON.parse(fs.readFileSync('./AppData/Toolkit/tempVars.json', 'utf8'))
         let msg;
-            msg = client.channels.cache.get(tempVars[uID][values.messageVariable].channel_id).messages.fetch(tempVars[uID][values.messageVariable].id)
+            msg = client.getChannel(tempVars[uID][values.messageVariable].channel_id).messages.fetch(tempVars[uID][values.messageVariable].id)
         
         if (values.button == 'First') {
              mention = msg.mentions.users.first()

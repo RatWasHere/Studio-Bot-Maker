@@ -1,17 +1,27 @@
 module.exports = {
     data: {"name":"Create Text Channel", "channelName":"", "button": "✕", "guild":"Message Guild", "guildVariable":"", "storeChannelAs":""},
     UI: {"compatibleWith":["Text", "Slash"], 
-    "text": "Create Channel", "sepbar":"", 
+    "text": "Create Channel",
     
-    "btext":"Channel Name", "input!*":"channelName", 
+    "sepbar":"", 
+    
+    "btext":"Channel Name",
+    "input!*":"channelName", 
+
     "sepbar0":"",
+
     "btext0":"Private?",
     "ButtonBar": {"buttons": ["✓", "✕"]},
+
     "sepbar1":"",
-    "btext1":"Guild",
-    "menuBar": {choices: ["Message Guild", "Variable*"], storeAs: "guild", extraField: "guildVariable"},
+
+    "btext1":"Get Guild Via",
+    "menuBar": {choices: ["Message Guild", "Variable*", "Guild ID*"], storeAs: "guild", extraField: "guildVariable"},
+    
     "sepbar2":"",
-    "btext2":"Store Channel As", "input0": "storeChannelAs",
+
+    "btext2":"Store Channel As",
+    "input!": "storeChannelAs",
 
     "variableSettings": {
         "guildVariable": {
@@ -23,27 +33,30 @@ module.exports = {
     
     async run(values, message, uID, fs, actionRunner) { 
         let varTools = require(`../Toolkit/variableTools.js`)
-        var tempVars = JSON.parse(fs.readFileSync('./AppData/Toolkit/tempVars.json', 'utf8'))
-        const { ChannelType } = require('discord.js')
+        var tempVars = JSON.parse(fs.readFileSync('./AppData/Toolkit/tempVars.json', 'utf8'));
+
+        const { ChannelTypes, Permissions } = require('oceanic.js');
+
         let guild = message.guild;
-
-
+        if (values.guild == 'Guild ID*') {
+            guild = client.guilds.get(varTools.transf())
+        }
         if (values.guild == 'Variable*') {
-            guild = client.guilds.cache.get(tempVars[uID][varTools.transf(values.ExtraData, uID, tempVars)])
+            guild = client.guilds.get(tempVars[uID][varTools.transf(values.ExtraData, uID, tempVars)])
         }
     
-        const channel = guild.channels.create({
+        const channel = guild.createChannel({
             name: varTools.transf(values.channelName, uID, tempVars),
-            type: ChannelType.GuildText
+            type: ChannelTypes.GUILD_TEXT,
+            nsfw: false
         })
 
         if (values.button == '✓') {
-            channel.overwritePermissions([
-                {
-                  id: guild.roles.everyone,
-                  deny: ['VIEW_CHANNEL'],
-                },
-              ]);
+            client.channels.editPermissions(channel.id, {
+                id: null,
+                allow: [""],
+                deny: [Permissions.VIEW_CHANNELS]
+            })
         }
     }
 }

@@ -1,6 +1,7 @@
 module.exports = {
     data: {"name": "Get Message Info","desc": "", "storeAs": "", "messageFrom":"Command Message", "messageVariable":"", "datainfo":"Message Content"},
-    UI: {"compatibleWith": ["Text"],"text1":"Get Message Info", "sepbar2":"sepber",
+    UI: {"compatibleWith": ["Text", "DM"],
+    "text1":"Get Message Info", "sepbar2":"sepber",
     "btext33333333":"Get Message Via",
     "variableSettings": {
         "messageVariable": {
@@ -13,8 +14,7 @@ module.exports = {
     "btextget":"Get",
     "menuBar":{"choices":["Message Content",
     "Message ID",
-    "Message URL",
-    "Message Channel", "Message Author", "Message Timestamp", "Message Guild"], storeAs:"datainfo"} ,
+    "Message Channel", "Message Author", "Message Timestamp"], storeAs:"datainfo"} ,
     "sepbar324get":"",
     "variableSettings": {
         "messageVariable": {
@@ -30,7 +30,7 @@ module.exports = {
         if (values.messageFrom == 'Command Message') {
             msg = message
         } else {
-            msg = client.messages.cache.get(tempVars[uID][values.messageVariable].id)
+            msg = client.messages.get(tempVars[uID][varTools.transf(values.messageVariable, uID, tempVars)].id)
         }
 
     switch(values.datainfo) {
@@ -39,22 +39,16 @@ module.exports = {
             break
             case 'Message Channel':
                 console.log(msg)
-                tempVars[uID][values.storeAs] = client.channels.cache.get(msg.channelId);
-            break
-            case 'Message Guild': 
-            tempVars[uID][values.storeAs] = client.guilds.cache.get(msg.guild.id)
+                tempVars[uID][values.storeAs] = client.getChannel(msg.channelID);
             break
             case 'Message Author':
-                tempVars[uID][values.storeAs] = client.guilds.cache.get(msg.guildId).members.cache.get(msg.authorId);
+                tempVars[uID][values.storeAs] = client.getUser(msg.author.id);
             break 
             case 'Message ID': 
                 tempVars[uID][values.storeAs] = msg.id
             break
-            case 'Message URL': 
-                tempVars[uID][values.storeAs] = msg.id
-            break
-        } 
-        fs.writeFileSync('./AppData/Toolkit/tempVars.json', JSON.stringify(tempVars), 'utf8')
+    }
 
+    fs.writeFileSync('./AppData/Toolkit/tempVars.json', JSON.stringify(tempVars), 'utf8')
     }
 }

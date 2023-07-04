@@ -1,33 +1,59 @@
 module.exports = {
-    data: {"name":"Remove Role", "memberChoice":"", "storeAs":"", "addTo":"Message Author", "memberVariable":""},
-    UI: {"compatibleWith":["Text", "Slash"], "text":"Remove Role",
-     "sepbar3":"", "btext":"Role Variable", 
-     "input1_direct*":"memberChoice", "sepbar12":"", 
-     "btext1":"Remove From",
-      "menuBar":{"choices":["Message Author", "Member*"], 
-      storeAs: "addTo", extraField:"memberVariable"}, 
-     "sepbar0":"", "preview":"memberChoice", "previewName":"Role",
-     "variableSettings": [
-        {
-            "memberVariable": {
-                "Member*": "direct", 
-                "Message Author": "novars"
-            }
-        }
-    ]
-    },
+    data: {"name":"Remove Role", "storeAs":"", "removeFrom":"Command Author", "reason":"", "member":"", "roleFrom": "Variable*", "role": ""},
+    UI: {"compatibleWith":["Text", "Slash"], 
+    "text":"Remove Role", "sepbar":"", 
+    "btext":"Get Role Via",
+    "menuBar": {choices: ["Role ID*", "Variable*"], storeAs: "roleFrom", extraField: "role"},
 
-    run(values, message, uID, fs, client) { 
-        let varTools = require(`../Toolkit/variableTools.js`)
-        var tempVars = JSON.parse(fs.readFileSync('./AppData/Toolkit/tempVars.json', 'utf8'))
-        var user;
-        if (values.addTo == 'Message Author') {
-            user = message.author.id
-        } else {
-            user = tempVars[uID][values.memberVariable].userId
+    "sepbar0":"",
+    
+    "btext0":"Get Member To Remove Role From Via",
+    "menuBar0":{"choices":["Command Author", "Member*", "Member ID*"], storeAs: "removeFrom", extraField:"member"}, 
+
+    "sepbar1":"",
+
+    "btext1":"Reason",
+    "input":"reason",
+
+    "preview":"role", "previewName":"Via",
+    "variableSettings":{
+        "member": {
+            "Member*": "direct", 
+            "Member ID*": "indirect"
+        },
+        "role": {
+            "Variable*": "direct", 
+            "Role ID*": "indirect"
         }
-       let role = client.guilds.cache.get(tempVars[uID][values.memberChoice].guild).roles.cache.get(tempVars[uID][values.memberChoice].id) 
-       let member = client.guilds.cache.get(tempVars[uID][values.memberChoice].guild).members.cache.get(user) 
-       member.roles.remove(role) 
+    }
+},
+
+    run(values, message, uID, fs, client, actionContextBridge) { 
+    let varTools = require(`../Toolkit/variableTools.js`);
+    var tempVars = JSON.parse(fs.readFileSync('./AppData/Toolkit/tempVars.json', 'utf8'));
+
+    let guild = actionContextBridge.guild;
+
+    let role;
+    if (values.roleFrom == 'Variable*') {
+        guild = client.guilds.get(tempVars[uID][varTools.transf(values.role, uID, tempVars)].guildID)
+        role = guild.roles.get(tempVars[uID][varTools.transf(values.role, uID, tempVars)].id).id;
+    }
+    if (values.roleFrom == 'Role ID*') {
+        role = guild.roles.get(varTools.transf(values.role, uID, tempVariables)).id;
+    }
+
+    var member;
+    if (values.removeFrom == 'Command Author') {
+        member = guild.getMember(message.member.id)
+    } 
+    if (values.removeFrom == 'Member*') {
+        member = guild.getMember(tempVars[uID][varTools.transf(values.member, uID, tempVars)].id)
+    }
+    if (values.removeFrom == 'Member ID*') {
+        member = guild.getMember(varTools.transf(values.member, uID, tempVars))
+    }
+
+    member.removeRole(role, varTools.transf(values.reason, uID, tempVars));
     }
 }

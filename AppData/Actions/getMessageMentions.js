@@ -1,18 +1,20 @@
 module.exports = {
     data: {"name":"Get Mentioned User", "messageObject":"Command Message", "messageVariable":"", 
     "storeAs":"",
-    "button":"First", "ExtraData":"5"},
-    UI: {"compatibleWith": ["Text"], "text": "Get Message Mention","sepbarEmbVar":"", 
+    "button":"First", "ExtraData":"4"},
+    UI: {"compatibleWith": ["Text", "DM"],
+    "text": "Get Message Mention",
+
+    "sepbar":"", 
     
-    "btextmember":"Message", "menuBar1": {"choices": ["Command Message", "Variable*"],
-     storeAs: "messageObject", extraField: "messageVariable"}, 
-    "sepbarmenus":"sepbar",
-    "btext00":"Mention Number",
+    "btext":"Message", "menuBar": {"choices": ["Command Message", "Variable*"], storeAs: "messageObject", extraField: "messageVariable"}, 
+    "sepbar0":"sepbar",
+    "btext0":"Mention Number",
     "ButtonBar": {"buttons":["First", "Second", "Third", "Custom*"]},
-    "sepbar5131":"",
-    "btextstoreas":"Store As",
-    "inputstoreas!*":"storeAs",
-    "btext":"<b>Note!</b> <br> If you're using \"Custom\", you need to insert the number, not ordinal numbers!",
+    "sepbar1":"",
+    "btext1":"Store As",
+    "input!*":"storeAs",
+    "btext2":"<b>Note!</b> <br> If you're using \"Custom\", you need to insert the number, not ordinal numbers!",
     "variableSettings": {
         "messageVariable": {
             "Variable*": "direct"
@@ -28,7 +30,7 @@ module.exports = {
         if (values.messageObject == 'Command Message') {
             msg = message;
         } else {
-            msg = client.channels.cache.get(tempVars[uID][values.messageVariable].channelId).messages.cache.get(tempVars[uID][values.messageVariable].id)
+            msg = client.getChannel(tempVars[uID][values.messageVariable].channelId).messages.get(tempVars[uID][values.messageVariable].id)
         } 
         if (values.button == 'First') {
             mention = msg.mentions.users.first()
@@ -40,17 +42,17 @@ module.exports = {
             fs.writeFileSync('./AppData/Toolkit/tempVars.json', JSON.stringify(tempVars), 'utf8')
 
         } else {
-            let ment = msg.mentions.users.array;
+            let mentions = msg.mentions.users.array;
             let mention; 
             switch (values.button) {
                 case 'Second':
-                    mention = ment[1]
+                    mention = mentions[1]
                 break
                 case 'Third':
-                    mention = ment[2]
+                    mention = mentions[2]
                 break
                 case 'Custom':
-                    mention = ment[parseFloat(varTools.transf(values.ExtraField, uID, tempVars))]
+                    mention = mentions[parseFloat(varTools.transf(values.ExtraField, uID, tempVars))]
                 break
             }
 

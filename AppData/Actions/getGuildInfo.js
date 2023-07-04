@@ -33,7 +33,7 @@ module.exports = {
         if (values.guildFrom == 'Command Guild') {
             guild = message.guild
         } else {
-         guild = client.guilds.cache.get(varTools.transf(tempVars[uID][values.guildVariable].id, uID, tempVars));
+         guild = client.guilds.get(varTools.transf(tempVars[uID][values.guildVariable].id, uID, tempVars));
     }
     switch(values.toGet) {
             case 'Guild Name':
@@ -43,10 +43,10 @@ module.exports = {
                 tempVars[uID][values.storeAs] = guild.iconURL()
             break
             case 'Guild Members List':
-                tempVars[uID][values.storeAs] = guild.members.cache
+                tempVars[uID][values.storeAs] = guild.members
             break
             case 'Guild Member Count':
-                tempVars[uID][values.storeAs] = guild.members.cache.map(m => m.id).length
+                tempVars[uID][values.storeAs] = guild.members.map(m => m.id).length
             break
             case 'Guild Owner': 
                 tempVars[uID][values.storeAs] = guild.fetchOwner()

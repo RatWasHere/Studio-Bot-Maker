@@ -19,12 +19,11 @@
         "publish": "github",
         "win": {
             "certificateFile": "./dist/StudioBotCertificate.pfx",
-            "allowToChangeInstallationDirectory":"true",
             "publish": {
                 "provider": "github",
                 "owner": "RatWasHere",
                 "repo": "Studio-Bot-Maker"
-             },
+            },
             "target": [
                 {
                     "target": "nsis",
@@ -37,20 +36,24 @@
         "nsis": {
             "oneClick": false,
             "perMachine": false,
-            "allowToChangeInstallationDirectory": true
-          }
+            "allowToChangeInstallationDirectory": true,
+            "uninstallDisplayName": "Uninstall Studio Bot Maker"
+        }
     },
     "dependencies": {
         "@electron-forge/maker-base": "^6.1.0",
+        "@oceanicjs/builders": "^1.1.9",
+        "ansi-to-html": "^0.7.2",
         "axios": "^1.4.0",
         "discord-api-types": "^0.37.34",
         "discord-rpc": "^4.0.1",
-        "discord.js": "^14.11.0",
         "electron-squirrel-startup": "^1.0.0",
         "electron-updater": "^5.3.0",
         "fs": "^0.0.1-security",
         "fs-extra": "^11.1.1",
         "fse": "^4.0.1",
+        "oceanic-collectors": "^1.0.7",
+        "oceanic.js": "^1.7.1",
         "request": "^2.88.2",
         "simple-updater": "^0.0.3",
         "unzipper": "^0.10.11"
@@ -62,7 +65,7 @@
         "@electron-forge/maker-squirrel": "^6.0.5",
         "@electron-forge/maker-zip": "^6.0.5",
         "@electron-forge/publisher-github": "^6.0.5",
-        "electron": "^25.0.1",
+        "electron": "^25.2.0",
         "electron-builder": "^23.6.0"
     },
     "scripts": {
@@ -72,5 +75,5 @@
         "release": "electron-builder",
         "cert": "electron-builder create-self-signed-cert -p StudioCertificate"
     },
-    "version": "2.6.0"
+    "version": "3.0.1"
 }

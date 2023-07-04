@@ -20,7 +20,7 @@ module.exports = {
         if (values.messageFrom == 'Command Message') {
             msg = message
         } else {
-            msg = client.messages.cache.get(tempVars[uID][values.messageVariable].id)
+            msg = client.messages.get(tempVars[uID][values.messageVariable].id)
         }
 
         msg.delete()

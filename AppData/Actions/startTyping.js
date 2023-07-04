@@ -1,10 +1,5 @@
 module.exports = {
-    data: {"name":"Start Typing", 
-    "dataName":"",
-    "dataValue": "",
-     "storeAs":"",
-     "typeIn":"Message Channel",
-      "typeFrom":""},
+    data: {"name":"Start Typing", "channelFrom":"Message Channel", "channel":""},
      
     UI: {"compatibleWith":["Text", "Slash"], 
     "text":"Start Typing", 
@@ -13,18 +8,18 @@ module.exports = {
 
      "btext00guild":"Start Typing In",
       "menuBar":{"choices":["Message Channel", "Variable*"], 
-      storeAs:"typeIn", extraField:"typeFrom"},
+      storeAs:"channelFrom", extraField:"channel"},
 
       "sepbar134324121232":"",  
 
       "variableSettings":{
-        "typeFrom": {
+        "channel": {
             "Variable*": "direct", 
             "Message Channel": "novars"
         }
     },
 
-      "preview":"typeIn", 
+      "preview":"channelFrom", 
       "previewName":"In"},
 
    async run(values, message, uID, fs, client) { 
@@ -32,15 +27,11 @@ module.exports = {
         var tempVars = JSON.parse(fs.readFileSync('./AppData/Toolkit/tempVars.json', 'utf8'))
         var storedData = JSON.parse(fs.readFileSync('./AppData/Toolkit/storedData.json', 'utf8'))
  
-        if (values.typeIn == 'Message Channel') {
-            message.channel.startTyping()
+        if (values.channelFrom == 'Message Channel') {
+            message.channel.sendTyping()
         } else { 
-            let channelId = tempVars[uID][varTools.transf(values.typeFrom, uID, tempVars)].id
-            client.channels.cache.get(channelId).startTyping()
+            let channelId = tempVars[uID][varTools.transf(values.channel, uID, tempVars)].id
+            client.getChannel(channelId).sendTyping()
         }
-        
-        
-
-
-}
+    }
 }

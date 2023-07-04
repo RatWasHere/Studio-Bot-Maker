@@ -24,18 +24,20 @@ module.exports = {
             delete tempVars[uIDs][name];
             return JSON.stringify(tempVars);
     },
-    transf(text, uID, tmpVar) {
-        let tempccc = JSON.stringify(tmpVar, null, 2)
-        var tempVar = JSON.parse(tempccc)
-        const tempVars = (variable) => {
-            return tempVar[uID][variable];
-          };
-          let fext = text;
-          if (fext.split('').includes('`')) {
-            fext = text.replace(/`/g, "\\`");
+    transf(text, uID, tempVar) {
+        // const tempVar = JSON.parse(JSON.stringify(tmpVar, null, 2));
 
-          }
-        return eval("`" + fext + "`");
+        const getTempVariable = (variable) => {
+          return tempVar[uID][variable];
+        };
+      
+        let formattedText = text;
+        if (formattedText.includes('`')) {
+          formattedText = formattedText.replace(/`/g, "\\`");
+        }
+      
+        const evaluatedText = eval("`" + formattedText + "`");
+        return evaluatedText;
     },
     getVariable(name, uID) {
             let tempVars = require(`../Toolkit/tempVars.json`);

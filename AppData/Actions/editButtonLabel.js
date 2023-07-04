@@ -13,7 +13,7 @@ module.exports = {
     run(values, interaction, uID, fs, client) {
         let varTools = require(`../Toolkit/variableTools.js`)
         var tempVars = JSON.parse(fs.readFileSync('./AppData/Toolkit/tempVars.json', 'utf8'));
-        let message = client.channels.cache.get(tempVars[uID][values.messageVariable].channelId).messages.cache.get(tempVars[uID][values.messageVariable].id);
+        let message = client.getChannel(tempVars[uID][values.messageVariable].channelId).messages.get(tempVars[uID][values.messageVariable].id);
 
                     let buttonID = varTools.transf(values.customId, uID, tempVars)
                     let button;

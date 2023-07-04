@@ -1,0 +1,92 @@
+<html>
+    <link rel="stylesheet" href="main.css">
+    <div style="width: 100vw; height: 100vh; margin-top: -8px; margin-left: -8px; border-radius: 12px; background-color: #FFFFFF15;">
+    <div class="barbuttontexta textToLeft" style="margin-left: 1vw !important;">Please Select A Project!</div>
+    <div id="projects">
+    </div>
+</div>
+    <script src="./AppData/Kits/Loader.js"></script>
+    <script>
+    /* Cheers, ChatGPT */
+    function areObjectsEqual(obj1, obj2) {
+    // Check if both objects are of type 'object'
+    if (typeof obj1 !== 'object' || typeof obj2 !== 'object') {
+        return false;
+    }
+
+    // Check if the number of properties is the same
+    const obj1Keys = Object.keys(obj1);
+    const obj2Keys = Object.keys(obj2);
+    if (obj1Keys.length !== obj2Keys.length) {
+        return false;
+    }
+
+    // Check if the property values are equal
+    for (let key of obj1Keys) {
+        if (!obj2.hasOwnProperty(key) || obj1[key] !== obj2[key]) {
+        return false;
+        }
+    }
+    return true;
+    }
+    const {ipcRenderer} = require('electron')
+    document.body.style.padding = '0px !important';
+    document.body.style.paddingTop = '0px !important';
+    document.body.style.paddingBottom = '0px !important';
+    document.body.style.paddingLeft = '0px !important';
+    document.body.style.paddingRight = '0px !important';
+    document.body.style.borderRadius = '12px !important'
+    document.body.style.backgroundColor = '#FFFFFF00'
+    document.body.style.transition = 'all 0.2s ease'
+    // document.body.style.background = 'linear-gradient(45deg, rgb(0, 8, 20) 0%, rgb(18, 18, 18) 170%)'
+    document.body.style.background = 'unset !important'
+        let settings = JSON.parse(fs.readFileSync('C:/ProgramData/settings.json'));
+        let data = JSON.parse(fs.readFileSync('./AppData/data.json'));
+        let projectContainer = document.getElementById('projects')
+
+        projectContainer.innerHTML += `
+        <div class="dimension hoverablez" onclick="sendProject(undefined)" style="width: 95%; margin: auto; border-radius: 9px; padding: 9px; margin-top: 3vh; margin-bottom: 1vh;">
+                <div class="barbuttontexta textToLeft" style="font-size: 23px !important; margin-left: 1vw !important;">Local</div>
+                <div class="barbuttontexta textToLeft" style="margin-left: 1vw !important;">Project Name: ${data.name}</div>
+                <div class="barbuttontexta textToLeft" style="opacity: 50%; margin-left: 1vw !important;">${Object.keys(data.commands).length} Groups</div>
+        </div>
+        `
+        for (let project of settings.projects) {
+            let extra = ''
+            if (data.prjSrc == project) {
+                console.log(JSON.parse(fs.readFileSync(project + '\\AppData\\data.json')))
+            if (areObjectsEqual(Object.values(data.commands), Object.values(JSON.parse(fs.readFileSync(project + '\\AppData\\data.json')).commands)) == true) {
+                extra = ` - Latest - On Par With Local`
+            } else {
+                extra = ` - Unsaved - Older Than Local`
+            }
+            }
+
+            let projectName = '<span style="opacity: 50%;">Deleted</span>'
+            let projectGroups = 0;
+            try {
+                projectName = JSON.parse(fs.readFileSync(project + '/AppData/data.json')).name;
+                projectGroups = Object.keys(JSON.parse(fs.readFileSync(project + '/AppData/data.json')).commands).length
+            } catch (err) {}
+            projectContainer.innerHTML += `
+            <div class="dimension hoverablez" onclick="sendProject('${project}')" style="width: 95%; margin: auto; border-radius: 9px; padding: 9px; margin-top: 1vh; margin-bottom: 1vh;">
+                <div class="barbuttontexta textToLeft" style="font-size: 23px !important; margin-left: 1vw !important; margin-bottom: 2vh !important;">Exported ${extra}</div>
+                <div class="barbuttontexta textToLeft" style="margin-left: 1vw !important;">Project Name: ${projectName}</div>
+                <div class="barbuttontexta textToLeft" style="opacity: 50%; margin-left: 1vw !important;">${projectGroups} Groups</div>
+            </div>
+            `
+        }
+        function sendProject(dir) {
+            ipcRenderer.send('selectedProject', dir || undefined);
+            document.body.style.scale = '0'
+            setTimeout(() => {
+                document.body.style.background = 'unset !important'
+                document.body.style.scale = '1'
+                projectContainer.innerHTML = `
+                <div class="barbuttontexta" style="padding: 12px; backdrop-filter: blur(12px); background-color: #FFFFFF10;">Loading...</div>
+                `
+
+            }, 200)
+        }
+    </script>
+</html>

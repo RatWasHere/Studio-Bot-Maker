@@ -1,120 +1,145 @@
 module.exports = {
-    data: {"name":"Await Message", 
-    "storeAs":"", 
-    "messageFrom":"Message Channel",
-    "messageChannel":"",
-    "runAfter":"",
+    data: {"name":"Await Reaction", 
+    "customID":"", 
+    "storeReactionNameAs":"",
+    "storeMessageAs": "",
+    "storeReactionIdAs": "",
+    "actions": {},
+    "messageFrom": "Command Message",
     "fromWho":"",
-    "awaitFrom": "Message Author",
-    "stopAfter":"60",
-    "button": "✓",
-    "storeAs":""
+    "targetUser": "Anybody",
+    "stopAwaitingAfter":"60",
+    "emojiFilter":"Any",
+    "emoji":"",
 },
 
     UI: {"compatibleWith":["Text", "Slash"], 
-    "text":"Await Reaction", "sepbar3":"",
-     "btext2":"Await Message From", 
-     "menuBar44":{"choices":["Anybody", "Message Author", "User*"],
-      storeAs: "awaitFrom", extraField:"fromWho"},  
+    "text":"Await Reaction",
 
-      "sepbar0":"", 
-      "btext12":"Await Message In",
-      "menuBarchannel": {
-        "choices": ["Message Channel", "Channel*"],
-        "storeAs":"messageFrom",
-        "extraField": "messageChannel"
-      },
-      "sepbar13":"",
-    "btext34423531":"Once Message Was Sent, Run Action Group", 
-    "input42_actionGroup*":"runAfter",
+    "sepbar":"",
 
-    "sepbarstopwaitingafter":"",
-    "btextstopwaitingafter":"Stop Waiting After (seconds)",
-    "inputstopwaitingafter_novars*":"stopAfter",
+    "btext":"Filter Reaction Emoji By",
+    "menuBar": {"choices": ["Any", "Name*", "ID*", "Animated Only", "Non-Animated Only"], storeAs: "emojiFilter", extraField: "emoji"},
 
-"sepbarsstoreinteractionsas":"",
-    "btextfinakly":"Store Message As",
-    "inputfinakly_novars!":"storeAs",
+    "sepbar0":"",
+
+    "btext0":"Get Message To Await The Reaction On Via:",
+    "menuBar0": {"choices": ["Command Message", "Variable*", "Any Message In Command Channel"], storeAs: "messageFrom", extraField: "message"},
+
+    "sepbar1":"",
+
+    "btext1":"Get User To Await Reaction From Via:", 
+    "menuBar1":{"choices":["Anybody", "Command Author", "User*", "User ID*"], storeAs: "targetUser", extraField:"fromWho"},  
+
+    "sepbar2":"", 
+
+    "btext2":"Once Reacted, Run", 
+
+    "actions":"actions",
+
+    "sepbar3":"",
+
+    "btext3":"Stop Waiting After (seconds)",
+    "input":"stopAwaitingAfter",
+
+    "sepbar4":"",
+
+    "btext4":"Store Reaction Name As",
+    "input!":"storeReactionNameAs",
+
+    "btext5":"Store Reaction ID As",
+    "input0!":"storeReactionIdAs",
+
+    "sepbar5":"",
+
+    "btext6":"Store Message As",
+    "input1!":"storeMessageAs",
 
 
+    "preview":"targetUser",
+    "previewName":"From",
 
-      "preview":"awaitFrom",
-       "previewName":"From",
 
-
-       "variableSettings":{
-        "fromWho": {
-            "User*": "direct", 
-            "Anybody": "novars",
-            "Message Author": "novars"
-        },
-        "messageChannel": {
-            "Channel*": "actionGroup"
+        "variableSettings":{
+            "fromWho": {
+                "User*": "direct", 
+                "Anybody": "novars",
+                "Command Author": "novars"
+            },
+            "emoji": {
+                "Custom*": "indirect"
+            },
+            "message": {
+                "Variable*": "direct"
+            }
         }
-    }
-
     },
 
-    async run(values, inter, uID, fs, client, runActionArray) { 
+    async run(values, inter, uID, fs, client, actionRunner) { 
         const tempVars = JSON.parse(fs.readFileSync('./AppData/Toolkit/tempVars.json', 'utf8'));
-        const varTools = require(`../Toolkit/variableTools.js`)
-      let channel;
-      if (values.messageFrom == 'Message Channel') {
-            channel = inter.channel;
-      } else {
-            channel = tempVars[uID][varTools.transf(values.messageChannel)]
-      }
-        const collector = channel.createMessageCollector({ max: 1, time: parseFloat(values.stopAfter) * 1000 });
-        var collectedAt = []
-        let timesRan = 0;
-        let toolkit = require('../Toolkit/interactionTools.js');
-        let toolKey = toolkit.preventDeletion(uID);
-        collector.on('collect', async (interaction, interactionAuthor) => {
-            
-            let trueEmoji = false;
-            if (values.emojiType == "Any") {
-                trueEmoji = true;
-            }
-            if (values.emojiType == "Custom*") {
-                trueEmoji = interaction.emoji.name == values.emoji
+        const varTools = require(`../Toolkit/variableTools.js`);
+    
+        const handlemessage = (message, reactor, reaction) => {
+            let matchesEmoji = false;
+            let matchesTarget = false;
+            let matchesMessage = false;
+
+            switch (values.messageFrom) {
+                case 'Command Message':
+                    matchesMessage = message.id == inter.id
+                break
+                case 'Variable*':
+                    matchesMessage = message.id == tempVars[uID][varTools.transf(values.message, uID, tempVars)].id
+                break
+                case 'Any Message In Command Channel':
+                    matchesMessage = message.channel.id == tempVars[uID][varTools.transf(values.message, uID, tempVars)].channel.id
+                break
             }
 
-            let isAuthor = false;
-            switch (values.awaitFrom) {
-                case "Anybody":
-                    isAuthor = true;
-                    break;
-                case "Message Author":
-                    isAuthor = interactionAuthor.id == inter.author.id;
-                    break;
-                case "User*":
-                    let user = client.users.cache.get(tempVars[uID][varTools.transf(values.fromWho, uID, tempVars)].id)
-                    isAuthor = interactionAuthor.id == user.id;
-                    break;
+            switch (values.emojiFilter) {
+                case 'Any':
+                    matchesEmoji = true
+                break
+                case 'Name*':
+                    matchesEmoji = varTools.transf(values.emoji, uID, tempVars) == reaction.name
+                break
+                case 'ID*':
+                    matchesEmoji = varTools.transf(values.emoji, uID, tempVars) == reaction.id
+                break
+                case 'Animated Only':
+                    matchesEmoji = true == reaction.animated
+                break
+                case 'Non-Animated Only':
+                    matchesEmoji = false == reaction.animated
+                break
             }
-            let foundCommand = false;
-            if (isAuthor == true && collectedAt.includes(interaction.createdTimestamp) == false && trueEmoji == true) {
-                collectedAt.push(interaction.createdTimestamp)
 
-                let datjson = require('../data.json')
-                const interactionTools = require(`../Toolkit/interactionTools.js`)
-                await interactionTools.runCommand(values.runAfter, runActionArray, uID, client, inter, fs)
+            switch (values.targetUser) {
+                case 'Anybody':
+                    matchesTarget = true
+                break
+                case 'Command Author':
+                    matchesTarget = reactor.id == inter.author.id
+                break
+                case 'User*':
+                    matchesTarget = reactor.id == tempVars[uID][varTools.transf(values.fromWho, uID, tempVars)].id
+                break
+                case 'User ID*':
+                    matchesTarget = reactor.id == varTools.transf(values.fromWho, uID, tempVars)
+                break
+            }
 
+            if (matchesTarget && matchesEmoji && matchesMessage) {
+                actionRunner(values.actions, message, client, {...tempVars[uID], [varTools.transf(values.storeMessageAs, uID, tempVars)]: message, [varTools.transf(values.storeReactionNameAs, uID, tempVars)]: reaction.name,  [varTools.transf(values.storeReactionNameAs, uID, tempVars)]: reaction.id}, true);
+            }
+        }
 
-                            if (values.storeAs != "") {
-                                tempVars[uID] = {
-                                    ...tempVars[uID],
-                                    [values.storeAs]: interaction
-                                }
+        client.on('messageReactionAdd', handlemessage(message, reactor, reaction))
 
-                                fs.writeFileSync('./AppData/Toolkit/tempVars.json', JSON.stringify(tempVars), 'utf8')
-                            }
-                        }
-        });
-
-        setTimeout(() => {
-            delete collectedAt
-            toolkit.leak(uID, toolKey)
-
-        }, values.stopAfter * 1000)
-}}
+        if (values.stopAwaitingAfter != '') {
+            setTimeout(() => {
+                client.off('messageReactionAdd', handlemessage(message, reactor, reaction))
+            }, parseFloat(values.stopAwaitingAfter) * 1000)
+        }
+    }
+}

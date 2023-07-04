@@ -43,7 +43,7 @@ module.exports = {
             channel = message.channel
         } else {
             const channelID = tempVars[uID][varTools.transf(values.channelVariable, uID, tempVars)].id;
-            channel = client.channels.cache.get(channelID);
+            channel = client.getChannel(channelID);
         }
 
         const timestamp = new Date().getTime() - (1000 * 60 * 60 * 24 * 13)
@@ -58,7 +58,7 @@ module.exports = {
             mustBeFrom = message.author.id;
         }
         if (values.user == 'User*') {
-            mustBeFrom = client.users.cache.get(tempVars[uID][varTools.transf(values.fromWho, uID, tempVars)].id).id;
+            mustBeFrom = client.users.get(tempVars[uID][varTools.transf(values.fromWho, uID, tempVars)].id).id;
         }
 
         let amount = 100;
@@ -84,7 +84,6 @@ module.exports = {
                 }
                 deletedMessages++
             })
-            })
-
+        })
 }
 }

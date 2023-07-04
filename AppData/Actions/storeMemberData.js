@@ -46,8 +46,8 @@ module.exports = {
             user = message.author.id
             guild = message.guild.id
         } else {
-                guild = tempVars[uID][values.memberFrom].guildId
-                user = tempVars[uID][values.memberFrom].userId
+                guild = tempVars[uID][values.memberFrom].guildID
+                user = tempVars[uID][values.memberFrom].id
         }
         if (storedData[onArr][guild + user]) {
             storedData[onArr][guild + user] = {

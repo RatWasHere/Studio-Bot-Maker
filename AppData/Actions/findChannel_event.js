@@ -1,6 +1,6 @@
 module.exports = {
     data: {"name": "Find Channel", "storeAs":"", "button": "Command Guild", "ExtraData":"", "findVia":"Channel Name*", "via":""},
-    UI: {"compatibleWith": ["Event"],"text1":"Get Channel", "sepbar2":"sepber", 
+    UI: {"compatibleWith": ["Event", "DM"],"text1":"Get Channel", "sepbar2":"sepber", 
     "btext0134":"Find Channel Via",
     "menuBar": {
         choices: ["Channel Name*", "Channel ID*"],
@@ -28,7 +28,7 @@ module.exports = {
         if (values.button == 'Command Guild') {
             guild = message.guild
         } else {
-            guild = client.guilds.cache.get(tempVars[uID][varTools.transf(values.guildVariable, uID, tempVars)])
+            guild = client.guilds.get(tempVars[uID][varTools.transf(values.guildVariable, uID, tempVars)])
         }
         let filter;
         if (values.findVia == 'Channel Name*') {

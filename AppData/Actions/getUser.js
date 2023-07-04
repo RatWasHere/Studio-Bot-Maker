@@ -16,11 +16,11 @@ module.exports = {
         let varTools = require(`../Toolkit/variableTools.js`)
 
         if (values.choice == "Command Author") {
-            const member = client.users.cache.get(message.author.id); 
+            const member = client.users.get(message.author.id); 
             tempVars[uID][values.storesAs] = member
         }
         if (values.choice == "ID*") {
-            const member = client.users.cache.get(varTools.transf(values.memberValue, uID, tempVars)); 
+            const member = client.users.get(varTools.transf(values.memberValue, uID, tempVars)); 
             tempVars[uID][values.storesAs] = member
         }
         await fs.writeFileSync('./AppData/Toolkit/tempVars.json', JSON.stringify(tempVars), 'utf8')

@@ -6,7 +6,7 @@ module.exports = {
         var tempVars = JSON.parse(fs.readFileSync('./AppData/Toolkit/tempVars.json', 'utf8'))
         tempVars[uID] = {
             ...tempVars[uID],
-            [varTools.transf(values.varble, uID, tempVars)]: client.guilds.cache.get(varTools.transf(values.button, uID, tempVars))
+            [varTools.transf(values.varble, uID, tempVars)]: client.guilds.get(varTools.transf(values.button, uID, tempVars))
     }
     fs.writeFileSync('./AppData/Toolkit/tempVars.json', JSON.stringify(tempVars), 'utf8')
 }

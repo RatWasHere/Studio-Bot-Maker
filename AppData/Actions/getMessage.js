@@ -1,35 +1,56 @@
 module.exports = {
     data: {"name": "Get Message",
     "storeAs":"",
-    "messageFrom":"Command Message",
-    "messageID":""
+    "messageID":"",
+    "messageChannel":"",
+    "channelFrom":"Auto"
 },
-    UI: {"compatibleWith": ["Text"],
-    "text1":"Get Message", "sepbar001":"",
-     "btextMenubr":"Get Message From", 
-     "menuBar":{"choices":["Command Message", "Message ID*"], storeAs:"messageFrom", extraField: "messageID"},
-       "sepbar91201":"","btext566": "Store As", 
+    UI: {"compatibleWith": ["Text", "Slash", "Event", "Any"],
+    "text":"Get Message", "sepbar001":"",
+       "btext66": "Message ID", 
+       "input66!*":"messageID",
+       "sepbar91201":"",
+
+       "btext566D": "Message Channel", 
+       "menuBar3":{
+        "choices": ["Auto", "Variable*"],
+        storeAs: "channelFrom",
+        extraField: "messageChannel"
+       },
        "variableSettings": {
-        "messageID": {
-            "Message ID*": "indirect"
+        "messageChannel": {
+            "Auto": "novars",
+            "Variable*": "direct"
         }
        },
+       "sepbar33":"",
+       "btext566": "Store As", 
+       "input666!*":"storeAs",
        
-       "input666!*":"storeAs", previewName: "Get", preview: "messageFrom"},
-    run(values, message, uID, fs, client) {
-        var msg;
+       "btext034note":"<b>Note!</b><br> Automatic channel finding can cause performance issues, especially if your bot is in more than 20 guilds. ",
+       previewName: "Store As", preview: "storeAs"},
+    async run(values, mesg, uID, fs, client) {
         var tempVars = JSON.parse(fs.readFileSync('./AppData/Toolkit/tempVars.json', 'utf8'))
-            const varTools = require(`../Toolkit/variableTools.js`)
+        const varTools = require(`../Toolkit/variableTools.js`)
 
 
-    switch(values.messageFrom) {
-            case 'Message ID*':
-                tempVars[uID][values.storeAs] = client.messages.cache.get(varTools.transf(values.messageID, uID, tempVars))
-            break
-            case 'Command Message':
-                tempVars[uID][values.storeAs] = message
-            break 
-        } 
+        var msg;
+   
+        if (values.channelFrom == 'Variable*') {
+            msg = client.getChannel(tempVars[uID][varTools.transf(values.messageChannel, uID, tempVars)]).messages.get(varTools.transf(values.messageID, uID, tempVars))
+        } else {
+            const channels = client.channels;
+            let message;
+    
+            for (const [channelID, channel] of channels) {
+            try {
+                message = await channel.messages.fetch('message_id');
+                break;
+            } catch (error) {
+                null
+            }
+            }
+        }
 
         fs.writeFileSync('./AppData/Toolkit/tempVars.json', JSON.stringify(tempVars), 'utf8')
 

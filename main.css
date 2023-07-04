@@ -678,8 +678,7 @@
        width: calc(100% - 24px);
        border-radius: 12px;
        background-color: #FFFFFF10;
-       transition: box-shadow 0.3s ease;
-
+       transition: all 0.3s ease;
        }
        .tile:hover {
        box-shadow: #00000060 0px 0px 50px;
@@ -701,6 +700,7 @@
        backdrop-filter: blur(12px);
        padding-top: -5px;
        border-radius: 12px;
+       background-image: url(./AppData/grain.png);
        padding: 12px;
        display: flex;
        flex-direction: column;
@@ -717,6 +717,7 @@
            margin-right: 0px;
            margin-left: 0px;    
            border-radius: 12px;
+           background-image: url(./AppData/grain.png);
            padding: 12px;
            overflow-y: auto !important;
            overflow-x: none !important
@@ -728,7 +729,7 @@
        .actbartoolbar {
            width: calc(48.3vw - 24px);
            height: calc(7vh - 24px) !important;
-           
+           background-image: url(./AppData/grain.png);
            padding: 12px;
            border-radius: 12px;
            background: linear-gradient(80deg, #FFFFFF09 0%, #FFFFFF12 100%)
@@ -743,6 +744,7 @@
        background-color: #ffffff16;
        backdrop-filter: blur(12px);    
        border-radius: 12px;
+       background-image: url(./AppData/grain.png);
        padding: 12px;
        overflow-y: auto !important;
        overflow-x: none !important
@@ -777,6 +779,7 @@
            z-index: 1;
            opacity: 0%;
            bottom: 100%;
+           display: none;
            backdrop-filter: blur(12px);
            background-color: #00000040;
            animation-name: hideTooltip;
@@ -786,12 +789,15 @@
            opacity: 0;
        }
        .barbutton:hover .tooltiptext {
+           display: unset;
            opacity: 100%;
+           position: unset;
            animation-name: showTooltip;
            transition: none;
            animation-duration: 0.15s;
            opacity: 1;
        }
+        
        @keyframes actionExpand {
            0% {
                height: 33px;
@@ -861,6 +867,9 @@
    
        color: #FFFFFF99;
        }
+       .dimension {
+        box-shadow: inset 0 0 2px #FFFFFF10 !important;
+    }
        @keyframes giggle {
         0% {
             transform: rotate(0deg)
@@ -875,9 +884,28 @@
             transform: rotate(0deg)
         }
        }
+       @keyframes giggleless {
+        0% {
+            transform: rotate(0deg)
+        }
+        25% {
+            transform: rotate(-0.5deg)
+        }
+        75% {
+            transform: rotate(0.5deg)
+        }
+        100% {
+            transform: rotate(0deg)
+        }
+       }
 
        .goofyhovereffect {
         animation-name: giggle;
+        animation-duration: 0.3s !important;
+        animation-iteration-count: infinite !important;
+       }
+       .goofyhovereffectlite {
+        animation-name: giggleless;
         animation-duration: 0.3s !important;
         animation-iteration-count: infinite !important;
        }
@@ -915,7 +943,7 @@
        .switchableButton {
            width: 20%; 
            transition: background-color 0.3s ease-out;
-           transition: width 0.3s ease;    
+           transition: width 0.3s ease, background-color 0.2s ease;    
            background-color: #FFFFFF15;
            border-radius: 2px;
            padding: 8px;
@@ -1033,7 +1061,6 @@
        }
        .menuBar {
            width: calc(100%);
-           max-height: 50px;
            min-width: 0px;
            font-size: 20px;
            margin-left: -24px;
@@ -1055,11 +1082,9 @@
            cursor: pointer;
            z-index: 4;
            box-shadow: inset 0 0 2px #FFFFFF10;
-   
            max-height: 100000px;
            color: #FFFFFF90;
-           transition: color 0.5s ease;
-           transition: background-color 0.6s ease;
+           transition: all 0.3s ease;
    }
    .selectBar {
        width: 90%;
@@ -1145,14 +1170,14 @@
    }
        .menuBar:hover {
            color: #FFFFFF;
-           background-color: #FFFFFF50;
-           transition: color 0.3s ease;
-           transition: background-color 0.6s ease;
+           background-color: #FFFFFF16;
+           transition: all 0.3s ease;
        }
        .noanim {
            animation-duration: 0s;
        }
        .noanims {
+           animation-name: none !important;
            animation-duration: 0s !important;
        }
        .fullsize {
@@ -1183,7 +1208,7 @@
        padding: 4px;
        cursor: text;
        border-radius: 12px;
-       transition: box-shadow ease 0.5s;
+       transition: background-color ease 0.5s;
        }
        @keyframes appearInputField {
            0% {margin-bottom: 12px; opacity: 0%;}
@@ -1378,10 +1403,12 @@
        margin-bottom: -10px;
        margin-left: 20px !important;
        }
-       .inputBar:focus {
-       box-shadow: #00000085 0px 7px 14px 4px;
-       transition: box-shadow ease-in 0.5s;
+       .inputBar:hover {
+            background-color: #FFFFFF13;
        }
+       .inputBar:focus {
+        background-color: #FFFFFF15;
+   }
        .text {
        color: #FFFFFF90;
        font-size: 20px;
@@ -1590,6 +1617,7 @@
        cursor: pointer;
        align-self: center;
        animation-name: appearfade;
+       transition: all 0.3s ease;
        animation-duration: 0.4s;
        z-index: 1;
        }
@@ -1664,8 +1692,31 @@
            align-self: center;
            animation-name: appearfade;
            animation-duration: 0.4s;
-           z-index: 1;
            }
+        .barbuttonshift {
+        width: 23%;
+        padding: 7.5px;
+        padding-bottom: 7.5px;
+        margin-top: auto;
+        cursor: pointer;
+        box-shadow: inset 0 0 2px #FFFFFF10;
+        margin-bottom: auto;
+        margin-left: 3px;
+        margin-right: 3px;
+        border-radius: 12px;
+        transition: background-color 0.2s ease;
+        border: #000000 hidden 5px;
+        background-color: #FFFFFF10;
+        display: flex;
+        align-self: center;
+        z-index: 1;
+        }
+        .barbuttonshift:hover {
+            background-color: #FFFFFF20;
+        }
+        .barbuttonshift:active {
+            background-color: #FFFFFF25;
+        }
        .barbuttond:hover {
            background-color: #FFFFFF20;
        }
@@ -1927,16 +1978,71 @@
        margin-top: auto;
        margin-bottom: auto;
        }
-       .barbuttontexta {
-           transition: color 0.4s ease;
-       font-size: 18px;
-       color: #949494;
-       text-align: center;
-       margin-left: auto;
-       margin-right: auto;
-       margin-top: auto;
-       margin-bottom: auto;
+       .texta {
+        font-size: 15px;
+        color: #949494;
+        text-align: left;
+        width: 90%;
+        padding: 12px;
        }
+       .barbuttontexta {
+        transition: color 0.4s ease;
+        font-size: 18px;
+        color: #949494;
+        text-align: center;
+        margin-left: auto;
+        margin-right: auto;
+        margin-top: auto;
+        margin-bottom: auto;
+       }
+       .appearabletext {
+        transition: all 0.2s ease, font-size 0.15s ease;
+        font-size: 0px;
+        animation-name: giggle;
+        animation-duration: 0.4s;
+        animation-iteration-count: infinite;
+        scale: 0;
+        color: #949494;
+        text-align: center;
+        margin-left: 0vw;
+        margin-right: 0vw;
+        margin-top: auto;
+        margin-bottom: auto;
+        padding: 0px;
+        }
+        .addButton {
+            cursor: pointer;
+            margin-left: auto; 
+            transition: all 0.3s ease; 
+            margin-right: 2vh; 
+            border-radius: 12px; 
+            background-color: #FFFFFF10;
+            backdrop-filter: blur(12px); 
+            margin-bottom: -4vh; 
+            height: 7vh; 
+            width: 7vh;
+        }
+        .addButton:hover {
+            background-color: #FFFFFF15;
+        }
+        .addButton:active {
+            background-color: #FFFFFF25;
+        }
+
+        .appear {
+            scale: unset;
+        }
+        .appear:hover .appearabletext {
+            font-size: 18px;
+            margin-left: 1.5vw;
+            margin-right: 1.5vw;
+            scale: 1;
+        }
+        .appear:hover .trash {
+            animation-name: giggle;
+            animation-duration: 0.3s;
+            animation-iteration-count: infinite;
+        }
        .barbutton:active {
        background-color: #FFFFFF50;
        transition: background-color 0.3s ease;
@@ -2025,6 +2131,7 @@
            width: 70%;
            height: 70%;
            opacity: 70%;
+           transition: all 0.3s ease;
            text-align: center;
        }
        @keyframes marginbounce {
@@ -2159,6 +2266,9 @@
            animation-name: savedldk;
            animation-duration: 0.65s;
        }
+       .trash {
+        background-image: url(./AppData/trash.png);
+        }
        .add {
            background-image: url(./AppData/add.png);
            animation-name: savedldk;
@@ -2224,12 +2334,38 @@
            animation-name: savedldk2;
            animation-duration: 0.75s;
        }
+
        .savenm {
         background-image: url(./AppData/save.png);
         width: 100%;
         height: 100%;
         opacity: 20%;
-    }
+        }
+        .colors {
+            background-image: url(./AppData/colors.png);
+            width: 100%;
+            height: 100%;
+        }
+        .export {
+            background-image: url(./AppData/export.png);
+            width: 100%;
+            height: 100%;
+        }
+        .import {
+            background-image: url(./AppData/import.png);
+            width: 100%;
+            height: 100%;
+        }
+        .startbot {
+            background-image: url(./AppData/startbot.png);
+            width: 100%;
+            height: 100%;
+        }
+        .botsetup {
+            background-image: url(./AppData/setup.png);
+            width: 100%;
+            height: 100%;
+        }
        .backArrow {
            background-image: url(./AppData/backArrow.png);
            width: 110%;
@@ -2252,6 +2388,12 @@
            width: 100%;
            height: 100%;
        }
+       .checkmark {
+        background-image: url(./AppData/checkmark.png);
+        width: 100%;
+        opacity: 30%;
+        height: 100%;
+    }
        .saveGif {
            background-image: url(./AppData/save.gif);
            width: 100%;
@@ -2322,22 +2464,36 @@
            margin: auto;
        }
        body {
-       background: linear-gradient(45deg, #000814 0%,#1d1d1d 160%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-   
        font-family : 'Arial', Arial, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif, sans-serif !important; 
-       padding: 1vw; 
-       background-repeat: repeat;
-       padding-top: 1vh;
-       padding-bottom: 1.8vh;
+       padding: -8px; 
        overflow: hidden; 
        cursor: default;
        user-select: none;
-       background-color: #000000;
+       background-color: unset;
        justify-content: center;
        align-items: center;
        transition: all ease 0.7s;
-       transition: background-image ease 5.5s;
        }
+       .colorTile {
+        width: 95%;
+        margin-left: auto;
+        margin-right: auto;
+        margin-bottom: 1.3vh;
+        border-radius: 12px;
+       }
+       .colorTileText {
+        font-size: 18px;
+        color: #949494;
+        text-align: center;
+        background: linear-gradient(70deg, #FFFFFF15 0%, #FFFFFF25 70%, #FFFFFF05 130%);
+        backdrop-filter: blur(12px);
+        margin-top: auto;
+        border-radius: 12px;
+        padding: 12px;
+        margin-bottom: auto;
+        width: calc(100% - 24px);
+       }
+
        ::-webkit-scrollbar {
        width: 0px;
        height: 0px !important;
@@ -2450,22 +2606,24 @@
      }
      .sidebartext {
         font-size: 0px;
-        transition: font-size 0.1s ease;
         color: #949494;
         text-align: center;
         margin: auto;
-        margin-right: 1vw;
-        margin-left: 1vw;
+        margin-right: 0vw;
+        margin-left: 0vw;
      }
      .sidebar:hover .sidebartext {
         font-size: 2vh;
+        transition: font-size 0.3s ease;
+        margin-right: 1vw;
+        margin-left: 1vw;
      }
      .sidebarbutton {
         width: 0vw;
         height: auto;
         margin-left: auto;
         margin-right: auto;
-        transition: width 0.4s ease;
+        transition: all 0.2s ease;
         background-color: #FFFFFF10;
         padding: 6px;
         border-radius: 6px;
@@ -2477,11 +2635,10 @@
         width: calc(14vw - 12px);
      }
      .sidebarbutton:hover {
-        transition: background-color 0.3s ease;
         background-color: #FFFFFF15;
      }
      .outlined {
-        outline: #FFFFFF30 solid 2px;
+        outline: #FFFFFF30 solid 1px;
      }
      @keyframes snaptoscale {
         0% {
@@ -2524,3 +2681,11 @@
      .ml {
         margin-left: 1vw;
      }
+     input[type=number]::-webkit-inner-spin-button,
+     input[type=number]::-webkit-outer-spin-button { 
+      -webkit-appearance: none; 
+      margin: 0;    
+    }
+    ::selection {
+        background-color: #000000;
+    }

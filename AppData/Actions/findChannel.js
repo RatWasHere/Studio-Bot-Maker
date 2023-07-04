@@ -28,7 +28,7 @@ module.exports = {
         if (values.button == 'Command Guild') {
             guild = message.guild
         } else {
-            guild = client.guilds.cache.get(tempVars[uID][varTools.transf(values.ExtraData, uID, tempVars)])
+            guild = client.guilds.get(tempVars[uID][varTools.transf(values.ExtraData, uID, tempVars)])
         }
         let filter;
         if (values.findVia == 'Channel Name*') {

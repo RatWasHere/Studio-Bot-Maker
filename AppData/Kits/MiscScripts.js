@@ -1,86 +1,3 @@
-
-function newActionRow() {
-    if (datjson.commands[lastObj].actions[lastAct].data.actionRows.length == 5) return
-    let tme = new Date().getTime()
-    let newBar = {
-    name: "Action Row",
-     customId: `${tme}`,
-     type: "actionRow",
-     customType: "custom",
-     storeAs: "",
-     options: [],
-     placeholder: "🔍 Select Something!",
-     minSelectable: 1,
-     maxSelectable: 1,
-     runs: "",
-     stopWaitingAfter: ""
-    }
-
-datjson.commands[lastObj].actions[lastAct].data.actionRows.push(newBar)
-wast()
-    controlActionRows(true)
-}
-function newRowOption() {
-
-    let newRow = {
-        label: "♾️ Anything",
-        description: "✨ Click me!",
-        customValue: "anything",
-        runs: ""
-    }
-    datjson.commands[lastObj].actions[lastAct].data.actionRows[lastRow].options.push(newRow)
-    wast()
-    document.getElementById('actionMenuOption').innerHTML = 
-    `
-    <div class="barbuttontexta">Select or create a custom row to start the fun!</div>
-    `
-    document.getElementById('actionRowEditor').innerHTML = ''
-    showMenuOptions(true)    }
-
-function setHigherMinOpt() {
-    let minElm = document.getElementById('minSelectable')
-    let maxElm = document.getElementById('maxSelectable')
-    if (parseFloat(minElm.innerText) + 1 > parseFloat(maxElm.innerText)) return;
-    datjson.commands[lastObj].actions[lastAct].data.actionRows[lastRow].minSelectable = datjson.commands[lastObj].actions[lastAct].data.actionRows[lastRow].minSelectable + 1
-    wast()
-    minElm.innerText = datjson.commands[lastObj].actions[lastAct].data.actionRows[lastRow].minSelectable
-}
-function setLowerMinOpt() {
-    let minElm = document.getElementById('minSelectable')
-    let maxElm = document.getElementById('maxSelectable')
-    if (parseFloat(minElm.innerText) - 1 == 0) return;
-
-    datjson.commands[lastObj].actions[lastAct].data.actionRows[lastRow].minSelectable = datjson.commands[lastObj].actions[lastAct].data.actionRows[lastRow].minSelectable - 1
-    wast()
-    minElm.innerText = datjson.commands[lastObj].actions[lastAct].data.actionRows[lastRow].minSelectable
-}
-
-function setHigherMaxOpt() {
-    let minElm = document.getElementById('minSelectable')
-    let maxElm = document.getElementById('maxSelectable')
-    if (parseFloat(maxElm.innerText) + 1 == 25) return;
-    if (datjson.commands[lastObj].actions[lastAct].data.actionRows[lastRow].options.length < parseFloat(maxElm.innerText) + 1) return;
-
-    datjson.commands[lastObj].actions[lastAct].data.actionRows[lastRow].maxSelectable = datjson.commands[lastObj].actions[lastAct].data.actionRows[lastRow].maxSelectable + 1
-    wast()
-    maxElm.innerText = datjson.commands[lastObj].actions[lastAct].data.actionRows[lastRow].maxSelectable
-}
-function setLowerMaxOpt() {
-    let minElm = document.getElementById('minSelectable')
-    let maxElm = document.getElementById('maxSelectable')
-    if (parseFloat(maxElm.innerText) -1 == 0) return 
-    datjson.commands[lastObj].actions[lastAct].data.actionRows[lastRow].maxSelectable = datjson.commands[lastObj].actions[lastAct].data.actionRows[lastRow].maxSelectable - 1
-    wast()
-    maxElm.innerText = datjson.commands[lastObj].actions[lastAct].data.actionRows[lastRow].maxSelectable
-}
-function selectStringType(type) {
-    let lastRowType = datjson.commands[lastObj].actions[lastAct].data.actionRows[lastRow].customType
-    document.getElementById(lastRowType + 'Type').style.backgroundColor = '#FFFFFF10';
-    document.getElementById(type + 'Type').style.backgroundColor = '#FFFFFF20'
-    datjson.commands[lastObj].actions[lastAct].data.actionRows[lastRow].customType = type
-}
-
-
 function array_move(arr, old_index, new_index) {
 if (new_index >= arr.length) {
     var k = new_index - arr.length + 1;
@@ -93,8 +10,8 @@ return arr; // for testing
 };
 function showMenuOptions(ifNew) {
     let view = document.getElementById('actionRowEditor');
-        for (let option in datjson.commands[lastObj].actions[lastAct].data.actionRows[lastRow].options) {
-            let opts = datjson.commands[lastObj].actions[lastAct].data.actionRows[lastRow].options[option]
+        for (let option in botData.commands[lastObj].actions[lastAct].data.actionRows[lastRow].options) {
+            let opts = botData.commands[lastObj].actions[lastAct].data.actionRows[lastRow].options[option]
 
             if (!ifNew) {
                 view.innerHTML += `
@@ -103,7 +20,7 @@ function showMenuOptions(ifNew) {
                 </div>
                 `
             } else {
-                if (datjson.commands[lastObj].actions[lastAct].data.actionRows[lastRow].options[parseFloat(option) + 1] == undefined) {
+                if (botData.commands[lastObj].actions[lastAct].data.actionRows[lastRow].options[parseFloat(option) + 1] == undefined) {
                     view.innerHTML += `  
                     <div class="animatednewactionanim" onclick="editMenuOption(${option})" style="border-left: 7px #FFFFFF20 solid; background-color: #ffffff10; width: 95%; margin-right: auto; margin-left: auto; padding: 4px; margin-top: 0.7vh; border-radius: 6px;">
                     <div id="${option}MenuOption" class="barbuttontexta">${opts.label}</div>
@@ -121,17 +38,17 @@ function showMenuOptions(ifNew) {
         }
 }
 function wast() {
-    fs.writeFileSync(processPath + '\\AppData\\data.json', JSON.stringify(datjson, null, 2));
+    fs.writeFileSync(processPath + '\\AppData\\data.json', JSON.stringify(botData, null, 2));
 }
 function deleteRowBar(row) {
-    datjson.commands[lastObj].actions[lastAct].data.actionRows.splice(row, 1)
-        fs.writeFileSync(processPath + '\\AppData\\data.json', JSON.stringify(datjson, null, 2));
+    botData.commands[lastObj].actions[lastAct].data.actionRows.splice(row, 1)
+        fs.writeFileSync(processPath + '\\AppData\\data.json', JSON.stringify(botData, null, 2));
         showActionRows()
 }
 function deleteRowOption(row, option) {
     document.getElementById(option + 'MenuOption')
-    datjson.commands[lastObj].actions[lastAct].data.actionRows[row].options.splice(option, 1)
-    fs.writeFileSync(processPath + '\\AppData\\data.json', JSON.stringify(datjson, null, 2));
+    botData.commands[lastObj].actions[lastAct].data.actionRows[row].options.splice(option, 1)
+    fs.writeFileSync(processPath + '\\AppData\\data.json', JSON.stringify(botData, null, 2));
     document.getElementById('actionMenuOption').innerHTML = 
     `
     <div class="barbuttontexta">Select or create a custom row to start the fun!</div>
@@ -144,13 +61,13 @@ function deleteRowOption(row, option) {
 setInterval(async () => {
     let presence = {}
     if (currentlyEditing == true) {
-        presence.firstHeader = `Modifying Action #${lastAct} - ${datjson.commands[lastObj].actions[lastAct].data.name}`
-        presence.secondHeader = `Under ${datjson.commands[lastObj].name}`
-        presence.botName = datjson.name
+        presence.firstHeader = `Modifying Action #${lastAct} - ${botData.commands[lastObj].actions[lastAct].data.name}`
+        presence.secondHeader = `Under ${botData.commands[lastObj].name}`
+        presence.botName = botData.name
     } else {
-        presence.firstHeader = `Viewing Commands - ${datjson.count} Commands in total`
-        presence.secondHeader = `Highlighted: ${datjson.commands[lastObj].name} - ${datjson.commands[lastObj].count} actions`
-        presence.botName = datjson.name
+        presence.firstHeader = `Viewing Commands - ${Object.keys(botData.commands).length} Commands in total`
+        presence.secondHeader = `Highlighted: ${botData.commands[lastObj].name} - ${botData.commands[lastObj].count} actions`
+        presence.botName = botData.name
     }
     await fs.writeFileSync(processPath + '\\AppData\\presence.json', JSON.stringify(presence))
     ipcRenderer.send('whatIsDoing');
@@ -170,13 +87,13 @@ function ButtonDrop(button, row) {
     let datajson0 = datajson1;
     // index, 0, item
     
-    datjson.commands[lastObj].actions[lastAct].data.actionRows[row].components = array_move(datjson.commands[lastObj].actions[lastAct].data.actionRows[row].components, button, lastDraggedComponent)
+    botData.commands[lastObj].actions[lastAct].data.actionRows[row].components = array_move(botData.commands[lastObj].actions[lastAct].data.actionRows[row].components, button, lastDraggedComponent)
 
     wast()
     lastDraggedRow = null;
     document.getElementById('buttonsDisplay').innerHTML = ' '
 
-    let ba = datjson.commands[lastObj].actions[lastAct].data.actionRows[row]
+    let ba = botData.commands[lastObj].actions[lastAct].data.actionRows[row]
 
     for (let button in ba.components) {
 
@@ -197,13 +114,12 @@ function ButtonDrop(button, row) {
     buttonEditor.innerHTML = `
     <div class="barbuttontexta center">Select A Button!</div>
     `
-
 }
 function findMentionsOfGroup() {
-    let group = datjson.commands[lastObj].customId
+    let group = botData.commands[lastObj].customId
     let mentions = []
-    for (let cmd in datjson.commands) {
-        let command = datjson.commands[cmd]
+    for (let cmd in botData.commands) {
+        let command = botData.commands[cmd]
         for (let act in command.actions) {
         for (let UIelement in require(`./AppData/Actions/${command.actions[act].file}`).UI) {
             let actionUI = require(`./AppData/Actions/${command.actions[act].file}`).UI
@@ -230,8 +146,8 @@ function findMentionsOfGroup() {
     }}
     return mentions
 }
-function showCustomMenu(x, y) {
 
+function showCustomMenu(x, y) {
     if (!menu) {
       var vt = 2;
       menu = document.createElement('div')
@@ -254,8 +170,7 @@ function showCustomMenu(x, y) {
       `
   
       if (document.activeElement.className == 'selectBar') {
-  
-          var fieldSearch = require(`./AppData/Actions/${datjson.commands[lastObj].actions[lastAct].file}`).UI
+          var fieldSearch = require(`./AppData/Actions/${botData.commands[lastObj].actions[lastAct].file}`).UI
           let fieldOptions = fieldSearch.variableSettings
           let options;
   
@@ -272,7 +187,7 @@ function showCustomMenu(x, y) {
                   }
               }
           }
-          let stf = options[datjson.commands[lastObj].actions[lastAct].data[elementStoredAs]]
+          let stf = options[botData.commands[lastObj].actions[lastAct].data[elementStoredAs]]
           let type = 2
   
           if (stf == 'novars')  {
@@ -285,23 +200,23 @@ function showCustomMenu(x, y) {
               type = 0
           }
           vt = type;
-          if (datjson.commands[lastObj].type == 'event') {
+          if (botData.commands[lastObj].type == 'event') {
               try {
-                  if (require('./AppData/Events/' + datjson.commands[lastObj].eventFile).inputSchemes == 2) {
+                  if (require('./AppData/Events/' + botData.commands[lastObj].eventFile).inputSchemes == 2) {
                       menu.innerHTML += `
-                      <div class="zaction fullwidth" onclick="setVariableIn('${document.activeElement.id}', ${type}, this.innerText, true)"><div class="barbuttontexta">${datjson.commands[lastObj].eventData[0]}</div></div>
+                      <div class="zaction fullwidth" onclick="setVariableIn('${document.activeElement.id}', ${type}, this.innerText, true)"><div class="barbuttontexta">${botData.commands[lastObj].eventData[0]}</div></div>
                       `
                       menu.innerHTML += `
-                      <div class="zaction fullwidth" onclick="setVariableIn('${document.activeElement.id}', ${type}, this.innerText, true)"><div class="barbuttontexta">${datjson.commands[lastObj].eventData[1]}</div></div>
+                      <div class="zaction fullwidth" onclick="setVariableIn('${document.activeElement.id}', ${type}, this.innerText, true)"><div class="barbuttontexta">${botData.commands[lastObj].eventData[1]}</div></div>
                       `
                   } else {
                       menu.innerHTML += `
-                      <div class="zaction fullwidth" onclick="setVariableIn('${document.activeElement.id}', ${type}, this.innerText, true)"><div class="barbuttontexta">${datjson.commands[lastObj].eventData[0]}</div></div>
+                      <div class="zaction fullwidth" onclick="setVariableIn('${document.activeElement.id}', ${type}, this.innerText, true)"><div class="barbuttontexta">${botData.commands[lastObj].eventData[0]}</div></div>
                       `
                   }} catch(err) {null}
           } else {
-              if (datjson.commands[lastObj].trigger == 'slashCommand') {
-                  for (let parameter of datjson.commands[lastObj].parameters) {
+              if (botData.commands[lastObj].trigger == 'slashCommand') {
+                  for (let parameter of botData.commands[lastObj].parameters) {
                       menu.innerHTML += `
                       <div class="zaction fullwidth" onclick="setVariableIn('${document.activeElement.id}', ${type}, this.innerText, true)"><div class="barbuttontexta">${parameter.storeAs}</div></div>
                       `
@@ -310,9 +225,9 @@ function showCustomMenu(x, y) {
           }
   
   
-          for (let action in datjson.commands[lastObj].actions) {
-              for (let UIelement in require(`./AppData/Actions/${datjson.commands[lastObj].actions[action].file}`).UI) {
-                      let data = require(`./AppData/Actions/${datjson.commands[lastObj].actions[action].file}`).UI
+          for (let action in botData.commands[lastObj].actions) {
+              for (let UIelement in require(`./AppData/Actions/${botData.commands[lastObj].actions[action].file}`).UI) {
+                      let data = require(`./AppData/Actions/${botData.commands[lastObj].actions[action].file}`).UI
                   if (UIelement.endsWith(`!*`) || UIelement.endsWith('!')) {
                   var field;
                       for (let fild in fieldSearch) {
@@ -323,22 +238,22 @@ function showCustomMenu(x, y) {
                       }
       
                       menu.innerHTML += `
-                      <div class="zaction fullwidth" onclick="setVariableIn('${document.activeElement.id}', ${type}, this.innerText, true)"><div class="barbuttontexta">${datjson.commands[lastObj].actions[action].data[data[UIelement]]}</div></div>
+                      <div class="zaction fullwidth" onclick="setVariableIn('${document.activeElement.id}', ${type}, this.innerText, true)"><div class="barbuttontexta">${botData.commands[lastObj].actions[action].data[data[UIelement]]}</div></div>
                       `
                   }
               }
           }
   
           if (stf == 'actionGroup') {
-              var fieldSearch = require(`./AppData/Actions/${datjson.commands[lastObj].actions[lastAct].file}`).UI
+              var fieldSearch = require(`./AppData/Actions/${botData.commands[lastObj].actions[lastAct].file}`).UI
   
               
                   menu.innerHTML = `
                   <div class="barbuttontexta" style="background-color: #FFFFFF15; border-top-left-radius: 12px; border-top-right-radius: 12px; border-bottom: solid 2px #FFFFFF30; padding: 2px;">Insert Action Group</div>
                   `
-                  for (let command in datjson.commands) {
+                  for (let command in botData.commands) {
                       menu.innerHTML += `
-                      <div class="zaction fullwidth" onclick="setVariableIn('${document.activeElement.id}', 0, '${datjson.commands[command].customId}')"><div class="barbuttontexta">${datjson.commands[command].name} | #${command}</div></div>
+                      <div class="zaction fullwidth" onclick="setVariableIn('${document.activeElement.id}', 0, '${botData.commands[command].customId}')"><div class="barbuttontexta">${botData.commands[command].name} | #${command}</div></div>
                       `
                   }
                   raun = true
@@ -351,33 +266,33 @@ function showCustomMenu(x, y) {
           
           let type = 2
           try {
-          if (require('./AppData/Actions/' + datjson.commands[lastObj].actions[lastAct].file).UI.ButtonBarChoices[lastButton]== "direct") {
+          if (require('./AppData/Actions/' + botData.commands[lastObj].actions[lastAct].file).UI.ButtonBarChoices[lastButton]== "direct") {
               type = 0
           }
-          if (require('./AppData/Actions/' + datjson.commands[lastObj].actions[lastAct].file).UI.ButtonBarChoices[lastButton] == "novars") {
+          if (require('./AppData/Actions/' + botData.commands[lastObj].actions[lastAct].file).UI.ButtonBarChoices[lastButton] == "novars") {
               type = 1
           }
           vt = type;
 
       } catch(err) {}
-      if (datjson.commands[lastObj].type == 'event') {
+      if (botData.commands[lastObj].type == 'event') {
           console.log('event!')
-              if (require('./AppData/Events/' + datjson.commands[lastObj].eventFile).inputSchemes == 2) {
+              if (require('./AppData/Events/' + botData.commands[lastObj].eventFile).inputSchemes == 2) {
                   menu.innerHTML += `
-                  <div class="zaction fullwidth" onclick="setVariableIn('${document.activeElement.id}', ${type}, this.innerText, true)"><div class="barbuttontexta">${datjson.commands[lastObj].eventData[0]}</div></div>
+                  <div class="zaction fullwidth" onclick="setVariableIn('${document.activeElement.id}', ${type}, this.innerText, true)"><div class="barbuttontexta">${botData.commands[lastObj].eventData[0]}</div></div>
                   `
                   menu.innerHTML += `
-                  <div class="zaction fullwidth" onclick="setVariableIn('${document.activeElement.id}', ${type}, this.innerText, true)"><div class="barbuttontexta">${datjson.commands[lastObj].eventData[1]}</div></div>
+                  <div class="zaction fullwidth" onclick="setVariableIn('${document.activeElement.id}', ${type}, this.innerText, true)"><div class="barbuttontexta">${botData.commands[lastObj].eventData[1]}</div></div>
                   `
               } else {
                   menu.innerHTML += `
-                  <div class="zaction fullwidth" onclick="setVariableIn('${document.activeElement.id}', ${type}, this.innerText, true)"><div class="barbuttontexta">${datjson.commands[lastObj].eventData[0]}</div></div>
+                  <div class="zaction fullwidth" onclick="setVariableIn('${document.activeElement.id}', ${type}, this.innerText, true)"><div class="barbuttontexta">${botData.commands[lastObj].eventData[0]}</div></div>
                   `
               }
       }
-          for (let action in datjson.commands[lastObj].actions) {
-              for (let UIelement in require(`./AppData/Actions/${datjson.commands[lastObj].actions[action].file}`).UI) {
-                      let data = require(`./AppData/Actions/${datjson.commands[lastObj].actions[action].file}`).UI
+          for (let action in botData.commands[lastObj].actions) {
+              for (let UIelement in require(`./AppData/Actions/${botData.commands[lastObj].actions[action].file}`).UI) {
+                      let data = require(`./AppData/Actions/${botData.commands[lastObj].actions[action].file}`).UI
                   if (UIelement.endsWith(`!*`) || UIelement.endsWith('!')) {
                   var field;
                       for (let fild in fieldSearch) {
@@ -388,7 +303,7 @@ function showCustomMenu(x, y) {
                       }
       
                       menu.innerHTML += `
-                      <div class="zaction fullwidth" onclick="setVariableIn('${document.activeElement.id}', ${type}, this.innerText, true)"><div class="barbuttontexta">${datjson.commands[lastObj].actions[action].data[data[UIelement]]}</div></div>
+                      <div class="zaction fullwidth" onclick="setVariableIn('${document.activeElement.id}', ${type}, this.innerText, true)"><div class="barbuttontexta">${botData.commands[lastObj].actions[action].data[data[UIelement]]}</div></div>
                       `
                   }
               }
@@ -396,18 +311,18 @@ function showCustomMenu(x, y) {
       }   else {
       let raun = false;
   
-      for (let UIelement in require(`./AppData/Actions/${datjson.commands[lastObj].actions[lastAct].file}`).UI) {
-          if (require(`./AppData/Actions/${datjson.commands[lastObj].actions[lastAct].file}`).UI[UIelement] == document.activeElement.id) {
+      for (let UIelement in require(`./AppData/Actions/${botData.commands[lastObj].actions[lastAct].file}`).UI) {
+          if (require(`./AppData/Actions/${botData.commands[lastObj].actions[lastAct].file}`).UI[UIelement] == document.activeElement.id) {
               if (UIelement.endsWith('_actionGroup') || UIelement.endsWith('_actionGroup*')) {
-                  var fieldSearch = require(`./AppData/Actions/${datjson.commands[lastObj].actions[lastAct].file}`).UI
+                  var fieldSearch = require(`./AppData/Actions/${botData.commands[lastObj].actions[lastAct].file}`).UI
   
                   
                       menu.innerHTML = `
                       <div class="barbuttontexta" style="background-color: #FFFFFF15; border-top-left-radius: 12px; border-top-right-radius: 12px; border-bottom: solid 2px #FFFFFF30; padding: 2px;">Insert Action Group</div>
                       `
-                      for (let command in datjson.commands) {
+                      for (let command in botData.commands) {
                           menu.innerHTML += `
-                          <div class="zaction fullwidth" onclick="setVariableIn('${document.activeElement.id}', 0, '${datjson.commands[command].customId}')"><div class="barbuttontexta">${datjson.commands[command].name} | #${command}</div></div>
+                          <div class="zaction fullwidth" onclick="setVariableIn('${document.activeElement.id}', 0, '${botData.commands[command].customId}')"><div class="barbuttontexta">${botData.commands[command].name} | #${command}</div></div>
                           `
                       }
                       raun = true
@@ -417,7 +332,7 @@ function showCustomMenu(x, y) {
       }
       if (raun == false) {
           var field;
-          var fieldSearch = require(`./AppData/Actions/${datjson.commands[lastObj].actions[lastAct].file}`).UI
+          var fieldSearch = require(`./AppData/Actions/${botData.commands[lastObj].actions[lastAct].file}`).UI
               for (let fild in fieldSearch) {
                   if (fieldSearch[fild] == document.activeElement.id && `${fild}` != 'preview') {
                       field = fild
@@ -437,23 +352,23 @@ function showCustomMenu(x, y) {
           }
           vt = type;
 
-          if (datjson.commands[lastObj].type == 'event') {
+          if (botData.commands[lastObj].type == 'event') {
               console.log('event!')
-                  if (require('./AppData/Events/' + datjson.commands[lastObj].eventFile).inputSchemes == 2) {
+                  if (require('./AppData/Events/' + botData.commands[lastObj].eventFile).inputSchemes == 2) {
                       menu.innerHTML += `
-                      <div class="zaction fullwidth" onclick="setVariableIn('${document.activeElement.id}', ${type}, this.innerText, true)"><div class="barbuttontexta">${datjson.commands[lastObj].eventData[0]}</div></div>
+                      <div class="zaction fullwidth" onclick="setVariableIn('${document.activeElement.id}', ${type}, this.innerText, true)"><div class="barbuttontexta">${botData.commands[lastObj].eventData[0]}</div></div>
                       `
                       menu.innerHTML += `
-                      <div class="zaction fullwidth" onclick="setVariableIn('${document.activeElement.id}', ${type}, this.innerText, true)"><div class="barbuttontexta">${datjson.commands[lastObj].eventData[1]}</div></div>
+                      <div class="zaction fullwidth" onclick="setVariableIn('${document.activeElement.id}', ${type}, this.innerText, true)"><div class="barbuttontexta">${botData.commands[lastObj].eventData[1]}</div></div>
                       `
                   } else {
                       menu.innerHTML += `
-                      <div class="zaction fullwidth" onclick="setVariableIn('${document.activeElement.id}', ${type}, this.innerText, true)"><div class="barbuttontexta">${datjson.commands[lastObj].eventData[0]}</div></div>
+                      <div class="zaction fullwidth" onclick="setVariableIn('${document.activeElement.id}', ${type}, this.innerText, true)"><div class="barbuttontexta">${botData.commands[lastObj].eventData[0]}</div></div>
                       `
                   }
               } else {
-                  if (datjson.commands[lastObj].trigger == 'slashCommand') {
-                      for (let parameter of datjson.commands[lastObj].parameters) {
+                  if (botData.commands[lastObj].trigger == 'slashCommand') {
+                      for (let parameter of botData.commands[lastObj].parameters) {
                           menu.innerHTML += `
                           <div class="zaction fullwidth" onclick="setVariableIn('${document.activeElement.id}', ${type}, this.innerText, true)"><div class="barbuttontexta">${parameter.storeAs}</div></div>
                           `
@@ -463,12 +378,12 @@ function showCustomMenu(x, y) {
           delete type;
           delete fieldSearch;
           delete field;
-      for (let action in datjson.commands[lastObj].actions) {
-          for (let UIelement in require(`./AppData/Actions/${datjson.commands[lastObj].actions[action].file}`).UI) {
-                  let data = require(`./AppData/Actions/${datjson.commands[lastObj].actions[action].file}`).UI
+      for (let action in botData.commands[lastObj].actions) {
+          for (let UIelement in require(`./AppData/Actions/${botData.commands[lastObj].actions[action].file}`).UI) {
+                  let data = require(`./AppData/Actions/${botData.commands[lastObj].actions[action].file}`).UI
               if (UIelement.endsWith(`!*`) || UIelement.endsWith('!')) {
               var field;
-              var fieldSearch = require(`./AppData/Actions/${datjson.commands[lastObj].actions[lastAct].file}`).UI
+              var fieldSearch = require(`./AppData/Actions/${botData.commands[lastObj].actions[lastAct].file}`).UI
                   for (let fild in fieldSearch) {
                       if (fieldSearch[fild] == document.activeElement.id && `${fild}` != 'preview') {
                           field = fild
@@ -491,7 +406,7 @@ function showCustomMenu(x, y) {
                   vt = variableAsType;
 
                       menu.innerHTML += `
-                      <div class="zaction fullwidth" onclick="setVariableIn('${document.activeElement.id}', ${variableAsType}, this.innerText)"><div class="barbuttontexta">${datjson.commands[lastObj].actions[action].data[data[UIelement]]}</div></div>
+                      <div class="zaction fullwidth" onclick="setVariableIn('${document.activeElement.id}', ${variableAsType}, this.innerText)"><div class="barbuttontexta">${botData.commands[lastObj].actions[action].data[data[UIelement]]}</div></div>
                       `
               }
           }
@@ -503,16 +418,16 @@ function showCustomMenu(x, y) {
     let commandMentions = findMentionsOfGroup()
     
     for (let customId of commandMentions) {
-        for (let command in datjson.commands) {
-            if (datjson.commands[command].customId == customId) {
-                for (let act in datjson.commands[command].actions) {
-                    for (let UIelement in require(`./AppData/Actions/${datjson.commands[command].actions[act].file}`).UI) {
+        for (let command in botData.commands) {
+            if (botData.commands[command].customId == customId) {
+                for (let act in botData.commands[command].actions) {
+                    for (let UIelement in require(`./AppData/Actions/${botData.commands[command].actions[act].file}`).UI) {
                         if (UIelement.startsWith('input')) {
                             if (UIelement.endsWith('!') || UIelement.endsWith('!*') || UIelement.endsWith('*!')) {
-                                let UIdata = require(`./AppData/Actions/${datjson.commands[command].actions[act].file}`).UI
-                                console.log(datjson.commands[command].actions[act])
+                                let UIdata = require(`./AppData/Actions/${botData.commands[command].actions[act].file}`).UI
+                                console.log(botData.commands[command].actions[act])
                                 menu.innerHTML += `
-                                <div class="zaction fullwidth" onclick="setVariableIn('${document.activeElement.id}', ${vt}, this.innerText)"><div class="barbuttontexta">${datjson.commands[command].actions[act].data[UIdata[UIelement]]} <div class="sepbar" style="margin-top: 4px; margin-bottom: 4px; width: 10vw;"></div><div class="smalltext" style="margin-bottom: 4px;"> From: ${datjson.commands[command].name}</div></div></div>
+                                <div class="zaction fullwidth" onclick="setVariableIn('${document.activeElement.id}', ${vt}, this.innerText)"><div class="barbuttontexta">${botData.commands[command].actions[act].data[UIdata[UIelement]]} <div class="sepbar" style="margin-top: 4px; margin-bottom: 4px; width: 10vw;"></div><div class="smalltext" style="margin-bottom: 4px;"> From: ${botData.commands[command].name}</div></div></div>
                                 `
                             }
                         }
@@ -548,9 +463,9 @@ function showCustomMenu(x, y) {
   }
   function updateFoundActionGroup(ofWhat) {
     let cmd = 'None'
-    for (let command in datjson.commands) {
-        if (datjson.commands[command].customId == ofWhat.innerText) {
-            cmd = datjson.commands[command].name
+    for (let command in botData.commands) {
+        if (botData.commands[command].customId == ofWhat.innerText) {
+            cmd = botData.commands[command].name
         }
     }
     ofWhat.nextElementSibling.innerHTML = `
@@ -559,9 +474,14 @@ function showCustomMenu(x, y) {
 
   window.oncontextmenu = function (event) {
     showCustomMenu(event.clientX, event.clientY);
-    return false;     // cancel default menu
+    return false;
   }
-  
+  window.addEventListener('mousedown', function(event) {
+    // Check if middle button (button number 2) is clicked
+    if (event.button === 1) {
+      event.preventDefault(); // Prevent default middle-click scroll behavior
+    }
+  });
   document.addEventListener('click', function(event) {
     if (menu && !menu.contains(event.target)) {
       menu.remove();
@@ -657,14 +577,14 @@ function showCustomMenu(x, y) {
 
     }
     function deleteBtBar(bar) {
-        datjson.commands[lastObj].actions[lastAct].data.actionRows.splice(bar, 1)
-        fs.writeFileSync(processPath + '\\AppData\\data.json', JSON.stringify(datjson, null, 2));
+        botData.commands[lastObj].actions[lastAct].data.actionRows.splice(bar, 1)
+        fs.writeFileSync(processPath + '\\AppData\\data.json', JSON.stringify(botData, null, 2));
         document.getElementById('buttonsDisplay').innerHTML = ''
         controlActionRows(true)
     }
     function storeBarAs(bar, meh) {
-        datjson.buttons.bars[bar].storeAs = meh.value
-        fs.writeFileSync(processPath + '\\AppData\\data.json', JSON.stringify(datjson, null, 2));
+        botData.buttons.bars[bar].storeAs = meh.value
+        fs.writeFileSync(processPath + '\\AppData\\data.json', JSON.stringify(botData, null, 2));
     }
 
     function setLinked(trfa, bar, button) {
@@ -674,23 +594,23 @@ function showCustomMenu(x, y) {
             document.getElementById('dpfgs').className = 'sepbars'
             dpfg.innerHTML = `
             <div class="barbuttontexta">Link</div>
-            <input id="customLinked" class="input" style="width: 35vw; margin-bottom: 0px;" onkeydown="return event.key !== ' '; if (event.key != 'Backspace') return this.value.split('').length < 32" oninput="buttonID(${button}, this, ${bar}) setCustomLinked(this, ${bar}, ${button});" contenteditable="true" value="${datjson.commands[lastObj].actions[lastAct].data.actionRows[bar].components[button].field}" placeholder="Required">
+            <input id="customLinked" class="input" style="width: 35vw; margin-bottom: 0px;" onkeydown="return event.key !== ' '; if (event.key != 'Backspace') return this.value.split('').length < 32" oninput="buttonID(${button}, this, ${bar}) setCustomLinked(this, ${bar}, ${button});" contenteditable="true" value="${botData.commands[lastObj].actions[lastAct].data.actionRows[bar].components[button].field}" placeholder="Required">
             `
         } 
         if (trfa == false) {
             document.getElementById('dpfgs').className = 'sepbars'
             dpfg.innerHTML = `
             <div class="barbuttontexta">Emoji (Format: emojiName:emojiId)</div>
-            <input id="customLinked" class="input" style="width: 35vw; margin-bottom: 0px;" onkeydown="return event.key !== ' '; if (event.key != 'Backspace') return this.value.split('').length < 32" oninput="buttonID(${button}, this, ${bar}) setCustomLinked(this, ${bar}, ${button});" contenteditable="true" value="${datjson.commands[lastObj].actions[lastAct].data.actionRows[bar].components[button].field}" placeholder="Optional">
+            <input id="customLinked" class="input" style="width: 35vw; margin-bottom: 0px;" onkeydown="return event.key !== ' '; if (event.key != 'Backspace') return this.value.split('').length < 32" oninput="buttonID(${button}, this, ${bar}) setCustomLinked(this, ${bar}, ${button});" contenteditable="true" value="${botData.commands[lastObj].actions[lastAct].data.actionRows[bar].components[button].field}" placeholder="Optional">
             `
         }
     }
     function setCustomLinked(toWhat, bar, button) {
-        datjson.commands[lastObj].actions[lastAct].data.actionRows[bar].components[button].field = toWhat.value
-        fs.writeFileSync(processPath + '\\AppData\\data.json', JSON.stringify(datjson, null, 2));
+        botData.commands[lastObj].actions[lastAct].data.actionRows[bar].components[button].field = toWhat.value
+        fs.writeFileSync(processPath + '\\AppData\\data.json', JSON.stringify(botData, null, 2));
     }
     function toggleButton(bar, button, nw) {
-        datjson.commands[lastObj].actions[lastAct].data.actionRows[bar].components[button].disabled = nw
+        botData.commands[lastObj].actions[lastAct].data.actionRows[bar].components[button].disabled = nw
 
         if (nw == true) {
             document.getElementById('disabledbutton').style.backgroundColor = ''
@@ -700,22 +620,22 @@ function showCustomMenu(x, y) {
             document.getElementById('disabledbutton').style.backgroundColor = '#FFFFFF25'
 
         }
-        fs.writeFileSync(processPath + '\\AppData\\data.json', JSON.stringify(datjson, null, 2));
+        fs.writeFileSync(processPath + '\\AppData\\data.json', JSON.stringify(botData, null, 2));
 
     }
 
     function buttonren(button, element, bar) {
-        datjson.commands[lastObj].actions[lastAct].data.actionRows[bar].components[button].name = element.value
-        fs.writeFileSync(processPath + '\\AppData\\data.json', JSON.stringify(datjson, null, 2));
+        botData.commands[lastObj].actions[lastAct].data.actionRows[bar].components[button].name = element.value
+        fs.writeFileSync(processPath + '\\AppData\\data.json', JSON.stringify(botData, null, 2));
         document.getElementById(`${bar}${button}BUT`).innerHTML = element.value
     }
     function buttonID(button, element, bar) {
-        datjson.commands[lastObj].actions[lastAct].data.actionRows[bar].components[button].customId = element.value
-        fs.writeFileSync(processPath + '\\AppData\\data.json', JSON.stringify(datjson, null, 2));
+        botData.commands[lastObj].actions[lastAct].data.actionRows[bar].components[button].customId = element.value
+        fs.writeFileSync(processPath + '\\AppData\\data.json', JSON.stringify(botData, null, 2));
     }
     function storeName(bar, meh) {
-        datjson.commands[lastObj].actions[lastAct].data.actionRows[bar].name = meh.innerText
-        fs.writeFileSync(processPath + '\\AppData\\data.json', JSON.stringify(datjson, null, 2));
+        botData.commands[lastObj].actions[lastAct].data.actionRows[bar].name = meh.innerText
+        fs.writeFileSync(processPath + '\\AppData\\data.json', JSON.stringify(botData, null, 2));
     }
 
     function showActRows(atIndex) {
@@ -727,11 +647,11 @@ function showCustomMenu(x, y) {
         </div>
         `
         elm.style.overflowY = 'auto'
-        let fdr = datjson.commands[lastObj].actions[lastAct].data.actionRowElements
-        for (let bar in datjson.buttons.bars) {
+        let fdr = botData.commands[lastObj].actions[lastAct].data.actionRowElements
+        for (let bar in botData.buttons.bars) {
             var buttonColors = ''
-            for (let button in datjson.buttons.bars[bar].buttons) {
-                switch (datjson.buttons.bars[bar].buttons[button].style) {
+            for (let button in botData.buttons.bars[bar].buttons) {
+                switch (botData.buttons.bars[bar].buttons[button].style) {
                     case 'Default': 
                     buttonColors = `${buttonColors}<div style="width: 12px; opacity: 50%; height: 12px; margin-right: 3px; background-color: #695dfb; border-radius: 100px;"></div>`
                     break
@@ -750,7 +670,7 @@ function showCustomMenu(x, y) {
                 }
             }
             elm.innerHTML += `
-            <div class="issue flexbox" onclick="setButtoenBar(${bar}, ${atIndex})" style="height: auto; border-bottom: none; box-shadow: none; background-color: #ffffff15; height: 4vh; align-content: center; justify-items: center;" onclick="selectbar(${bar}, ${atIndex})">${datjson.buttons.bars[bar].name} - ${datjson.buttons.bars[bar].buttons.length} Buttons <div style="margin-left: 12px; align-items: center; justify-content: center;" class="flexbox">${buttonColors}</div></div>
+            <div class="issue flexbox" onclick="setButtoenBar(${bar}, ${atIndex})" style="height: auto; border-bottom: none; box-shadow: none; background-color: #ffffff15; height: 4vh; align-content: center; justify-items: center;" onclick="selectbar(${bar}, ${atIndex})">${botData.buttons.bars[bar].name} - ${botData.buttons.bars[bar].buttons.length} Buttons <div style="margin-left: 12px; align-items: center; justify-content: center;" class="flexbox">${buttonColors}</div></div>
             `
         }
     }
@@ -792,8 +712,8 @@ function showCustomMenu(x, y) {
 
         `
         let autoSaveInterval = 60
-        if (datjson.autoSaveInterval) {
-            let asi = datjson.autoSaveInterval;
+        if (botData.autoSaveInterval) {
+            let asi = botData.autoSaveInterval;
             if (asi == 30000) {
                 autoSaveInterval = 30
             }
@@ -813,8 +733,8 @@ function showCustomMenu(x, y) {
 
     function setAutosaveInterval(seconds) {
         let autoSaveInterval = 60
-        if (datjson.autoSaveInterval) {
-            let asi = datjson.autoSaveInterval;
+        if (botData.autoSaveInterval) {
+            let asi = botData.autoSaveInterval;
             if (asi == 30000) {
                 autoSaveInterval = 30
             }
@@ -832,23 +752,26 @@ function showCustomMenu(x, y) {
             }
         }
         if (seconds == null) {
-            datjson.autoSaveInterval = null
+            botData.autoSaveInterval = null
         }
         if (seconds == 30) {
-            datjson.autoSaveInterval = 30000
+            botData.autoSaveInterval = 30000
         }
         if (seconds == 60) {
-            datjson.autoSaveInterval = 60000
+            botData.autoSaveInterval = 60000
         }
         if (seconds == 120) {
-            datjson.autoSaveInterval = 120000
+            botData.autoSaveInterval = 120000
         }
         if (seconds == 0) {
-            datjson.autoSaveInterval = 0
+            botData.autoSaveInterval = 0
         }
         document.getElementById(`${autoSaveInterval}s`).classList.remove('outlined')
         document.getElementById(`${autoSaveInterval}s`).classList.remove('pad')
         document.getElementById(`${seconds}s`).classList.add('outlined')
         document.getElementById(`${seconds}s`).classList.add('pad')
-
+    }
+    function cmdOpen(cmdpending) {
+        lastObj = cmdpending
+        document.getElementById('name').innerHTML = botData.commands[cmdpending].name
     }

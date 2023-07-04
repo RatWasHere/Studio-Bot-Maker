@@ -1,17 +1,19 @@
 module.exports = {
     data: {"messageContent": "", "memberFrom": "Variable*", "name": "Kick Member", 
     "memberVariable": "",
-    "guild":"Message Guild", "guildVariable":"", "reason":""},
-    UI: {"compatibleWith": ["Event"],
+    "guild":"Variable*", "guildField":"", "reason":""},
+    UI: {"compatibleWith": ["DM", "Event"],
 
      "text": "Kick Member", "sepbar":"",
 
-      "btext":"Member Variable",
-       "input_direct*": "memberVariable", 
+      "btext":"Get Member Via",
+       "menuBar": {"choices": ["Variable*", "Member ID*"], storeAs: "memberFrom", extraField: "memberVariable"}, 
 
        "sepbar1":"sepbar",
 
-        "btext1":"Guild Variable", "input1_direct*":"guildVariable",
+        "btext1":"Get Guild From", "menuBar1":{"choices": ["Variable*", "Guild ID*"],
+        storeAs: "guild", extraField: "guildField"}, 
+
         "sepbar2":"", "btext2":"Reason", 
         "input":"reason", 
         preview: "memberFrom", previewName: "Kick",
@@ -19,18 +21,31 @@ module.exports = {
             "memberVariable": {
                 "Variable*":"direct"
             },
-            "guildVariable": {
+            "guildField": {
                 "Variable*": "direct"
             }
         }
 
 },
     run(values, message, uID, fs, client) {
-        let varTools = require(`../Toolkit/variableTools.js`)
-        var tempVars = JSON.parse(fs.readFileSync('./AppData/Toolkit/tempVars.json', 'utf8'))
-        let guild = client.guilds.cache.get(tempVars[uID][varTools.transf(values.guildVariable, uID, tempVars)].id)
-        let member = guild.members.cache.get(tempVars[uID][varTools.transf(values.memberVariable, uID, tempVars)].userId)
+        let varTools = require(`../Toolkit/variableTools.js`);
+        var tempVars = JSON.parse(fs.readFileSync('./AppData/Toolkit/tempVars.json', 'utf8'));
 
+        let guild;
+        if (values.guild == 'Variable*') {
+            guild = client.guilds.get(tempVars[uID][varTools.transf(values.guildField, uID, tempVars)].id)
+        }
+        if (values.guild == 'Guild ID*') {
+            guild = client.guilds.get(varTools.transf(values.guildField, uID, tempVars))
+        }
+
+        let member;
+        if (values.memberFrom == 'Variable*') {
+            member = guild.getMember(tempVars[uID][varTools.transf(values.memberVariable, uID, tempVars)].id)
+        }
+        if (values.memberFrom == 'Member ID*') {
+            member = guild.getMember(varTools.transf(values.memberVariable, uID, tempVars))
+        }
 
         if (values.reason == '') {
             member.kick()
