@@ -1,42 +1,41 @@
 module.exports = {
     data: {"name":"Add Reaction", 
-    "storeAs":"", 
-    "messageVariable":"",
-     "emoji":"",
+    "message":"",
+    "emoji":"",
+    "messageFrom":""
 },
 
-    UI: {"compatibleWith":["Text", "Slash"], 
-    "text":"Add Reaction", "sepbar":"",
+    UI: {"compatibleWith":["Text", "DM"], 
+    "text":"Add Reaction", 
+    
+    "sepbar":"",
+
+    "btext":"Get Message To Add Reaction On Via",
+    "menuBar": {choices: ["Command Message", "Variable*"], storeAs: "messageFrom", extraField: "message"},
+
+    "sepbar0":"",
+
     "btext":"Reaction Emoji",
-    "input custom emoji *": "emoji",
-       "sepbar12":"",
-        "btext5034":"Message/Embed Variable",
-        "input5034_direct*":"messageVariable",
 
+    "input*": "emoji",
 
-      "preview":"awaitFrom",
-       "previewName":"From",
+    "preview":"awaitFrom",
+    "previewName":"From",
 
-       "sepbarsstoreinteractionsas":"",
-       "btextfinakly":"Store Reaction As",
-       "inputfinakly_novars!":"storeAs",
-       "preview":"emoji",
-       "previewName":"Emoji"
-
+    "preview":"emoji",
+    "previewName":"Emoji"
     },
 
-    async run(values, inter, uID, fs, client) { 
+    async run(values, inter, uID, fs, client, bridge) { 
         const tempVars = JSON.parse(fs.readFileSync('./AppData/Toolkit/tempVars.json', 'utf8'));
         const varTools = require(`../Toolkit/variableTools.js`)
-      let message = client.getChannel(tempVars[uID][values.messageVariable].channelId).messages.get(tempVars[uID][values.messageVariable].id)
-        await message.react(values.emoji).then(async reaction => {
-            if (values.storeAs != "") {
-                tempVars[uID] = {
-                    ...tempVars[uID],
-                    [values.storeAs]: reaction
-                }
-                console.log(tempVars)
-                await fs.writeFileSync('./AppData/Toolkit/tempVars.json', JSON.stringify(tempVars), 'utf8')
-            }
-        })
+
+        let message;
+        if (values.messageFrom == 'Command Message') {
+            message = inter
+        }
+        if (values.messageFrom == 'Variable*') {
+            message = bridge.variables[varTools.transf(values.message, bridge.variables)]
+        }
+        message.createReaction(varTools.transf(values.emoji, bridge.variables))
     }}

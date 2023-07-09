@@ -32,7 +32,7 @@ function getUIelements(UIdata) {
         if (action.data[UIdata[element]] == undefined) {
             action.data[UIdata[element]] = ''
         }
-        endHTML = `${endHTML} <div class="largeInput" oninput="setTimeout(() => {validateInput(event);}, 30)" contentEditable="true" id="${UIdata[element]}">${action.data[UIdata[element]]}</div>`
+        endHTML = `${endHTML} <div class="largeInput" oninput="setTimeout(() => {validateLargeInput(event);}, 30)" contentEditable="true" id="${UIdata[element]}">${action.data[UIdata[element]]}</div>`
     }
     if (element.startsWith('input')) {
         var noModifiers = false;

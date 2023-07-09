@@ -29,16 +29,12 @@ module.exports = {
       "preview":"operation", 
       "previewName":"Operation"},
 
-   async run(values, message, uID, fs, client) { 
+   async run(values, message, uID, fs, client, runner, bridge)  { 
         let varTools = require(`../Toolkit/variableTools.js`)
-        var tempVars = JSON.parse(fs.readFileSync('./AppData/Toolkit/tempVars.json', 'utf8'))
         var storedData = JSON.parse(fs.readFileSync('./AppData/Toolkit/storedData.json', 'utf8'))
-        let firstNumber = parseFloat(varTools.transf(values.firstNumber, message, uID, tempVars))
-        let secondNumber = parseFloat(varTools.transf(values.secondNumber, message, uID, tempVars))
-        if (isNaN(firstNumber) || isNaN(secondNumber)) {
-          console.log("Calculate >>> Invalid Numbers")
-          return
-        } 
+        let firstNumber = parseFloat(varTools.transf(values.firstNumber, message, bridge.variables))
+        let secondNumber = parseFloat(varTools.transf(values.secondNumber, message, bridge.variables))
+        
         let result = 0
         switch (values.operation) {
           case 'Addition': 

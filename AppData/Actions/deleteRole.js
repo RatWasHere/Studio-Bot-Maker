@@ -1,28 +1,33 @@
 module.exports = {
-    data: {"name":"Delete Role", "roleVariable":"", "guild":"Command Guild", "storeAs":"", "guildVariable":""},
-    UI: {"compatibleWith": ["Slash", "Text"], "text": "Delete Role","sepbar":"sbar", "preview":"roleVariable", 
-    "btext4":"Guild", "previewName":"Variable",
-    "menuBar": {choices: ["Command Guild", "Guild*"], storeAs: "guild", extraField:"guildVariable"}, 
-    "sepbarrole01":"", 
-    "btext1":"Role Variable", "input43_direct*":"roleVariable",
-    "variableSettings":{
-        "guildVariable": {
-            "Guild*": "direct", 
-            "Command Guild": "novars"
-        }}
+    data: {"name":"Delete Role", "role":"", "roleFrom":"Variable*", "reason":""},
+    UI: {"compatibleWith": ["Text", "Slash"], 
+    "text": "Delete Role",
+    
+    "sepbar":"",  
+
+    "btext":"Get Role Via",
+    "menuBar": {choices: ["Variable*", "Role ID*"], storeAs: "roleFrom", extraField: "role"},
+
+    "sepbar0":"",
+
+    "btext0":"Reason",
+    "input": "reason",
+
+    "previewName":"Variable", "preview":"roleVariable"
 },
-    run(values, message, uID, fs, client) {
-        let guild;
+    run(values, message, uID, fs, client, runner, bridge)  {
+        let roleFrom = bridge.guild;
         let varTools = require(`../Toolkit/variableTools.js`)
-
-        var tempVars = JSON.parse(fs.readFileSync('./AppData/Toolkit/tempVars.json', 'utf8'))
-
-        if (values.guildAs == 'Command Guild') {
-            guild = client.guilds.get(message.guild.id) 
-        } else {
-            guild = client.guilds.get(tempVars[uID][varTools.transf(values.guildVariable, uID, tempVars)])
+        
+        let role;
+        
+        if (values.roleFrom == 'Variable*') {
+            role = bridge.variables[varTools.transf(values.role, bridge.variables)]
+        } 
+        if (values.roleFrom == 'Role ID*') {
+            role = bridge.guild.roles.get(varTools.transf(role, bridge.variables))
         }
-        let role = guild.roles.get(tempVars[uID][varTools.transf(values.roleVariable, uID, tempVars)]) 
-        role.delete()
+
+        role.delete(values.role == '' ? '-' : varTools.transf(values.reason, bridge.variables));
     }
 }

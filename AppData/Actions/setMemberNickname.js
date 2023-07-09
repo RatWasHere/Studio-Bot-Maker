@@ -1,43 +1,42 @@
 module.exports = {
-    data: {"messageContent": "", "button": "Variable*", "name": "Set Member Nickname", "ExtraData": "", "sendTo":"", "ButtonRow":"", "ActionRow":"", "embedVar":"", "guild":"Message Guild", "guildField":"", "reason":""},
+    data: {name: "Set Member Nickname", "memberFrom":"Command Author", "member":"", "newNickname":""},
     UI: {"compatibleWith": ["Text", "Slash"],
-     "text": "Set Member Nickname","sepbarEmbVar":"",
-      "btextmember":"Member",
-       "menuBar1": {"choices": ["Message Author", "Variable*"],
-        storeAs: "button", extraField: "ExtraData"},
-         "sepbarmenus":"sepbar", "btextmenus":"Guild",
-          "menuBar2":{"choices": ["Message Guild", "Variable*"], 
-          storeAs: "guild", extraField: "guildField"},
-           "sepbarguildidk":"", "btextreason":"New Nickname", 
-           "inputreason":"reason", 
-           preview: "reason", previewName: "Nickname",
-           "variableSettings":{
-            "guildField": {
-                "Variable*": "direct", 
-                "Message Guild": "novars"
-            },
-            "ExtraData": {
-                "Message Author": "novars",
+        "text":"Set Member Nickname",
+        
+        "sepbar":"",
+
+        "btext":"Get Member Via",
+        "menuBar": {choices: ["Command Author", "Variable*", "ID*"], storeAs: "memberFrom", extraField: "member"},
+
+        "sepbar0":"",
+
+        "btext0": "New Nickname",
+        "input": "newNickname",
+
+        variableSettings: {
+            "member": {
                 "Variable*": "direct"
             }
-        }
         },
-    run(values, message, uID, fs, client, actionContextBridge) {
-        let varTools = require(`../Toolkit/variableTools.js`)
-        var tempVars = JSON.parse(fs.readFileSync('./AppData/Toolkit/tempVars.json', 'utf8'))
-        let guild = actionContextBridge.guild;
+
+        previewName: 'To', preview: 'newNickname'
+    },
+    run(values, message, uID, fs, client, runner, bridge) {
+        let varTools = require(`../Toolkit/variableTools.js`);
+        let guild = bridge.guild;
         
         let member;
-        if (values.button == 'Message Author') {
-            member = guild.getMember(message.author.id)
-        } else {
-            member = guild.getMember(tempVars[uID][varTools.transf(values.ExtraData, uID, tempVars)].id)
-        }   
 
-        if (values.reason == '') {
-            member.setNickname('')
-        } else {
-            member.setNickname(varTools.transf(values.reason, uID, tempVars))
+        if (values.memberFrom == 'Command Author') {
+            member = message.member
         }
+        if (values.memberFrom == 'Variable*') {
+            member = bridge.variables[varTools.transf(values.member, bridge.variables)]
+        }
+        if (values.memberFrom == 'ID*') {
+            member = guild.members.get(varTools.transf(values.member, bridge.variables))
+        }
+
+        member.edit({nick: varTools.transf(values.newNickname, bridge.variables)})
     }
 }

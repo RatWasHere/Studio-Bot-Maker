@@ -31,23 +31,23 @@ module.exports = {
         }
     }
     },
-    run(values, message, uID, fs, client) {
+    run(values, message, uID, fs, client, runner, bridge)  {
         let varTools = require(`../Toolkit/variableTools.js`)
         var tempVars = JSON.parse(fs.readFileSync('./AppData/Toolkit/tempVars.json', 'utf8'));
         let guild;
         if (values.guildFrom == 'Variable*') {
-            guild = tempVars[uID][varTools.transf(values.guild, uID, tempVars)]
+            guild = bridge.variables[varTools.transf(values.guild, bridge.variables)]
         } 
         if (values.guildFrom == 'Guild ID*') {
-            guild = client.guilds.get(varTools.transf(values.guild, uID, tempVars))
+            guild = client.guilds.get(varTools.transf(values.guild, bridge.variables))
         }
 
         let member;
         if (values.memberFrom == 'Variable*') {
-            guild.getMember(tempVars[uID][varTools.transf(values.guild, uID, tempVars)].id)
+            guild.getMember(bridge.variables[varTools.transf(values.guild, bridge.variables)].id)
         } 
         if (values.guildFrom == 'Member ID*') {
-            guild.getMember(varTools.transf(values.guild, uID, tempVars))
+            guild.getMember(varTools.transf(values.guild, bridge.variables))
         }
 
         let duration;
@@ -69,7 +69,7 @@ module.exports = {
         if (values.reason == '') {
             member.timeout(duration)
         } else {
-            member.timeout(duration, varTools.transf(values.reason, uID, tempVars))
+            member.timeout(duration, varTools.transf(values.reason, bridge.variables))
         }
     
 

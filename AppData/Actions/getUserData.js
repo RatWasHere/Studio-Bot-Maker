@@ -1,56 +1,55 @@
 module.exports = {
     data: {"name":"Get User Data", 
     "dataName":"",
-    "dataValue": "",
-     "storeAs":"",
-     "memberAs":"Message Author",
-      "memberFrom":""},
+    "storeAs":"",
+    "userFrom":"Command Author",
+    "user":""},
      
-    UI: {"compatibleWith":["Text", "Slash"], 
-    "text":"Get Member Data", 
+    UI: {"compatibleWith":["Text", "Slash", "DM"],
+
+    "text":"Get User Data", 
     
-    "sepbar3":"", 
+    "sepbar":"", 
 
-     "btext00guild":"Get User From",
-      "menuBar":{"choices":["Message Author", "Variable*"], 
-      storeAs:"memberAs", extraField:"memberFrom"},
+    "btext":"Get User Via",
+    "menuBar":{"choices":["Command Author", "ID*", "Variable*"], storeAs:"userFrom", extraField:"user"},
 
-      "sepbar134324121232":"",  
+    "sepbar":"",  
 
-      "btext33333333":"Data Name", 
-      "input1*":"dataName",
-       "sepbar12345":"", 
-       "btext3333ds3333":"Store Data As", 
-       "input341!*":"storeAs",
+    "btext0":"Data Name",
+    "input*":"dataName",
 
-      "variableSettings":{
-        "memberFrom": {
+    "sepbar0":"",
+
+    "btext1": "Store As", 
+    "input0*": "storeAs",
+
+    "variableSettings":{
+        "user": {
             "Variable*": "direct", 
-            "Message Author": "novars"
+            "Command Author": "novars"
         }
     },
 
-      "preview":"memberAs", 
-      "previewName":"User"},
+    "preview":"userFrom", 
+    "previewName":"User"
+    },
 
-   async run(values, message, uID, fs, client) { 
+   async run(values, message, uID, fs, client, runner, bridge) { 
         let varTools = require(`../Toolkit/variableTools.js`)
-        var tempVars = JSON.parse(fs.readFileSync('./AppData/Toolkit/tempVars.json', 'utf8'))
-        var storedData = JSON.parse(fs.readFileSync('./AppData/Toolkit/storedData.json', 'utf8'))
-        let guild = ''
-        var firstValue = ``
-        let secondValue = varTools.transf(values.dataName, uID, tempVars)
-        var onArr = "users"
 
-        if (values.memberAs == 'Message Author') {
-            user = message.author.id
-        } else {
-                user = tempVars[uID][values.memberFrom].id
+        var storedData = JSON.parse(fs.readFileSync('./AppData/Toolkit/storedData.json', 'utf8'))
+
+        if (values.userFrom == 'Command Author') {
+            user = message.author
+        } 
+        if (values.userFrom == 'Variable*') {
+            user = bridge.variables[varTools.transf(values.user, bridge.variables)]
+        }
+        if (values.userFrom == 'ID*') {
+            user = client.users.get(varTools.transf(values.user, bridge.variables))
         }
 
-        tempVars[uID][values.storeAs] = storedData[onArr][guild + user][firstValue + secondValue]
-
-    await fs.writeFileSync('./AppData/Toolkit/tempVars.json', JSON.stringify(tempVars), 'utf8')
-
-}
+        varTools.transf(values.storeAs, bridge.variables) = storedData.users[user.id][varTools.transf(values.dataName, bridge.variables)]
+    }
 }

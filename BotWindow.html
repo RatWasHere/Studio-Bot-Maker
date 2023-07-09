@@ -2,45 +2,52 @@
     <link rel="stylesheet" href="main.css">
     <meta charset="utf8">
     <div style="width: 100vw; overflow: auto; height: 100vh; margin-top: -8px; margin-left: -8px;" id="everything_container">
-    <div style="width: 100vw; height: 100vw; background-color: #000000; color: #FFFFFF;" id="console">
-    <div style="font-family:'Courier New', Courier, monospace; font-size: 12px; margin: auto; text-align: center;">Running Your Bot...
-    <br>
-    Enter DevTools to view bot logs - Close this window to shut down your bot
+    <div style="width: 100vw; height: 100vw; background-color: #000000; color: #FFFFFF; overflow: auto;" id="console">
+    <div style="font-family:'Courier New', Courier, monospace; font-size: 12px; margin: auto; text-align: center; margin-top: 2vh;">Bot Log
     </div>
     <div class="sepbar"></div>
-    <div class="barbuttontexta">Studio Bot Maker</div>
     </div>
 </div>
 <script>
-    let colors = {
-    Reset: "\x1b[0m",
-    Bright: "\x1b[1m",
-    Dim: "\x1b[2m",
-    Underscore: "\x1b[4m",
-    Blink : "\x1b[5m",
-    Reverse : "\x1b[7m",
-    Hidden : "\x1b[8m",
+function ansiToHtml(text) {
+  const escapeCodeRegex = /\u001b\[([\d;]+)m/g; // Regex pattern to match ANSI escape codes
+  const ansiToHtmlCodes = {
+    0: '', // Reset / Normal
+    1: 'font-weight: bold', // Bold
+    3: 'font-style: italic', // Italic
+    4: 'text-decoration: underline', // Underline
+    30: 'color: black', // Black
+    31: 'color: red', // Red
+    32: 'color: #13a10e', // Green
+    33: 'color: yellow', // Yellow
+    34: 'color: blue', // Blue
+    35: 'color: magenta', // Magenta
+    36: 'color: #113f45', // Cyan
+    37: 'color: #ffffff90', // White
+    90: 'color: #cccccc', // Gray
+    40: 'padding: 6px; border-radius: 9px; background-color: #242424', // Background: Black
+    41: 'padding: 6px; border-radius: 9px; background-color: #c50f1f', // Background: Red
+    42: 'padding: 6px; border-radius: 9px; background-color: #227a4a', // Background: Green
+    43: 'padding: 6px; border-radius: 9px; background-color: #b87b1a', // Background: Yellow
+    44: 'padding: 6px; border-radius: 9px; background-color: #1a42b8', // Background: Blue
+    45: 'padding: 6px; border-radius: 9px; background-color: #881798', // Background: Magenta
+    46: 'padding: 6px; border-radius: 9px; background-color: #113f45', // Background: Cyan
+    47: 'padding: 6px; border-radius: 9px; background-color: #FFFFFF80', // Background: White
+    100: 'padding: 6px; border-radius: 9px; background-color: #cccccc' // Background: Gray
+    // You can add more ANSI codes and corresponding CSS styles here if needed
+  };
 
-    FgBlack : "\x1b[30m",
-    FgRed : "\x1b[31m",
-    FgGreen : "\x1b[32m",
-    FgYellow : "\x1b[33m",
-    FgBlue : "\x1b[34m",
-    FgMagenta : "\x1b[35m",
-    FgCyan : "\x1b[36m",
-    FgWhite : "\x1b[37m",
-    FgGray : "\x1b[90m",
+  return text.replace(escapeCodeRegex, (match, codes) => {
+    const styles = codes.split(';').map(code => ansiToHtmlCodes[code]);
+    const style = styles.join(';');
 
-    BgBlack : "\x1b[40m",
-    BgRed : "\x1b[41m",
-    BgGreen : "\x1b[42m",
-    BgYellow : "\x1b[43m",
-    BgBlue : "\x1b[44m",
-    BgMagenta : "\x1b[45m",
-    BgCyan : "\x1b[46m",
-    BgWhite : "\x1b[47m",
-    BgGray : "\x1b[100m"
+    return style ? `<div style="${style};">` : '</div>';
+  });
+  
 }
+    console.log = (log) => {
+        document.getElementById('console').innerHTML += `<div class="fade" style="width: 90vw; margin: auto; margin-top: 6px;">${ansiToHtml(log)}</div>`
+    }
 
 
     document.body.style.padding = '0px !important';

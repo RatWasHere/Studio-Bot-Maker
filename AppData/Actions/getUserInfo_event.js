@@ -24,36 +24,34 @@ module.exports = {
         }
     },
     previewName: "Get", preview: "get"},
-    async run(values, message, uID, fs, client) {
+    async run(values, message, uID, fs, client, runner, bridge)  {
         let varTools = require(`../Toolkit/variableTools.js`)
-        var tempVars = JSON.parse(fs.readFileSync('./AppData/Toolkit/tempVars.json', 'utf8'))
         let user;
         if (values.userFrom == 'Variable*') {
-            user = tempVars[uID][varTools.transf(values.user, uID, tempVars)];
+            user = bridge.variables[varTools.transf(values.user, bridge.variables)];
         }
         if (values.userFrom == 'User ID*') {
-            user = client.users.get(tempVars[uID][varTools.transf(values.user, uID, tempVars)])
+            user = client.users.get(varTools.transf(values.user, bridge.variables))
         }
     switch(values.get) {
             case 'User Name':
-                tempVars[uID][values.storeAs] = user.username
+                bridge.variables[values.storeAs] = user.username
             break
             case 'User Discriminator':
-                tempVars[uID][values.storeAs] = user.discriminator 
+                bridge.variables[values.storeAs] = user.discriminator 
             break 
             case 'User Profile Picture (URL)': 
-                tempVars[uID][values.storeAs] = user.avatarURL()
+                bridge.variables[values.storeAs] = `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png?size=4096`
             break
             case 'User ID':
-                tempVars[uID][values.storeAs] = user.id
+                bridge.variables[values.storeAs] = user.id
             break
             case 'User Accent Color':
-                tempVars[uID][values.storeAs] = user.accentColor || '-'
+                bridge.variables[values.storeAs] = user.accentColor == undefined ? user.accentColor : '#000000'
             break
             case 'User Display Name': 
-                tempVars[uID][values.storeAs] = user.globalName || '-'
+                bridge.variables[values.storeAs] = user.globalName || '-'
             break
-        } 
-        await fs.writeFileSync('./AppData/Toolkit/tempVars.json', JSON.stringify(tempVars), 'utf8')
+        }
     }
 }

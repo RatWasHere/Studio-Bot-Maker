@@ -13,13 +13,15 @@ module.exports = {
         }
     }
 },
-    run(values, inter, uID, fs, client) {
+    run(values, inter, uID, fs, client, runner, bridge)  {
+        let varTools = require(`../Toolkit/variableTools.js`)
+
         var output = ''
         let message;
         if (values.message == 'Command Message') {
             message = inter;
         } else {
-            message = tempVars[uID][values.messageFrom]
+            message = bridge.variables[values.messageFrom]
         }
             if (values.ArgumentFrom == 'None') {
                 output = message.content.split(' ')[parseFloat(values.firstArgument)]
@@ -49,13 +51,9 @@ module.exports = {
                 output = message.content.split(" ").slice(specificIndex).join(" ");      
             }
 
-            var tempVars = JSON.parse(fs.readFileSync('./AppData/Toolkit/tempVars.json', 'utf8'))
-            tempVars[uID] = {
-                ...tempVars[uID],
-                [values.storesAs]: output
-              };
-              fs.writeFileSync('./AppData/Toolkit/tempVars.json', JSON.stringify(tempVars), 'utf8')
-
-        
+            bridge.variables = {
+                ...bridge.variables,
+                [varTools.transf(values.storesAs, bridge)]: output
+            };
     }
 }

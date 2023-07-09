@@ -3,7 +3,7 @@ module.exports = {
     "storeAs":"",
     "messageID":"",
     "messageChannel":"",
-    "channelFrom":"Command Channel",
+    "channelFrom":"ID*",
     "channel":""
     },
     UI: {"compatibleWith": ["Text", "Slash", "DM"],
@@ -18,7 +18,7 @@ module.exports = {
     "sepbar0":"",
 
     "btext0":"Get Message Channel Via",
-    "menuBar": {choices: ["Command Channel", "ID*", "Variable*"], storeAs: "channelFrom", extraField: "channel"},
+    "menuBar": {choices: ["ID*", "Variable*"], storeAs: "channelFrom", extraField: "channel"},
 
     "sepbar1":"",
     
@@ -37,16 +37,12 @@ module.exports = {
         const varTools = require(`../Toolkit/variableTools.js`)
 
         let channel;
-        if (values.channelFrom == 'Command Channel') {
-            channel = message.channel
-        } 
         if (values.channelFrom == 'ID*') {
             channel = client.getChannel(varTools.transf(values.messageID, bridge.variables))
         } 
         if (values.channelFrom == 'Variable*') {
             channel = bridge.variables[varTools.transf(values.messageID, bridge.variables)]
         }
-
         bridge.variables[varTools.transf(values.storeAs, bridge.variables)] = channel.getMessage(varTools.transf(values.messageID, bridge.variables))
     }
 }

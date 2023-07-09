@@ -3,10 +3,8 @@ module.exports = {
     UI: {"compatibleWith":["Any"], 
     "text": "Create List", "sepbar":"", "btext":"List Name", "input!*":"ListName", "preview":"ListName", "previewName":"Name"},
     
-    async run(values, interaction, uID, fs, actionRunner) { 
+    async run(values, interaction, uID, fs, actionRunner, bridge) { 
         let varTools = require(`../Toolkit/variableTools.js`)
-        var tempVars = JSON.parse(fs.readFileSync('./AppData/Toolkit/tempVars.json', 'utf8'))
-        tempVars[uID][varTools.transf(values.ListName)] = []
+        bridge.variables[varTools.transf(values.ListName, bridge)] = []
     }
 }
-// ??

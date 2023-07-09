@@ -41,16 +41,16 @@ module.exports = {
 
         },
 
-    async run(values, message, uID, fs, client, actionRunner, actionContextBridge) {
+    async run(values, message, uID, fs, client, actionRunner, bridge) {
         let varTools = require(`../Toolkit/variableTools.js`);
-        var tempVars = JSON.parse(fs.readFileSync('./AppData/Toolkit/tempVars.json', 'utf8'));
-        let guild = actionContextBridge.guild;
+        
+        let guild = bridge.guild;
         var user = message.member
         if (values.memberChoice == 'Variable*') {
-            user = guild.getMember(varTools.transf(tempVars[uID][values.memberVariable].id, uID, tempVars));
+            user = guild.getMember(varTools.transf(bridge.variables[values.memberVariable].id, bridge.variables));
         }
         if (values.memberChoice == 'Member ID*') {
-            user = guild.getMember(varTools.transf(values.memberVariable, uID, tempVars));
+            user = guild.getMember(varTools.transf(values.memberVariable, bridge.variables));
         }
         
         let hasPermission = false;
@@ -112,8 +112,8 @@ module.exports = {
         }
 
         if (hasPermission == true) {
-            actionRunner(values.runIfTrue, message, client, tempVars[uID], true);
+            actionRunner(values.runIfTrue, message, client, bridge.variables, true);
         } else {
-            actionRunner(values.runIfFalse, message, client, tempVars[uID], true);
+            actionRunner(values.runIfFalse, message, client, bridge.variables, true);
         }
 }}

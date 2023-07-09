@@ -110,6 +110,8 @@ function mbSelect(storeAs, menu, extraField, UIreference) {
     /* extraField = the input that appears when only a certain part of an input is selected */
     /* UIreference = how the menu is defined as in the action UI file */
 
+    action.data[actionUI[UIreference].storeAs] = storeAs.innerText;
+
     let pending = "";
 
     if (document.getElementById(extraField)) {
@@ -621,7 +623,61 @@ function switchOutAction(actionFile) {
     
     closeSearch()
 }
-
+function replaceDivInnerHTML(divId, newHTML) {
+    var div = document.getElementById(divId);
+    var caretPosition = getCaretPosition(div);
+  
+    div.innerHTML = newHTML;
+  
+    setCaretPosition(div, caretPosition);
+  }
+  
+  function getCaretPosition(element) {
+    var caretPos = 0;
+    var sel;
+    var range;
+    var clonedRange;
+  
+    if (window.getSelection) {
+      sel = window.getSelection();
+      if (sel.rangeCount) {
+        range = sel.getRangeAt(0);
+        clonedRange = range.cloneRange();
+        clonedRange.selectNodeContents(element);
+        clonedRange.setEnd(range.endContainer, range.endOffset);
+        caretPos = clonedRange.toString().length;
+      }
+    } else if (document.selection && document.selection.type !== "Control") {
+      range = document.selection.createRange();
+      clonedRange = range.duplicate();
+      clonedRange.moveToElementText(element);
+      clonedRange.setEndPoint("EndToEnd", range);
+      caretPos = clonedRange.text.length;
+    }
+  
+    return caretPos;
+  }
+  
+  function setCaretPosition(element, caretPos) {
+    var range;
+  
+    if (document.createRange) {
+      range = document.createRange();
+      range.setStart(element.childNodes[0], caretPos);
+      range.collapse(true);
+  
+      var sel = window.getSelection();
+      sel.removeAllRanges();
+      sel.addRange(range);
+    } else if (document.selection) {
+      range = document.body.createTextRange();
+      range.moveToElementText(element);
+      range.moveStart("character", caretPos);
+      range.collapse(true);
+      range.select();
+    }
+  }
+  
 function validateInput(event) {
     const div = event.target;
     const text = div.textContent;
@@ -644,6 +700,26 @@ function validateInput(event) {
     selection.removeAllRanges();
     selection.addRange(updatedRange);
   }
+
+  
+  function validateLargeInput(event) {
+    let offset = 0;
+    if (event.key == 'Enter') {
+        offset = 1;
+    }
+    const div = event.target;
+    const text = div.innerHTML;
+    
+    // Remove image tags
+    const sanitizedText = text.replace(/<img\b[^>]*>/gi, '');
+    if (div.innerHTML == sanitizedText) return;
+    replaceDivInnerHTML(div.id, div.innerText)
+  }
+  
+  
+  
+
+  
   function saveField(fieldId) {
     let field = document.getElementById(fieldId) 
     action.data[fieldId] = field.innerText;

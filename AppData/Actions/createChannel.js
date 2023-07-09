@@ -31,7 +31,7 @@ module.exports = {
 
     "preview":"channelName", "previewName":"Name"},
     
-    async run(values, message, uID, fs, actionRunner) { 
+    async run(values, message, uID, fs, actionRunner, bridge) { 
         let varTools = require(`../Toolkit/variableTools.js`)
         var tempVars = JSON.parse(fs.readFileSync('./AppData/Toolkit/tempVars.json', 'utf8'));
 
@@ -42,11 +42,11 @@ module.exports = {
             guild = client.guilds.get(varTools.transf())
         }
         if (values.guild == 'Variable*') {
-            guild = client.guilds.get(tempVars[uID][varTools.transf(values.ExtraData, uID, tempVars)])
+            guild = client.guilds.get(bridge.variables[varTools.transf(values.ExtraData, bridge.variables)])
         }
     
         const channel = guild.createChannel({
-            name: varTools.transf(values.channelName, uID, tempVars),
+            name: varTools.transf(values.channelName, bridge.variables),
             type: ChannelTypes.GUILD_TEXT,
             nsfw: false
         })

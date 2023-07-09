@@ -21,22 +21,20 @@ module.exports = {
      },
      "sepbar32":"",
     "btext566": "Store As", "input666_novars!*":"storeAs", previewName: "Via", preview: "vrb"},
-    async run(values, message, uID, fs, client) {
+    async run(values, message, uID, fs, client, runner, bridge)  {
         let varTools = require(`../Toolkit/variableTools.js`)
-        var tempVars = JSON.parse(fs.readFileSync('./AppData/Toolkit/tempVars.json', 'utf8'))
         let guild;
         if (values.button == 'Command Guild') {
             guild = message.guild
         } else {
-            guild = client.guilds.get(tempVars[uID][varTools.transf(values.guildVariable, uID, tempVars)])
+            guild = client.guilds.get(bridge.variables[varTools.transf(values.guildVariable, bridge.variables)])
         }
         let filter;
         if (values.findVia == 'Channel Name*') {
-            filter = m.name.includes(varTools.transf(values.via, uID, tempVars))
+            filter = m.name.includes(varTools.transf(values.via, bridge.variables))
         } else {
-            filter = m => m.id == varTools.transf(values.via, uID, tempVars)
+            filter = m => m.id == varTools.transf(values.via, bridge.variables)
         }
-        tempVars[uID][varTools.transf(values.storeAs, uID, tempVars)] = await guild.channels.find(filter)
-        fs.writeFileSync('./AppData/Toolkit/tempVars.json', JSON.stringify(tempVars), 'utf8')
+        bridge.variables[varTools.transf(values.storeAs, bridge.variables)] = await guild.channels.find(filter)
 }
 }

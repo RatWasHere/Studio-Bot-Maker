@@ -1102,6 +1102,7 @@
        animation-name: selectbarnmt;
        animation-duration: 0.5s;
        border-radius: 12px;
+       cursor: text;
        color: #FFFFFF90;
        border-top-left-radius: 0px;
        border-top-right-radius: 0px;
@@ -1421,7 +1422,7 @@
        .textse {
        color: #FFFFFF85;
        font-size: 15.5px;
-       margin-left: 12px;
+       margin-left: calc(5% - 9px);
        margin-top: 2.5px;
        animation-name: kinput;
        animation-duration: 0.7s;

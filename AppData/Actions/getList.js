@@ -1,5 +1,5 @@
 module.exports = {
-    data: {"name":"Get List", 
+    data: {"name":"Get List From Storage", 
     "listName":"",
      "storeAs":"",
 },
@@ -18,14 +18,13 @@ module.exports = {
       "preview":"listName", 
       "previewName":"List Name"},
 
-   async run(values, message, uID, fs, client) { 
+   async run(values, message, uID, fs, client, runner, bridge)  { 
         let varTools = require(`../Toolkit/variableTools.js`)
-        var tempVars = JSON.parse(fs.readFileSync('./AppData/Toolkit/tempVars.json', 'utf8'))
         var storedData = JSON.parse(fs.readFileSync('./AppData/Toolkit/storedData.json', 'utf8'))
-            tempVars[uID][varTools.transf(values.storeAs, uID, tempVars)] = storedData.lists[varTools.transf(values.listName, uID, tempVars)]
-        
-
-    await fs.writeFileSync('./AppData/Toolkit/storedData.json', JSON.stringify(storedData), 'utf8')
-
-}
+        if (storedData.lists) {
+            bridge.variables[varTools.transf(values.storeAs, bridge.variables)] = storedData.lists[varTools.transf(values.listName, bridge.variables)] || []
+        } else {
+            bridge.variables[varTools.transf(values.storeAs, bridge.variables)] = []
+        }
+    }
 }

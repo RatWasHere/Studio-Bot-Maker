@@ -1,6 +1,6 @@
 module.exports = {
     data: {"messageContent": "", "storeAs":"", "to": "", "actionRows":[], "name": "Reply To Interaction", "ExtraData": "", "sendTo":""},
-    UI: {"compatibleWith": ["Slash"], "text": "Reply To Interaction", "sepbar": "",
+    UI: {"compatibleWith": ["Text", "Event", "DM"], "text": "Reply To Interaction", "sepbar": "",
     "btext": "Message Content", "largeInput": "messageContent",      
     "sepbar0":"",
     "customMenu": {
@@ -210,19 +210,14 @@ module.exports = {
         storeAs: "embeds"
     },
     "sepbar2":"",
-    "btext0": "Get Interaction To Reply To Via:",
-    "menuBar": {"choices": ["Command Interaction", "Variable*"], storeAs: "sendTo", extraField: "to"},
+    "btext0": "Interaction Variable:",
+    "input_direct":"to",
     "sepbar3":"",
     "btext2":"Ephemeral?",
     "menuBar": {choices: ["Yes", "No"], storeAs: "ephemeral"},
     "sepbar4":"",
     "btext1": "Store Message As",
     "input0!": "storeAs",
-    variableSettings: {
-        "to": {
-            "Variable*": "direct"
-        }
-    },
     "preview": "messageContent",
     "previewName": "Content"
     },
@@ -385,15 +380,8 @@ module.exports = {
                 }
             }
         }
-        
-        let interactionPendingReply;
-        
-        if (values.sendTo == 'Variable*') {
-            interactionPendingReply = bridge.variables[varTools.transf(values.to, bridge.variables)]
-        }
-        if (values.sendTo == 'Command Interaction') {
-            interactionPendingReply = message;
-        }
+
+        let interactionPendingReply = bridge.variables[varTools.transf(values.to, bridge.variables)]
 
         interactionPendingReply.createMessage({content: varTools.transf(values.messageContent, bridge.variables), embeds: embeds , components: endComponents, flags: values.ephemeral == 'Yes' ? 64 : null}).then(msg => {
             if (values.storeAs != "") {

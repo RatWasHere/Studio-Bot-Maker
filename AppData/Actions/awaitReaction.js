@@ -3,6 +3,7 @@ module.exports = {
     "customID":"", 
     "storeReactionNameAs":"",
     "storeMessageAs": "",
+    "storeReactorAs":"",
     "storeReactionIdAs": "",
     "actions": {},
     "messageFrom": "Command Message",
@@ -13,7 +14,7 @@ module.exports = {
     "emoji":"",
 },
 
-    UI: {"compatibleWith":["Text", "Slash"], 
+    UI: {"compatibleWith":["Text"], 
     "text":"Await Reaction",
 
     "sepbar":"",
@@ -55,7 +56,11 @@ module.exports = {
     "btext6":"Store Message As",
     "input1!":"storeMessageAs",
 
+    "sepbar6":"",
 
+    "btext7":"Store Reactor As",
+    "input2!":"storeReactorAs",
+    
     "preview":"targetUser",
     "previewName":"From",
 
@@ -75,8 +80,7 @@ module.exports = {
         }
     },
 
-    async run(values, inter, uID, fs, client, actionRunner) { 
-        const tempVars = JSON.parse(fs.readFileSync('./AppData/Toolkit/tempVars.json', 'utf8'));
+    async run(values, inter, uID, fs, client, actionRunner, bridge) { 
         const varTools = require(`../Toolkit/variableTools.js`);
     
         const handleReaction = (message, reactor, reaction) => {
@@ -89,10 +93,10 @@ module.exports = {
                     matchesMessage = message.id == inter.id
                 break
                 case 'Variable*':
-                    matchesMessage = message.id == tempVars[uID][varTools.transf(values.message, uID, tempVars)].id
+                    matchesMessage = message.id == bridge.variables[varTools.transf(values.message, bridge.variables)].id
                 break
                 case 'Any Message In Command Channel':
-                    matchesMessage = message.channel.id == tempVars[uID][varTools.transf(values.message, uID, tempVars)].channel.id
+                    matchesMessage = message.channel.id == bridge.variables[varTools.transf(values.message, bridge.variables)].channel.id
                 break
             }
 
@@ -101,10 +105,10 @@ module.exports = {
                     matchesEmoji = true
                 break
                 case 'Name*':
-                    matchesEmoji = varTools.transf(values.emoji, uID, tempVars) == reaction.name
+                    matchesEmoji = varTools.transf(values.emoji, bridge.variables) == reaction.name
                 break
                 case 'ID*':
-                    matchesEmoji = varTools.transf(values.emoji, uID, tempVars) == reaction.id
+                    matchesEmoji = varTools.transf(values.emoji, bridge.variables) == reaction.id
                 break
                 case 'Animated Only':
                     matchesEmoji = true == reaction.animated
@@ -122,15 +126,15 @@ module.exports = {
                     matchesTarget = reactor.id == inter.author.id
                 break
                 case 'User*':
-                    matchesTarget = reactor.id == tempVars[uID][varTools.transf(values.fromWho, uID, tempVars)].id
+                    matchesTarget = reactor.id == bridge.variables[varTools.transf(values.fromWho, bridge.variables)].id
                 break
                 case 'User ID*':
-                    matchesTarget = reactor.id == varTools.transf(values.fromWho, uID, tempVars)
+                    matchesTarget = reactor.id == varTools.transf(values.fromWho, bridge.variables)
                 break
             }
 
             if (matchesTarget && matchesEmoji && matchesMessage) {
-                actionRunner(values.actions, message, client, {...tempVars[uID], [varTools.transf(values.storeMessageAs, uID, tempVars)]: message, [varTools.transf(values.storeReactionNameAs, uID, tempVars)]: reaction.name,  [varTools.transf(values.storeReactionNameAs, uID, tempVars)]: reaction.id}, true);
+                actionRunner(values.actions, message, client, {...bridge.variables, [varTools.transf(values.storeMessageAs, bridge.variables)]: message, [varTools.transf(values.storeReactionNameAs, bridge.variables)]: reaction.name,  [varTools.transf(values.storeReactionNameAs, bridge.variables)]: reaction.id, [varTools.transf(values.storeReactorAs, bridge.variables)]: reactor}, true);
             }
         }
 

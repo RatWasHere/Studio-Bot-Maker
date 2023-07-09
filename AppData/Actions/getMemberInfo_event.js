@@ -22,21 +22,20 @@ module.exports = {
             "Variable*": "direct"
         },
         "guild": {
-            "Variable*": "direct*"
+            "Variable*": "direct"
         }
     },
 
     previewName: "Get", preview: "get",
 },
-    run(values, message, uID, fs, client, actionContextBridge) {
+    run(values, message, uID, fs, client, runner, bridge) {
     let varTools = require(`../Toolkit/variableTools.js`)
-    var tempVars = JSON.parse(fs.readFileSync('./AppData/Toolkit/tempVars.json', 'utf8'))
     let guild;
     if (values.guildFrom == 'Variable*') {
-        guild = client.guilds.get(tempVars[uID][varTools.transf(values.guild, uID, tempVars)].id)
+        guild = client.guilds.get(bridge.variables[varTools.transf(values.guild, bridge.variables)].id)
     }
     if (values.guildFrom == 'Guild ID*') {
-        guild = client.guilds.get(varTools.transf(values.guild, uID, tempVars))
+        guild = client.guilds.get(varTools.transf(values.guild, bridge.variables))
     }
 
     var member;
@@ -44,38 +43,36 @@ module.exports = {
         member = message.member
     } 
     if (values.memberFrom == 'Variable*') {
-        member = tempVars[uID][varTools.transf(values.member, uID, tempVars)];
+        member = bridge.variables[varTools.transf(values.member, bridge.variables)];
     }
     if (values.memberFrom == 'Member ID*') {
-        member = guild.getMember(varTools.transf(values.member, uID, tempVars));
+        member = guild.getMember(varTools.transf(values.member, bridge.variables));
     }
-
     switch(values.get) {
         case 'Member Nickname':
-            tempVars[uID][values.storeAs] = member.nickname || member.username;
+            bridge.variables[values.storeAs] = member.nickname || member.username;
         break
 
         case 'Member Name':
-            tempVars[uID][values.storeAs] = member.username
+            bridge.variables[values.storeAs] = member.username
         break
 
         case 'Member Profile Picture (URL)': 
-            tempVars[uID][values.storeAs] = member.avatarURL()
+            bridge.variables[values.storeAs] = member.avatarURL()
         break
 
         case 'Member Guild': 
-            tempVars[uID][values.storeAs] = member.guild
+            bridge.variables[values.storeAs] = member.guild
         break
 
         case 'Member ID':
-            tempVars[uID][values.storeAs] = member.id
+            bridge.variables[values.storeAs] = member.id
         break
 
         case 'Timeout End Timestamp':
-            tempVars[uID][values.storeAs] = Date.parse(member.communicationDisabledUntil) || '-'
+            bridge.variables[values.storeAs] = Date.parse(member.communicationDisabledUntil) || '-'
         break
     }
     
-    fs.writeFileSync('./AppData/Toolkit/tempVars.json', JSON.stringify(tempVars), 'utf8')
     }
 }

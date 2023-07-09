@@ -1,21 +1,21 @@
 module.exports = {
-    data: {"name":"Get Role", "memberChoice":"", "storeAs":"", "guildAs":"Message Guild", "guildS":""},
-    UI: {"compatibleWith":["None"], "text":"Get Role", "sepbar3":"", "btext33333333":"Role ID", "input1*":"memberChoice", "sepbar12":"", "btext00guild":"Get Role From", "menuBar":{"choices":["Message Guild", "Guild*"], storeAs:"guildAs", extraField:"guildS"},"btext2*":"Store As", "inputsa!*":"storeAs", "preview":"memberChoice", "previewName":"ID"},
+    data: {"name":"Get Role", "roleID":"", "storeAs":""},
+    UI: {"compatibleWith":["Text", "Slash"],
+        "text":"Get Role",
 
-    run(values, message, uID, fs, client) { 
-        let varTools = require(`../Toolkit/variableTools.js`)
-        var tempVars = JSON.parse(fs.readFileSync('./AppData/Toolkit/tempVars.json', 'utf8'))
-        var user;
-        let guild; 
-            if (values.guildAs == 'Message Guild') {
-                guild = message.guild
-            } else {
-                guild = client.guilds.get(tempVars[uID][varTools.transf(values.guildS, uID, tempVars)])
-            }
-        tempVars[uID] = {
-            ...tempVars[uID],
-            [values.storeAs]: guild.roles.get(varTools.transf(values.memberChoice, uID, tempVars))
+        "sepbar":"",
+
+        "btext": "Role ID",
+        "input*": "roleID",
+
+        "sepbar0":"",
+
+        "btext0": "Store As",
+        "input!*": "storeAs"
+    },
+
+    run(values, message, uID, fs, client, runner, bridge)  { 
+    let varTools = require(`../Toolkit/variableTools.js`)
+    bridge.variables[values.storeAs] = runner.guild.roles.get(varTools.transf(values.roleID, bridge.variables))
     }
-    fs.writeFileSync('./AppData/Toolkit/tempVars.json', JSON.stringify(tempVars), 'utf8')
-}
 }

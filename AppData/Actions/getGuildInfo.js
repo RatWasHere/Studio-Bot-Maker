@@ -26,33 +26,30 @@ module.exports = {
             }
         }
     },
-    run(values, message, uID, fs, client) {
+    run(values, message, uID, fs, client, runner, bridge)  {
         let varTools = require(`../Toolkit/variableTools.js`)
-        var tempVars = JSON.parse(fs.readFileSync('./AppData/Toolkit/tempVars.json', 'utf8'))
         var guild;
         if (values.guildFrom == 'Command Guild') {
             guild = message.guild
         } else {
-         guild = client.guilds.get(varTools.transf(tempVars[uID][values.guildVariable].id, uID, tempVars));
-    }
-    switch(values.toGet) {
+            guild = client.guilds.get(varTools.transf(bridge.variables[values.guildVariable].id, bridge.variables));
+        }
+        switch(values.toGet) {
             case 'Guild Name':
-                tempVars[uID][values.storeAs] = guild.name
+                bridge.variables[values.storeAs] = guild.name
             break
             case 'Guild Icon URL':
-                tempVars[uID][values.storeAs] = guild.iconURL()
+                bridge.variables[values.storeAs] = guild.iconURL()
             break
             case 'Guild Members List':
-                tempVars[uID][values.storeAs] = guild.members
+                bridge.variables[values.storeAs] = guild.members
             break
             case 'Guild Member Count':
-                tempVars[uID][values.storeAs] = guild.members.map(m => m.id).length
+                bridge.variables[values.storeAs] = guild.members.map(m => m.id).length
             break
             case 'Guild Owner': 
-                tempVars[uID][values.storeAs] = guild.fetchOwner()
+                bridge.variables[values.storeAs] = guild.fetchOwner()
             break
         } 
-        fs.writeFileSync('./AppData/Toolkit/tempVars.json', JSON.stringify(tempVars), 'utf8')
-
     }
 }

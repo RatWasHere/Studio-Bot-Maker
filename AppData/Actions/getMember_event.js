@@ -30,8 +30,7 @@ module.exports = {
     },
     
     preview: "memberFrom", previewName: "Via"},
-    async run(values, message, uID, fs, client, actionContextBridge) {
-        var tempVars = JSON.parse(fs.readFileSync('./AppData/Toolkit/tempVars.json', 'utf8'));
+    async run(values, message, uID, fs, client, runner, bridge) {
         let varTools = require(`../Toolkit/variableTools.js`);
 
         if (values.guildFrom == 'ID*') {
@@ -43,18 +42,16 @@ module.exports = {
 
         if (values.memberFrom == "Command Author") {
             const member = guild.getMember(message.author.id); 
-            tempVars[uID][values.storesAs] = member
+            bridge.variables[values.storesAs] = member
         }
         if (values.memberFrom == "Name*") {
-            const member = guild.members.find(m => m.nick === varTools.transf(values.member, uID, tempVars)); 
-            tempVars[uID][values.storesAs] = member
+            const member = guild.members.find(m => m.nick === varTools.transf(values.member, bridge.variables)); 
+            bridge.variables[values.storesAs] = member
         }
         if (values.memberFrom == "ID*") {
-            const member = guild.getMember(varTools.transf(values.member, uID, tempVars)); 
-            tempVars[uID][values.storesAs] = member
+            const member = guild.getMember(varTools.transf(values.member, bridge.variables)); 
+            bridge.variables[values.storesAs] = member
         }
-
-        await fs.writeFileSync('./AppData/Toolkit/tempVars.json', JSON.stringify(tempVars), 'utf8')
 
     }
 }

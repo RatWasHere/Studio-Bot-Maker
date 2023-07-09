@@ -127,6 +127,15 @@ function refreshActions(at) {
     let delay = 0;
     let endActions = ``
     for (let actionNumber in action.data[at]) {
+        let extrf;
+
+        if (action.data[at][parseFloat(actionNumber) - 1] == undefined) {
+            extrf = 'borderbottom';
+        } else if (action.data[at][parseFloat(actionNumber) + 1] == undefined) {
+            extrf = 'bordertop';
+        } else {
+            extrf = 'bordercentere';
+        }
         let innerAction = action.data[at][actionNumber]
         let count = 0;
         let quickie = '';
@@ -149,15 +158,7 @@ function refreshActions(at) {
         } catch (err) {
             quickie = `Error`
         }
-        let extrf;
 
-        if (action.data[at][parseFloat(actionNumber) - 1] == undefined) {
-            extrf = 'borderbottom';
-        } else if (action.data[at][parseFloat(actionNumber) + 1] == undefined) {
-            extrf = 'bordertop';
-        } else {
-            extrf = 'bordercentere';
-        }
     
         endActions = `${endActions}
         <div onmouseenter="lastHovered = this" draggable="true" ondragleave="handleActionDragEnd('${at}', '${actionNumber}')" ondragend="handleActionDrop('${at}', '${actionNumber}')" ondragover="actionDragOverHandle(event, '${at}', '${actionNumber}')" ondragstart="handleActionDrag('${at}', '${actionNumber}')" onmouseleave="lastHovered = null;" class="action textToLeft ${extrf}" style="animation-delay: ${delay * 3}0ms" ondblclick="editAction('${at}', '${actionNumber}')">
@@ -167,14 +168,16 @@ function refreshActions(at) {
             <div class="deleteActionButton" onclick="deleteAction('${at}', '${actionNumber}')">✕</div>
         </div>`;
     } catch (err) {
-        document.getElementById('actionbar').innerHTML += `
-        <div id="Action${action}" onmouseenter="lastHovered = this" draggable="true" ondragleave="handleActionDragEnd(this)" ondragend="handleActionDrop()" ondragover="actionDragOverHandle(event, this)" ondragstart="handleActionDrag(this)" onmouseleave="lastHovered = null;" class="action textToLeft ${extrf}" style="animation-delay: ${delay * 3}0ms" ondblclick="editAction(this)" onclick="highlight(this)">
+        endActions = `${endActions}
+        <div id="Action${action}" onmouseenter="lastHovered = this" draggable="true" ondragleave="handleActionDragEnd(this)" ondragend="handleActionDrop()" ondragover="actionDragOverHandle(event, this)" ondragstart="handleActionDrag(this)" onmouseleave="lastHovered = null;" class="action textToLeft ${extrf}" style="animation-delay: ${delay * 3}0ms" ondblclick="editAction(this)">
         Error
         <div style="opacity: 50%; margin-left: 7px;"> - Action Missing</div>
-        <div class="deleteActionButton" onclick="deleteObject(this)">✕</div>`;
+        <div class="deleteActionButton" onclick="deleteObject(this)">✕</div>
+        </div>
+        `;
     }
-        document.getElementById(at).innerHTML = endActions
     }
+    document.getElementById(at).innerHTML = endActions
 }
 
 function deleteAction(at, number) {
@@ -186,7 +189,9 @@ function deleteAction(at, number) {
       newJson[i + 1] = filteredEntries[i][1];
     }
     action.data[at] = newJson;
-    refreshActions(at)
+    setTimeout(() => {
+        refreshActions(at)
+    }, 10)
 }
 var actionParent;
 var draggedAction;

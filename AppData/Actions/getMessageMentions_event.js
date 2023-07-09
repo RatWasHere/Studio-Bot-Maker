@@ -13,40 +13,30 @@ module.exports = {
     "btext":"<b>Note!</b> <br> If you're using \"Custom\", you need to insert the number, not ordinal numbers!",
     
     preview: "button", previewName: "Mention"},
-    run(values, message, uID, fs, client) {
+    run(values, message, uID, fs, client, runner, bridge)  {
         let varTools = require(`../Toolkit/variableTools.js`)
         var tempVars = JSON.parse(fs.readFileSync('./AppData/Toolkit/tempVars.json', 'utf8'))
         let msg;
-            msg = client.getChannel(tempVars[uID][values.messageVariable].channel_id).messages.fetch(tempVars[uID][values.messageVariable].id)
-        
-        if (values.button == 'First') {
-             mention = msg.mentions.users.first()
-             tempVars[uID] = {
-                ...tempVars[uID],
-                [values.storeAs]: mention
-            }
-            fs.writeFileSync('./AppData/Toolkit/tempVars.json', JSON.stringify(tempVars), 'utf8')
-
-        } else {
-            let ment = msg.mentions.users.array;
-            let mention; 
+            msg = bridge.variables[values.messageVariable]
+            let mentions = msg.mentions.users
             switch (values.button) {
+                case 'First':
+                    mentions = mentions[0]
+                break
                 case 'Second':
-                    mention = ment[1]
+                    mentions = mentions[1]
                 break
                 case 'Third':
-                    mention = ment[2]
+                    mentions = mentions[2]
                 break
                 case 'Custom':
-                    mention = ment[parseFloat(varTools.transf(values.ExtraField, uID, tempVars))]
+                    mentions = mentions[parseFloat(varTools.transf(values.ExtraField, bridge.variables))]
                 break
             }
-            tempVars[uID] = {
-                ...tempVars[uID],
-                [values.storeAs]: mention
+            
+            bridge.variables = {
+                ...bridge.variables,
+                [values.storeAs]: mention || '-'
             }
-            fs.writeFileSync('./AppData/Toolkit/tempVars.json', JSON.stringify(tempVars), 'utf8')
-
-        }
     }
 }

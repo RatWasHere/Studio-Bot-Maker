@@ -40,15 +40,11 @@ try {
         intents: ["ALL"]
       } 
     });
-
     client.connect()
-    try {fs.writeFileSync('./AppData/Toolkit/tempVars.json', '{}')} catch(err) {}   
 
     /* Project Startup */ console.log(`${colors.BgWhite}${colors.FgBlack}${data.name}${colors.Reset}${colors.FgCyan} is starting up...${colors.Reset}`);
-    
     client.on('ready', async () => {
         /* Project Start */ console.log(`${colors.FgGreen}Studio Bot Maker V3.0.1 Project, started successfully!${colors.Reset}`);
-        /* Reset Temporary Variables */ fs.writeFileSync('./AppData/Toolkit/tempVars.json', '{}');
         
         console.log(`${colors.BgMagenta + colors.FgWhite}Purging All Slash Commands${colors.Reset}`)
         await client.application.bulkEditGlobalCommands([])
@@ -70,23 +66,17 @@ try {
             cmdActions = at;
         }
 
-        try {var tempVars = JSON.parse(fs.readFileSync('./AppData/Toolkit/tempVars.json', 'utf8'))} catch (err) {}
-
-        /* Variable Unique Identifier */ 
-        const variableBridge = new Date().getTime();       
-        if (!tf) {
-            if (!actionBridge) {
-                tempVars[variableBridge] = {}
-            } else {
-                variableBridge = actionBridge 
-            }
+        let variables;
+        if (typeof actionBridge == 'object') {
+            variables = actionBridge
         } else {
-            tempVars[variableBridge] = actionBridge
+            variables = {}
         }
 
         let actionContextBridge = {
             guild: interaction.guild || null,
             stopActionRun: false,
+            variables: variables,
             data: {
                 ranAt: cmdAt,
                 nodeName: cmdName,
@@ -94,33 +84,24 @@ try {
             }
         }
 
-        /* Push The Unique Identifier */ 
-        fs.writeFileSync('./AppData/Toolkit/tempVars.json', JSON.stringify(tempVars, null, 2));
-
         for (let action in cmdActions) {
             /* See If The Thing Is Meant To Keep Going! */ 
             if (actionContextBridge.stopActionRun == false) {
                 try {
                     /* Run The Action, Make It Happen! */
-                    await require(`./AppData/Actions/${cmdActions[action].file}`).run(cmdActions[action].data, interaction, variableBridge, fs, client, runActionArray, actionContextBridge)
+                    await require(`./AppData/Actions/${cmdActions[action].file}`).run(cmdActions[action].data, interaction, action, fs, client, runActionArray, actionContextBridge)
                 } catch(err) {
                     /* Alert The User Of The Error */
-                    console.log(`${colors.BgRed}${colors.FgBlack}${cmdName} ${colors.FgBlack + colors.BgWhite}(@#${cmdAt})${colors.Reset + colors.BgRed + colors.FgBlack} >>> ${require(`./AppData/Actions/${cmdActions[action].file}`).data.name} >>> Error: ${err}`)
+                    console.log(`${colors.BgRed}${colors.FgBlack}${cmdName} ${colors.FgBlack + colors.BgWhite}(@#${cmdAt})${colors.Reset + colors.BgRed + colors.FgBlack} >>> ${require(`./AppData/Actions/${cmdActions[action].file}`).data.name} ${colors.FgBlack + colors.BgWhite}(@#${action})${colors.Reset + colors.BgRed + colors.FgBlack} >>> Error: ${err}${colors.Reset}`)
                 }
             } else {
-                delete tempVars[variableBridge]
+                return
             }
         }
-
-        try {
-            delete tempVars[variableBridge];
-            fs.writeFileSync(require('process').cwd() + '\\AppData\\Toolkit\\tempVars.json', JSON.stringify(tempVars))
-        } catch (err) {}
-
     }
-
     client.on('messageCreate', async msg => {
         if (msg.author.bot) return
+        let keepGoing;
         /* Loop Through All Groups */ for (let i in data.commands) {
         /* Check If The Group's Type */ if (data.commands[i].type == 'action') {
         /* Check The Command's Trigger */ if (data.commands[i].trigger === 'textCommand') {
@@ -148,19 +129,27 @@ try {
         } else {
             if (msg.inDirectMessageChannel()) return;
         }
+        } else {
+            if (msg.inDirectMessageChannel()) return;
+        }
         /* How The Command Was Defined By The User */ let commandName = data.commands[i].name;
-            if (`${data.prefix}${commandName}`.toLowerCase() == `${msg.content}`.toLowerCase().split(' ')[0]) {runActionArray(i, msg, client)}} else { 
+        if (`${data.prefix}${commandName}`.toLowerCase() == `${msg.content}`.toLowerCase().split(' ')[0]) {
+            keepGoing = true
+        } else {
               if (data.commands[i].trigger == 'messageContent') {
                 let messageContent = `${msg.content}`;
                 /* Check If Everything Matches! */
                  if (messageContent.toLowerCase().split(' ').includes(data.commands[i].name.toLowerCase()) && `${msg.content}`.toLowerCase().startsWith(data.prefix) == false) {
-                    runActionArray(i, msg, client) 
+                    keepGoing = true
                 }
               }
-            }
-          }
         }
-    }
+        if (keepGoing) {
+            runActionArray(i, msg, client) 
+        }
+       }
+      }
+     }
     });
 
     let commands = []
@@ -265,7 +254,6 @@ try {
 
         /* Storage For Parameters */
         let commandParametersStorage = {};
-        
         for (let i in data.commands) {
             if (data.commands[i].trigger == 'slashCommand' && data.commands[i].type == 'action' && interaction.data.name == data.commands[i].name) {
                 if (data.commands[i].parameters != undefined && data.commands[i].parameters[0] != undefined) {

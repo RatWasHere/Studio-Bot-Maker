@@ -4,23 +4,44 @@ window.oncontextmenu = function (event) {
 }
 function showCustomMenu(x, y) {
     if (!menu) {
-      menu = document.createElement('div')
-      document.body.appendChild(menu)
-      menu.style.width = '35vw'
-      menu.style.height = '37vh'
-      menu.style.backgroundColor = '#00000060'
-      menu.style.borderRadius = '12px'
-      menu.style.backdropFilter = 'blur(12px)'
-      menu.style.position = 'fixed'
-      menu.className = 'dimension'
-      menu.id = 'customMenu'
-      menu.style.top = '0px'
-      menu.style.left = '0px'
-      menu.style.transition = 'all 0.2s ease'
-      menu.style.overflowY = 'auto';
-  }
-      menu.style.top = y + 'px'
-      menu.style.left = x + 'px'
+        menu = document.createElement('div');
+        document.body.appendChild(menu);
+        menu.style.width = '35vw';
+        menu.style.height = '37vh';
+        menu.style.backgroundColor = '#00000060';
+        menu.style.borderRadius = '12px';
+        menu.style.backdropFilter = 'blur(12px)';
+        menu.style.position = 'fixed';
+        menu.className = 'dimension';
+        menu.id = 'customMenu';
+        menu.style.transition = 'all 0.2s ease';
+        menu.style.overflowY = 'auto';
+        menu.style.scale = '0'
+      }
+      
+      // Calculate the maximum allowed coordinates based on window dimensions
+      const windowWidth = window.innerWidth;
+      const windowHeight = window.innerHeight;
+      const menuWidth = menu.offsetWidth;
+      const menuHeight = menu.offsetHeight;
+      const maxX = windowWidth - menuWidth;
+      const maxY = windowHeight - menuHeight;
+      let adjustedScale = 1
+      // Adjust the menu position if it exceeds the window boundaries
+      let adjustedX = x;
+      let adjustedY = y;
+      if (x > maxX) {
+        adjustedX = maxX;
+        adjustedScale = adjustedScale - 0.1
+      }
+      if (y > maxY) {
+        adjustedY = maxY - 48;
+        adjustedScale = adjustedScale - 0.1
+      }
+      
+      menu.style.top = adjustedY + 'px';
+      menu.style.left = adjustedX + 'px';
+      menu.style.scale = `${adjustedScale}`
         let variableType = 2;
           menu.innerHTML = `
           <div class="barbuttontexta" style="background-color: #FFFFFF07; border-top-left-radius: 12px; border-top-right-radius: 12px; border-bottom: solid 2px #FFFFFF30; padding: 2px;">Insert Variable</div>`

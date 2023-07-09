@@ -7,7 +7,7 @@ module.exports = {
     "text": "Find Object In List", 
     "sepbar":"", 
 
-    "btext":"List Name", "input":"ListName", 
+    "btext":"List Name", "input_direct*":"ListName", 
 
     "sepbar1":"",
 
@@ -26,14 +26,12 @@ module.exports = {
 
     "preview":"elementIndex", "previewName":"Position #"},
     
-    async run(values, interaction, uID, fs, actionRunner) { 
+    async run(values, interaction, uID, fs, client, actionRunner, bridge) { 
         let varTools = require(`../Toolkit/variableTools.js`);
-        var tempVars = JSON.parse(fs.readFileSync('./AppData/Toolkit/tempVars.json', 'utf8'));
 
-        let list = tempVars[uID][varTools.transf(values.ListName)];
-        let toCheckFor = list[parseFloat(varTools.transf(values.elementIndex, uID, tempVars))];
+        let list = bridge.variables[varTools.transf(values.ListName)];
+        let toCheckFor = list[parseFloat(varTools.transf(values.elementIndex, bridge.variables))];
 
-        tempVars[uID][varTools.transf(values.storeAs, uID, tempVars)] = toCheckFor;
-        fs.writeFileSync('./AppData/Toolkit/tempVars.json', JSON.stringify(tempVars), 'utf8');
+        bridge.variables[varTools.transf(values.storeAs, bridge.variables)] = toCheckFor;
     }
 }

@@ -17,20 +17,21 @@ module.exports = {
     "sepbar1":"",
     "btext1":"If True",
     "actions": "runIfTrue",
-    "sepbar2":"e",
+    
+    "sepbar2":"",
+
     "btext2":"If False",
     "actions0": "runIfFalse",
 
     "preview":"firstInput", "previewName":"Compare"
 },
-    async run(values, message, uID, fs, client, actionRunner) {
+    async run(values, message, uID, fs, client, actionRunner, bridge) {
         let varTools = require(`../Toolkit/variableTools.js`)
-        var tempVars = JSON.parse(fs.readFileSync('./AppData/Toolkit/tempVars.json', 'utf8'))
 
         let matchesCriteria = false;
 
-        let firstValue = tempVars[uID][varTools.transf(values.secondInput, uID, tempVars)]
-        let secondValue = tempVars[uID][varTools.transf(values.secondInput, uID, tempVars)]
+        let firstValue = bridge.variables[varTools.transf(values.secondInput, bridge.variables)]
+        let secondValue = bridge.variables[varTools.transf(values.secondInput, bridge.variables)]
 
         switch (values.button) {
             case '!=':
@@ -67,11 +68,10 @@ module.exports = {
         }
 
         if (matchesCriteria == true) {
-            actionRunner(values.runIfTrue, message, client, tempVars[uID], true);
+            actionRunner(values.runIfTrue, message, client, bridge.variables, true);
         } else {
-            actionRunner(values.runIfFalse, message, client, tempVars[uID], true);
+            actionRunner(values.runIfFalse, message, client, bridge.variables, true);
         } 
         
-        fs.writeFileSync('./AppData/Toolkit/tempVars.json', JSON.stringify(tempVars), 'utf8')
     }
 }

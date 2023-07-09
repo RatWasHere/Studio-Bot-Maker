@@ -21,18 +21,17 @@ module.exports = {
         }
     },
     previewName: "Get", preview: "get"},
-    async run(values, message, uID, fs, client) {
+    async run(values, message, uID, fs, client, runner, bridge)  {
         let varTools = require(`../Toolkit/variableTools.js`)
-        var tempVars = JSON.parse(fs.readFileSync('./AppData/Toolkit/tempVars.json', 'utf8'))
         let channel;
         if (values.channelVia == 'Message Channel') {
             channel = message.channel
         } 
         if (values.channelVia == 'Variable*') {
-            channel = tempVars[uID][varTools.transf(values.channelFrom, uID, tempVars)];
+            channel = bridge.variables[varTools.transf(values.channelFrom, bridge.variables)];
         }
         if (values.channelVia == 'Channel ID*') {
-            channel = client.channels.get(varTools.transf(values.channelFrom, uID, tempVars))
+            channel = client.channels.get(varTools.transf(values.channelFrom, bridge.variables))
         }
 
         let output;
@@ -64,8 +63,7 @@ module.exports = {
             break
         }
 
-        tempVars[uID][varTools.transf(values.storeAs, uID, tempVars)] = output;
+        bridge.variables[varTools.transf(values.storeAs, bridge.variables)] = output;
 
-        await fs.writeFileSync('./AppData/Toolkit/tempVars.json', JSON.stringify(tempVars), 'utf8')
     }
 }

@@ -9,18 +9,27 @@
     <div class="flexbox" style="width: 100vw; height: 10vh; transition: scale 5.3s ease;" id="buttonsContainer">
         <div class="barbuttonshift flexbox" style="margin-left: 1vw; width: 15vw;" onclick="save()">
         <div class="image save" id="actionSave" style="width: 30% !important; height: 30px !important; margin: auto !important;"></div>
+        <div style="margin: auto;">
         <div class="barbuttontexta">Save</div>
+        <div class="smalltext" style="opacity: 50%; font-size: 8px;">CTRL+S</div>
+        </div>
     </div>
     <div class="barbuttonshift flexbox" id="actionSearchButton" onclick="startSearch()" style="margin-left: 1vw; width: 23vw; margin-right: auto;">
         <div class="image switchObjs" style="width: 30% !important; height: 30px !important; margin: auto !important;"></div>
-        <div class="barbuttontexta">Change Action</div>
+        <div style="margin: auto;">
+            <div class="barbuttontexta">Change Action</div>
+            <div class="smalltext" style="opacity: 50%; font-size: 8px;">CTRL+K</div>
+            </div>
     </div>
 
     <div class="barbuttontexta" id="action-name"></div>
     <div class="barbuttonshift flexbox" style="margin-right: 1vw; width: 13vw; margin-left: auto;" onclick="closeWindow()">
         <div class="image checkmark" style="width: 30% !important; height: 30px !important; margin: auto !important;"></div>
-        <div class="barbuttontexta">Close</div>
-    </div>
+        <div style="margin: auto;">
+            <div class="barbuttontexta">Close</div>
+            <div class="smalltext" style="opacity: 50%; font-size: 8px;">CTRL+TAB</div>
+            </div>
+        </div>
     </div>
 </div>
 </div>
@@ -67,6 +76,13 @@
         if (event.key.toLowerCase() == 'q' && event.ctrlKey == true) {
             save()
             closeWindow()
+        }
+        if (event.key.toLowerCase() == 'k' && event.ctrlKey == true) {
+            if (document.getElementById('actionSearchCloseButton')) {
+                closeSearch()
+            } else {
+                startSearch()
+            }
         }
     }
     const { ipcRenderer } = require('electron');

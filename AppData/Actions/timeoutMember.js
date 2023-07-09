@@ -46,7 +46,7 @@ module.exports = {
             member = guild.getMember(message.author.id)
         } 
         if (values.memberFrom == 'Variable*') {
-            member = guild.getMember(tempVars[uID][varTools.transf(values.member, uID, tempVars)].id)
+            member = guild.getMember(bridge.variables[varTools.transf(values.member, bridge.variables)].id)
         }
         if (values.memberFrom == 'Member ID*') {
             member = guild.getMember(varTools.transf(values.member))
@@ -74,7 +74,7 @@ module.exports = {
         if (values.reason == '') {
             member.timeout(duration)
         } else {
-            member.timeout(duration, varTools.transf(values.reason, uID, tempVars))
+            member.timeout(duration, varTools.transf(values.reason, bridge.variables))
         }
 
     }

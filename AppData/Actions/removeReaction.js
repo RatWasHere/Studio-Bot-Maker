@@ -14,25 +14,22 @@ module.exports = {
     "input_direct*":"messageVariable",
 
 
-    "preview":"awaitFrom",
-    "previewName":"From",
+    "sepbarsstoreinteractionsas":"",
+    "btextfinakly":"Store Reaction As",
+    "inputfinakly_novars!":"storeAs",
 
-       "sepbarsstoreinteractionsas":"",
-       "btextfinakly":"Store Reaction As",
-       "inputfinakly_novars!":"storeAs",
-       "preview":"emoji",
-       "previewName":"Emoji"
-
+    "preview":"emoji",
+    "previewName":"Emoji"
     },
 
-    async run(values, inter, uID, fs, client) { 
+    async run(values, inter, uID, fs, client, runner, bridge)  { 
         const tempVars = JSON.parse(fs.readFileSync('./AppData/Toolkit/tempVars.json', 'utf8'));
         const varTools = require(`../Toolkit/variableTools.js`)
-      let message = client.getChannel(tempVars[uID][values.messageVariable].channelId).messages.get(tempVars[uID][values.messageVariable].id)
+      let message = client.getChannel(bridge.variables[values.messageVariable].channelId).messages.get(bridge.variables[values.messageVariable].id)
         await message.react(values.emoji).then(async reaction => {
             if (values.storeAs != "") {
-                tempVars[uID] = {
-                    ...tempVars[uID],
+                bridge.variables = {
+                    ...bridge.variables,
                     [values.storeAs]: reaction
                 }
                 console.log(tempVars)

@@ -1,3 +1,4 @@
+
 ![image](https://github.com/RatWasHere/Studio-Bot-Maker/assets/100881234/2e255e0f-d8ba-4768-a1ed-a24776c6c884)
 
 # Studio Bot Maker
@@ -5,39 +6,35 @@
 <a href="https://l.linklyhq.com/l/1nohw" target="_blank"><img src="https://github-production-user-asset-6210df.s3.amazonaws.com/100881234/242099266-b6439c2d-958b-47bf-b10d-13e78d9fe5cd.png"></a>
 
 
-### **🐛 A no code discord bot maker!**
-<a href="https://www.producthunt.com/posts/studio-bot-maker?utm_source=badge-featured&utm_medium=badge&utm_souce=badge-studio&#0045;bot&#0045;maker" target="_blank"><img src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=396865&theme=dark" alt="Studio&#0032;Bot&#0032;Maker - A&#0032;no&#0032;code&#0032;Discord&#0032;bot&#0032;maker | Product Hunt" style="width: 250px; height: 54px;" width="250" height="54" /></a>
-### Sooo... what is Studio Bot Maker?
-~~Isn't it obvious~~ Right... SBM (Studio Bot Maker) is a complete rival to other paid alternatives on Steam, with the benefit of knowing everything is tested before release (except actions sometimes, there's only me workin on this thing & I don't have all the time in the world! 🥲) 
-The benefits of that are quite obvious: The end product is a well polished application with a great taste in looks. ~~(maybe not)~~
+## 🐛 No-Code **Free** Discord Bot Maker!
+Skip the hassle of coding!
 
-### 🪚 What to expect whilst using SBM
-A visually overwhelming pleasure! You have no idea how much fine tuning went into every single little animation (seriously, I wasted like 10 days fine tuning each one of them, excepting the new ones) and the UI is ~~very human~~ very easy to understand once you get the hang of it! 
-Right.. regarding ease of use: It might seem like overcomplicated burning garbage (you gotta see the first iteration of it then 🥰). I swear it ain't at all, ~~trust me bro~~ 
-As of now, there's currently 70 actions! Diversity at it's finest ✨
 
-### 💮 Future of SBM 
-Whilst development seems slow (and hopefully steady!), SBM has much more going on under the hood each release that comes! Whilst not always performance updates, each update targets to improve Studio Bot Maker's performance by ~3% each time, by removing dead code and useless loops, synchronously adding tons more features, and usually way rounder edges to everything (double meanings, i meant: making everything feel way polished and finished) 
+## Sooo... what is Studio Bot Maker?
+Well, first off - it's a free app that creates Discord Bots without you needing to write a single line of code!
 
-### 👯‍♂️ Aim of general experience 
-Studio Bot Maker isn't the most appealing app compared to [Discord Bot Maker](https://store.steampowered.com/app/682130/Discord_Bot_Maker/) and [Discord Bot Builder](https://store.steampowered.com/app/1119570/Discord_Bot_Builder/), but it's got some killer features over them! (although, kudos to the creator of Discord Bot Builder, since the developer of Discord Bot Maker wants to discontinue the app), guess the release of SBM will be just the right sign for the creator of Discord Bot Maker and every other bot maker app creator to retire! (Though, no pressure guys, finish up support for discord.js v14 first 😅 (Reminder SBM runs discord.js v14.8))
-I guess we've just got to wait to see what happens in the future, as SBM is evolving steadily, but I sure as heck hope you have a good feeling about this app too!
+It has plenty of actions and features making your bot's development fast and easier than ever - with a bold mindset that aims for a polished and smooth application - every neat thing there is out there!
 
-### 🫡 Warning
-Studio Bot Maker requires significant brain usage, please do not complain the app is hard to use unless you tried using your brain a tad 🥲
+### What does it have to offer, why would I pick this over a random Discord Bot?
+🙃 Say less, here's a few reasons:
+- One size doesn't fit all! You can't create a truly "universal" discord bot - every community & user has different needs and biases - you might like a bot with a few, but advanced commands - or, you might like a bot with plenty of features but not as advanced - choices are endless how you wish your bot be, as Studio Bot Maker provides all that flexibility easily!
+- Ease of use - You pre-configure it for yourself, afterall! Everything is at your mouse cursor, therefore you don't need to go through the boring setups of other bots, and instead pre-configure everything for yourself! There's no need to rely on anybody else, as you, yourself, can be the master of your bot!
+- It's plenty of fun - You couldn't believe how easy it is to kill time making Discord bots - especially without code! It's something that gets your brain's cogwheels spinnin' and starts up your creativity - The sky is the limit!
+- It's your creation and it's not going anywhere - whatever you create could make for a great showcase subject!
+
+Well, what is it not? First off, it's not a *completed* application (yet) - but it's got plenty to offer - everything for free! Continuing that, it's not a Massive Cash Grab like [Bot Studio For Discord](https://discordbotstudio.org/) - an app whose developer is not putting enough effort into (I mean no hate). It's also not [Discord Bot Maker](https://store.steampowered.com/app/682130/Discord_Bot_Maker/) - A great app, with a horrible userbase and community (**for the most part**, I know one of you guys @ DBM mods are reading this and are fuming to contradict me). Whilst Studio Bot Maker isn't competition towards none of those apps (due to the price gap), it's still comparable to them! 
 
 
 
 
 ## Highlights & Features!
 
-### **Summarized Controls, One Place For Everything!**
-![image](https://github.com/RatWasHere/Studio-Bot-Maker/assets/100881234/e48da719-ab54-48fe-8fd9-26d2e467baa2)
+### Customizable Colors 🎨
+![Studio_Bot_Maker_JhmqOPBwGS](https://github.com/RatWasHere/Studio-Bot-Maker/assets/100881234/efb25ed7-3e89-4420-9d36-1781b435f02e)
 
+### Discord Message Components Integration 💪
+![image](https://github.com/RatWasHere/Studio-Bot-Maker/assets/100881234/3bb28b7c-2244-45db-9b92-f0e9bbde1d60)
 
-### **Quick Fixes, Error Checker!**
-![image](https://user-images.githubusercontent.com/100881234/235323688-6321316f-6880-4c41-8ddb-b32e5199e404.png)
-
-
-### **Discord Buttons!**
-![image](https://github.com/RatWasHere/Studio-Bot-Maker/assets/100881234/c1a54d70-2a3e-4b39-8244-f2564bbcbf49)
+### Quickly Fix Errors!
+![Studio_Bot_Maker_SXysIwNT8v](https://github.com/RatWasHere/Studio-Bot-Maker/assets/100881234/20dd5fe0-35fe-4a19-a1ee-21d049f26479)
+<a href="https://www.producthunt.com/posts/studio-bot-maker?utm_source=badge-featured&utm_medium=badge&utm_souce=badge-studio&#0045;bot&#0045;maker" target="_blank"><img src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=396865&theme=dark" alt="Studio&#0032;Bot&#0032;Maker - A&#0032;no&#0032;code&#0032;Discord&#0032;bot&#0032;maker | Product Hunt" style="width: 250px; height: 54px;" width="250" height="54" /></a>

@@ -1,5 +1,5 @@
 module.exports = {
-    data: {"messageContent": "", "memberFrom": "Variable*", "name": "Kick Member", "memberVariable": "", "reason":""},
+    data: {"memberFrom": "Variable*", "name": "Kick Member", "memberVariable": "", "reason":""},
     UI: {"compatibleWith": ["Text", "Slash"],
 
      "text": "Kick Member", "sepbar":"",
@@ -19,26 +19,26 @@ module.exports = {
         }
 
 },
-    run(values, message, uID, fs, client, actionContextBridge) {
+    run(values, message, uID, fs, client, bridge) {
         let varTools = require(`../Toolkit/variableTools.js`);
         var tempVars = JSON.parse(fs.readFileSync('./AppData/Toolkit/tempVars.json', 'utf8'));
 
-        let guild = actionContextBridge.guild;
+        let guild = bridge.guild;
         let member;
         if (values.memberFrom == 'Command Author') {
             member = guild.getMember(message.author.id)
         } 
         if (values.memberFrom == 'Variable*') {
-            member = guild.getMember(tempVars[uID][varTools.transf(values.memberVariable, uID, tempVars)].id)
+            member = guild.getMember(bridge.variables[varTools.transf(values.memberVariable, bridge.variables)].id)
         }
         if (values.memberFrom == 'Member ID*') {
-            member = guild.getMember(varTools.transf(values.memberVariable, uID, tempVars))
+            member = guild.getMember(varTools.transf(values.memberVariable, bridge.variables))
         }
 
         if (values.reason == '') {
             member.kick()
         } else {
-            member.kick({reason: varTools.transf(values.reason, uID, tempVars)})
+            member.kick({reason: varTools.transf(values.reason, bridge.variables)})
         }
     }
 }

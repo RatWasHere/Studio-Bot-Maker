@@ -1,7 +1,7 @@
 module.exports = {
-    data: {"name":"Check If String Starts With", "string":"", "startWith":"", "runIfTrue": {}, "runIfFalse":{}},
+    data: {"name":"Check If String Ends With", "string":"", "startWith":"", "runIfTrue": {}, "runIfFalse":{}},
     UI: {"compatibleWith":["Any"], 
-        "text": "Check If String Starts With",
+        "text": "Check If String Ends With",
 
         "sepbar":"",
 
@@ -10,7 +10,7 @@ module.exports = {
 
         "sepbar0":"",
 
-        "btext0": "Check If It Starts With",
+        "btext0": "Check If It Ends With",
         "input": "startWith",
 
         "sepbar1":"",
@@ -32,7 +32,7 @@ module.exports = {
         let string = varTools.transf(values.string, bridge.variables)
         let startWith = varTools.transf(values.startWith, bridge.variables)
 
-        if (string.startsWith(startWith)) {
+        if (string.endsWith(startWith)) {
             actionRunner(values.runIfTrue, message, client, bridge.variables, true);
         } else {
             actionRunner(values.runIfFalse, message, client, bridge.variables, true);

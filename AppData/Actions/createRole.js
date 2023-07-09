@@ -1,63 +1,56 @@
 module.exports = {
-    data: {"name":"Create Role", "roleName":"", "color":"#000000", "guild":"Command Guild",
-    "button":"✕",
-    "storeAs":"", "guildVariable":""},
-    UI: {"compatibleWith": ["Slash", "Text"], "text": "Create Role","sepbar":"sbar", "preview":"roleName", 
-    "btext4":"Guild", "previewName":"Guild",
-     "menuBar": {choices: ["Command Guild", "Guild*"], storeAs: "guild", extraField:"guildVariable"}, 
-    "sepbarrole01":"", 
-    "btext1":"Role Name", "input43*":"roleName",  
-    "sepbarcolorname":"",
-    "btextcolorname": "Role Color",
-    "inputcolor*":"color",
-    "sepbardisplayrole?":"",
-    "btexthoist":"Display Role Separately?",
-    "ButtonBar": {"buttons":["✓", "✕"]},
-    "sepbarstoreas":"",
-    "btextstoreas":"Store As",
-    "inputstoreas_novars!*":"storeAs",
+    data: {"name":"Create Role", "roleName":"", "reason":"", "color":"#000000", "guildFrom":"Command Guild", "storeAs":"", "guildVariable":"", "isRoleMentionable":"Yes","displayRoleSeparately": "Yes"},
+    UI: {"compatibleWith": ["Slash", "Text"],
+
+    "text": "Create Role",
+
+    "sepbar":"",
+
+    "btext":"Role Name", "input*":"roleName",
+
+    "sepbar1":"",
+
+    "btext0": "Role Color", "input0*":"color",
+
+    "sepbar2":"",
+
+    "btext1":"Display Role Separately?",
+    "menuBar": {choices: ["Yes", "No"], storeAs: "displayRoleSeparately"},
+
+    "btext2":"Make Role Mentionable?",
+    "menuBar0": {choices: ["Yes", "No"], storeAs: "isRoleMentionable"},
+
+    "sepbar3":"",
+
+    "btext3":"Reason", "input":"reason",
+
+    "sepbar4":"",
+
+    "btext4":"Store As", "input!*":"storeAs",
+
     "variableSettings":{
         "guildVariable": {
             "Guild*": "direct", 
             "Command Guild": "novars"
-        }}
-
+        }
+    },
+    "preview":"roleName", "previewName":"Name",
 },
-    run(values, message, uID, fs, client) {
-        let guild;
+    run(values, message, uID, fs, client, runner, bridge) {
         let varTools = require(`../Toolkit/variableTools.js`)
-        var tempVars = JSON.parse(fs.readFileSync('./AppData/Toolkit/tempVars.json', 'utf8'))
 
-        if (values.guildAs == 'Command Guild') {
-            guild = client.guilds.get(message.guild.id) 
-        } else {
-            guild = client.guilds.get(tempVars[uID][varTools.transf(values.guildVariable, uID, tempVars)])
+        let guild = bridge.guild;
+
+        let roleParameters = {
+            name: varTools.transf(values.roleName, bridge.variables),
+            color: parseInt(varTools.transf(values.color, bridge.variables).replace("#", ""), 16),
+            hoist: values.displayRoleSeparately == 'Yes',
+            reason: values.reason != '' ? varTools.transf(values.reason, bridge.variables) : '-',
+            mentionable: values.isRoleMentionable == 'Yes'
         }
-        let hoist;
-        if (values.button == '✕') {
-            hoist = false;
-        } else {
-            hoist = true;
-        }
-        let roleOpts = {
-            name: values.roleName,
-            color: parseInt(values.color.replace("#", ""), 16),
-            hoisted: hoist
-        }
-        guild.roles.create(roleOpts).then((role) => {
-            if (values.storeAs != '') {
 
-
-                tempVars[uID] = {
-                    ...tempVars[uID], 
-                    [values.storeAs]: role
-                }
-
-
-                fs.writeFileSync('./AppData/Toolkit/tempVars.json', JSON.stringify(tempVars), 'utf8')
-
-            } 
+        guild.createRole(roleParameters).then(role => {
+            bridge[varTools.transf(values.storeAs, bridge)] = role
         })
-
     }
 }

@@ -8,17 +8,17 @@ module.exports = {
     "sepbar0":"",
     
     "btext0":"Get Member To Add Role To Via",
-    "menuBar0":{"choices":["Command Author", "Member*", "Member ID*"], storeAs: "addTo", extraField:"member"}, 
+    "menuBar0":{"choices":["Command Author", "Variable*", "Member ID*"], storeAs: "addTo", extraField:"member"}, 
 
     "sepbar1":"",
     
     "btext1":"Reason",
     "input":"reason",
 
-    "preview":"role", "previewName":"Via",
+    "preview":"roleFrom", "previewName":"Via",
     "variableSettings":{
         "member": {
-            "Member*": "direct", 
+            "Variable*": "direct", 
             "Member ID*": "indirect"
         },
         "role": {
@@ -28,32 +28,30 @@ module.exports = {
     }
 },
 
-    run(values, message, uID, fs, client, actionContextBridge) { 
+    run(values, message, uID, fs, client, actionRunner, bridge) { 
     let varTools = require(`../Toolkit/variableTools.js`);
-    var tempVars = JSON.parse(fs.readFileSync('./AppData/Toolkit/tempVars.json', 'utf8'));
 
-    let guild = actionContextBridge.guild;
+    let guild = bridge.guild;
 
     let role;
     if (values.roleFrom == 'Variable*') {
-        guild = client.guilds.get(tempVars[uID][varTools.transf(values.role, uID, tempVars)].guildID)
-        role = guild.roles.get(tempVars[uID][varTools.transf(values.role, uID, tempVars)].id).id;
+        role = bridge.variables[varTools.transf(values.role, bridge.variables)]
     }
     if (values.roleFrom == 'Role ID*') {
-        role = guild.roles.get(varTools.transf(values.role, uID, tempVariables)).id;
+        role = varTools.transf(values.role, uID, tempVariables)
     }
 
     var member;
     if (values.addTo == 'Command Author') {
         member = guild.getMember(message.member.id)
     } 
-    if (values.addTo == 'Member*') {
-        member = guild.getMember(tempVars[uID][varTools.transf(values.member, uID, tempVars)].id)
+    if (values.addTo == 'Variable*') {
+        member = bridge.variables[varTools.transf(values.member, bridge.variables)]
     }
     if (values.addTo == 'Member ID*') {
-        member = guild.getMember(varTools.transf(values.member, uID, tempVars))
+        member = guild.getMember(varTools.transf(values.member, bridge.variables))
     }
 
-    member.addRole(role, varTools.transf(values.reason, uID, tempVars));
+    member.addRole(role, varTools.transf(values.reason, bridge.variables));
     }
 }

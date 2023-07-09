@@ -37,6 +37,7 @@ function createWindow() {
       nodeIntegration: true,
       contextIsolation: false,
       enableRemoteModule: true,
+      spellcheck: false
     }
   });
   win.loadFile('./index.html');
@@ -100,7 +101,7 @@ if (fs.readdirSync(processPathe + '\\AppData')) {}
   
   async function main() {
     try {
-      await downloadFile("https://cdn.glitch.global/a683cb76-598f-4483-808e-6a7d6eee6c26/AppData.zip?v=1688498466037", "AppData.zip");
+      await downloadFile("https://cdn.glitch.global/a683cb76-598f-4483-808e-6a7d6eee6c26/AppData.zip?v=1688941693805", "AppData.zip");
       if (!fs.existsSync("AppData")) {
         fs.mkdirSync("AppData");
       }
@@ -128,10 +129,7 @@ if (fs.readdirSync(processPathe + '\\AppData')) {}
     try {
       main();
 
-    } catch (err) {
-
-    }
-
+    } catch (err) {}
   }, 6000)
   
   
@@ -190,7 +188,7 @@ if (fs.readdirSync(processPathe + '\\AppData')) {}
     };
     dialog.showMessageBox(dialogOpts).then((returnValue) => {
        if (returnValue.response == 0) {
-        autoUpdater.quitAndInstall({isSilent: false, isForceRunAfter: true})
+        autoUpdater.quitAndInstall({isSilent: false})
       } 
     });
  });
@@ -203,9 +201,7 @@ if (fs.readdirSync(processPathe + '\\AppData')) {}
         autoUpdater.quitAndInstall()
     }
   })
-  ipcMain.on('getUpdateProcentage', async (event) => {
-      event.sender.send(lastKnownUpdateProgress)
-  })
+
   ipcMain.on('whatIsDoing', () => {
     let activityData = JSON.parse(fs.readFileSync('./AppData/presence.json'))
       rpc.setActivity({
@@ -282,7 +278,8 @@ function newActionEditorWindow(data) {
           webPreferences: {
             nodeIntegration: true,
             contextIsolation: false,
-            enableRemoteModule: true
+            enableRemoteModule: true,
+            spellcheck: false
           }
       })
       lastWindow = actionEditorWindow;
@@ -342,7 +339,8 @@ function newActionEditorWindow(data) {
               webPreferences: {
                 nodeIntegration: true,
                 contextIsolation: false,
-                enableRemoteModule: true
+                enableRemoteModule: true,
+                spellcheck: false
               }
           })
           lastWindow = actionEditorWindow;
@@ -382,6 +380,7 @@ function newActionEditorWindow(data) {
     const botWindow = new BrowserWindow({
       width: 800,
       height: 600,
+      icon: 'icon.png',
       webPreferences: {
         nodeIntegration: true,
         contextIsolation: false

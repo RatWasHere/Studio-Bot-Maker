@@ -22,7 +22,7 @@ module.exports = {
       "preview":"channelFrom", 
       "previewName":"In"},
 
-   async run(values, message, uID, fs, client) { 
+   async run(values, message, uID, fs, client, runner, bridge)  { 
         let varTools = require(`../Toolkit/variableTools.js`)
         var tempVars = JSON.parse(fs.readFileSync('./AppData/Toolkit/tempVars.json', 'utf8'))
         var storedData = JSON.parse(fs.readFileSync('./AppData/Toolkit/storedData.json', 'utf8'))
@@ -30,7 +30,7 @@ module.exports = {
         if (values.channelFrom == 'Message Channel') {
             message.channel.sendTyping()
         } else { 
-            let channelId = tempVars[uID][varTools.transf(values.channel, uID, tempVars)].id
+            let channelId = bridge.variables[varTools.transf(values.channel, bridge.variables)].id
             client.getChannel(channelId).sendTyping()
         }
     }

@@ -3,7 +3,10 @@ let lastButton;
 let menu;
 document.onclick = () => {
     if (menu) {
-        menu.remove();
-        menu = undefined;
+        menu.style.scale = '0'
+        setTimeout(() => {
+            menu.remove();
+            menu = undefined;
+        }, 200)
     }
 }

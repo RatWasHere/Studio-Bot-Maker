@@ -1,13 +1,13 @@
 module.exports = {
-    data: {"name":"Store Channel Data", 
+    data: {"name":"Get Channel Data", 
     "dataName":"",
-    "dataValue": "",
-    "channelFrom":"Command Channel",
+    "storeAs":"",
+    "channelFrom":"Command Author",
     "channel":""},
      
     UI: {"compatibleWith":["Text", "Slash", "DM"],
 
-    "text":"Store Channel Data", 
+    "text":"Get Channel Data", 
     
     "sepbar":"", 
 
@@ -16,18 +16,18 @@ module.exports = {
 
     "sepbar":"",  
 
-    "btext0":"Data Name", 
+    "btext0":"Data Name",
     "input*":"dataName",
 
     "sepbar0":"",
 
-    "btext1":"Data Value", 
-    "input0*":"dataValue",
+    "btext1": "Store As", 
+    "input0*": "storeAs",
 
     "variableSettings":{
         "channel": {
             "Variable*": "direct", 
-            "Command Channel": "novars"
+            "Command Author": "novars"
         }
     },
 
@@ -50,12 +50,6 @@ module.exports = {
             channel = client.channels.get(varTools.transf(values.channel, bridge.variables))
         }
 
-        if (!storedData.channels[channel.id]) {
-            storedData.channels[channel.id] = {}
-        }
-
-        storedData.channels[channel.id][varTools.transf(values.dataName, bridge.variables)] = varTools.transf(values.dataValue, bridge.variables) 
-
-        await fs.writeFileSync('./AppData/Toolkit/storedData.json', JSON.stringify(storedData), 'utf8')
+        varTools.transf(values.storeAs, bridge.variables) = storedData.channels[channel.id][varTools.transf(values.dataName, bridge.variables)]
     }
 }

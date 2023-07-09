@@ -1,28 +1,23 @@
 module.exports = {
-    data: {"messageContent": "", "button": "Variable*", "firstNumber":"", "secondNumber":"", "storeAs":"", "name": "Randomize Number", "ExtraData": "", "sendTo":"", "ButtonRow":"", "ActionRow":"", "embedVar":"", "guild":"Message Guild", "guildField":"", "reason":""},
-    UI: {"compatibleWith": ["Any"], "text": "Randomize Number","sepbarEmbVar":"", 
-    "btextF":"From",
-    "input023*":"firstNumber",
-    "sepbar23":"E",
-    "btextD":"To",
-    "input069*":"secondNumber",
-    "sepbar2369":"noice, 69!",
-    "btextEHH":"Store As",
-    "inputEH*":"storeAs",
-    preview: "firstNumber", previewName: "Maximum Value"},
-    run(values, message, uID, fs, client) {
+    data: {"firstNumber":"", "secondNumber":"", "storeAs":"", "name": "Randomize Number"},
+    UI: {"compatibleWith": ["Any"], "text": "Randomize Number","sepbar":"", 
+    "btext":"From",
+    "input*":"firstNumber",
+    "sepbar0":"E",
+    "btext0":"To",
+    "input0*":"secondNumber",
+    "sepbar1":"noice, 69!",
+    "btext1":"Store As",
+    "input!":"storeAs",
+    preview: "firstNumber", previewName: "Max Value"},
+    run(values, message, uID, fs, client, runner, bridge)  {
         let varTools = require(`../Toolkit/variableTools.js`)
-        var tempVars = JSON.parse(fs.readFileSync('./AppData/Toolkit/tempVars.json', 'utf8'))
 
-        let first = parseFloat(varTools.transf(values.firstNumber, uID, tempVars))
-        let second = parseFloat(varTools.transf(values.secondNumber, uID, tempVars))
+        let first = parseFloat(varTools.transf(values.firstNumber, bridge.variables))
+        let second = parseFloat(varTools.transf(values.secondNumber, bridge.variables))
 
         let randomNumber = Math.floor(Math.random() * (second - first + 1)) + first
-        tempVars[uID] = {
-            ...tempVars[uID],
-            [values.storeAs]: randomNumber
-        }
-        fs.writeFileSync('./AppData/Toolkit/tempVars.json', JSON.stringify(tempVars), 'utf8')
-
+        
+        bridge.variables[varTools.transf(values.storeAs, bridge.variables)] = randomNumber
     }
 }

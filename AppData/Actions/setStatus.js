@@ -1,65 +1,86 @@
 module.exports = {
-    data: {"messageContent": "", "button": "Variable*", "name": "Set Client Status", "status":"", 
-    "statusActivity":"Playing",
-    "statusType":"Online"
+    data: {"name": "Set Client Status", "activityName":"", 
+    "activity":"Playing",
+    "type":"Online"
 },
-    UI: {"compatibleWith": ["Any"], "text": "Set Client Status Nickname","sepbarEmbVar":"",
-    "btext03":"Status Text",
-    "input03":"status",
-    "sepbarText":"",
-    "btext034":"Status Activity",
-    "menuBar1": {
-        "choices": ["Playing", "Listening To", "Watching", "Streaming"],
-        "storeAs":"statusActivity"
+    UI: {"compatibleWith": ["Any"], "text": "Set Client Status",
+    
+    "sepbar":"",
+
+    "btext":"Status Activity",
+    "menuBar": {
+        "choices": ["Playing*", "Listening To*", "Watching*", "Streaming*", "None"],
+        storeAs:"activity",
+        extraField: "activityName"
     },
-    "sepbaract":"",
-    "btext033":"Status Type",
+
+    "sepbar0":"",
+
+    "btext0":"Status Type",
     "menuBar0": {
-        "choices": ["Online", "Do Not Disturb", "Idle"],
-        "storeAs":"statusType"
+        "choices": ["Online", "Do Not Disturb", "Idle", "Invisible"],
+        "storeAs":"type"
     },
-    preview: "statusActivity", previewName: "Activity"},
-    run(values, message, uID, fs, client) {
+
+    "variableSettings": { "activityName":{} },
+
+    preview: "activity", previewName: "Activity"},
+    run(values, message, uID, fs, client, runner, bridge)  {
         let varTools = require(`../Toolkit/variableTools.js`)
         var tempVars = JSON.parse(fs.readFileSync('./AppData/Toolkit/tempVars.json', 'utf8'))
         let guild;
-        let type;
-        let status;
-        const { ActivityType, Activity, PresenceUpdateStatus } = require('discord.js');
-
-        switch (values.statusActivity) {
+        const { ActivityTypes, Presence } = require('oceanic.js');
+        
+        let activity;
+        switch (values.activity) {
             case 'Playing': 
-                status = ActivityType.Playing
+                activity = ActivityTypes.GAME
             break
             
             case 'Listening To': 
-                status = ActivityType.Listening
+                activity = ActivityTypes.LISTENING
             break
 
             case 'Watching': 
-                status = ActivityType.Watching
+                activity = ActivityTypes.WATCHING
             break
 
             case 'Streaming': 
-            status = ActivityType.Streaming
+                activity = ActivityTypes.STREAMING
+            break
+            case 'None': 
+                activity = null;
             break
         }
-        switch (values.statusType) {
+
+        let type;
+        switch (values.type) {
             case 'Online':
-                type =  PresenceUpdateStatus.Online
+                type = 'online'
             break
 
             case 'Do Not Disturb':
-                type =  PresenceUpdateStatus.DoNotDisturb
+                type = 'dnd'
             break
 
             case 'Idle':
-                type = PresenceUpdateStatus.Idle
+                type = 'idle'
+            break
+
+            case 'Invisible':
+                type = 'invisible'
             break
         }
-        client.user.setPresence({
-            activities: [{ name: values.status, type: status }],
-            status: type,
-          });
+
+        if (activity != null) {
+            client.editStatus({
+                activities: [{ type: activity, name: varTools.transf(values.activityName, bridge.variables) }],
+                status: type
+            });
+        } else {
+            client.editStatus({
+                status: type
+            })
+        }
     }
 }

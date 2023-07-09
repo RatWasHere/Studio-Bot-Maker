@@ -5,11 +5,11 @@ module.exports = {
         let varTools = require(`../Toolkit/variableTools.js`)
         var tempVars = JSON.parse(fs.readFileSync('./AppData/Toolkit/tempVars.json', 'utf8'))
         console.log('tvars')
-        let opt1 = tempVars[uID][values.varble][0]
-        let opt2 = tempVars[uID][values.varble][1]
+        let opt1 = bridge.variables[values.varble][0]
+        let opt2 = bridge.variables[values.varble][1]
         console.log(opt1, 'opt1')
         console.log(opt2, 'opt2')
-        tempVars[uID][values.vrble] = opt1 
+        bridge.variables[values.vrble] = opt1 
         fs.writeFileSync('./AppData/Toolkit/tempVars.json', JSON.stringify(tempVars), 'utf8')
         const vt2 = JSON.parse(fs.readFileSync('./AppData/Toolkit/tempVars.json', 'utf8'))
         vt2[uID][values.vrb] = opt2

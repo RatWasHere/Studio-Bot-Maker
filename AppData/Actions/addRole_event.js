@@ -8,19 +8,19 @@ module.exports = {
     "sepbar0":"",
     
     "btext0":"Get Member To Add Role To Via",
-    "menuBar0":{"choices":["Member*", "Member ID*"], storeAs: "addTo", extraField:"member"}, 
+    "menuBar0":{"choices":["Variable*", "Member ID*"], storeAs: "addTo", extraField:"member"}, 
 
     "sepbar1":"",
     
     "btext1":"Get Role Guild Via",
-    "menuBar": {choices: ["Guild ID*", "Guild Variable*"], storeAs: "guildFrom", extraField: "guild"},
+    "menuBar": {choices: ["Guild ID*", "Variable*"], storeAs: "guildFrom", extraField: "guild"},
 
     "sepbar2":"",
 
     "btext2":"Reason",
     "input":"reason",
 
-    "preview":"role", "previewName":"Via",
+    "preview":"roleFrom", "previewName":"Via",
     "variableSettings":{
         "member": {
             "Member*": "direct", 
@@ -31,44 +31,42 @@ module.exports = {
             "Role ID*": "indirect"
         },
         "guild": {
-            "Guild Variable*": "direct",
+            "Variable*": "direct",
             "Guild ID*": "indirect"
         }
     }
 },
 
-    run(values, message, uID, fs, client, actionContextBridge) { 
+    run(values, message, uID, fs, client, bridge) { 
     let varTools = require(`../Toolkit/variableTools.js`);
-    var tempVars = JSON.parse(fs.readFileSync('./AppData/Toolkit/tempVars.json', 'utf8'));
 
     let guild;
     if (values.guildFrom == "Variable*") {
-        guild = client.guilds.get(tempVars[uID][varTools.transf(values.guild, uID, tempVars)].id)
+        guild = client.guilds.get(bridge.variables[varTools.transf(values.guild, bridge)].id)
     }
     if (values.guildFrom == "Guild ID*") {
-        guild = client.guilds.get(varTools.transf(values.guild, uID, tempVars))
+        guild = client.guilds.get(varTools.transf(values.guild, bridge))
     }
 
     let role;
     if (values.roleFrom == 'Variable*') {
-        guild = client.guilds.get(tempVars[uID][varTools.transf(values.role, uID, tempVars)].guildID)
-        role = guild.roles.get(tempVars[uID][varTools.transf(values.role, uID, tempVars)].id).id;
+        role = bridge.variables[varTools.transf(values.role, bridge)]
     }
     if (values.roleFrom == 'Role ID*') {
-        role = guild.roles.get(varTools.transf(values.role, uID, tempVariables)).id;
+        role = guild.roles.get(varTools.transf(values.role, bridge)).id;
     }
 
     var member;
     if (values.addTo == 'Command Author') {
         member = guild.getMember(message.member.id)
     } 
-    if (values.addTo == 'Member*') {
-        member = guild.getMember(tempVars[uID][varTools.transf(values.member, uID, tempVars)].id)
+    if (values.addTo == 'Variable*') {
+        member = guild.getMember(bridge.variables[varTools.transf(values.member, bridge)].id)
     }
     if (values.addTo == 'Member ID*') {
-        member = guild.getMember(varTools.transf(values.member, uID, tempVars))
+        member = guild.getMember(varTools.transf(values.member, bridge))
     }
 
-    member.addRole(role, varTools.transf(values.reason, uID, tempVars));
+    member.addRole(role, varTools.transf(values.reason, bridge));
     }
 }

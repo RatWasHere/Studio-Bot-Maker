@@ -14,11 +14,8 @@ module.exports = {
     "input!*":"storeAs",
 
     previewName: "ID", preview: "channelID"},
-    run(values, message, uID, fs, client) {
-        let varTools = require(`../Toolkit/variableTools.js`)
-        var tempVars = JSON.parse(fs.readFileSync('./AppData/Toolkit/tempVars.json', 'utf8'))
-        
-        tempVars[uID][varTools.transf(values.storeAs, uID, tempVars)] = client.getChannel(varTools.transf(values.channelID, uID, tempVars))
-        fs.writeFileSync('./AppData/Toolkit/tempVars.json', JSON.stringify(tempVars), 'utf8')
+    run(values, message, uID, fs, client, runner, bridge)  {
+        let varTools = require(`../Toolkit/variableTools.js`)        
+        bridge.variables[varTools.transf(values.storeAs, bridge.variables)] = client.getChannel(varTools.transf(values.channelID, bridge.variables))
     }
 }

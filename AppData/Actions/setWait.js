@@ -13,7 +13,7 @@ module.exports = {
         }
     }
     },
-    async run(values, message, uID, fs, client) {
+    async run(values, message, uID, fs, client, runner, bridge)  {
         function wait(seconds) {
             return new Promise((resolve) => {
               setTimeout(resolve, seconds * 1000);

@@ -1,29 +1,27 @@
 module.exports = {
-    data: {"messageContent": "", "button": "Command Guild", "name": "Get User", "ExtraData": "", "sendTo":"", "choice":"ID*", "memberValue":"", "storesAs":""},
-    UI: {"compatibleWith": ["Text", "Slash"], "text": "Get User", "sepbar33235":"", "btextchoices": "Get User Via", "menuBar": {choices: ["ID*", "Command Author"], storeAs: "choice", extraField:"memberValue"}, "sepbarchoice":"", "btextStoreAs":"Store As", 
-    "inputstoreas!*":"storesAs",
-        "variableSettings": {
-            "memberValue": {
+    data: {"messageContent": "", "button": "Command Guild", "name": "Get User", "userFrom":"ID*", "memberValue":"", "storeAs":""},
+    UI: {"compatibleWith": ["Text", "Slash"], "text": "Get User", "sepbar":"", "btext": "Get User Via", "menuBar": {choices: ["ID*", "Command Author"], storeAs: "userFrom", extraField:"memberValue"}, 
+    "sepbar0":"", "btext0":"Store As", 
+    "input!*":"storeAs",
+
+    "variableSettings": {
+        "memberValue": {
                 "Command Author": "novars",
                 "id*": "indirect"
-            }
-        },
+        }
+    },
     
-    preview: "choice", previewName: "From"},
-    async run(values, message, uID, fs, client) {
-        let tempVrz = JSON.parse(fs.readFileSync('./AppData/Toolkit/tempVars.json'));
-        var tempVars = JSON.parse(fs.readFileSync('./AppData/Toolkit/tempVars.json', 'utf8'))
+    preview: "userFrom", previewName: "Via"},
+    async run(values, message, uID, fs, client, runner, bridge)  {
         let varTools = require(`../Toolkit/variableTools.js`)
 
-        if (values.choice == "Command Author") {
+        if (values.userFrom == "Command Author") {
             const member = client.users.get(message.author.id); 
-            tempVars[uID][values.storesAs] = member
+            bridge.variables[values.storeAs] = member
         }
-        if (values.choice == "ID*") {
-            const member = client.users.get(varTools.transf(values.memberValue, uID, tempVars)); 
-            tempVars[uID][values.storesAs] = member
+        if (values.userFrom == "ID*") {
+            const member = client.users.get(varTools.transf(values.memberValue, bridge.variables)); 
+            bridge.variables[values.storeAs] = member
         }
-        await fs.writeFileSync('./AppData/Toolkit/tempVars.json', JSON.stringify(tempVars), 'utf8')
-
     }
 }

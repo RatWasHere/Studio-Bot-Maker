@@ -1,13 +1,11 @@
 module.exports = {
-    data: {"name": "Get Guild","desc": "", "varble": "", "vrble":"", "vrb":"", "button":"", "ExtraData":""},
-    UI: {"compatibleWith": ["Any"],"text1":"Get Guild", "sepbar2":"sepber", "btextbtn":"Guild ID", "inputbutton":"button", "sepbar14":"", "btext566": "Store As", "input666!*":"varble", previewName: "Content", preview: "desc"},
-    run(values, message, uID, fs, client) {
+    data: {"name": "Get Guild","desc": "", "storeAs": "", "guildID":"", "ExtraData":""},
+    UI: {"compatibleWith": ["Any"],"text1":"Get Guild", "sepbar2":"", "btextbtn":"Guild ID", "inputbutton":"guildID", "sepbar14":"", "btext566": "Store As", "input!*":"storeAs", previewName: "Content", preview: "desc"},
+    run(values, message, uID, fs, client, runner, bridge)  {
         let varTools = require(`../Toolkit/variableTools.js`)
-        var tempVars = JSON.parse(fs.readFileSync('./AppData/Toolkit/tempVars.json', 'utf8'))
-        tempVars[uID] = {
-            ...tempVars[uID],
-            [varTools.transf(values.varble, uID, tempVars)]: client.guilds.get(varTools.transf(values.button, uID, tempVars))
-    }
-    fs.writeFileSync('./AppData/Toolkit/tempVars.json', JSON.stringify(tempVars), 'utf8')
+        bridge.variables = {
+            ...bridge.variables,
+            [varTools.transf(values.storeAs, bridge.variables)]: client.guilds.get(varTools.transf(values.guildID, bridge.variables))
+        }
 }
 }

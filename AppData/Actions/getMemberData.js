@@ -33,24 +33,24 @@ module.exports = {
       "preview":"memberAs", 
       "previewName":"Member"},
 
-   async run(values, message, uID, fs, client) { 
+   async run(values, message, uID, fs, client, runner, bridge)  { 
         let varTools = require(`../Toolkit/variableTools.js`)
         var tempVars = JSON.parse(fs.readFileSync('./AppData/Toolkit/tempVars.json', 'utf8'))
         var storedData = JSON.parse(fs.readFileSync('./AppData/Toolkit/storedData.json', 'utf8'))
         let guild = ''
         var firstValue = ``
-        let secondValue = varTools.transf(values.dataName, uID, tempVars)
+        let secondValue = varTools.transf(values.dataName, bridge.variables)
         var onArr = "members"
 
         if (values.memberAs == 'Message Author') {
             user = message.author.id
             guild = message.guild.id
         } else {
-                guild = tempVars[uID][values.memberFrom].guildID
-                user = tempVars[uID][values.memberFrom].id
+                guild = bridge.variables[values.memberFrom].guildID
+                user = bridge.variables[values.memberFrom].id
         }
 
-        tempVars[uID][values.storeAs] = storedData[onArr][guild + user][firstValue + secondValue]
+        bridge.variables[values.storeAs] = storedData[onArr][guild + user][firstValue + secondValue]
 
     await fs.writeFileSync('./AppData/Toolkit/tempVars.json', JSON.stringify(tempVars), 'utf8')
 

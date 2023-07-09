@@ -136,13 +136,13 @@ document.onkeydown=function(event){handleKeybind(event)};
             <div id="Action${action}" onmouseenter="lastHovered = this" draggable="true" ondragleave="handleActionDragEnd(this)" ondragend="handleActionDrop()" ondragover="actionDragOverHandle(event, this)" ondragstart="handleActionDrag(this)" onmouseleave="lastHovered = null;" class="action textToLeft ${extrf}" style="animation-delay: ${delay * 3}0ms" ondblclick="editAction(this)" onclick="highlight(this)">
             Error
             <div style="opacity: 50%; margin-left: 7px;"> - Action Missing</div>
-            <div class="deleteActionButton" onclick="deleteObject(this)">✕</div>`;
+            <div class="deleteActionButton" onclick="deleteObject(this)">✕</div></div>`;
         }
         
             if (action === lastAct) {
               setTimeout(() => {
                 highlight(document.getElementById('Action' + action));
-            }, 50);
+                }, 50);
             }
         }
     }
@@ -1179,12 +1179,14 @@ document.onkeydown=function(event){handleKeybind(event)};
 
 
             commandOptions.innerHTML = `
-            <div class="flexbox" style="height: 100%; align-items: center; justify-content: center;">
-            <div id="evtpane" style="background-color: #00000030; border-radius: 12px; width: 49%; margin-right: 2%; height: 100%;">
+            <div class="flexbox" style="height: 95%; align-items: center; justify-content: center;">
+            <div id="evtpane" style="background-color: #00000060; border-radius: 12px; width: 49%; margin-right: 2%; height: 100%;">
             <div class="barbuttontexta">Type: ${botData.commands[lastObj].event}</div>
-</div>
-            <div id="aevts" style="background-color: #00000030; border-radius: 12px; width: 49%; padding-top: 5px; height: calc(100% - 5px); max-height: calc(100% - 5px); overflow: auto;">
-            </div></div>`
+            </div>
+            <div id="eventList" style="background-color: #00000030; border-radius: 12px; width: 49%; padding-top: 5px; height: calc(100% - 5px); max-height: calc(100% - 5px); overflow: auto;">
+            </div></div>
+            <div class="textse" style="cursor: pointer; margin: auto; margin-top: 0.4%;" onclick="closeCommand()">Close</div>
+            `
 
                 if (botData.commands[lastObj].eventData == undefined) {
                     botData.commands[lastObj] = {
@@ -1194,7 +1196,7 @@ document.onkeydown=function(event){handleKeybind(event)};
 
             for (let event in events) {
                 let efile = require(`./AppData/Events/${events[event]}`)
-                let aev = document.getElementById('aevts')   
+                let aev = document.getElementById('eventList')   
                 let inp = ''
                 let decor = '&'
                 if (efile.inputSchemes > 1) {
@@ -1423,34 +1425,29 @@ document.onkeydown=function(event){handleKeybind(event)};
                 <div class="btext">On ${efile.name}</div>
                 <div class="sepbars"></div>
                     <div class="barbuttontexta">${efile.nameSchemes[0]}</div>
-                    <div class="input" id="0EV" onblur="storeevfield(this)" style="height: 26px; text-align: left;" contenteditable="true">${botData.commands[lastObj].eventData[0]}</div>
+                    <div class="input" oninput="validateInput(this)" id="0EV" onblur="storeEventField(this)" style="height: 26px; text-align: left;" contenteditable="true">${botData.commands[lastObj].eventData[0]}</div>
                 
                     <div class="sepbars"></div>
                     <div class="barbuttontexta">${efile.nameSchemes[1]}</div>
-                    <div class="input" id="1EV" onblur="storeevfield(this)" style="height: 26px; text-align: left;" contenteditable="true">${botData.commands[lastObj].eventData[1]}</div>
+                    <div class="input" oninput="validateInput(this)" id="1EV" onblur="storeEventField(this)" style="height: 26px; text-align: left;" contenteditable="true">${botData.commands[lastObj].eventData[1]}</div>
                     
                     <div class="sepbars"></div>
-
-                    <div class="barbutton" onclick="closeCommand()" style="height: auto; margin: auto;"><div class="barbuttontexta">Close</div></div>
-                    `} catch(er) {null}
+                `} catch(er) {null}
             } else {
                 try {
                 evtpane.innerHTML = `
                 <div style="margin-top: 10px;"></div>
                 <div class="btext">On ${efile.name}</div>
                 <div class="sepbars"></div>
-                    <div class="barbuttontexta">${efile.nameSchemes[0]}</div>
-                    <div class="input" id="0EV" onblur="storeevfield(this)" style="height: 26px; text-align: left;" contenteditable="true">${botData.commands[lastObj].eventData[0]}</div>
-                    <div class="sepbars"></div>
-
-                    <div class="barbutton" onclick="closeCommand()" style="height: auto; margin: auto;"><div class="barbuttontexta">Close</div></div>  
-                    `
+                <div class="barbuttontexta">${efile.nameSchemes[0]}</div>
+                <div class="input" id="0EV" oninput="validateInput(this)" onblur="storeEventField(this)" style="height: 26px; text-align: left;" contenteditable="true">${botData.commands[lastObj].eventData[0]}</div>
+                `
             } catch(err) {null}
         }
         }
-        function storeevfield(fr) {
+        function storeEventField(fr) {
             let id = fr.id.split('EV')[0]
-            let nht = fr.innerHTML 
+            let nht = fr.innerHTML
 
             botData.commands[lastObj].eventData[id] = nht
             wast()

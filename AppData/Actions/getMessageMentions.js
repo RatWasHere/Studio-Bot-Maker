@@ -21,47 +21,36 @@ module.exports = {
         }
     },
     preview: "button", previewName: "Mention"},
-    run(values, message, uID, fs, client) {
+    run(values, message, uID, fs, client, runner, bridge)  {
         let varTools = require(`../Toolkit/variableTools.js`)
-        var tempVars = JSON.parse(fs.readFileSync('./AppData/Toolkit/tempVars.json', 'utf8'))
         let msg;
             
 
         if (values.messageObject == 'Command Message') {
             msg = message;
         } else {
-            msg = client.getChannel(tempVars[uID][values.messageVariable].channelId).messages.get(tempVars[uID][values.messageVariable].id)
-        } 
-        if (values.button == 'First') {
-            mention = msg.mentions.users.first()
+            msg = client.getChannel(bridge.variables[values.messageVariable].channelId).messages.get(bridge.variables[values.messageVariable].id)
+        }
 
-            tempVars[uID] = {
-                ...tempVars[uID],
-                [values.storeAs]: mention
-            }
-            fs.writeFileSync('./AppData/Toolkit/tempVars.json', JSON.stringify(tempVars), 'utf8')
-
-        } else {
-            let mentions = msg.mentions.users.array;
-            let mention; 
-            switch (values.button) {
-                case 'Second':
-                    mention = mentions[1]
-                break
-                case 'Third':
-                    mention = mentions[2]
-                break
-                case 'Custom':
-                    mention = mentions[parseFloat(varTools.transf(values.ExtraField, uID, tempVars))]
-                break
-            }
-
-            tempVars[uID] = {
-                ...tempVars[uID],
-                [values.storeAs]: mention
-            }
-            fs.writeFileSync('./AppData/Toolkit/tempVars.json', JSON.stringify(tempVars), 'utf8')
-
-         }
+        let mentions = msg.mentions.users
+        switch (values.button) {
+            case 'First':
+                mentions = mentions[0]
+            break
+            case 'Second':
+                mentions = mentions[1]
+            break
+            case 'Third':
+                mentions = mentions[2]
+            break
+            case 'Custom':
+                mentions = mentions[parseFloat(varTools.transf(values.ExtraField, bridge.variables))]
+            break
+        }
+        
+        bridge.variables = {
+            ...bridge.variables,
+            [values.storeAs]: mention || '-'
+        }
     }
 }
