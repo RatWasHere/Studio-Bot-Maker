@@ -1,6 +1,7 @@
 module.exports = {
     data: {"name": "Check If Member Has Role",
-    "roleVariable":"",
+    "role":"",
+    "roleFrom":"Role ID*",
     "runIfTrue": {}, "runIfFalse": {},
     "memberVariable":"", "memberChoice":"Command Author"},
     UI: {"compatibleWith": ["Text", "Slash"], 
@@ -10,8 +11,9 @@ module.exports = {
     "btext":"Get Member From",
     "menuBar":{"choices": ["Command Author", "Variable*", "Member ID*"], storeAs:"memberChoice", extraField:"memberVariable"},
     "sepbar0":"",
-    "btext0":"Role Variable", 
-    "input_direct":"roleVariable",
+
+    "btext0":"Get Role Via",
+    "menuBar0": {choices: ["Role ID*", "Variable*"], storeAs: "roleFrom", extraField: "role"},
 
     "sepbar1": "",
 
@@ -30,7 +32,7 @@ module.exports = {
         }
     },
 
-    previewName: "Role Variable", preview: "roleVariable",
+    previewName: "Role Variable", preview: "role",
     },
 
     async run(values, message, uID, fs, client, actionRunner, bridge) {
@@ -45,8 +47,16 @@ module.exports = {
             user = guild.getMember(varTools.transf(values.memberVariable, bridge.variables));
         }
 
+        let role;
+        if (values.roleFrom == 'Role ID*') {
+            role = varTools.transf(values.role, bridge.variables)
+        }
+        if (values.roleFrom == 'Variable*') {
+            role = bridge.variables[varTools.transf(values.role, bridge.variables)].id
+        }
+
         let hasRole = false;
-        if (member.roles.has(bridge.variables[varTools.transf(values.roleVariable)].id)) {
+        if (member.roles.has(role)) {
             hasRole = true
         }
 

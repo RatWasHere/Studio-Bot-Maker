@@ -103,7 +103,7 @@ function getUIelements(UIdata) {
                    if (UIdata[element].extraField) {
                     MenuConditionalInput = UIdata[element].extraField
                    }
-                    endHTML = `${endHTML}<div class="baction" style="animation-name: appearfadenmt; width: 90% !important; text-align: left; border-radius: 12px; border-bottom-left-radius: 0px; border-bottom: solid 2px #FFFFFF40; padding-bottom: 0px; border-bottom-right-radius: 0px; padding-left: 0px; padding-right: 0px; margin-bottom: 6px; padding-left: 24px !important; " onclick="openChoices('${UIdata[element].storeAs}', this, '${MenuConditionalInput}', '${element}')">${UIdata[element].choices[option]}</div>`
+                    endHTML = `${endHTML}<div class="dropdown" onclick="openChoices('${UIdata[element].storeAs}', this, '${MenuConditionalInput}', '${element}')">${UIdata[element].choices[option]}</div>`
                     if (UIdata[element].choices[option].endsWith('*')) {
                         if (UIdata.variableSettings[UIdata[element].extraField][UIdata[element].choices[option]] == 'actionGroup') {
                             endHTML = `${endHTML} <div class="selectBar" style="border-radius: 0px;" onblur="saveField('${UIdata[element].extraField}', '${UIdata[element].storeAs}'); updateFoundActionGroup(this)" onkeyup="saveField('${UIdata[element].extraField}', '${UIdata[element].storeAs}')" id="${MenuConditionalInput}" contenteditable="true">${action.data[UIdata[element].extraField]}</div>`
@@ -145,7 +145,7 @@ function getUIelements(UIdata) {
     }
 }
     try {
-        return endHTML
+        return endHTML + '<br>'
     } finally {
         setTimeout(() => {
             for (let menu in menus) {

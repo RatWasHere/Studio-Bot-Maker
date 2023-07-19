@@ -31,9 +31,8 @@ module.exports = {
 
     "preview":"channelName", "previewName":"Name"},
     
-    async run(values, message, uID, fs, actionRunner, bridge) { 
+    async run(values, message, uID, fs, client, actionRunner, bridge) { 
         let varTools = require(`../Toolkit/variableTools.js`)
-        var tempVars = JSON.parse(fs.readFileSync('./AppData/Toolkit/tempVars.json', 'utf8'));
 
         const { ChannelTypes, Permissions } = require('oceanic.js');
 
@@ -60,4 +59,3 @@ module.exports = {
         }
     }
 }
-// ??

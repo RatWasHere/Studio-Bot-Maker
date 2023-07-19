@@ -9,8 +9,9 @@ module.exports = {
 
        "sepbar1":"sepbar",
 
-        "sepbar2":"", "btext2":"Reason", 
+        "btext2":"Reason", 
         "input":"reason", 
+        
         preview: "memberFrom", previewName: "Ban",
         "variableSettings": {
             "memberVariable": {
@@ -35,9 +36,9 @@ module.exports = {
         }
 
         if (values.reason == '') {
-            member.ban()
+            member.guild.createBan(member.user.id)
         } else {
-            member.ban({reason: varTools.transf(values.reason, bridge.variables)})
+            member.guild.createBan(member.user.id, {reason: varTools.transf(reason, bridge.variables)})
         }
     }
 }

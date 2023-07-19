@@ -13,7 +13,13 @@ module.exports = {
     "sepbar0":"",
 
     "btext0":"Check Permission", 
-    "menuBar0":{"choices":["Admin", "Booster", "Kick", "Ban", "Timeout", "Deafen", "Manage Messages", "Manage Roles", "Manage Channels"], storeAs:"permission"},
+    "menuBar0":{"choices":[
+    "Administrator", "Timeout", "Kick", "Ban", "Manage Roles",
+    "Manage Messages", "Attach Files", "Manage Channels", "Manage Nicknames",
+    "Change Nickname", "Create Threads", "Manage Threads",
+    "Create Events", "Manage Events", "Mention Everyone",
+    "View Audit Log", "Booster", "Manage Server"
+    ], storeAs:"permission"},
 
     "sepbar1": "",
 
@@ -22,8 +28,9 @@ module.exports = {
 
     "sepbar2": "",
 
-    "btextwhattoddo":"If Member Doesn't Have Permission, Run:",
+    "btext2":"If Member Doesn't Have Permission, Run:",
     "actions0": "runIfFalse",
+
     "variableSettings": {
     "whatNot": {
         "Run Action Group*": "actionGroup"
@@ -45,67 +52,127 @@ module.exports = {
         let varTools = require(`../Toolkit/variableTools.js`);
         
         let guild = bridge.guild;
-        var user = message.member
+        var member = message.member
         if (values.memberChoice == 'Variable*') {
-            user = guild.getMember(varTools.transf(bridge.variables[values.memberVariable].id, bridge.variables));
+            member = guild.getMember(varTools.transf(bridge.variables[values.memberVariable].id, bridge.variables));
         }
         if (values.memberChoice == 'Member ID*') {
-            user = guild.getMember(varTools.transf(values.memberVariable, bridge.variables));
+            member = guild.getMember(varTools.transf(values.memberVariable, bridge.variables));
         }
         
         let hasPermission = false;
 
         switch(values.permission) {
             case 'Admin': 
-                if (user.permissions.has("ADMINISTRATOR")) {
+                if (member.permissions.has("ADMINISTRATOR")) {
                     hasPermission = true
                 }
             break
-
-            case 'Booster': 
-                if (user.premiumSince) {
+            
+            case 'Timeout':
+                if (member.permissions.has("MODERATE_MEMBERS")) {
                     hasPermission = true
                 }
             break
 
             case 'Kick':
-                if (user.permissions.has("KICK_MEMBERS")) {
+                if (member.permissions.has("KICK_MEMBERS")) {
                     hasPermission = true
                 }
             break
 
             case 'Ban':
-                if (user.permissions.has("BAN_MEMBERS")) {
+                if (member.permissions.has("BAN_MEMBERS")) {
                     hasPermission = true
                 }
             break
 
-            case 'Timeout':
-                if (user.permissions.has("MODERATE_MEMBERS")) {
-                    hasPermission = true
-                }
-            break
-
-            case 'Deafen':
-                if (user.permissions.has("DEAFEN_MEMBERS")) {
-                    hasPermission = true
-                }
-            break
-                
-            case 'Manage Roles':
-                if (user.permissions.has("MANAGE_ROLES")) {
-                    hasPermission = true
-                }
-            break
-                
-            case 'Manage Channels':
-                if (user.permissions.has("MANAGE_CHANNELS")) {
-                    hasPermission = true
-                }
+            case 'Manage Roles': 
+            if (member.permissions.has("MANAGE_ROLES")) {
+                hasPermission = true
+            }
             break
 
             case 'Manage Messages': 
-            if (user.permissions.has("MANAGE_MESSAGES")) {
+            if (member.permissions.has("MANAGE_MESSAGES")) {
+                hasPermission = true
+            }
+            break
+
+            case 'Attach Files': 
+            if (member.permissions.has("ATTACH_FILES")) {
+                hasPermission = true
+            }
+            break
+            
+            case 'Manage Channels':
+                if (member.permissions.has("MANAGE_CHANNELS")) {
+                    hasPermission = true
+                }
+            break
+
+            case 'Manage Webhooks': 
+            if (member.permissions.has("MANAGE_WEBHOOKS")) {
+                hasPermission = true
+            }
+            break
+
+            case 'Change Nickname': 
+            if (member.permissions.has("CHANGE_NICKNAME")) {
+                hasPermission = true
+            }
+            break
+
+            case 'Manage Nicknames': 
+            if (member.permissions.has("MANAGE_NICKNAMES")) {
+                hasPermission = true
+            }
+            break
+
+            case 'Create Threads': 
+            if (member.permissions.has("CREATE_PUBLIC_THREADS") || member.permissions.has("CREATE_PRIVATE_THREADS")) {
+                hasPermission = true
+            }
+            break
+
+            case 'Manage Threads': 
+            if (member.permissions.has("MANAGE_THREADS")) {
+                hasPermission = true
+            }
+            break
+
+            case 'Create Events': 
+            if (member.permissions.has("CREATE_EVENTS")) {
+                hasPermission = true
+            }
+            break
+
+            case 'Manage Events': 
+            if (member.permissions.has("MANAGE_EVENTS")) {
+                hasPermission = true
+            }
+            break
+            
+            case 'Mention Everyone': 
+            if (member.permissions.has("MENTION_EVERYONE")) {
+                hasPermission = true
+            }
+            break
+            
+            case 'View Audit Log': 
+            if (member.permissions.has("VIEW_AUDIT_LOG")) {
+                hasPermission = true
+            }
+            break
+
+            case 'Booster': 
+            if (member.premiumSince != null) {
+                hasPermission = true
+            }
+            break
+
+            case 'Manage Server': 
+            if (member.permissions.has("MANAGE_GUILD")) {
                 hasPermission = true
             }
             break

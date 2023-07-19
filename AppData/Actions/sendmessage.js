@@ -225,7 +225,6 @@ module.exports = {
     "previewName": "Content"
     },
     async run(values, message, uID, fs, client, actionRunner, bridge) {
-        var tempVars = JSON.parse(fs.readFileSync('./AppData/Toolkit/tempVars.json', 'utf8'))
         const {InteractionTypes, ComponentTypes, ButtonStyles} = require('oceanic.js')
         let varTools = require(`../Toolkit/variableTools.js`)
         const interactionTools = require('../Toolkit/interactionTools.js')
@@ -404,7 +403,7 @@ module.exports = {
         }
         if (values.sendTo == 'User ID*') {
             const DMchannel = await client.users.get(varTools.transf(values.to, bridge.variables)).createDM()
-            channel = await DMchannel
+            channel = DMchannel
         }
         channel.createMessage({content: varTools.transf(values.messageContent, bridge.variables), embeds: embeds , components: endComponents}).then(msg => {
             if (values.storeAs != "") {

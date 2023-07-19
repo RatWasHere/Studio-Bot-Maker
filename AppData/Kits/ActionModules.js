@@ -66,6 +66,7 @@ function deleteObject(obj) {
           newJson[i + 1] = filteredEntries[i][1];
         }
         botData.commands[lastObj].actions = newJson;
+        botData.commands[lastObj].count = botData.commands[lastObj].count - 1;
         wast()
 
         document.getElementById(obj.parentNode.id).style.animationName = 'deleteObject';
@@ -73,7 +74,7 @@ function deleteObject(obj) {
         document.getElementById(obj.parentNode.id).style.animationDuration = '0.4s'
         setTimeout (() => {
           document.getElementById(obj.parentNode.id).remove()
-          botData.commands[lastObj].count = botData.commands[lastObj].count - 1
+
             refreshActions()
             refreshGroups()
     }, 390)
@@ -108,9 +109,57 @@ function deleteObject(obj) {
     fs.writeFileSync(processPath + '\\AppData\\data.json', JSON.stringify(botData, null, 2));
     checkErrors()
 }
+
+let timing;
+
+var draggedGroup;
+var draggedOverGroup;
+function handleGroupDrag(group) {
+    timing = new Date().getTime()
+    draggedGroup = group.id.split('Group')[1]
+}
+function groupDragOverHandle(event, group) {
+    group.classList.add('goofyhovereffectlite')
+    /*
+    placeholderGroup = document.createElement('div')
+    placeholderGroup.style.animationName = 'fade'
+    placeholderGroup.style.marginTop = '41px'
+    placeholderGroup.style.marginBottom = '-35px'
+    */
+    event.preventDefault()
+    draggedOverGroup = group.id.split('Group')[1]
+}
+function handleGroupDragEnd(group) {
+    group.classList.remove('goofyhovereffectlite')
+}
+function handleGroupDrop(group) {
+    refreshGroups()
+    if (new Date().getTime() - timing < 100) return
+    let oldPosition = parseFloat(draggedGroup)
+    let newPosition = parseFloat(draggedOverGroup)
+    lastType = 0
+    if (oldPosition <  newPosition) {
+        while (newPosition != oldPosition) {
+            oldPosition++
+            highlight(document.getElementById(`Group${oldPosition}`))
+            moveUp()
+            refreshGroups()
+        }
+    } else {
+        while (newPosition != oldPosition) {
+            oldPosition--
+            highlight(document.getElementById(`Group${oldPosition}`))
+            moveDown()
+            refreshGroups()
+        }
+    }
+    refreshGroups()
+}
+
 var draggedAction;
 var draggedOverAction;
 function handleActionDrag(action) {
+    timing = new Date().getTime()
     draggedAction = action.id.split('Action')[1]
 }
 function actionDragOverHandle(event, action) {
@@ -129,10 +178,12 @@ function handleActionDragEnd(action) {
 
 }
 function handleActionDrop(action) {
+    refreshActions()
+    if (new Date().getTime() - timing < 100) return
+
     let oldPosition = parseFloat(draggedAction)
     let newPosition = parseFloat(draggedOverAction)
     lastType = 1
-    console.log('S')
     if (oldPosition <  newPosition) {
         while (newPosition != oldPosition) {
             oldPosition++
@@ -159,27 +210,19 @@ function moveUp() {
             tempAction = botData.commands[lastObj].actions[`${parseFloat(lastAct) - 1}`];
             botData.commands[lastObj].actions[`${parseFloat(lastAct) - 1}`] = currentAction;
             botData.commands[lastObj].actions[lastAct] = tempAction;
-            actionElement = document.getElementById(`Action${lastAct}`);
-            actionElement.id = `Action${parseFloat(lastAct) - 1}`
-            actionElement.previousSibling.id = `Action${parseFloat(lastAct)}`
-            actionElement.parentNode.insertBefore(actionElement, actionElement.previousSibling);
             lastAct = `${parseFloat(lastAct) - 1}`;
             refreshActions()
         }
     } else {
         let command = botData.commands[lastObj];
-                currentAction = command;
-                if (botData.commands[`${parseFloat(lastObj) - 1}`] != undefined) {
-                    tempAction = botData.commands[`${parseFloat(lastObj) - 1}`];
-                    botData.commands[`${parseFloat(lastObj) - 1}`] = currentAction;
-                    botData.commands[lastObj] = tempAction;
-                    actionElement = document.getElementById(`Group${lastObj}`);
-                    actionElement.setAttribute('id', `Group${parseFloat(lastObj) - 1}`);
-                    actionElement.previousSibling.setAttribute('id', `Group${parseFloat(lastObj)}`);
-                    actionElement.parentNode.insertBefore(actionElement, actionElement.previousSibling);
-                    lastObj = `${parseFloat(lastObj) - 1}`
-
-                }
+            currentAction = command;
+            if (botData.commands[`${parseFloat(lastObj) - 1}`] != undefined) {
+                tempAction = botData.commands[`${parseFloat(lastObj) - 1}`];
+                botData.commands[`${parseFloat(lastObj) - 1}`] = currentAction;
+                botData.commands[lastObj] = tempAction;
+                lastObj = `${parseFloat(lastObj) - 1}`
+                refreshGroups()
+            }
         }
     fs.writeFileSync(processPath +'\\AppData\\data.json', JSON.stringify(botData, null, 2));
 }
@@ -192,10 +235,6 @@ function moveDown() {
             tempAction = botData.commands[lastObj].actions[`${parseFloat(lastAct) + 1}`];
             botData.commands[lastObj].actions[`${parseFloat(lastAct) + 1}`] = currentAction;
             botData.commands[lastObj].actions[lastAct] = tempAction;
-            actionElement = document.getElementById(`Action${lastAct}`);
-            actionElement.id = `Action${parseFloat(lastAct) + 1}`
-            actionElement.nextSibling.id = `Action${parseFloat(lastAct)}`
-            actionElement.parentNode.insertBefore(actionElement, actionElement.nextSibling.nextSibling);
             lastAct = `${parseFloat(lastAct) + 1}`;
             refreshActions()
         }
@@ -206,17 +245,13 @@ function moveDown() {
             tempAction = botData.commands[`${parseFloat(lastObj) + 1}`];
             botData.commands[`${parseFloat(lastObj) + 1}`] = currentAction;
             botData.commands[lastObj] = tempAction;
-            actionElement = document.getElementById(`Group${lastObj}`);
-            actionElement.setAttribute('id', `Group${parseFloat(lastObj) + 1}`);
-            actionElement.nextSibling.id = `Group${parseFloat(lastObj)}`
-            actionElement.parentNode.insertBefore(actionElement, actionElement.nextSibling.nextSibling);
             lastObj = `${parseFloat(lastObj) + 1}`
-
+            refreshGroups()
         }
-
     }
     fs.writeFileSync(processPath +'\\AppData\\data.json', JSON.stringify(botData, null, 2));
 }
+
 
 
 function buttonIfy(button, bar, what) {
@@ -322,3 +357,82 @@ function setRunningElement(runs) {
         runningElement.innerHTML = `<div class="barbuttontexta">${botData.commands[lastObj].actions[lastAct].data.actionRows[bar].components[button].runs.length}</div>`
 }
 
+function setHighlightedGroup(type) {
+    let animationArea = document.getElementById('animationArea')
+    let oldGroupType;
+    if (selectedGroupType == 'text') {
+        oldGroupType = 1
+    }
+    if (selectedGroupType == 'slash') {
+        oldGroupType = 2
+    }
+    if (selectedGroupType == 'event') {
+        oldGroupType = 3
+    }
+
+    animationArea.style.transition = 'all 0.2s ease'
+    animationArea.parentElement.style.overflowX = 'none'
+
+    if (oldGroupType > type) {
+        animationArea.style.scale = '0.3'
+        animationArea.style.filter = 'blur(12px)'
+        animationArea.style.marginLeft = '-110vw'
+        setTimeout(() => {
+            animationArea.style.transition = 'all 0s ease'
+            animationArea.style.marginRight = '-110vw'
+            animationArea.style.marginLeft = ''
+
+            setTimeout(() => {
+                animationArea.style.transition = 'all 0.2s ease'
+            }, 30);
+
+            setTimeout(() => {
+                animationArea.style.scale = ''
+                animationArea.style.filter = ''
+                animationArea.style.marginRight = ''
+            }, 300)
+        }, 300)
+    } else if (oldGroupType < type) {
+        animationArea.style.filter = 'blur(12px)'
+        animationArea.style.scale = '0.3'
+        animationArea.style.marginRight = '-110vw'
+        setTimeout(() => {
+            animationArea.style.transition = 'all 0s ease'
+            animationArea.style.marginLeft = '-110vw'
+            animationArea.style.marginRight = ''
+
+            setTimeout(() => {
+            animationArea.style.transition = 'all 0.2s ease'
+            }, 30);
+
+            setTimeout(() => {
+                animationArea.style.scale = ''
+                animationArea.style.filter = ''
+                animationArea.style.marginLeft = ''
+            }, 300)
+        }, 300)
+    }
+
+    document.getElementById('highlightedGroup1').style.backgroundColor = ''
+    document.getElementById('highlightedGroup2').style.backgroundColor = ''
+    document.getElementById('highlightedGroup3').style.backgroundColor = ''
+
+    if (type == 1) {
+        selectedGroupType = 'text'
+    }
+    if (type == 2) {
+        selectedGroupType = 'slash'
+    }
+    if (type == 3) {
+        selectedGroupType = 'event'
+    }
+
+    setTimeout(() => {
+        refreshGroups()
+    document.getElementById('actionbar').innerHTML = ``
+    document.getElementById('highlightedGroup' + type).style.backgroundColor = '#FFFFFF20'
+    setTimeout(() => {
+        animationArea.parentElement.style.overflowX = 'none'
+    }, 400);
+    }, 300);
+}

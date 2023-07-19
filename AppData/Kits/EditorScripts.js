@@ -139,7 +139,7 @@ function mbSelect(storeAs, menu, extraField, UIreference) {
 
     const parent = storeAs.parentNode;
     const cachedParentNode = parent;
-    const menuInnerHTML = storeAs.innerHTML;
+    const menuInnerHTML = storeAs.innerText;
     const cachedMenuContent = menuInnerHTML;
     const lastmenu = cachedParentNode;
     const innerHeight = cachedParentNode.clientHeight;
@@ -150,7 +150,7 @@ function mbSelect(storeAs, menu, extraField, UIreference) {
     lastmenu.style.animationDuration = "300ms";
 
     setTimeout(() => {
-        storeAs.parentNode.innerHTML = storeAs.innerHTML;
+        storeAs.parentNode.innerHTML = storeAs.innerText;
         if (pending != "" && cachedParentNode.nextSibling.className !== "selectBar") {
             pending.appendAfter(cachedParentNode);
         }
@@ -202,8 +202,11 @@ function openChoices(storesAs, pElm, dElement, elementStores) {
         if (chk[option] != plmdf) {
             pElm.onclick = () => {}
             let emnf = document.createElement('div')
-            emnf.className = 'menuBar'
-            emnf.innerHTML = chk[option]
+            emnf.className = 'menuBar flexbox'
+            emnf.style.textAlign = 'left'
+            emnf.style.justifyContent = 'left'
+            emnf.style.alignItems = 'left'
+            emnf.innerHTML = `<div style="width: 0.3vw; height: 10px; margin-right: 1vw; margin-top: auto; margin-bottom: auto; background-color: #FFFFFF85;"></div> ${chk[option]} `
             emnf.onclick = () => {mbSelect(emnf, storesAs, dElement, elementStores)}
             pElm.appendChild(emnf)
             emnf.style.animationName = 'inittl'
@@ -483,11 +486,19 @@ function fuzzyMatch(str, pattern, accuracy) {
     }
     document.getElementById('actionSearchCloseButton').nextElementSibling.value = ''
     document.getElementById('searchActions').innerHTML = ''
+    let timeout = 0;
     for (let action in cachedActions) {
+        timeout++
+        const animationId = Date.now().toString(36) + Math.random().toString(36).substr(2)
         document.getElementById('searchActions').innerHTML += 
         `
-        <div class="hoverablez dimension" onclick="switchOutAction('${cachedActions[action].file}')" style="border-radius: 40px; width: 29%; padding: 5px; padding-left: 5px; padding-right: 5px; margin-left: 0.5vw; margin-right: 0.5vw; margin-bottom: 1vh;"><div class="barbuttontexta">${cachedActions[action].name}</div></div>
+        <div class="hoverablez dimension" id="${animationId}" onclick="switchOutAction('${cachedActions[action].file}')" style="border-radius: 40px; width: 29%; overflow: auto; padding: 5px; padding-left: 5px; padding-right: 5px; margin-left: 0.5vw; margin-right: 0.5vw; margin-bottom: 1vh; transition: 0.1s ease; opacity: 0%; scale: 0.7;"><div class="barbuttontexta">${cachedActions[action].name}</div></div>
         `
+        setTimeout(() => {
+            document.getElementById(animationId).style.opacity = '100%'
+            document.getElementById(animationId).style.width = '29%'
+            document.getElementById(animationId).style.scale = '1'
+        }, timeout * 15)
     } 
   }
 
@@ -584,14 +595,16 @@ function closeSearch() {
     searchContainer.style.transition = 'all 0.3s ease'
     actionView.style.transition = 'all 0.3s ease'
 
+    closeButton.nextElementSibling.onclick = (event) => {
+        event.preventDefault()
+    }
+
     setTimeout(() => {
         let buttonsContainer = document.getElementById('buttonsContainer');
         buttonsContainer.style.transition = 'all 0.3s ease'
         buttonsContainer.style.height = '10vh'
         buttonsContainer.style.overflow = 'auto'
-        closeButton.nextElementSibling.onclick = (event) => {
-            event.preventDefault()
-        }
+
 
         setTimeout(() => {
             closeButton.nextElementSibling.remove()
@@ -599,7 +612,7 @@ function closeSearch() {
             closeButton.remove()
         }, 300)
 
-    }, 100) 
+    }, 300) 
 
     searchContainer.style.height = '10vh'
 
@@ -699,7 +712,7 @@ function validateInput(event) {
     updatedRange.collapse(true);
     selection.removeAllRanges();
     selection.addRange(updatedRange);
-  }
+}
 
   
   function validateLargeInput(event) {

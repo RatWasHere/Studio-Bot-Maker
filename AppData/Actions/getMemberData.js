@@ -35,7 +35,6 @@ module.exports = {
 
    async run(values, message, uID, fs, client, runner, bridge)  { 
         let varTools = require(`../Toolkit/variableTools.js`)
-        var tempVars = JSON.parse(fs.readFileSync('./AppData/Toolkit/tempVars.json', 'utf8'))
         var storedData = JSON.parse(fs.readFileSync('./AppData/Toolkit/storedData.json', 'utf8'))
         let guild = ''
         var firstValue = ``
@@ -51,8 +50,5 @@ module.exports = {
         }
 
         bridge.variables[values.storeAs] = storedData[onArr][guild + user][firstValue + secondValue]
-
-    await fs.writeFileSync('./AppData/Toolkit/tempVars.json', JSON.stringify(tempVars), 'utf8')
-
 }
 }

@@ -15,19 +15,15 @@ module.exports = {
 
     "sepbar0":"",
 
-    "btext":"Reaction Emoji",
+    "btext0":"Reaction Emoji",
 
     "input*": "emoji",
-
-    "preview":"awaitFrom",
-    "previewName":"From",
 
     "preview":"emoji",
     "previewName":"Emoji"
     },
 
     async run(values, inter, uID, fs, client, bridge) { 
-        const tempVars = JSON.parse(fs.readFileSync('./AppData/Toolkit/tempVars.json', 'utf8'));
         const varTools = require(`../Toolkit/variableTools.js`)
 
         let message;

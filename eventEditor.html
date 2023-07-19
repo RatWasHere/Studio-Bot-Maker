@@ -1,0 +1,297 @@
+<html>
+    <link rel="stylesheet" href="main.css">
+    <meta charset="utf8">
+    <div style="width: 100vw; overflow: auto; height: 100vh; margin-top: -8px; margin-left: -8px; filter: blur(22px); border-radius: 14px; transition: scale 0.3s ease, filter 0.5s ease; scale: 0.1;" id="everything_container">
+    <div id="editorContent" style="height: 90vh; width: 100vw; background-color: #FFFFFF10; overflow: auto;">
+        <div class="ring"></div>
+    </div>
+    <div id="selectorMenu" class="flexbox" style="height: auto; justify-content: left; width: 100vw; background-color: #FFFFFF08;">
+        <div id="buttonsContainer" class="flexbox" style="width: 100vw; height: 10vh; transition: scale 5.3s ease;">
+        <div class="barbuttonshift flexbox" id="eventSearchButton" onclick="eventSearch()" style="margin-left: 1vw; width: 23vw; margin-right: auto;">
+            <div class="image switchObjs" style="width: 30% !important; height: 30px !important; margin: auto !important;"></div>
+            <div style="margin: auto;">
+            <div class="barbuttontexta">Change Event</div>
+            <div class="smalltext" style="opacity: 50%; font-size: 8px;">CTRL+K</div>
+            </div>
+        </div>
+        <div class="barbuttontexta" id="event-name"></div>
+        <div class="betaIndicator">BETA</div>
+    <div class="barbuttonshift flexbox" style="margin-right: 1vw; width: 13vw; margin-left: auto;" onclick="closeEvent()">
+        <div class="image checkmark" style="width: 30% !important; height: 30px !important; margin: auto !important;"></div>
+        <div style="margin: auto;">
+        <div class="barbuttontexta">Close</div>
+        <div class="smalltext" style="opacity: 50%; font-size: 8px;">CTRL+TAB</div>
+        </div>
+        </div>
+    </div>
+    </div>
+    </div>
+</div>
+    <script src="./AppData/Kits/Loader.js"></script>
+<script>
+
+    var datjson = JSON.parse(fs.readFileSync('./AppData/data.json'))
+    let themeColor = datjson.color
+    document.getElementById('everything_container').style.background = `linear-gradient(45deg, ${themeColor} 0%, #121212 170%)`
+    document.body.style.transition = 'all 0.2s ease'
+    document.body.style.backgroundColor = '#FFFFFF00'
+    const {ipcRenderer} = require('electron')
+    let data;
+    document.onkeydown=function(event) {
+        if (event.key == 'Tab' && event.ctrlKey == true) {
+            closeEvent()
+        }
+        if (event.key.toLowerCase() == 'q' && event.ctrlKey == true) {
+            closeEvent()
+        }
+        if (event.key.toLowerCase() == 'k' && event.ctrlKey == true) {
+            if (document.getElementById('eventSearchCloseButton')) {
+                closeEvents()
+            } else {
+                eventSearch()
+            }
+        }
+    }
+    function updateEventData(at, content) {
+        data[at] = content
+        __data.data[at] = content
+    }
+    let __data;
+    ipcRenderer.on('eventData', (builtinEvent, _data) => {
+        document.getElementById('everything_container').style.scale = '1'
+        document.getElementById('everything_container').style.filter = 'blur(0px)'
+    __data = _data
+    data = _data.data;
+    let event = require(`./AppData/Events/${__data.file}`)
+    console.log(event)
+    document.getElementById('event-name').innerHTML = `<span style="opacity: 50%">Event:</span> ${event.name}`
+
+    if (event.inputSchemes > 1) {
+        document.getElementById('editorContent').innerHTML = `
+            <br>
+            <div class="barbuttontexta" style="margin-left: 2vw; margin-right: 0%; text-align: left; font-size: 23px;">On ${event.name}</div>
+            <div class="sepbars"></div>
+            <div class="barbuttontexta" style="margin-left: 2vw; margin-top: 2vh; margin-right: 0%; text-align: left;">${event.nameSchemes[0]}</div>
+            <div class="input" oninput="validateInput(event); updateEventData(0, this.innerText)" onblur="storeEventField(this)" style="height: 26px; text-align: left;" contenteditable="true">${data[0]}</div>
+
+            <div class="sepbars"></div>
+            <div class="barbuttontexta" style="margin-left: 2vw; margin-top: 2vh; margin-right: 0%; text-align: left;">${event.nameSchemes[1]}</div>
+            <div class="input" oninput="validateInput(event); updateEventData(1, this.innerText)" onblur="storeEventField(this)" style="height: 26px; text-align: left;" contenteditable="true">${data[1]}</div>
+
+            <div class="sepbars"></div>`
+    } else {
+        document.getElementById('editorContent').innerHTML = `
+            <br>
+            <div class="barbuttontexta" style="margin-left: 2vw; margin-right: 0%; text-align: left; font-size: 23px;">On ${event.name}</div>
+            <div class="sepbars"></div>
+            <div class="barbuttontexta" style="margin-left: 2vw; margin-top: 2vh; margin-right: 0%; text-align: left;">${event.nameSchemes[0]}</div>
+            <div class="input" oninput="validateInput(event); updateEventData(0, this.innerText)" style="height: 26px; text-align: left;" contenteditable="true">${data[0]}</div>`
+    }
+})
+function validateInput(event) {
+    const div = event.target;
+    const text = div.textContent;
+    
+    // Save the current cursor position
+    const selection = window.getSelection();
+    const range = selection.getRangeAt(0);
+    const offset = range.startOffset;
+  
+    // Remove image tags
+    const sanitizedText = text.replace(/<img\b[^>]*>/gi, '');
+  
+    // Update the content of the div with sanitized text
+    div.innerHTML = sanitizedText;
+    
+    // Restore the cursor position
+    const updatedRange = document.createRange();
+    updatedRange.setStart(div.firstChild, offset);
+    updatedRange.collapse(true);
+    selection.removeAllRanges();
+    selection.addRange(updatedRange);
+}
+function closeEvent() {
+    document.getElementById('everything_container').style.scale = '0'
+    document.body.style.transition = 'all 0.2s ease'
+    document.body.style.backgroundColor = '#FFFFFF00'
+    document.getElementById('everything_container').style.filter = 'blur(40px)'
+    setTimeout(() => {
+        ipcRenderer.send('eventClosed' + __data.time, __data)
+    }, 500)
+}
+let pendingSearchStart = false;
+function eventSearch() {
+    if (pendingSearchStart == true) return
+    pendingSearchStart = true
+    document.getElementById('eventSearchButton').onclick = (event) => {
+        event.preventDefault()
+    }
+    let searchContainer = document.getElementById('selectorMenu');
+    let eventView = document.getElementById('editorContent');
+
+    searchContainer.style.transition = 'all 0.3s ease'
+    eventView.style.transition = 'all 0.3s ease'
+
+    setTimeout(() => {
+        let buttonsContainer = document.getElementById('buttonsContainer');
+        buttonsContainer.style.transition = 'all 0.3s ease'
+        buttonsContainer.style.height = '0vh'
+        buttonsContainer.style.overflow = 'auto'
+        pendingSearchStart = false
+    }, 200) 
+
+    searchContainer.style.height = '85vh'
+
+    eventView.style.scale = '0.8'
+    eventView.onclick = (event) => {
+        event.preventDefault()
+    }
+    eventView.style.borderRadius = '10px'
+    eventView.style.height = '15vh'
+    
+    searchContainer.innerHTML += `
+    <div id="eventSearchCloseButton" onclick="closeEvents()" class="barbuttonshift" style="width: 95% !important; margin: auto; margin-top: 1vh; margin-bottom: 1vh;"><div class="barbuttontexta">Close</div></div>
+    <input class="input" oninput="queryEvents(this.value)" placeholder="Search" style="padding: 20px; width: 97%; padding-left: 11px; padding-right: 11px;">
+    <div id="searchEvents" style="height: 67vh; overflow: auto; margin-top: 2vh; align-items: flex-start; align-content: start;" class="flexbox"></div>
+    `
+    viewAllEvents()
+}
+let cachedEvents = []
+
+function queryEvents(query) {
+        if (query == '') {
+            viewAllEvents()
+            return
+        }
+        document.getElementById('searchEvents').innerHTML = ''
+        let matchNo = 0;
+        for (let event in cachedEvents) {
+            if (fuzzyMatch(cachedEvents[event].name, query, 0.02)) {
+                if (matchNo == 0) {
+                    document.getElementById('searchEvents').innerHTML += 
+                    `
+                    <div class="dimension fade" style="background-color: #FFFFFF08; padding: 7px; border-radius: 12px; width: calc(95% - 14px); margin-bottom: 2vh;">
+                    <div class="barbuttontexta" style="margin-left: 1vw !important; text-align: left;">Best Match</div>
+                    <div onclick="switchOutEvent('${cachedEvents[event].file}')" class="hoverablez dimension" style="border-radius: 40px; width: 95%; margin-left: auto !important; margin-right: auto !important; padding: 5px; padding-left: 5px; padding-right: 5px; margin-left: 0.5vw; margin-right: 0.5vw;"><div class="barbuttontexta">${cachedEvents[event].name}</div></div>
+                    </div>
+                    `
+                } else {
+                    document.getElementById('searchEvents').innerHTML += 
+                    `
+                    <div onclick="switchOutEvent('${cachedEvents[event].file}')" class="hoverablez dimension fade" style="border-radius: 40px; width: 29%; padding: 5px; padding-left: 5px; padding-right: 5px; margin-left: 0.5vw; margin-right: 0.5vw; margin-bottom: 1vh;"><div class="barbuttontexta">${cachedEvents[event].name}</div></div>
+                    `
+                }
+
+                matchNo++
+            }
+        }
+        if (matchNo == 0) {
+            document.getElementById('searchEvents').innerHTML += 
+            `
+            <div class="dimension fade" style="background-color: #FFFFFF08; padding: 7px; border-radius: 12px; width: calc(95% - 14px); margin-bottom: 2vh;">
+            <div class="barbuttontexta" style="margin-left: 1vw !important; text-align: left;">No Events Found</div>
+            <div onclick="viewAllEvents()" class="hoverablez dimension" style="border-radius: 40px; width: 95%; margin-left: auto !important; margin-right: auto !important; padding: 5px; padding-left: 5px; padding-right: 5px; margin-left: 0.5vw; margin-right: 0.5vw;"><div class="barbuttontexta">View All Events</div></div>
+            </div>
+            `
+        }
+    }
+
+    function closeEvents() {
+    let closeButton = document.getElementById('eventSearchCloseButton')
+    closeButton.nextElementSibling.style.transition = 'all 0.4s ease'
+    closeButton.nextElementSibling.nextElementSibling.style.transition = 'all 0.4s ease'
+    closeButton.nextElementSibling.style.height = '0vh'
+    closeButton.nextElementSibling.nextElementSibling.style.height = '0vh'
+    document.getElementById('eventSearchButton').onclick = () => {
+        eventSearch()
+    }
+
+
+    let searchContainer = document.getElementById('selectorMenu');
+    let eventView = document.getElementById('editorContent');
+
+    searchContainer.style.transition = 'all 0.3s ease'
+    eventView.style.transition = 'all 0.3s ease'
+
+    closeButton.nextElementSibling.onclick = (event) => {
+        event.preventDefault()
+    }
+
+    setTimeout(() => {
+        let buttonsContainer = document.getElementById('buttonsContainer');
+        buttonsContainer.style.transition = 'all 0.3s ease'
+        buttonsContainer.style.height = '10vh'
+        buttonsContainer.style.overflow = 'auto'
+
+
+        setTimeout(() => {
+            closeButton.nextElementSibling.remove()
+            closeButton.nextElementSibling.remove()
+            closeButton.remove()
+        }, 300)
+
+    }, 300) 
+
+    searchContainer.style.height = '10vh'
+
+    eventView.style.scale = '1'
+    eventView.onclick = (event) => {
+        
+    }
+    eventView.style.borderRadius = '0px'
+    eventView.style.height = '90vh'
+    }
+
+    function switchOutEvent(newEventFile) {
+        let newEvent = require(`./AppData/Events/${newEventFile}`);
+        __data.name = newEvent.name;
+        __data.file = newEventFile;
+        event = newEvent;
+        if (newEvent.inputSchemes > 1) {
+        document.getElementById('editorContent').innerHTML = `
+            <br>
+            <div class="barbuttontexta" style="margin-left: 2vw; margin-right: 0%; text-align: left; font-size: 23px;">On ${newEvent.name}</div>
+            <div class="sepbars"></div>
+            <div class="barbuttontexta" style="margin-left: 2vw; margin-top: 2vh; margin-right: 0%; text-align: left;">${newEvent.nameSchemes[0]}</div>
+            <div class="input" oninput="validateInput(event); updateEventData(0, this.innerText)" style="height: 26px; text-align: left;" contenteditable="true">${data[0]}</div>
+
+            <div class="sepbars"></div>
+            <div class="barbuttontexta" style="margin-left: 2vw; margin-top: 2vh; margin-right: 0%; text-align: left;">${newEvent.nameSchemes[1]}</div>
+            <div class="input" oninput="validateInput(event); updateEventData(0, this.innerText)" style="height: 26px; text-align: left;" contenteditable="true">${data[1]}</div>
+
+            <div class="sepbars"></div>`
+    } else {
+        document.getElementById('editorContent').innerHTML = `
+            <br>
+            <div class="barbuttontexta" style="margin-left: 2vw; margin-right: 0%; text-align: left; font-size: 23px;">On ${newEvent.name}</div>
+            <div class="sepbars"></div>
+            <div class="barbuttontexta" style="margin-left: 2vw; margin-top: 2vh; margin-right: 0%; text-align: left;">${newEvent.nameSchemes[0]}</div>
+            <div class="input" oninput="validateInput(event); updateEventData(0, this.innerText)" style="height: 26px; text-align: left;" contenteditable="true">${data[0]}</div>`
+    }        
+        
+        closeEvents()
+    }
+
+    function viewAllEvents() {
+        document.getElementById('searchEvents').innerHTML = ''
+        
+        if (cachedEvents[0] == undefined) {
+        let events = fs.readdirSync('./AppData/Events')
+            for (let eventFile in events) {
+                let evt = require('./AppData/Events/' + events[eventFile])
+                cachedEvents.push({
+                    name: evt.name,
+                    file: events[eventFile]
+                })
+            }
+        }
+
+        for (let event in cachedEvents) {
+            document.getElementById('searchEvents').innerHTML += 
+            `
+            <div onclick="switchOutEvent('${cachedEvents[event].file}')" class="hoverablez dimension fade" style="border-radius: 40px; width: 29%; padding: 5px; padding-left: 5px; padding-right: 5px; margin-left: 0.5vw; margin-right: 0.5vw; margin-bottom: 1vh;"><div class="barbuttontexta">${cachedEvents[event].name}</div></div>
+            `
+        }
+    }
+</script>
+</html>

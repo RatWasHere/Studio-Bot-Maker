@@ -38,7 +38,6 @@ module.exports = {
     },
     run(values, message, uID, fs, client, actionContextBridge) {
         let varTools = require(`../Toolkit/variableTools.js`);
-        var tempVars = JSON.parse(fs.readFileSync('./AppData/Toolkit/tempVars.json', 'utf8'));
         let guild = actionContextBridge.guild;
 
         let member;

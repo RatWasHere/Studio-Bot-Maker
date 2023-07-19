@@ -44,9 +44,9 @@ try {
 
     /* Project Startup */ console.log(`${colors.BgWhite}${colors.FgBlack}${data.name}${colors.Reset}${colors.FgCyan} is starting up...${colors.Reset}`);
     client.on('ready', async () => {
-        /* Project Start */ console.log(`${colors.FgGreen}Studio Bot Maker V3.0.1 Project, started successfully!${colors.Reset}`);
+        /* Project Start */ console.log(`${colors.FgGreen}Studio Bot Maker V3.1.1 Project, started successfully!${colors.Reset}`);
         
-        console.log(`${colors.BgMagenta + colors.FgWhite}Purging All Slash Commands${colors.Reset}`)
+        console.log(`${colors.BgYellow + colors.FgWhite}Purging All Slash Commands${colors.Reset}`)
         await client.application.bulkEditGlobalCommands([])
         console.log(`${colors.BgGreen + colors.FgBlack}Purged All Slash Commands${colors.Reset}`)
 
@@ -100,60 +100,69 @@ try {
         }
     }
     client.on('messageCreate', async msg => {
-        if (msg.author.bot) return
-        let keepGoing;
-        /* Loop Through All Groups */ for (let i in data.commands) {
-        /* Check If The Group's Type */ if (data.commands[i].type == 'action') {
-        /* Check The Command's Trigger */ if (data.commands[i].trigger === 'textCommand') {
+    if (msg.author.bot) return
+    let keepGoing;
+    for (let i in data.commands) {
+        if (data.commands[i].type == 'action') {
         let command = data.commands[i];
-        if (command.bounds) {
-            if (command.bounds == 1 && msg.inDirectMessageChannel()) {
-            if (command.bounds == 2 || command.bounds == 0) {
-                let boundary = command.bounds.limitedTo;
-                if (boundary.includes('admin')) {
-                    if (!msg.member.permissions.has("ADMINISTRATOR")) return;
+        let commandName = data.commands[i].name;
+
+        if (command.trigger == 'textCommand') {
+
+        if (`${data.prefix}${commandName}`.toLowerCase() == msg.content.split(' ')[0].toLowerCase()) {
+            let matchesPermissions = true;
+            if (command.boundary) {
+                if (command.boundary.worksIn == 'guild') {
+                    if (!msg.guild) {
+                        matchesPermissions = false;
+                        console.log('noguild')
+                    }
+                    for (let permission in command.boundary.limits) {
+                        if (!msg.member.permissions.has(command.boundary.limits[permission])) matchesPermissions = false
+                    }
                 }
-                if (boundary.includes('msg')) {
-                    if (!msg.member.permissions.has("MANAGE_MESSAGES")) return;
+                if (command.boundary.worksIn == 'dms') {
+                    if (msg.guild) matchesPermissions = false;
                 }
-                if (boundary.includes('timeout')) {
-                    if (!msg.member.permissions.has("MODERATE_MEMBERS")) return;
+
+            }
+            if (matchesPermissions == true) {
+                runActionArray(i, msg, client)
+            }
+        }
+
+       } else {
+
+        if (command.trigger == 'messageContent') {
+            let messageContent = `${msg.content}`;
+            if (messageContent.toLowerCase().split(' ').includes(command.name.toLowerCase()) && `${msg.content}`.toLowerCase().startsWith(data.prefix) == false) {
+                let matchesPermissions;
+                if (command.boundary) {
+                    if (command.boundary.worksIn == 'guild') {
+                        if (!msg.guild) {
+                            matchesPermissions = false;
+                        }
+                    }
+                    if (command.boundary.worksIn == 'dms') {
+                        if (msg.guild) matchesPermissions = false;
+                    }
+    
+                    for (let permission in command.boundary.limits) {
+                        if (msg.member.permissions.has(command.boundary.limits[permission])) matchesPermissions = false;
+                    }
                 }
-                if (boundary.includes('ban')) {
-                    if (!msg.member.permissions.has("BAN_MEMBERS")) return;
-                }
-                if (boundary.includes('kick')) {
-                    if (!msg.member.permissions.has("KICK_MEMBERS")) return;
+                if (matchesPermissions == true) {
+                    runActionArray(i, interaction, client)
                 }
             }
-        } else {
-            if (msg.inDirectMessageChannel()) return;
         }
-        } else {
-            if (msg.inDirectMessageChannel()) return;
+
         }
-        /* How The Command Was Defined By The User */ let commandName = data.commands[i].name;
-        if (`${data.prefix}${commandName}`.toLowerCase() == `${msg.content}`.toLowerCase().split(' ')[0]) {
-            keepGoing = true
-        } else {
-              if (data.commands[i].trigger == 'messageContent') {
-                let messageContent = `${msg.content}`;
-                /* Check If Everything Matches! */
-                 if (messageContent.toLowerCase().split(' ').includes(data.commands[i].name.toLowerCase()) && `${msg.content}`.toLowerCase().startsWith(data.prefix) == false) {
-                    keepGoing = true
-                }
-              }
-        }
-        if (keepGoing) {
-            runActionArray(i, msg, client) 
-        }
-       }
-      }
-     }
-    });
+    }
+}
+});
 
     let commands = []
-
     for (let i in data.commands) {
         if (data.commands[i].trigger == 'slashCommand' && data.commands[i].type == 'action') {
             /* Soon To Be Added In V3 */
@@ -171,35 +180,25 @@ try {
                 let parameterType;
                 let isRequired;
                 let parameterDescription = parameterDefaultDescription;
-                switch (parameter.type) {
-                    case 'String':
+                switch (parameter.type.toLowerCase()) {
+                    case 'string':
                         parameterType = ApplicationCommandOptionTypes.STRING
                         break; 
-                    case 'Boolean':
+                    case 'boolean':
                         parameterType = ApplicationCommandOptionTypes.BOOLEAN
                         break
-                    case 'User':
+                    case 'user':
                         parameterType = ApplicationCommandOptionTypes.USER
                         break
-                    case 'Channel': 
+                    case 'channel': 
                         parameterType = ApplicationCommandOptionTypes.CHANNEL
                     break
-                    case 'Integer':
+                    case 'integer':
                         parameterType = ApplicationCommandOptionTypes.INTEGER
                     break
-                    case 'Role':
+                    case 'role':
                         parameterType = ApplicationCommandOptionTypes.ROLE
                     break
-                    case 'Mentionable':
-                        parameterType = ApplicationCommandOptionTypes.MENTIONABLE
-                    break
-                }
-
-                /* Editor Fuck-Up, Not Fixing Anytime Soon ✌️ */ 
-                if (parameter.required == true) {
-                    isRequired = false
-                } else {
-                    isRequired = true
                 }
 
                 if (parameter.description.trim() != '') {
@@ -210,7 +209,7 @@ try {
                 let newCmd = {
                     name: parameter.name.toLowerCase(),
                     type: parameterType,
-                    required: isRequired,
+                    required: parameter.required,
                     description: parameter.description
                 }
                 commandParameters.push(newCmd);
@@ -298,7 +297,7 @@ try {
     
 function registerCommands() {
     for (let command of commands) {
-        console.log(`${colors.Blink}(Slash Commands)${colors.Reset} - ${colors.BgMagenta}${command.name}${colors.Reset} Is getting registered..`)
+        console.log(`${colors.Blink}(Slash Commands)${colors.Reset} - ${colors.BgYellow}${command.name}${colors.Reset} Is getting registered..`)
         if (!command.options) {
             client.application.createGlobalCommand({ 
                 type: ApplicationCommandTypes.CHAT_INPUT,

@@ -25,7 +25,6 @@ module.exports = {
 },
     run(values, message, uID, fs, client, runner, bridge) {
     let varTools = require(`../Toolkit/variableTools.js`)
-    var tempVars = JSON.parse(fs.readFileSync('./AppData/Toolkit/tempVars.json', 'utf8'))
     let guild = bridge.guild;
 
     var member;
@@ -64,7 +63,5 @@ module.exports = {
             bridge.variables[values.storeAs] = Date.parse(member.communicationDisabledUntil) || '-'
         break
     }
-    
-    fs.writeFileSync('./AppData/Toolkit/tempVars.json', JSON.stringify(tempVars), 'utf8')
     }
 }

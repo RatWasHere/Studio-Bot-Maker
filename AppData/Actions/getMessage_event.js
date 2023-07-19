@@ -6,7 +6,7 @@ module.exports = {
     "channelFrom":"ID*",
     "channel":""
     },
-    UI: {"compatibleWith": ["Text", "Slash", "DM"],
+    UI: {"compatibleWith": ["Event", "Slash"],
 
     "text": "Get Message",
     

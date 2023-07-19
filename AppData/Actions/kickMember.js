@@ -6,9 +6,7 @@ module.exports = {
 
       "btext":"Get Member Via",
        "menuBar": {"choices": ["Command Author", "Variable*", "Member ID*"], storeAs: "memberFrom", extraField: "memberVariable"}, 
-
-       "sepbar1":"sepbar",
-
+       
         "sepbar2":"", "btext2":"Reason", 
         "input":"reason", 
         preview: "memberFrom", previewName: "Kick",
@@ -21,7 +19,6 @@ module.exports = {
 },
     run(values, message, uID, fs, client, bridge) {
         let varTools = require(`../Toolkit/variableTools.js`);
-        var tempVars = JSON.parse(fs.readFileSync('./AppData/Toolkit/tempVars.json', 'utf8'));
 
         let guild = bridge.guild;
         let member;

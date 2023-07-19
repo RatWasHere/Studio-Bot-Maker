@@ -1,8 +1,9 @@
 const { app, BrowserWindow, contextBridge, ipcMain, dialog } = require('electron');
 let win;
+const { initialize } = require("@aptabase/electron/main");
+initialize("A-EU-6249019582");
 const fs = require('fs');
 function createWindow() {
-  /*
   let tempWindow = new BrowserWindow({
     width: 800,
     height: 500,
@@ -14,8 +15,6 @@ function createWindow() {
     center: true,
     transparent: true,
     titleBarStyle: 'hidden',
-    minHeight: 500,
-    minWidth: 800,
     webPreferences: {
       nodeIntegration: true,
       contextIsolation: false,
@@ -23,36 +22,67 @@ function createWindow() {
     }
   })
   tempWindow.loadFile('./Loader.html')
-  */
-  win = new BrowserWindow({
-    width: 1170,
-    height: 750,
-    minHeight: 800,
-    minWidth: 1170,
-    icon: 'icon.png',
-    title: 'Studio Bot Maker',
-    center: true,
-    show: false,
-    webPreferences: {
-      nodeIntegration: true,
-      contextIsolation: false,
-      enableRemoteModule: true,
-      spellcheck: false
-    }
-  });
-  win.loadFile('./index.html');
-  win.setMenuBarVisibility(false);
-  win.show()
-  /*
+
   ipcMain.on('selectedProject', (event, projectData) => {
-    if (projectData != undefined) {
-      fs.writeFileSync('./AppData/data.json', projectData)
+    if (projectData == '_') {
+      fs.writeFileSync('./AppData/data.json', JSON.stringify({
+        commands: {},
+        count: 13,
+        settings: {},
+        color: "rgb(0, 0, 0)",
+        btk: "YOUR_BOTS_TOKEN",
+        clientID: "YOUR_BOTS_ID",
+        name: "Studio Bot!",
+        prjSrc: "",
+        reset: false
+      }))
+    } else if (typeof projectData == 'string') {
+      let data = {
+        commands: {},
+        count: 0,
+        settings: {},
+        color: "rgb(0, 0, 0)",
+        btk: "YOUR_BOTS_TOKEN",
+        clientID: "YOUR_BOTS_ID",
+        name: "Studio Bot!",
+        prjSrc: "",
+        reset: false
+      }
+
+      try {
+        data = JSON.parse(fs.readFileSync(projectData + `/AppData/data.json`, 'utf8'))
+      } catch (err) {}
+      fs.writeFileSync('./AppData/data.json', JSON.stringify(data))
     }
-    ipcMain.on('finishLoad', () => {
-      tempWindow.close()
+
+    win = new BrowserWindow({
+      width: 1170,
+      height: 750,
+      minHeight: 800,
+      minWidth: 1170,
+      icon: 'icon.png',
+      title: 'Studio Bot Maker',
+      center: true,
+      show: false,
+      webPreferences: {
+        nodeIntegration: true,
+        contextIsolation: false,
+        enableRemoteModule: true,
+        spellcheck: false
+      }
+    });
+    win.loadFile('./index.html');
+    win.setMenuBarVisibility(false);
+    win.on('ready-to-show', () => {
+      const { trackEvent } = require("@aptabase/electron/main")
+      trackEvent("ready"); 
+      try {
+        tempWindow.close()
+      } catch (err) {}
+      win.show()
     })
 })
-    */
+
 
 }
 
@@ -291,6 +321,9 @@ function newActionEditorWindow(data) {
       })
       actionEditorWindow.on('close', () => {
           lastWindow = actionEditorWindow.getParentWindow();
+          lastWindow.focus()
+          actionEditorWindow.getParentWindow().send('childClose')
+
       })
       
 
@@ -305,6 +338,7 @@ function newActionEditorWindow(data) {
         }
         if (data.event == 'close') {
           lastWindow = actionEditorWindow.getParentWindow();
+          lastWindow.focus()
           actionEditorWindow.close();
         }
         if (data.event == 'openCustom') {
@@ -352,6 +386,7 @@ function newActionEditorWindow(data) {
           })
           actionEditorWindow.on('close', () => {
               lastWindow = actionEditorWindow.getParentWindow();
+              lastWindow.focus()
               actionEditorWindow.getParentWindow().focus()
           })
           
@@ -364,6 +399,7 @@ function newActionEditorWindow(data) {
             }
             if (data.event == 'close') {
               lastWindow = actionEditorWindow.getParentWindow();
+              lastWindow.focus()
               actionEditorWindow.close();
               actionEditorWindow.getParentWindow().webContents.send('childSave', data.data)
             }
@@ -389,4 +425,125 @@ function newActionEditorWindow(data) {
     botWindow.setMenuBarVisibility(false);
     botWindow.loadFile('./BotWindow.html');
 
+  })
+
+
+  ipcMain.on('editEvent', (event, data) => {
+    let eventName = data.name;
+    let eventFile = data.event;
+    let eventData = data.data;
+    let time = new Date().getTime()
+    const EventEditorWindow = new BrowserWindow({
+      width: 800,
+      height: 600,
+      minHeight: 600,
+      minWidth: 800,
+      maxHeight: 600,
+      maxWidth: 800,
+      icon: 'icon.png',
+      title: `Studio Bot Maker | Editing Menu`,
+      center: true,
+      resizable: false,
+      parent: lastWindow || win,
+      transparent: true,
+      titleBarStyle: 'hidden',
+      modal: true,
+      webPreferences: {
+        nodeIntegration: true,
+        contextIsolation: false,
+        enableRemoteModule: true,
+        spellcheck: false
+      }
+  })
+
+  EventEditorWindow.loadFile('eventEditor.html')
+  EventEditorWindow.on('ready-to-show', () => {
+      EventEditorWindow.webContents.send('eventData', {name: eventName, file: eventFile, data: eventData, time: time})
+  })
+  
+
+  ipcMain.on(`eventClosed${time}`, (event, data) => {
+    EventEditorWindow.getParentWindow().focus()
+    win.webContents.send('eventSave', data);
+    try {
+      EventEditorWindow.close()
+    } catch(e) {}
+  })
+
+
+  })  
+  ipcMain.on('openPerms', (event, data) => {
+    const PermissionEditorWindow = new BrowserWindow({
+      width: 800,
+      height: 600,
+      minHeight: 600,
+      minWidth: 800,
+      maxHeight: 600,
+      maxWidth: 800,
+      icon: 'icon.png',
+      title: `Studio Bot Maker | Editing Menu`,
+      center: true,
+      resizable: false,
+      parent: lastWindow || win,
+      transparent: true,
+      titleBarStyle: 'hidden',
+      modal: true,
+      webPreferences: {
+        nodeIntegration: true,
+        contextIsolation: false,
+        enableRemoteModule: true,
+        spellcheck: false
+      }
+  })
+
+  PermissionEditorWindow.loadFile('permissionEditor.html')
+  PermissionEditorWindow.on('ready-to-show', () => {
+      PermissionEditorWindow.webContents.send('data', data)
+  })
+  ipcMain.once('permissionsClosed', (event, boundaryData) => {
+    win.webContents.send('boundaryData', boundaryData)
+    win.focus()
+    setTimeout(() => {
+      try {
+        PermissionEditorWindow.close()
+      } catch (err) {}
+    }, 70)
+  })
+  })
+
+  ipcMain.on('editParameters', (event, data) => {
+    const ParameterEditorWindow = new BrowserWindow({
+      width: 800,
+      height: 600,
+      minHeight: 600,
+      minWidth: 800,
+      maxHeight: 600,
+      maxWidth: 800,
+      icon: 'icon.png',
+      title: `Studio Bot Maker | Editing Menu`,
+      center: true,
+      resizable: false,
+      parent: lastWindow || win,
+      transparent: true,
+      titleBarStyle: 'hidden',
+      modal: true,
+      webPreferences: {
+        nodeIntegration: true,
+        contextIsolation: false,
+        enableRemoteModule: true,
+        spellcheck: false
+      }
+  })
+
+  ParameterEditorWindow.loadFile('parameterEditor.html')
+  ParameterEditorWindow.on('ready-to-show', () => {
+      ParameterEditorWindow.webContents.send('data', data)
+  })
+  ipcMain.once('parametersClosed', (event, parameters) => {
+      win.focus()
+      win.send('parameters', parameters)
+      try {
+        ParameterEditorWindow.close()
+      } catch (err) {} 
+    })
   })

@@ -1,0 +1,131 @@
+<html>
+    <link rel="stylesheet" href="./main.css">
+    <title>Studio Bot Maker</title>
+    <link rel="icon" type="image/x-icon" href="./icon.png">
+    <meta name="title" content="Studio Bot Maker - Action Creation Documentation">
+    <meta name="description" content="Learn how to create actions for studio bot maker!">
+    <meta name="keywords" content="discord, discord bot, discord-bot, bot maker, discord bot maker, discord bots, bot maker free, free discord bot maker, free bot maker, discord bot make, discord bot no code maker, no code discord bot, discord bot free maker, free discord bot, free bot maker, studio bot maker, documentation, discord bot maker documentation, studio bot maker tutorial, tutorial">
+    <meta name="robots" content="index, follow">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="language" content="English">
+    <meta name="revisit-after" content="5 days">
+    <meta name="author" content="RatWasHere">
+        <div class="hov" style="background-image: url('./actioneditor.png'); margin-left: auto; margin-right: auto; margin-top: -67vh; width: 50vw; background-size: cover; aspect-ratio: 1.33; margin-left: 42vw; position: absolute;"></div>
+
+        <div class="dimension flexbox" style="min-width: 45vw; width: 45vw; max-width: 96vw; min-height: 25vh; backdrop-filter: blur(6px); border-radius: 12px; margin-top: 70vh; background-color: #FFFFFF10; padding: 1vw; padding-top: 1vh; padding-bottom: 1vh; margin-right: 0vw;">
+            <div style="width: 100%;">
+            <div class="barbuttontext" style="opacity: 0.9; margin-top: 1vh; margin-left: 1vw; margin-bottom: 1.3vh;">Actions API</div>
+            <div class="barbuttontexta textToLeft" style="margin-left: 1vw;">Learn how actions are made and how they work!</div>
+            <div class="barbuttontexta textToLeft" style="margin-left: 1vw; opacity: 70%; font-size: 14px;">It's more powerful than you'd think.
+                 <span style="cursor: pointer; color: blueviolet">Scroll Down.</span>
+            </div>
+            </div>
+        </div>
+        <div class="dimension" style="width: 80vw; height: auto; backdrop-filter: blur(6px); border-radius: 12px; margin-top: 5vh; background-color: #FFFFFF10; padding: 1vw; padding-top: 1vh; padding-bottom: 1vh; margin-right: 0vw;">
+            <div class="barbuttontext" style="opacity: 0.9; margin-top: 1vh; margin-left: 1vw; margin-bottom: 1.3vh;">SmartUI <type>actionUI</type></div>
+            <div class="barbuttontexta textToLeft" style="margin-left: 1vw;">How the user interacts with your action.</div>
+            <div class="sepbars"></div>
+            <div class="barbuttontexta textToLeft">Static Elements</div>
+            <snippet>text</snippet> <type>string</type>
+            <br>
+            <snippet>sepbar</snippet> <type>null</type>
+            <br>
+            <snippet>btext</snippet> <type>string</type>
+            <br>
+
+            <div class="barbuttontexta textToLeft">Interactive Elements</div>
+
+            <snippet>input</snippet> <type>string</type> <type>-actionDataReference-</type><br>
+            <snippet>largeInput</snippet> <type>string</type> <type>-actionDataReference-</type><br>
+            <snippet>menuBar</snippet> <type>object</type> <typegroup><type>choices</type><type>array<typegroup>string</typegroup></type></typegroup> <typegroup><type>extraField</type><type>-actionDataReference-</type><type>string</type></typegroup> <typegroup><type>storeAs</type><type>-actionDataReference-</type><type>string</type></typegroup>
+            <div class="barbuttontexta textToLeft" style="margin-left: 0vw;">End your choice in <type>*</type> to enable the input field. (<type>extraField</type>)</div>
+            <snippet>actions</snippet> <type>object</type> <type>-actionDataReference-</type>
+            <br>
+            <snippet>customMenu</snippet><type>object</type> <typegroup>types<typegroup>object<type>name</type>:<type>string</type></typegroup></typegroup>
+            <typegroup>UItypes<type>string (menuObjectTypeKey)</type>:<typegroup>object<typegroup>UI<type>object</type><type>actionUI</type></typegroup><typegroup>data<type>object</type><type>actionData</type></typegroup></typegroup>
+        </div>
+
+        <div class="dimension" style="width: 80vw; height: auto; backdrop-filter: blur(6px); border-radius: 12px; margin-top: 5vh; background-color: #FFFFFF10; padding: 1vw; padding-top: 1vh; padding-bottom: 1vh; margin-right: 0vw;">
+            <div class="barbuttontext" style="opacity: 0.9; margin-top: 1vh; margin-left: 1vw; margin-bottom: 1.3vh;">Action Setup</div>
+            <pre><code class="language-javascript" style="width: 75vw; background-color: #a3a3a320; white-space: pre; border-radius: 8px;">
+    module.exports = {
+        data: {},
+        UI: {},
+
+        run(values, commandMessage, actionNumber, fs, client, runner, bridge) {
+            // values = the modified data object, what you'll have to revolve around
+            // commandMessage = [SLASH / TEXT COMMAND ONLY] the command message
+            // actionNumber = index of this action
+            // fs = file-system for bot.js;
+            // client = the bot.
+            // runner = action runner, runs actions.
+            // bridge = additional action information
+            // - bridge > variables = the actions variables
+            // - bridge.guild > [SLASH / TEXT COMMAND ONLY] = command guild. always use this instead of commandMessage.guild! 
+        }
+    }
+            </code>
+        </pre>
+
+        <div class="barbuttontexta textToLeft">Setting up the action, making it work with the editor and adding the required action data.</div>
+        <pre><code class="language-javascript" style="width: 75vw; background-color: #a3a3a3; white-space: pre; border-radius: 8px;">
+            data: {name: [string]},
+            UI: {compatibleWith: ["Any" | "Text" | "Slash" | "Event"]}
+        </code></pre>
+
+        <div class="barbuttontexta textToLeft">Making your action follow the general design of actions, creating it!</div>
+        
+        <pre><code class="language-javascript" style="width: 75vw; background-color: #a3a3a3; white-space: pre; border-radius: 8px;">
+            data: {name: [string], something: ""},
+            UI: {
+                compatibleWith: ["Any"],
+                text: [string](your action name),
+                sepbar: "",
+                btext: "an input",
+                input: [string]-actionDataReference-"something" // in our case, "something", as it's the only element in action storage other than the name.
+            },
+            run(values) {
+                console.log(values.something) // will show what the user typed into the input
+            }
+        </code></pre>
+
+
+
+        </div>
+    <script>
+        document.body.style.background =  'linear-gradient(45deg, #000000 0%,#1d1d1d 160%)'
+    </script>
+<link rel="stylesheet" href="./styles/default.min.css">
+<script src="./highlight.min.js"></script>
+
+    <script>
+        hljs.highlightAll()
+    </script>
+
+    <style>
+        body {
+            user-select: auto !important;
+            cursor: auto !important;
+        }
+        ::-webkit-scrollbar {
+       width: 1vw;
+       background: #000000;
+       }
+       ::-webkit-scrollbar-track {   
+       border-radius: 100px;
+       }
+       ::-webkit-scrollbar-thumb {  
+        border: #000000 5px solid;
+       border-radius: 100px;
+       transition: all 0.3s ease;
+       background-color: #FFFFFF30;
+       }
+       ::-webkit-scrollbar-thumb:hover {
+        border: #000000 3px solid;
+       background-color: #FFFFFF40;
+       }
+       ::-webkit-scrollbar:hover body {
+        filter: blur(12px)
+       }
+    </style>
+    </html>

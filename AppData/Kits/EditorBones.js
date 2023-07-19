@@ -1,5 +1,6 @@
 let version = 3
 const { app, ipcRenderer } = require('electron');
+let selectedGroupType = 'text'
 function editAction() {
     let variables = []
     let actionType = 'text'
@@ -41,6 +42,7 @@ function editAction() {
             }
         } catch (err) {}
     }
+    // document.body.style.opacity = '80%'
 
     ipcRenderer.send('editAction', {
         action: lastAct,
@@ -54,6 +56,10 @@ ipcRenderer.on('childSave', (event, data) => {
     botData.commands[lastObj].actions[lastAct] = data;
     wast()
     refreshActions()
+})
+
+ipcRenderer.on('childClose', () => {
+    document.body.style.opacity = '100%'
 })
 
 let isUpdating = false;
@@ -97,18 +103,30 @@ document.onkeydown=function(event){handleKeybind(event)};
         document.getElementById('actionbar').innerHTML = ''
 
         for (let action in botData.commands[lastObj].actions) {
+            if (botData.commands[lastObj].actions[action] == undefined) {
+                let keyToRemove = action;
+
+                let filteredEntries = Object.entries(botData.commands[lastObj].actions).filter(([key]) => key != keyToRemove);
+                let newJson = {};
+                for (let i = 0; i < filteredEntries.length; i++) {
+                  newJson[i + 1] = filteredEntries[i][1];
+                }
+                botData.commands[lastObj].actions = newJson;
+                botData.commands[lastObj].count = botData.commands[lastObj].count - 1
+                wast()
+            } else {
             let count = 0;
             let quickie = '';
             delay++;
             let quickdata;
             let dataquick;
-            let extrf;
+            let borderType;
             if (botData.commands[lastObj].actions[parseFloat(action) - 1] == undefined) {
-              extrf = 'borderbottom';
+              borderType = 'borderbottom';
             } else if (botData.commands[lastObj].actions[parseFloat(action) + 1] == undefined) {
-              extrf = 'bordertop';
+              borderType = 'bordertop';
             } else {
-              extrf = 'bordercentere';
+              borderType = 'bordercentere';
             }
             try {
             let actionFile = require(`./AppData/Actions/${botData.commands[lastObj].actions[action].file}`)
@@ -127,16 +145,18 @@ document.onkeydown=function(event){handleKeybind(event)};
             }
         
             document.getElementById('actionbar').innerHTML += `
-            <div id="Action${action}" onmouseenter="lastHovered = this" draggable="true" ondragleave="handleActionDragEnd(this)" ondragend="handleActionDrop()" ondragover="actionDragOverHandle(event, this)" ondragstart="handleActionDrag(this)" onmouseleave="lastHovered = null;" class="action textToLeft ${extrf}" style="animation-delay: ${delay * 3}0ms" ondblclick="editAction(this)" onclick="highlight(this)">
+            <div id="Action${action}" onmouseenter="lastHovered = this" draggable="true" ondragleave="handleActionDragEnd(this)" ondragend="handleActionDrop()" ondragover="actionDragOverHandle(event, this)" ondragstart="handleActionDrag(this)" onmouseleave="lastHovered = null;" class="action textToLeft ${borderType}" style="animation-delay: ${delay * 3}0ms" ondblclick="editAction(this)" onclick="highlight(this)">
             ${botData.commands[lastObj].actions[action].name}
             <div style="opacity: 50%; margin-left: 7px;">${`${quickdata.previewName}`}: ${quickie}</div>
             <div class="deleteActionButton" onclick="deleteObject(this)">✕</div>`;
         } catch (err) {
-            document.getElementById('actionbar').innerHTML += `
-            <div id="Action${action}" onmouseenter="lastHovered = this" draggable="true" ondragleave="handleActionDragEnd(this)" ondragend="handleActionDrop()" ondragover="actionDragOverHandle(event, this)" ondragstart="handleActionDrag(this)" onmouseleave="lastHovered = null;" class="action textToLeft ${extrf}" style="animation-delay: ${delay * 3}0ms" ondblclick="editAction(this)" onclick="highlight(this)">
-            Error
-            <div style="opacity: 50%; margin-left: 7px;"> - Action Missing</div>
-            <div class="deleteActionButton" onclick="deleteObject(this)">✕</div></div>`;
+            if (!botData.commands[lastObj].actions[action]) {
+                document.getElementById('actionbar').innerHTML += `
+                <div id="Action${action}" onmouseenter="lastHovered = this" draggable="true" ondragleave="handleActionDragEnd(this)" ondragend="handleActionDrop()" ondragover="actionDragOverHandle(event, this)" ondragstart="handleActionDrag(this)" onmouseleave="lastHovered = null;" class="action textToLeft ${borderType}" style="animation-delay: ${delay * 3}0ms" ondblclick="editAction(this)" onclick="highlight(this)">
+                Error
+                <div style="opacity: 50%; margin-left: 7px;"> - Action Missing</div>
+                <div class="deleteActionButton" onclick="deleteObject(this)">✕</div></div>`;
+            }
         }
         
             if (action === lastAct) {
@@ -146,59 +166,212 @@ document.onkeydown=function(event){handleKeybind(event)};
             }
         }
     }
+    }
 
     function refreshGroups() {
         var delay = 0;
         document.getElementById('commandbar').innerHTML = ''
+        let wasGroupHighlighted = false;
+        let firstCompatibleGroup;
         for (let cmd in botData.commands) {
-            delay++
-            document.getElementById('commandbar').innerHTML += `<div class="action textToLeft" onmouseenter="lastHovered = this" onmouseleave="lastHovered = null;" id="Group${parseFloat(cmd)}" style="animation-delay: ${delay * 3}5ms" onclick="highlight(this)"><div id="name">${botData.commands[cmd].name}</div> <div style="opacity: 50%; margin-left: 7px;"> | ${Object.keys(botData.commands[cmd].actions).length} Actions </div> <div class="deleteActionButton forceRounded" style="border-radius: 124px;" onclick="deleteObject(this)">✕</div> `
-            if (cmd == lastObj) {
-                setTimeout(() => {
-                    highlight(document.getElementById(`Group${cmd}`), true, true)
-                }, 50)
+            let groupType = botData.commands[cmd].type;
+            let groupTrigger = botData.commands[cmd].trigger;
+            let endType;
+            if (groupType == 'action') {
+                if (groupTrigger == 'textCommand' || groupTrigger == 'messageContent') {
+                    endType = 'text'
+                }
+                if (groupTrigger == 'slashCommand') {
+                    endType = 'slash'
+                }
+            } else {
+                endType = 'event'
             }
+            if (endType == selectedGroupType) {
+                if (!firstCompatibleGroup) firstCompatibleGroup = cmd
+                delay++
+                document.getElementById('commandbar').innerHTML += `<div class="${botData.commands[cmd].color != undefined ? 'coloredAction' : 'action'} textToLeft" draggable="true" onmouseenter="lastHovered = this" ondragleave="handleGroupDragEnd(this)" ondragend="handleGroupDrop()" ondragover="groupDragOverHandle(event, this)" ondragstart="handleGroupDrag(this)" onmouseleave="lastHovered = null;" id="Group${parseFloat(cmd)}" style="animation-delay: ${delay * 3}5ms;" onclick="highlight(this)"><div id="name">${botData.commands[cmd].name}</div> <div style="opacity: 50%; margin-left: 7px;"> | ${Object.keys(botData.commands[cmd].actions).length} Actions </div> <div class="deleteActionButton forceRounded" style="border-radius: 124px;" onclick="deleteObject(this)">✕</div> `
+                if (botData.commands[cmd].color != undefined) {
+                    let groupColor = botData.commands[cmd].color.split(')')[0]
+                    try {
+                        if (document.getElementById(`Group${cmd}`) != undefined) {
+                        setTimeout(() => {
+                            document.getElementById(`Group${cmd}`).addEventListener('mouseover', () => {
+                                document.getElementById(`Group${cmd}`).style.backgroundColor = groupColor + `, 0.20)`
+                            })
+                            
+                            document.getElementById(`Group${cmd}`).addEventListener('mouseout', () => {
+                                if (lastObj != cmd) {
+                                    document.getElementById(`Group${cmd}`).style.backgroundColor = groupColor + ', 0.09)'
+                                } else {
+                                    document.getElementById(`Group${cmd}`).style.backgroundColor = groupColor + ', 0.15)'
+                                }
+                            })
+                        }, 100)
+                    }
+                    } catch (err) {}
+    
+                    document.getElementById(`Group${cmd}`).style.backgroundColor =  botData.commands[cmd].color.split(')') + ' 0.09)'
+                }
+                if (cmd == lastObj) {
+                    setTimeout(() => {
+                        try {
+                            highlight(document.getElementById(`Group${cmd}`), true, true)
+                            wasGroupHighlighted = true;
+                        } catch (err) {}
+                    }, 50)
+                }
+            }
+
         }
         closeCommand()
+        console.log(firstCompatibleGroup)
+        if (!wasGroupHighlighted) {
+            setTimeout(() => {
+                highlight(document.getElementById(`Group${firstCompatibleGroup}`))
+            }, 150)
+        }
     }
+
+    let commandParameters = document.getElementById('commandParameters')
+    let groupOptions = document.getElementById('commandOptions')
+    let groupEvents = document.getElementById('groupEvents')
+    function resetElements() {
+        groupOptions.style.width = ``
+        groupOptions.style.opacity = ``
+        groupOptions.style.padding = ``
+        
+        groupEvents.style.padding = '0px'
+        groupEvents.style.opacity = '0%'
+        groupEvents.style.width = '0%'
+        groupEvents.innerHTML = ``
+
+        commandParameters.style.padding = ``
+        commandParameters.style.width = ``
+        commandParameters.style.marginRight = ``
+        commandParameters.style.opacity = ``
+    }
+
+    function prioritizeCommandOptions() {
+        resetElements()
+        commandParameters.style.width = `0%`
+        commandParameters.style.padding = `0px`
+        commandParameters.style.opacity = `0%`
+        commandParameters.style.marginRight = '0%'
+        
+        groupOptions.style.width = '90%'
+    }
+
+    function prioritizeEvents() {
+        resetElements()
+        groupOptions.style.width = `0%`
+        groupOptions.style.padding = `0px`
+        groupOptions.style.opacity = `0%`
+        commandParameters.style.width = `0%`
+        commandParameters.style.padding = `0px`
+        commandParameters.style.opacity = `0%`
+        commandParameters.style.marginRight = '0%'
+
+        groupEvents.style.padding = ''
+        groupEvents.style.width = '90%'
+        groupEvents.style.opacity = ''
+
+        groupEvents.innerHTML = `<div style="margin: auto; margin-left: 1vw;">Triggered By: ${require('./AppData/Events/' + botData.commands[lastObj].eventFile).name}</div><div class="image openExternally"></div>`
+
+    }
+
+    function returnToNormal() {
+        resetElements()
+    }
+
     function highlight(element) {
+        try {
         if (element.id.startsWith('Group') == true) {
+
             try {
-            document.getElementById(`Group${lastObj}`).style.backgroundColor = '#FFFFFF15';
-            } catch(err) {}
-            element.style.backgroundColor = '#FFFFFF25';
-            document.getElementById('Command_Name').value = element.innerText.split('|')[0];
-            document.getElementById('actionsOf').innerHTML = `Actions Of ${element.innerText.split('|')[0]}`
-            lastObj = element.id.split('Group')[1]
-            refreshActions();
+                if (botData.commands[lastObj].color != undefined) {
+                    document.getElementById(`Group${lastObj}`).style.backgroundColor =  botData.commands[lastObj].color.split(')') + ' 0.09)'
+                } else {
+                    document.getElementById(`Group${lastObj}`).style.backgroundColor = '#FFFFFF15';
+                }
+            } catch(err) {console.log(err)}
             
+            element.style.backgroundColor = '#FFFFFF25';
+            lastObj = element.id.split('Group')[1]
+
+            document.getElementById('Command_Name').value = botData.commands[lastObj].name;
+
+            document.getElementById('actionsOf').innerHTML = `Actions Of ${element.innerText.split('|')[0]}`
+
+            if (botData.commands[lastObj].color != undefined) {
+                document.getElementById('colorToggler').style.backgroundColor = botData.commands[lastObj].color.split(')') + ' 0.15)'
+                element.style.backgroundColor =  botData.commands[lastObj].color.split(')') + ' 0.15)'
+            } else {
+                document.getElementById('colorToggler').style.backgroundColor = ''
+            }
+
+            refreshActions();
+            let groupType, extraGroupInformation;
             if (botData.commands[lastObj].type == 'action') {
-                console.log(botData.commands[lastObj])
-                    switch(botData.commands[lastObj].trigger) {
+                let group = botData.commands[lastObj]
+              switch(botData.commands[lastObj].trigger) {
                 case 'slashCommand':
-                    ddaf = 'Slash Command'
-                    break
+                    var permissions = ''
+                    groupType = 'Slash Command'
+                    let endParameters = 'No'
+                    if (group.parameters && group.parameters.length > 0) {
+                        endParameters = Object.keys(group.parameters).length
+                    }
+                    if (group.boundary) {
+                        if (group.boundary.worksIn == 'guild') {
+                            permissions = '• Guild Only'
+                        } else if (group.boundary.worksIn == 'dm') {
+                            permissions = '• DMs Only'
+                        } else {
+                            permissions = '• Works Anywhere'
+                        }
+                    } else {
+                        permissions = '• Guild Only'
+                    }
+                    extraGroupInformation = `${endParameters} Parameters ${permissions}`
+                    resetElements()
+                break
                 case 'textCommand':
-                    ddaf = 'Text Command'
+                    groupType = 'Text Command'
+                    var permissions = 'None'
+                    if (group.boundary) {
+                        permissions = `${group.boundary.limits.length} Permission Limits `
+                        if (group.boundary.worksIn == 'guild') {
+                            permissions += '• Guild Only'
+                        } else if (group.boundary.worksIn == 'dm') {
+                            permissions += '• DMs Only'
+                        } else {
+                            permissions += '• Works Anywhere'
+                        }
+                    } else {
+                        permissions = 'Guild Only'
+                    }
+                    extraGroupInformation = permissions
+                    prioritizeCommandOptions()
+                    
                 break
                 case 'messageContent':
-                    ddaf = 'Message'
-            }
+                    groupType = 'Message'
+              }
     
-            document.getElementById('botData.commands[lastObj].actions').innerHTML = `Type: ${ddaf} • ${Object.keys(botData.commands[lastObj].actions).length} Actions Used`  
+            document.getElementById('botData.commands[lastObj].actions').innerHTML = `${groupType} • ${extraGroupInformation}`  
             } else {
-                document.getElementById('botData.commands[lastObj].actions').innerHTML = `Event • ${Object.keys(botData.commands[lastObj].actions).length} Actions Used`
+                prioritizeEvents()
+                document.getElementById('botData.commands[lastObj].actions').innerHTML = `Event`
             }
             botData.commands[lastObj].actions = botData.commands[lastObj].actions
 
             checkErrors()
-            closeCommand()
             let lastCheckedAction = null;
             for (let action in botData.commands[lastObj].actions) {
                 lastCheckedAction = action;
             }
             if (botData.commands[lastObj].count != botData.commands[lastObj].actions.length || botData.commands[lastObj].count != lastCheckedAction) {
-                console.log('fix, error')
                 let filteredEntries = Object.entries(botData.commands[lastObj].actions);
                 let newJson = {};
                 let newCount = 0;
@@ -220,6 +393,7 @@ document.onkeydown=function(event){handleKeybind(event)};
             element.style.backgroundColor = '#FFFFFF25';
             lastAct = element.id.split('Action')[1]
         }
+    } catch (err) {}
     }
 
     function openBar(iftr) {
@@ -539,83 +713,6 @@ document.onkeydown=function(event){handleKeybind(event)};
         }
     }, intervalCheck)
 
-
-    function selectAction() {
-        let kindOf;
-        if (botData.commands[lastObj].type == 'action') {
-            if (botData.commands[lastObj].trigger == 'textCommand' || botData.commands[lastObj].trigger == 'messageContent') {
-                kindOf = 'Text'
-            } else {
-                kindOf = 'Slash'
-            }
-        } else {
-            kindOf = 'Event'
-        }
-
-        let actionButton = document.getElementById('cakt')
-        actionButton.style.animationDuration = '0.6s'
-        actionButton.style.animationName = 'expande'
-        setTimeout(() => {
-            actionButton.style.overflowY = 'auto'
-            let actons = fs.readdirSync(processPath + '\\AppData\\Actions')
-            actionButton.innerHTML = `<div class="flexbox fwd" style="justify-content: center; width: 100%; align-items: center; margin-left: auto; margin-right: auto;">
-            <div style="background-color: unset; opacity: 100%; padding: 6px; border-radius: 15px; width: 100%; position: sticky; top: 0; bottom: 3; backdrop-filter: blur(50px); z-index: 50;" class="flexbox blurbb">
-            <div class="barbuttond" style="width: 20%; z-index: 3; margin: auto; background-color: #FFFFFF10" onclick="deselectAction(this)">
-            
-            <div style="line-height: auto; text-align: center !important; margin: auto;">Close</div></div>
-            
-            <div class="barbuttond" id="searchbar" contentEditable="true" onkeydown="searchFor(this)" style="width: 65%; margin: auto; background-color: #FFFFFF10 !important;"></div>
-            </div>
-            <div id="actarraypick" style="width: 95%; margin-left: auto; margin-right: auto; justify-content: center; align-items: center;" class="flexbox fwd"></div>`
-            let actionBut = document.getElementById('actarraypick')
-            let miss = 0;
-            document.getElementById('searchbar').innerHTML = ' '
-            actionBut.innerHTML += `<div class="action" id="misss"></div>`
-            let dly = 0;
-            for (let acte in actons) {
-                dly++
-                let actionFile = require(`./AppData/Actions/${actons[acte]}`);
-
-                if (actionFile.UI.compatibleWith.includes(kindOf) || actionFile.UI.compatibleWith.includes("Any")) {
-
-                let acten = actons[acte]
-                let afile = require(`./AppData/Actions/${acten}`)
-                actionBut.innerHTML += `<div class="action" style="animation-duration: 0.5s; animation-name: fdn; animation-delay: ${dly * 12}ms; z-index: 3; width: 45%; background-color: #FFFFFF10 !important;" onclick="openAction('${acten}');" id="${acten}">${afile.data.name}</div>`
-                lastType = 1
-                } else {
-                    miss++
-                }
-            document.getElementById('misss').innerHTML = miss + ' Actions Hidden (Incompatible)'
-        }}, 360)
-        setTimeout(() => {
-            actionButton.style.animationDuration = ''
-            actionButton.style.animationName = ''
-            actionButton.style.width = '90%'
-            actionButton.style.display = 'block'
-            actionButton.style.height = '50%'
-            actionButton.style.maxHeight = '90%'
-            actionButton.style.borderRadius = '20px'
-            actionButton.onclick = () => {null}
-        }, 585)
-    }
-
-    function deselectAction() {
-        let elm = document.getElementById('cakt')
-        elm.style.animationDuration = '0.7s'
-        elm.style.animationName = 'inpande'
-        setTimeout(() => {
-            elm.innerHTML = 'Change Action'
-        }, 100)
-        setTimeout(() => {
-            elm.style.animationDuration = ''
-            elm.style.animationName = ''
-            elm.style.width = '45%'
-            elm.style.height = 'auto'
-            elm.style.maxHeight = '90%'
-            elm.style.borderRadius = '100px'
-            elm.onclick = function() {selectAction()}
-        }, 690)
-    }
  
         function saveField(fieldId, sa) {
             let field = document.getElementById(fieldId) 
@@ -631,129 +728,7 @@ document.onkeydown=function(event){handleKeybind(event)};
           },false;
 
         function checkErrors() {
-            let foundIssues = false;
-            let issues = document.getElementById('issues');
-            let status = document.getElementById('status');
-            let tile = document.getElementById('tld')
-            if (errorPending == false) {
-            tile.style.animationName = 'degb'
-            tile.style.animationDuration = '0.5s'
-        }
-            setTimeout ( () => {
-                issues.innerHTML = ' '
-            
-            for (let action in botData.commands[lastObj].actions) {
-                let UId = require(`./AppData/Actions/${botData.commands[lastObj].actions[action].file}`).data
-                
-                let UIdata = require(`./AppData/Actions/${botData.commands[lastObj].actions[action].file}`).UI
-                let kindOf;
-                for (let element in UIdata) {
-                    if (element.endsWith('*') && botData.commands[lastObj].actions[action].data[UIdata[element]] == '') {
-                        issues.innerHTML += `
-                        <div class="issue">
-                        <div class="flexbox">
-                        <div class="barbuttontexta">${botData.commands[lastObj].actions[action].name} has an incomplete field</div>
-                        <div class="barbuttond noanims" style="height: 30px;margin: auto; margin-right: 0px;" onclick="console.log('test123'); if(lastType == 0) {}; document.getElementById('Action${action}').style.backgroundColor = '#FFFFFF50'; editAction(document.getElementById('Action${action}')); setTimeout(() => { document.getElementById('${UIdata[element]}').style.animationName = 'glowTwice'; document.getElementById('${UIdata[element]}').style.animationDuration = '0.8s'; document.getElementById('${UIdata[element]}').focus();}, 1050)"><div class="image focuds"></div></div>
-                        </div></div>
-                        `
-                        foundIssues = true
-                    }
-                    
-                    if (element.startsWith('menuBar')) {
-                        if (UIdata[element].extraField) {
-                            if (botData.commands[lastObj].actions[action].data[UIdata[element].storeAs].endsWith('*')) {
-                                if (botData.commands[lastObj].actions[action].data[UIdata[element].extraField] == '') {
-                                    issues.innerHTML += `
-                                    <div class="issue">
-                                    <div class="flexbox">
-                                    <div class="barbuttontexta">${botData.commands[lastObj].actions[action].name} has an empty input field</div>
-                                    <div class="barbuttond noanims" style="height: 30px; margin: auto; margin-right: 0px;" onclick="document.getElementById('Action${action}').style.backgroundColor = '#FFFFFF50'; editAction(document.getElementById('Action${action}')); setTimeout(() => {document.getElementById('${UIdata[element].extraField}').style.animationName = 'glowTwice'; document.getElementById('${UIdata[element].extraField}').style.animationDuration = '1s'; document.getElementById('${UIdata[element].extraField}').focus()}, 1050)"><div class="image focuds"></div></div>
-                                    </div></div>
-                                    `
-                                    foundIssues = true
-                                }
-                            }
-                        }
-                    }
-                }
-                if (botData.commands[lastObj].type == 'action') {
-                    if (botData.commands[lastObj].trigger == 'textCommand' || botData.commands[lastObj].trigger == 'messageContent') {
-                        kindOf = 'textCommand'
-                    } else {
-                        kindOf = 'slashCommand'
-                    }
-                } else {
-                    kindOf = 'event'
-                }
-                if (UIdata.compatibleWith.includes("Any")) {
-                    status.innerHTML = '✓ • You\'re good to go!'
-                } else {
-                    if (kindOf == 'event') {
-                        console.log(UIdata.compatibleWith)
-                        if (!UIdata.compatibleWith.includes("Event")) {
-
-                            issues.innerHTML += `
-                            <div class="issue">
-                            <div class="flexbox">
-                            <div class="barbuttontexta">${botData.commands[lastObj].actions[action].name} is not compatible</div>
-                            <div class="barbutton noanims" onclick="setTimeout(() => {highlight('Action' + document.getElementById('Action${action}')); lastHighlighted.focus();}, 100);"><div class="barbuttontexta noanims">Highlight</div></div>
-                            </div></div>
-                            `
-                            foundIssues = true
-                        }
-                    }
-                    if (kindOf == 'textCommand') {
-                        if (!UIdata.compatibleWith.includes("Text")) {
-
-                            issues.innerHTML += `
-                            <div class="issue">
-                            <div class="flexbox">
-                            <div class="barbuttontexta">${botData.commands[lastObj].actions[action].name} is not compatible</div>
-                            <div class="barbutton noanims" onclick="setTimeout(() => {highlight('Action' + document.getElementById('Action${action}')); lastHighlighted.focus();}, 100); "><div class="barbuttontexta noanims">Highlight</div></div>
-                            </div></div>
-                            `
-                            foundIssues = true;
-                        }
-                    }
-                    if (kindOf == 'slashCommand') {
-                        if (!UIdata.compatibleWith.includes("Slash")) {
-
-                            issues.innerHTML += `
-                            <div class="issue">
-                            <div class="flexbox">
-                            <div class="barbuttontexta">${botData.commands[lastObj].actions[action].name} is not compatible</div>
-                            <div class="barbutton noanims"  onclick="setTimeout(() => {highlight('Action' + document.getElementById('Action${action}')); lastHighlighted.focus();}, 100); "><div class="barbuttontexta noanims">Highlight</div></div>
-                            </div></div>
-                            `
-                            foundIssues = true;
-                        }
-                    }
-
-
-
-                }
-                console.log(kindOf)
-            }
-            if (foundIssues == true) {
-                status.innerHTML = '✕ • Issues Found'
-            } else {
-                status.innerHTML = '✓ • No Issues Found'
-            }
-
-            let issueshtml = issues.innerHTML;
-            let isht = issueshtml;
-            if (errorPending == false) {
-            issues.innerHTML = `<div class="ring" style="margin: auto; display: block; margin-top: 10vh; animation-name: ringifygo; animation-duration: 1s;"></div>`
-        }
-            setTimeout(() => {
-                issues.innerHTML = isht;
-                errorPending = false
-            }, 990)
-        }, 250)
-        setTimeout(() => {
-        tile.style.animationName = ''
-        tile.style.animationDuration = ''
-        }, 490)
+            return
         } 
         
 
@@ -1012,678 +987,30 @@ document.onkeydown=function(event){handleKeybind(event)};
             `
             
             document.body.appendChild(elm)
-            setTimeout(() => {
-                let spn = document.getElementById('saveProjectnotif')
-                spn.remove()
-             }, 3000)
-            try {
-            savePrj()
+            
+        try {
+        setTimeout(() => {
+            elm.remove()
+            }, 3000)
+        savePrj()
         } catch(err) {
             console.log(err)
             elm.innerHTML = `
-            <div class="flexbox" style="margin: auto; align-items: center; justify-content: center; height: calc(100% - 12px); padding: 6px;">
-            <div class="barbutton" onclick="exportProject(); this.remove()" style="margin: auto; animation-duration: 1s;">
+            <div class="flexbox" style="margin: auto; align-items: center; justify-content: center; height: auto; padding: 6px;">
+            <div class="barbuttontexta">No project output</div>
+            <div class="barbuttonshift" onclick="exportProject(); this.parentElement.parentElement.remove()" style="margin: auto;">
             <div class="barbuttontexta">Fix</div>
             </div>
-            <div class="barbuttontexta">No project output</div>
             </div>
             `
             setTimeout(() => {
-                
-            }, 5000)
+                elm.remove()
+            }, 10000)
         }
-
-        }, 120000)
- /*
-        let elm = document.createElement('div')
-        elm.className = 'issue'
-        elm.id = 'saveProjectnotif'
-        elm.style.backdropFilter = 'blur(10px)'
-        elm.style.zIndex = '10'
-        elm.style.width = '23vw'
-        elm.style.marginRight = '3vw'
-        elm.style.position = 'relative'
-        elm.style.marginTop = '-90vh'
-        elm.style.animationName = 'fadeoutspfload'
-        elm.style.animationDuration = '3.1s'
-        elm.style.height = '5.5vh'
-        elm.style.padding = '1vh'
-        elm.innerHTML = `
-        <div class="flexbox" style="margin: auto;">
-        <div class="ring" style="animation-duration: 1s; width: 3.5vw; height: 3.5vw; margin: auto;"></div>
-        <div class="barbuttontexta">Saving your project..</div>
-        </div>
-        `
-        document.body.appendChild(elm)
-        try {
-            savePrj()
-        } catch(err) {
-            null
-        }
-        setTimeout(() => {
-           let spn = document.getElementById('saveProjectnotif')
-           spn.remove()
-        }, 3000)
-*/
-        function refreshParameters() {
-            let parameters = botData.commands[lastObj].parameters
-            let params = ''
-            if (parameters != undefined) {
-                let count = 0
-                for (let parameter in parameters) {
-                    count++
-                    params = `${params}
-                    <div class="barbuttone lessMarginBT" id="${parameters[parameter].paramPos}Param" onclick="parameterIfy(this)" style="width: 95%; height: auto; animation-name: appearfadenmt; font-size: 18px; overflow-x: auto; overflow-y: auto; margin-left: auto; margin-right: auto;  border-left: solid 0.5vw #FFFFFF15; padding-left: 0.5vw; padding-right: 0vw;">${botData.commands[lastObj].parameters[parameter].name} <div class="barbuttontexta" style="margin-right: 0.3vw !important;background-color: #00000030; border-radius: 4px; width: 3vw; cursor: pointer;" onclick="deleteParam(${parameter})"><b>x</b></div></div>`
-                }
-                document.getElementById('parameterTile').innerHTML = params
-            } else {
-                botData.commands[lastObj].parameters = []
-                fs.writeFileSync(processPath +'/AppData/data.json', JSON.stringify(botData, null, 2));
-            }
-        }
-        function commandOptions() {
-            let commandOptions = document.getElementById('botData.commands[lastObj].actions')
-            commandOptions.className = 'baction'
-            commandOptions.style.maxHeight = '75vh';
-            commandOptions.style.width = '96%';
-            commandOptions.style.animationName = 'actionExpand'
-            commandOptions.style.animationDuration = '0.5s'
-            commandOptions.style.height = '45.5%';
-            commandOptions.style.borderRadius = '15px'
-            commandOptions.style.backgroundColor = '#FFFFFF15'
-            commandOptions.style.paddingLeft = '5px'
-            commandOptions.style.overflow = 'none'
-
-            let inhf1 = commandOptions.innerHTML;
-            let inh = inhf1;
-            setTimeout(() => {
-                if (botData.commands[lastObj].type != 'event') {
-            switch(botData.commands[lastObj].trigger) {
-                case 'slashCommand':
-                let commandDescription = ''
-                commandDescription = botData.commands[lastObj].description
-
-                if (commandDescription == undefined || commandDescription == null ) {
-                    commandDescription = ''
-                }
-
-                commandOptions.innerHTML = `
-                <div class="btext">Command Description</div>
-                <input class="input" style="padding: 12.5px;"
-                onkeydown="if (event.key != 'Backspace') return this.value.split('').length < 32;" oninput="setDescription(this)" value="${commandDescription}">
-
-
-                <div id="sepfx" class="flexbox" style="margin-left: calc(auto + 2.5px); margin-right: auto; width: 100%; height: 100%;">
-                <div></div>
-                    <div style="width: 40%; margin-left: auto; margin-right: 1%;">
-                <div style="border-radius: 12px; border-bottom-left-radius: 2px; border-bottom-right-radius: 2px; margin-bottom: 1%; width: calc(100% - 12px); padding: 6px; padding-top: 1.5px; padding-bottom: 1.5px; background-color: #FFFFFF10;">                
-                <div class="btext">Parameters</div>
-                </div>
-                <div class="hoverablez" onclick="newParam()" style="border-radius: 2px; margin-bottom: 1%; width: calc(100% - 12px); padding: 6px; padding-top: 1.5px; padding-bottom: 1.5px;">                
-                <div class="flexbox"><div class="image add" style="width: 3vw; height: 3vh; margin-left: 0.3vw !important; animation-duration: 0s !important;"></div> <div class="barbuttontexta" style="margin-right: 1vw !important;">Add Parameter</div></div>
-                </div>
-                
-                <div class="bordertopz" id="parameterTile" style="border-top-left-radius: 12px; border-bottom-right-radius: 2px !important; overflow-y: auto; border-bottom-left-radius: 12px; background-color: #00000040; padding: 12px; margin-left: auto; width: calc(100% - 24px); justify-content: center; align-items: center; height: calc(30vh - 24px - 1% - 26px);">
-                
-                </div>
-            </div>
-
-                <div id="plTile" class="flexbox" style="border-top-right-radius: 12px; border-top-left-radius: 12px; border-bottom-right-radius: 12px;background-color: #00000040; padding: 12px;margin-right: auto;width: calc(55% - 24px);height: 100%;align-items: center;overflow-y: auto; height: calc(30vh + 3vh - 19px);">
-                    <div class="barbuttontexta flexbox" style="margin: auto;">⟨  <span style="margin-left: 6vw"></span> Select A Parameter!</div>
-                </div>
-
-                </div>
-                <div class="barbuttontexta" onclick="closeCommand()" style="cursor: pointer;">Close</div>
-                `
-
-                refreshParameters()
-                break
-
-                case 'textCommand':
-                    // bounds: 0 - none; 1 - dm only; 2 - server only;
-                    if (!botData.commands[lastObj].bounds) {
-                        botData.commands[lastObj].bounds = 2;
-                        wast()
-                    }
-                    commandOptions.innerHTML = `
-                    <div class="barbuttontexta" style="margin-bottom: 0.3vh; margin-top: 0.3vh;">Command Bounds</div>
-                    
-                    <div class="flexbox borderbottom" style="background-color: #00000040; padding: 6px;">
-                    <div class="barbuttonshift borderright" onclick="botData.commands[lastObj].bounds = 1; wast(); completeBoundsType();" id="bounds-DM" style="width: 18%;">
-                    <div class="barbuttontexta">DM-only</div>
-                    </div>
-                    <div class="barbuttonshift borderleft" onclick="botData.commands[lastObj].bounds = 2; wast(); completeBoundsType();" id="bounds-GUILD" style="width: 18%;">
-                    <div class="barbuttontexta">Guild Only</div>
-                    </div>
-                    </div>
-
-                    <div class="bordertop" style="background-color: #00000050; padding: 6px; padding-bottom: 1vh;" id="boundsCustomizer">
-                    </div>
-                    <div class="textse" style="margin-top: auto; cursor: pointer;" onclick="closeCommand()">Close</div>
-
-                    `
-                    completeBoundsType()
-
-                break
-
-                case 'messageContent':
-                    commandOptions.innerHTML = `
-                    <div class="barbuttontexta flexbox" margin: auto;>Nothing Available Yet For Text Commands</div>
-                    <div class="barbuttone flexbox" onclick="closeCommand()"><div class="barbuttontexta">✕</div></div>
-                    `
-                break
-
-            }
-        } else {
-            let events = fs.readdirSync(processPath + '\\AppData\\Events')
-
-
-            commandOptions.innerHTML = `
-            <div class="flexbox" style="height: 95%; align-items: center; justify-content: center;">
-            <div id="evtpane" style="background-color: #00000060; border-radius: 12px; width: 49%; margin-right: 2%; height: 100%;">
-            <div class="barbuttontexta">Type: ${botData.commands[lastObj].event}</div>
-            </div>
-            <div id="eventList" style="background-color: #00000030; border-radius: 12px; width: 49%; padding-top: 5px; height: calc(100% - 5px); max-height: calc(100% - 5px); overflow: auto;">
-            </div></div>
-            <div class="textse" style="cursor: pointer; margin: auto; margin-top: 0.4%;" onclick="closeCommand()">Close</div>
-            `
-
-                if (botData.commands[lastObj].eventData == undefined) {
-                    botData.commands[lastObj] = {
-                        ...botData.commands[lastObj],
-                        eventData: [" ", " "]
-                }}
-
-            for (let event in events) {
-                let efile = require(`./AppData/Events/${events[event]}`)
-                let aev = document.getElementById('eventList')   
-                let inp = ''
-                let decor = '&'
-                if (efile.inputSchemes > 1) {
-                    for (let inpsch in efile.nameSchemes) {
-                        if (!efile.nameSchemes[inpsch + 1]) {
-                            decor = '' 
-                        }
-                        inp = inp + ' ' + efile.nameSchemes[inpsch] + decor
-                    }
-                } else {
-                    inp = efile.nameSchemes[0]
-                }
-                aev.innerHTML += `
-                <div onclick="epane('${events[event]}')" style="background-color: #00000030; margin-bottom: 5px; padding: 5px; width: 93%; border-radius: 10px; margin-left: auto; margin-right: auto;">
-                <div class="zaction" style="margin-bottom: 5px;">${efile.name}</div>
-                <div class="barbuttontexta">Includes ${efile.inputSchemes} Field(s)
-                </div>
-
-                </div>
-
-                `    
-            }
-            epane(botData.commands[lastObj].eventFile)
-        }
-        }, 100)
-
-        
-        setTimeout(() => {
-            commandOptions.style.animationName = ' '
-            commandOptions.style.animationDuration = ' '
-
-        }, 510)
-        }    
-        function completeBoundsType() {
-            document.getElementById('bounds-DM').style.backgroundColor = ''
-            document.getElementById('bounds-GUILD').style.backgroundColor = ''
-
-            let bounds = document.getElementById('boundsCustomizer')
-            bounds.style.transform = `scale(1)`
-            bounds.style.marginTop = `0px`
-
-            bounds.style.transition = 'all 0.2s ease'
-            bounds.style.transform = `scale(0)`
-            setTimeout(() => {
-
-            if (botData.commands[lastObj].bounds == 0) {
-                botData.commands[lastObj].bounds = 2;
-                wast()
-                completeBoundsType()
-                return
-            }
-            if (botData.commands[lastObj].bounds == 1) {
-                document.getElementById('bounds-DM').style.backgroundColor = '#FFFFFF17'
-
-                bounds.innerHTML = `
-                <div class="barbuttontexta noanims">
-                <b>DMs only</b>
-                </div>
-                <div class="texta">
-                This command can be used only by an user inside a bot's DMs - Uses are limited
-                </div>
-                `
-            }
-            if (botData.commands[lastObj].bounds == 2 || botData.commands[lastObj].bounds == 3) {
-                document.getElementById('bounds-GUILD').style.backgroundColor = '#FFFFFF17'
-                if (!botData.commands[lastObj].customRestrictions) {
-                    botData.commands[lastObj].customRestrictions = {
-                        position: {"none":""},
-                        limitedTo: 0
-                    };
-                    wast()
-                }
-                bounds.innerHTML = `
-                <div class="barbuttontexta noanims">
-                <b>Server Only</b>
-                </div>
-                <div class="texta" style="padding-bottom: 1px; padding-top: 1px;">
-                This command can be used only inside a guild!
-                </div>
-                <div class="sepbars"></div>
-                <div class="textse">
-                Required Permissions
-                </div>
-                <div class="flexbox" style="margin-bottom: 6px;">
-                <div class="barbuttonshift borderrightbottom" id="position-ADMIN" onclick="boundsSetUser(this)"><div class="barbuttontexta">Admin</div></div>
-                <div class="barbuttonshift bordercenter" id="position-BAN" onclick="boundsSetUser(this)"><div class="barbuttontexta">Ban</div></div>
-                <div class="barbuttonshift borderleftbottom" id="position-KICK" onclick="boundsSetUser(this)"><div class="barbuttontexta">Kick</div></div>
-            </div>
-               <div class="flexbox">
-                <div class="barbuttonshift borderrighttop" id="position-TIMEOUT" onclick="boundsSetUser(this)"><div class="barbuttontexta">Timeout</div></div>
-                <div class="barbuttonshift bordercenter" id="position-MSG" onclick="boundsSetUser(this)"><div class="barbuttontexta">Manage Msg.</div></div>
-                <div class="barbuttonshift borderlefttop" id="position-NONE" onclick="boundsSetUser(this)"><div class="barbuttontexta">None</div></div>
-                
-               </div> 
-                `
-            }        
-            bounds.style.transform = `scale(1)`
-            refreshRequiredPosition()
-            }, 300)
-            
-        }
-        function setCustomLimits(what) {
-            if (what == 'none') {
-                botData.commands[lastObj].customRestrictions.limitedTo = 0;
-            }
-            if (what == 'DMs') {
-                botData.commands[lastObj].customRestrictions.limitedTo = 1;
-            }
-            if (what == 'SERVERS') {
-                botData.commands[lastObj].customRestrictions.limitedTo = 2;
-            }
-            wast()
-            refreshCustomLimits()
-        }
-        function refreshCustomLimits() {
-            document.getElementById('boundsLimit-NONE').style.backgroundColor = ''
-            document.getElementById('boundsLimit-DM').style.backgroundColor = ''
-            document.getElementById('boundsLimit-SERVER').style.backgroundColor = ''
-            let type = botData.commands[lastObj].customRestrictions.limitedTo;
-            if (type == 0) {
-                document.getElementById('boundsLimit-NONE').style.backgroundColor = '#FFFFFF18'
-            }
-            if (type == 1) {
-                document.getElementById('boundsLimit-DM').style.backgroundColor = '#FFFFFF18'
-            }
-            if (type == 2) {
-                document.getElementById('boundsLimit-SERVER').style.backgroundColor = '#FFFFFF18'
-            }
-        }
-        function boundsSetUser(what) {
-            let pending = what.id;
-            if (what.id == 'position-ADMIN') {
-                if (botData.commands[lastObj].customRestrictions.limitedTo['admin'] == undefined) {
-                    botData.commands[lastObj].customRestrictions.limitedTo = {"admin":""}
-                } else {
-                    delete botData.commands[lastObj].customRestrictions.limitedTo['admin']
-                }
-            }
-            if (what.id == 'position-KICK') {
-                if (botData.commands[lastObj].customRestrictions.limitedTo['kick'] == undefined) {
-                    botData.commands[lastObj].customRestrictions.limitedTo.kick = ''
-                } else {
-                    delete botData.commands[lastObj].customRestrictions.limitedTo['kick']
-                }
-            }
-            if (what.id == 'position-BAN') {
-                if (botData.commands[lastObj].customRestrictions.limitedTo['ban']  == undefined) {
-                    botData.commands[lastObj].customRestrictions.limitedTo.ban = ''
-                } else {
-                    delete botData.commands[lastObj].customRestrictions.limitedTo['ban']
-                }
-            }
-            if (what.id == 'position-TIMEOUT') {
-                if (botData.commands[lastObj].customRestrictions.limitedTo['timeout'] == undefined) {
-                    botData.commands[lastObj].customRestrictions.limitedTo.timeout = ''
-                } else {
-                    delete botData.commands[lastObj].customRestrictions.limitedTo['timeout']
-                }
-            }
-            if (what.id == 'position-MSG') {
-                if (botData.commands[lastObj].customRestrictions.limitedTo['msg'] == undefined) {
-                    botData.commands[lastObj].customRestrictions.limitedTo.msg = ''
-                } else {
-                    delete botData.commands[lastObj].customRestrictions.limitedTo['msg']
-                }
-            }
-            if (what.id == 'position-NONE') {
-                if (botData.commands[lastObj].customRestrictions.limitedTo['none'] == undefined) {
-                    botData.commands[lastObj].customRestrictions.limitedTo = {"none":""}
-                } else {
-                    delete botData.commands[lastObj].customRestrictions.limitedTo['none']
-                }
-        }
-        if (botData.commands[lastObj].customRestrictions.limitedTo['admin'] != undefined && Object.keys(botData.commands[lastObj].customRestrictions.limitedTo).length != 1) {
-            delete botData.commands[lastObj].customRestrictions.limitedTo['admin']
-        }
-        if (botData.commands[lastObj].customRestrictions.limitedTo['none'] != undefined && Object.keys(botData.commands[lastObj].customRestrictions.limitedTo).length != 1) {
-            delete botData.commands[lastObj].customRestrictions.limitedTo['none']
-        }
-        if (Object.keys(botData.commands[lastObj].customRestrictions.limitedTo).length == 0) {
-            botData.commands[lastObj].customRestrictions.limitedTo = {"none":""}
-        }
-        wast()
-        refreshRequiredPosition()
-
-    }
-        function refreshRequiredPosition() {
-            let posts = botData.commands[lastObj].customRestrictions.limitedTo
-
-                document.getElementById('position-NONE').style.backgroundColor = ''
-                document.getElementById('position-MSG').style.backgroundColor = ''
-                document.getElementById('position-TIMEOUT').style.backgroundColor = ''
-                document.getElementById('position-KICK').style.backgroundColor = ''
-                document.getElementById('position-BAN').style.backgroundColor = ''
-                document.getElementById('position-ADMIN').style.backgroundColor = ''
-
-            if (posts['none'] != undefined) {
-                document.getElementById('position-NONE').style.backgroundColor = '#FFFFFF18'
-            }
-            if (posts['msg'] != undefined) {
-                document.getElementById('position-MSG').style.backgroundColor = '#FFFFFF18'
-            }
-            if (posts['timeout'] != undefined) {
-                document.getElementById('position-TIMEOUT').style.backgroundColor = '#FFFFFF18'
-            }
-            if (posts['kick'] != undefined) {
-                document.getElementById('position-KICK').style.backgroundColor = '#FFFFFF18'
-            }
-            if (posts['ban'] != undefined) {
-                document.getElementById('position-BAN').style.backgroundColor = '#FFFFFF18'
-            }
-            if (posts['admin'] != undefined) {
-                document.getElementById('position-ADMIN').style.backgroundColor = '#FFFFFF18'
-            }
-        }
-        function epane(file) {
-            let efile = require(`./AppData/Events/${file}`)
-            let evtpane = document.getElementById('evtpane')
-            botData.commands[lastObj].eventFile = file
-            fs.writeFileSync(processPath +'/AppData/data.json', JSON.stringify(botData, null, 2));
-
-            if (efile.inputSchemes > 1) {
-                try {
-                evtpane.innerHTML = `
-                <div style="margin-top: 10px;"></div>
-                <div class="btext">On ${efile.name}</div>
-                <div class="sepbars"></div>
-                    <div class="barbuttontexta">${efile.nameSchemes[0]}</div>
-                    <div class="input" oninput="validateInput(this)" id="0EV" onblur="storeEventField(this)" style="height: 26px; text-align: left;" contenteditable="true">${botData.commands[lastObj].eventData[0]}</div>
-                
-                    <div class="sepbars"></div>
-                    <div class="barbuttontexta">${efile.nameSchemes[1]}</div>
-                    <div class="input" oninput="validateInput(this)" id="1EV" onblur="storeEventField(this)" style="height: 26px; text-align: left;" contenteditable="true">${botData.commands[lastObj].eventData[1]}</div>
-                    
-                    <div class="sepbars"></div>
-                `} catch(er) {null}
-            } else {
-                try {
-                evtpane.innerHTML = `
-                <div style="margin-top: 10px;"></div>
-                <div class="btext">On ${efile.name}</div>
-                <div class="sepbars"></div>
-                <div class="barbuttontexta">${efile.nameSchemes[0]}</div>
-                <div class="input" id="0EV" oninput="validateInput(this)" onblur="storeEventField(this)" style="height: 26px; text-align: left;" contenteditable="true">${botData.commands[lastObj].eventData[0]}</div>
-                `
-            } catch(err) {null}
-        }
-        }
-        function storeEventField(fr) {
-            let id = fr.id.split('EV')[0]
-            let nht = fr.innerHTML
-
-            botData.commands[lastObj].eventData[id] = nht
-            wast()
-        }
-
-        function newParam() {
-            let paramParent = document.getElementById('parameterTile')
-            let f = 0;
-            for (let parm in botData.commands[lastObj].parameters) {
-                f++   
-            }
-            if (f > 20) return
-            while (document.getElementById(f + 'Param')) {
-                f++ 
-            }
-            let newParam = {
-                "name":"prm" + f,
-                "type": "String",
-                "required": false,
-                "description": "Parameter #" + f + " of this command!",
-                "storeAs":"Param" + f,
-                "paramPos": f
-            }
-
-            botData.commands[lastObj].parameters.push(newParam)
-            fs.writeFileSync(processPath +'/AppData/data.json', JSON.stringify(botData, null, 2));
-
-            refreshParameters()
-        }
-        function deleteParam(parameter) {
-            botData.commands[lastObj].parameters.splice(parameter, 1)
-            let count = 0
-            let params = ''
-            let position = 0;
-            for (let parame in botData.commands[lastObj].parameters) {
-                let prms = botData.commands[lastObj].parameters
-                    botData.commands[lastObj].parameters[parame].paramPos = position
-                    position++
-            }
-
-            refreshParameters()
-            fs.writeFileSync(processPath +'/AppData/data.json', JSON.stringify(botData, null, 2));
-        }
-        function parameterIfy(what) {
-
-            if (lastParam && document.getElementById(lastParam)) {
-                try {
-                document.getElementById(lastParam).style.backgroundColor = ''
-            } catch(err) {
-
-            }
-            }
-            lastParam = what.id 
-            let spl = parseFloat(lastParam.split('Param')[0]);
-
-            what.style.backgroundColor = '#FFFFFF25'
-
-            let paramTile = document.getElementById('plTile')
-
-            paramTile.innerHTML = `
-            <div class="flexbox" style="width: 100%; margin-left: auto; margin-right: auto;background-color: #00000030; border-radius: 7px; align-items: center; justify-content:center; padding: 3px;">
-            <div class="barbuttontexta textLefttextLeft">Name</div>
-            <input class="input textLeft" oninput="storeParamName(this)" onkeydown="if (this.value.length > 16 && event.key !== 'Backspace' || event.key === ' ') return false;" style="margin: 0.5vw; margin-top: 0vw;" contenteditable="true" value="${botData.commands[lastObj].parameters[spl].name}">
-            </div>
-
-            <div class="flexbox" style="width: 100%; margin-left: auto; margin-top: 1vh; margin-right: auto;background-color: #00000030; border-radius: 7px; align-items: center; justify-content:center; padding: 3px;">
-            <div class="barbuttontexta textLefttextLeft">Description</div>
-            <input class="input textLeft" oninput="storeParamDesc(this)" onkeydown="if (event.key != 'Backspace') return this.value.split('').length < 32" style="margin: 0.5vw; margin-top: 0vw;" contenteditable="true" value="${botData.commands[lastObj].parameters[spl].description}">
-            </div>
-            <div class="sepbars"></div>
-            <div class="flexbox" style="width: 100%; margin-left: auto; margin-right: auto;background-color: #00000030; border-radius: 7px; align-items: center; justify-content:center; padding: 3px;">
-            <div class="barbuttontexta">Required?</div>
-            <div onclick="setReq(true, this)" id="rft" class="barbuttone borderrightz">
-            <div class="barbuttontexta">✓</div>
-            </div>
-
-            <div onclick="setReq(false, this)" id="rff" class="barbuttone borderleftz">
-            <div class="barbuttontexta">✕</div>
-
-            </div>
-            </div>
-
-            <div class="flexbox" style="margin-top: 0.8vh; overflow-y: auto; max-height: 13vh; height: 13vh; width: 100%; margin-left: auto; margin-right: auto;background-color: #00000030; border-radius: 7px; align-items: center; justify-content:center; padding: 3px;">
-            <div class="zaction lessPadding" id="strng" onclick="setPrm(this)">String</div>
-            <div class="zaction lessPadding" id="intgr" onclick="setPrm(this)">Integer</div>
-            <div class="zaction lessPadding" id="blen" onclick="setPrm(this)">Boolean</div>
-            <div class="zaction lessPadding" id="chnl" onclick="setPrm(this)">Channel</div>
-            <div class="zaction lessPadding" id="usere" onclick="setPrm(this)">User</div>
-            <div class="zaction lessPadding" id="rle" onclick="setPrm(this)">Role</div>
-            <div class="zaction lessPadding" id="mentnable" onclick="setPrm(this)">Mentionable</div>
-            </div>
-            <div class="sepbars"></div>
-            <div class="flexbox" style="width: 100%; margin-left: auto; margin-right: auto;background-color: #00000030; border-radius: 7px; align-items: center; justify-content:center; padding: 3px;">
-            <div class="barbuttontexta textLeft">Store As</div>
-
-            <div class="input textLeft" onblur="elementContentChecker(this, {fromBlur: true, noSpaces: true, maxLength: 16}); storeParamStored(this);" style="margin: 0.5vw; margin-top: 0vw;" contenteditable="true">${botData.commands[lastObj].parameters[spl].storeAs}</div>
-            </div>
-            `
-            switch (botData.commands[lastObj].parameters[spl].type) {
-                case 'String':
-                    document.getElementById('strng').style.backgroundColor = '#FFFFFF20'
-                    break; 
-                case 'Boolean':
-                    document.getElementById('blen').style.backgroundColor = '#FFFFFF20'
-                    break
-                case 'User':
-                    document.getElementById('usere').style.backgroundColor = '#FFFFFF20'
-                    break
-                case 'Channel': 
-                document.getElementById('chnl').style.backgroundColor = '#FFFFFF20'
-                break
-                case 'Integer':
-                    document.getElementById('intgr').style.backgroundColor = '#FFFFFF20'
-                break
-                case 'Role':
-                    document.getElementById('rle').style.backgroundColor = '#FFFFFF20'
-                break
-                case 'Mentionable':
-                    document.getElementById('mentnable').style.backgroundColor = '#FFFFFF20'
-                break
-            }
-            
-            if (botData.commands[lastObj].parameters[lastParam.split('Param')[0]].required == true) {
-                document.getElementById('rff').style.backgroundColor = '#FFFFFF25'
-
-            } else {
-                document.getElementById('rft').style.backgroundColor = '#FFFFFF25'
-            }
-        }
-
-        function storeParamStored(wh) {
-            botData.commands[lastObj].parameters[lastParam.split('Param')[0]].storeAs = wh.innerText
-            wast()
-        }
-        function storeParamName(wh) {
-            botData.commands[lastObj].parameters[lastParam.split('Param')[0]].name = wh.value
-            wast()
-            refreshParameters()
-        }
-        function storeParamDesc(wh) {
-            botData.commands[lastObj].parameters[lastParam.split('Param')[0]].description = wh.value
-            wast()
-        }
-
-        function setPrm(wut) {
-            switch (botData.commands[lastObj].parameters[parseFloat(lastParam.split('Param')[0])].type) {
-                case 'String':
-                    document.getElementById('strng').style.backgroundColor = '#FFFFFF15'
-                    break; 
-                case 'Boolean':
-                    document.getElementById('blen').style.backgroundColor = '#FFFFFF15'
-                    break
-                case 'User':
-                    document.getElementById('usere').style.backgroundColor = '#FFFFFF15'
-                    break
-                case 'Channel': 
-                document.getElementById('chnl').style.backgroundColor = '#FFFFFF15'
-                break
-                case 'Integer':
-                    document.getElementById('intgr').style.backgroundColor = '#FFFFFF15'
-                break
-                case 'Role':
-                    document.getElementById('rle').style.backgroundColor = '#FFFFFF15'
-                break
-                case 'Mentionable':
-                    document.getElementById('mentnable').style.backgroundColor = '#FFFFFF15'
-                break
-            }
-
-            botData.commands[lastObj].parameters[lastParam.split('Param')[0]].type = wut.innerHTML
-            wast()
-            wut.style.backgroundColor = '#FFFFFF20'
-        }
-        function paramify(what) {
-            let paramPosition = what.id.split('Param')[0]
-            botData.commands[lastObj].parameters[parseFloat(paramPosition)].name = what.value
-            if (what.innerText == '') {
-                what.value = ' '
-                botData.commands[lastObj].parameters[parseFloat(paramPosition)].name = ' '
-            }
-            wast()
-        }
-        function setReq(bln, what) {
-            let paramPosition = lastParam.split('Param')[0]
-            console.log(paramPosition)
-        botData.commands[lastObj].parameters[lastParam.split('Param')[0]].required = bln
-            if (bln == true) {
-                document.getElementById('rff').style.backgroundColor = ''
-                document.getElementById('rft').style.backgroundColor = '#FFFFFF25'
-                botData.commands[lastObj].parameters[parseFloat(paramPosition)].required = false
-            } else {
-                document.getElementById('rft').style.backgroundColor = ''
-                document.getElementById('rff').style.backgroundColor = '#FFFFFF25'
-                botData.commands[lastObj].parameters[parseFloat(paramPosition)].required = true
-            }
-            wast()
-        }
-
-        function setDescription(e) {
-            if (botData.commands[lastObj].description) {
-                botData.commands[lastObj].description = e.value
-            } else {
-                botData.commands[lastObj] = {
-                    ...botData.commands[lastObj],
-                    description: e.value
-                }
-            }
-            wast()
-        }
+        }, 95000)
 
         function closeCommand() {
-            let commandOptions = document.getElementById('botData.commands[lastObj].actions')
-            commandOptions.style.animationName = 'actionUnexpand'
-            commandOptions.style.animationDuration = '0.5s'
-            commandOptions.style.height = ''
-            commandOptions.style.width = '90%'
-            setTimeout (() => {
-                let ddaf;
-                if (botData.commands[lastObj].type == 'action') {
-                    console.log(botData.commands[lastObj])
-                        switch(botData.commands[lastObj].trigger) {
-                    case 'slashCommand':
-                        ddaf = 'Slash Command'
-                        break
-                    case 'textCommand':
-                        ddaf = 'Text Command'
-                    break
-                    case 'messageContent':
-                        ddaf = 'Message'
-                }
-        
-                document.getElementById('botData.commands[lastObj].actions').innerHTML = `Type: ${ddaf} • ${Object.keys(botData.commands[lastObj].actions).length} Actions Used`  
-                } else {
-                    document.getElementById('botData.commands[lastObj].actions').innerHTML = `Event • ${Object.keys(botData.commands[lastObj].actions).length} Actions Used`
-                }
-            }, 200)
+            return;
         }
         function modifyActElm() {
             openBar(true)
@@ -2223,313 +1550,83 @@ function saveSelection() {
     }
     return null;
 }
-function insertTextAtCaret(text) {
-    var sel, range;
-    if (window.getSelection) {
-        sel = window.getSelection();
-        if (sel.getRangeAt && sel.rangeCount) {
-            range = sel.getRangeAt(0);
-            range.deleteContents();
-            range.insertNode( document.createTextNode(text) );
-        }
-    } else if (document.selection && document.selection.createRange) {
-        document.selection.createRange().text = text;
-    }
-}
-function validateInput(event) {
-    const div = event.target;
-    const text = div.textContent;
-    
-    // Save the current cursor position
-    const selection = window.getSelection();
-    const range = selection.getRangeAt(0);
-    const offset = range.startOffset;
-  
-    // Remove image tags
-    const sanitizedText = text.replace(/<img\b[^>]*>/gi, '');
-  
-    // Update the content of the div with sanitized text
-    div.innerHTML = sanitizedText;
-    
-    // Restore the cursor position
-    const updatedRange = document.createRange();
-    updatedRange.setStart(div.firstChild, offset);
-    updatedRange.collapse(true);
-    selection.removeAllRanges();
-    selection.addRange(updatedRange);
-}
- 
-function setVariableIn(elementId, type, varName) {
-    let element = document.getElementById(elementId)
-    
-    if (type == 2) {
-        let toRestoreTo1 = saveSelection();
-        let toRestoreTo = toRestoreTo1
-        insertTextAtCaret("${tempVars('" + varName + "')}")
-        element.focus()
-        element.blur()
-        element.focus()
-        element.blur()
-        setTimeout(() => {
-            element.focus()
-            element.blur()
-        }, 100)
-    }
-        
-    if (type == 0) {
-        element.blur()
-        element.innerHTML = `${varName}`
-        element.focus()
-        element.blur()
-        setTimeout(() => {
-            element.focus()
-            element.blur()
-        }, 100)
-    }
-}   
 
-function showReow(rowPosition) {
-    lastRow = rowPosition; 
-    document.getElementById('actElmsig').style.animationName = 'marginbounce'
-    document.getElementById('actElmsig').style.animationDuration = '0.3s'
-    document.getElementById('actElmsig').style.transition = 'opacity 0.3s ease'
-    document.getElementById('actElmsig').style.opacity = '0%'
-
-    let view = document.getElementById('actElmsig');
-    let rows = botData.commands[lastObj].actions[lastAct].data.actionRows
-    setTimeout(() => {
-        document.getElementById('actElmsig').style.opacity = '100%'
-        document.getElementById('actElmsig').style.animationName = ''
-        document.getElementById('actElmsig').style.animationDuration = ''
-        view.innerHTML = `
-        <div class="flexbox" style="align-items: center; justify-content: center; margin-top: 4vh; margin-bottom: 0.5vh;">
-        <div class="flexbox" style="margin-left: auto; margin-right: 12px;">
-        <div class="barbuttond center" onclick="controlActionRows(true)" style="width: 30px;">
-        <div class="barbuttontexta">
-        ⟨
-        </div>
-        </div>
-                    <div class="barbuttond center flexbox" style="width: 70px;" onclick="deleteRowBar(${rowPosition})">
-                    <div class="barbuttontexta">
-                    Delete
-                    </div>
-                    </div>
-        </div>
-
-
-
-        <div class="flexbox borderbottom" style="margin: auto; margin-top: 2vh; background-color: #FFFFFF08; width: calc(93vw - 24px) ; height: 40vh; padding: 12px; border-radius: 12px;">
-        <div style="width: 45%; margin-left: auto; margin-right: 2.5%; height: 40vh" class="flexbox">
-    <div style="width: 100%;">
-    <div class="borderbottomz" style="width: 100%; background-color: #FFFFFF09; padding: 4px;">
-        <div class="barbuttontexta">
-        Row Name
-        </div>
-        <div class="input" contenteditable="true" style="height: 24px; margin-top: 0px;" onkeyup="elementContentChecker(this, {maxLength: 32}); botData.commands[lastObj].actions[lastAct].data.actionRows[${rowPosition}].name = this.innerText; wast();">${botData.commands[lastObj].actions[lastAct].data.actionRows[rowPosition].name}</div>
-        </div>
-        <div class="bordercenter" style="width: 100%; background-color: #FFFFFF09; padding: 4px; margin-top: 0.5vh; margin-bottom: 0.5vh;">
-
-        <div class="barbuttontexta">
-        Row Placeholder
-        </div>
-        <div class="input" contenteditable="true" style="height: 24px; margin-top: 0px;" onkeyup="elementContentChecker(this, {maxLength: 32}); botData.commands[lastObj].actions[lastAct].data.actionRows[${rowPosition}].placeholder = this.innerText; wast();">${botData.commands[lastObj].actions[lastAct].data.actionRows[rowPosition].placeholder}</div>
-        </div>
-        <div class="bordertopz" style="width: 100%; background-color: #FFFFFF09; padding: 4px;">
-
-        <div class="barbuttontexta">
-        Row Custom ID
-        </div>
-        <div class="input" contenteditable="true" style="height: 24px; margin-top: 0px;" onkeyup="elementContentChecker(this, {maxLength: 32}); botData.commands[lastObj].actions[lastAct].data.actionRows[${rowPosition}].customId = this.innerText; wast();">${botData.commands[lastObj].actions[lastAct].data.actionRows[rowPosition].customId}</div>
-        </div>
-
-        
-        </div>
-        
-        
-        <div style="margin-top: auto; justify-content: center; align-items: center;" class="flexbox"></div>
-        <div style="margin-top: auto; margin-bottom: 2vh; width: 100%; height: auto;">
-
-            <div class="flexbox borderbottomz" style="background-color: #FFFFFF10;  padding: 4px; margin-top: auto; margin-bottom: 0.5vh; border-radius: 12px;">
-            <div class="barbuttontexta">Minimum Selectable Options</div>
-            <div class="flexbox" style="background-color: none; border-radius: 9px; width: 9vw; padding: 4px;">
-            <div class="barbuttontexta hoverablez" onclick="setLowerMinOpt()" style="margin-right: auto; margin-left: 0vw; width: 2vw; border-radius: 4px; padding: 3px; background-color: #FFFFFF10;">⟨</div>
-            <div class="barbuttontexta" id="minSelectable">${rows[lastRow].minSelectable}</div>
-            <div class="barbuttontexta hoverablez" onclick="setHigherMinOpt()" style="margin-left: auto; margin-right: 0vw; width: 2vw; border-radius: 4px; padding: 3px; background-color: #FFFFFF10;">⟩</div>
-            </div>
-            </div> 
-
-
-            <div class="flexbox bordertopz" style="background-color: #FFFFFF10; padding: 4px;">
-            <div class="barbuttontexta">Maximum Selectable Options</div>
-            <div class="flexbox" style="background-color: none; border-radius: 9px; width: 9vw; padding: 4px;">
-            <div onclick="setLowerMaxOpt()" class="barbuttontexta hoverablez" style="margin-right: auto; margin-left: 0vw; width: 2vw; border-radius: 4px; padding: 3px; background-color: #FFFFFF10;">⟨</div>
-            <div class="barbuttontexta" id="maxSelectable">${rows[lastRow].maxSelectable}</div>
-            <div onclick="setHigherMaxOpt()" class="barbuttontexta hoverablez" style="margin-left: auto; margin-right: 0vw; width: 2vw; border-radius: 4px; padding: 3px; background-color: #FFFFFF10;">⟩</div>
-            </div>
-            </div> 
-            </div>
-            </div>
-
-    <div style="width: 0.3vw; height: 37vh; margin-top: 1vh; background-color: #FFFFFF20;"></div>
-
-    <div style="width: 45%; height: 20vh; margin-left: auto; margin-right: 2.5%;">
-    <div class="flexbox" style="margin-bottom: 1vh;">
-    <div class="barbuttontexta textToLeft" style="text-align: left; align-text: left; margin-left: 1vw;">Options</div>
-    <div style="width: 5vh; height: 5vh; margin-bottom: 1vh; border-radius: 1000px; margin-left: auto;" class="flexbox hoverablex" onclick="newRowOption()">
-    <div class="barbuttontext"><b>+</b></div>
-    </div>
-    </div>
-    <div style="width: 100%; height: 30vh; overflow-y: auto; border-radius: 6px; background-color: #FFFFFF15; overflow: auto;" id="actionRowEditor">
-
-    </div>    </div>
-
-        </div>
-        <div class="flexbox bordertop" id="actionMenuOption" style="margin: auto; margin-top: 0.5vh; background-color: #FFFFFF07; width: calc(93vw - 24px) ; height: 30vh; padding: 12px; border-radius: 12px;">
-        <div class="barbuttontexta">Select or create a custom row to start the fun!</div>
-        </div>
-        `
-        showMenuOptions()
-
-    }, 350)
-
-    }
-
-    /* 
-    
-        <div class="barbuttontexta">Select Menu Options</div>
-        <div style="background-color: #FFFFFF10; margin-bottom: 1.5vh; height: 15vh; overflow-y: auto; padding: 12px; border-radius: 7px;">
-            <div class="zaction lessbrithb" id="customType" onclick="selectStringType('custom')"><div class="barbuttontexta">Custom</div></div>
-            <div class="zaction lessbrithb" id="channelType" onclick="selectStringType('channel')"><div class="barbuttontexta">Channel</div></div>
-            <div class="zaction lessbrithb" id="userType" onclick="selectStringType('user')"><div class="barbuttontexta">User</div></div>
-            <div class="zaction lessbrithb" id="roleType" onclick="selectStringType('role')"><div class="barbuttontexta">Role</div></div>
-            <div class="zaction lessbrithb" id="mentionableType" onclick="selectStringType('mentionable')"><div class="barbuttontexta">Mentionable</div></div>
-            </div> 
-                    let lastRowType = botData.commands[lastObj].actions[lastAct].data.actionRows[lastRow].customType
-        document.getElementById(lastRowType + 'Type').style.backgroundColor = '#FFFFFF20';
-            */
-           function editMenuOption(option) {
-            if (lastMenuOption != undefined) {
-                try{
-                document.getElementById(lastMenuOption + 'MenuOption').parentNode.style.backgroundColor = '#FFFFFF10'
-            } catch (err) {
-                null
-            }
-        
-        }
-            document.getElementById(option + 'MenuOption').parentNode.style.backgroundColor = '#FFFFFF20'
-
-            lastMenuOption = option
-
-            let view = document.getElementById('actionMenuOption')
-
-            view.innerHTML = `
-            <div class="borderright flexbox" style="width: 47%; background-color: #FFFFFF08; padding: 12px; border-radius: 7px;">
-            <div style="margin: auto; width: 100%;">
-            <div class="borderbottom" style="width: 100%; height: auto; background-color: #00000020; padding-top: 0.75vh; padding-bottom: 0.75vh; margin-bottom: 0.50vh;">
-
-            <div class="barbuttontexta">Option Label</div>
-            
-            <div class="input" contenteditable="true" onblur="elementContentChecker(this, {maxLength: 32, fromBlur: true}); botData.commands[lastObj].actions[lastAct].data.actionRows[${lastRow}].options[${option}].label = this.innerText; wast(); document.getElementById('${option}MenuOption').innerText = this.innerText" onkeyup="elementContentChecker(this, {maxLength: 32}); botData.commands[lastObj].actions[lastAct].data.actionRows[${lastRow}].options[${option}].label = this.innerText; wast(); document.getElementById('${option}MenuOption').innerText = this.innerText">
-            ${botData.commands[lastObj].actions[lastAct].data.actionRows[lastRow].options[option].label}
-            </div>
-            </div>
-            <div class="bordercenter" style="width: 100%; height: auto; background-color: #00000020; padding-top: 0.75vh; padding-bottom: 0.75vh;">
-
-            <div class="barbuttontexta">Option Description</div>
-            <input class="input" style="margin-bottom: 0px;" onkeydown=" /* return event.key !== ' ';  */ if (event.key != 'Backspace') return this.value.split('').length < 32;" oninput="botData.commands[lastObj].actions[lastAct].data.actionRows[${lastRow}].options[${option}].description = this.value; wast()" contenteditable="true" value="${botData.commands[lastObj].actions[lastAct].data.actionRows[lastRow].options[option].description}" placeholder="Reccomended">
-
-            </div>
-            <div class="bordertop" style="width: 100%; height: auto; background-color: #00000020; padding-bottom: 0.75vh; padding-top: 0.75vh; margin-top: 0.50vh;">
-
-            <div class="barbuttontexta">Option Custom ID (Value)</div>
-            <input class="input" style="margin-bottom: 0px;" onkeydown=" /* return event.key !== ' ';  */ if (event.key != 'Backspace') return this.value.split('').length < 32;" oninput="botData.commands[lastObj].actions[lastAct].data.actionRows[${lastRow}].options[${option}].customValue = this.value; wast()" contenteditable="true" value="${botData.commands[lastObj].actions[lastAct].data.actionRows[lastRow].options[option].customValue}" placeholder="Required, cannot be seen by anybody else">
-            </div>
-            </div>
-</div>
-
-
-            <div class="borderleft flexbox" style="width: 47%; margin-left: 0.3vw; padding: 12px; background-color: #FFFFFF08; border-radius: 7px;">
-            <div style="margin: auto; width: 100%;">
-            <div class="barbuttontexta">Controls</div>
-
-            <div class="flexbox">
-            <div class="barbutton borderright" onclick="deleteRowOption(${lastRow}, ${option})" style="height: 5vh;">
-            <div class="barbuttontexta">Delete</div>
-            </div>
-            <div class="barbuttond bordercenter" style="height: 5vh; width: 3vw;">
-            <div class="image actionUp"></div>
-            </div>
-            <div class="barbuttond borderleft" style="height: 5vh; width: 3vw;">
-            <div class="actionDown image"></div>
-            </div>
-            <div class="hoverablez" onclick="setButtonRun(this, ${option}, ${lastRow}, true)" style="margin-top: 1vh; width: 40vw; margin-right: auto; margin-left: auto; border-radius: 12px; border-bottom-left-radius: 2px; border-bottom-right-radius: 2px; padding: 8px;">
-            <div class="barbuttontexta">Once Interacted With, Run Action Group:</div>
-            </div>
-            <div class="bordertopz" style="background-color: #FFFFFF10; margin-top: 0.3vh;width: 40vw; margin-right: auto; margin-left: auto; border-radius: 12px; border-bottom-left-radius: 2px; border-bottom-right-radius: 2px; padding: 8px;" id="runButtonWhat" onclick="setButtonRun(this, ${option}, ${lastRow}, true)">
-            </div>
-</div></div>
-
-           </div>
-            `
-            setRunningElement(botData.commands[lastObj].actions[lastAct].data.actionRows[lastRow].options[option].runs)
-           }
-
-
-
-function draggedOverRow(event, rowPosition) {
-    event.preventDefault()
-    lastDraggedRow = rowPosition
-}
-function handleDraggedRow(event, rowPosition) {
-}
-function handleRowDrag(event, rowPosition) {
-    let datajson1 = JSON.parse(fs.readFileSync(processPath + '\\AppData\\data.json'));
-    let datajson0 = datajson1;
-    let dragNewElement = datajson0.commands[lastObj].actions[lastAct].data.actionRows[rowPosition];
-    // index, 0, item
-    
-    botData.commands[lastObj].actions[lastAct].data.actionRows = array_move(botData.commands[lastObj].actions[lastAct].data.actionRows, rowPosition, lastDraggedRow)
-
-    wast()
-    lastDraggedRow = null;
-    controlActionRows(true)
-}
 
 const { spawn } = require('child_process');
-
-
-let botProcess;
-var botLog = ``
-var botIsOn = false
-function toggleBot() {
-    fs.writeFileSync(processPath + '\\bot.js', fs.readFileSync(processPath + '\\AppData\\bot.js'))
-  if (botProcess && botProcess.connected || botIsOn == true) {
-    botProcess.kill();
-    botIsOn = false;
-    console.log('Bot stopped');
-  } else {
-    fs.readFileSync(processPath + '\\AppData\\firstTimeSetup.bat')
-    botLog = ''
-    spawn('node', ['bot.js']);
-    botProcess = spawn('node', ['bot.js']);
-    console.log('Bot started');
-    botIsOn = true;
-    botProcess.on('close', () => {
-        botIsOn = false;
-    })
-    botProcess.stdout.on('data', function (data) {botLog = `${botLog} ${data}`});
-  }
-}
 
 if (botData.commands['1'].customId == undefined) {
     for (let command in botData.commands) {
         botData.commands[command].customId = new Date().getTime()
         wast()
         let r = 0
-        while (r < 1550) {
+        while (r < 3550) {
             r++
         }
     }
 }
 
+
+function openEvent() {
+    ipcRenderer.send('editEvent', {
+        name: require('./AppData/Events/' + botData.commands[lastObj].eventFile).name,
+        event: botData.commands[lastObj].eventFile,
+        data: botData.commands[lastObj].eventData
+    })
+}
+
+ipcRenderer.on('eventSave', (event, eventData) => {
+    console.log(eventData)
+    botData.commands[lastObj].eventFile = eventData.file
+    botData.commands[lastObj].eventData = eventData.data
+})
+
+function openPermissionEditor() {
+    ipcRenderer.send('openPerms', botData.commands[lastObj])
+    ipcRenderer.once('boundaryData', (event, data) => {
+        botData.commands[lastObj].boundary = data;
+    }) 
+}
+
+function setGroupColor(elm) {
+    if (elm == null) {
+    botData.commands[lastObj].color = undefined;
+    refreshGroups()
+    return
+    }
+    let color = elm.style.backgroundColor;
+    botData.commands[lastObj].color = color;
+    refreshGroups()
+}
+
+function toggleColorsVisibility(button) {
+    if (botData.colorsVisibility == undefined) {
+        botData.colorsVisibility = false;
+    }
+    if (botData.colorsVisibility == true) {
+        document.getElementById('colorsSelector').style.width = '0%'
+        document.getElementById('colorsSelector').style.padding = '0px'
+        document.getElementById('colorsSelector').style.marginLeft = '-5vh'
+        setTimeout(() => {
+            document.getElementById('colorsSelector').style.marginLeft = ''
+        }, 250)
+        botData.colorsVisibility = false;
+    } else {
+        document.getElementById('colorsSelector').style.marginLeft = ''
+        document.getElementById('colorsSelector').style.width = '90%'
+        document.getElementById('colorsSelector').style.padding = '5px'
+        setTimeout(() => {
+            document.getElementById('colorsSelector').style.width = '85%'
+        }, 250)
+        botData.colorsVisibility = true;
+    }
+    wast()
+}
+
+function openParameters() {
+    ipcRenderer.send('editParameters', {parameters: botData.commands[lastObj].parameters || [], name: botData.commands[lastObj].name})
+}
+
+ipcRenderer.on('parameters', (event, parameters) => {
+    botData.commands[lastObj].parameters = parameters;
+})
 

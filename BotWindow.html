@@ -2,12 +2,14 @@
     <link rel="stylesheet" href="main.css">
     <meta charset="utf8">
     <div style="width: 100vw; overflow: auto; height: 100vh; margin-top: -8px; margin-left: -8px;" id="everything_container">
-    <div style="width: 100vw; height: 100vw; background-color: #000000; color: #FFFFFF; overflow: auto;" id="console">
+    <div style="width: 100vw; height: 100vw; background-color: #000000; color: #FFFFFF; overflow: auto;">
     <div style="font-family:'Courier New', Courier, monospace; font-size: 12px; margin: auto; text-align: center; margin-top: 2vh;">Bot Log
-    </div>
+    - Close Window To Stop Your Bot!</div>
     <div class="sepbar"></div>
+    <div id="console" style="width: 90vw; margin: auto;"></div>
     </div>
 </div>
+<script src="./AppData/Toolkit/botInit.js"></script>
 <script>
 function ansiToHtml(text) {
   const escapeCodeRegex = /\u001b\[([\d;]+)m/g; // Regex pattern to match ANSI escape codes
@@ -46,7 +48,7 @@ function ansiToHtml(text) {
   
 }
     console.log = (log) => {
-        document.getElementById('console').innerHTML += `<div class="fade" style="width: 90vw; margin: auto; margin-top: 6px;">${ansiToHtml(log)}</div>`
+        document.getElementById('console').innerHTML += `<div class="fade" style="margin: auto; margin-top: 6px;">${ansiToHtml(log)}</div>`
     }
 
 
@@ -57,5 +59,4 @@ function ansiToHtml(text) {
     document.body.style.paddingRight = '0px !important';
     document.body.style.borderRadius = '12px'
 </script>
-<script src="./AppData/bot.js" type="module"></script>
 </html>

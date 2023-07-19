@@ -225,7 +225,6 @@ module.exports = {
     "previewName": "Content"
     },
     async run(values, message, uID, fs, client, actionRunner, bridge) {
-        var tempVars = JSON.parse(fs.readFileSync('./AppData/Toolkit/tempVars.json', 'utf8'))
         const {InteractionTypes, ComponentTypes, ButtonStyles} = require('oceanic.js')
         let varTools = require(`../Toolkit/variableTools.js`)
         const interactionTools = require('../Toolkit/interactionTools.js')

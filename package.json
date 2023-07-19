@@ -36,11 +36,11 @@
         "nsis": {
             "oneClick": false,
             "perMachine": false,
-            "allowToChangeInstallationDirectory": true,
             "uninstallDisplayName": "Uninstall Studio Bot Maker"
         }
     },
     "dependencies": {
+        "@aptabase/electron": "^0.2.2",
         "@electron-forge/maker-base": "^6.1.0",
         "@oceanicjs/builders": "^1.1.9",
         "ansi-to-html": "^0.7.2",
@@ -52,6 +52,7 @@
         "fs": "^0.0.1-security",
         "fs-extra": "^11.1.1",
         "fse": "^4.0.1",
+        "node-run-cmd": "^1.0.1",
         "oceanic-collectors": "^1.0.7",
         "oceanic.js": "^1.7.1",
         "request": "^2.88.2",

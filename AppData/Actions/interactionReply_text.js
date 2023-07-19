@@ -222,7 +222,6 @@ module.exports = {
     "previewName": "Content"
     },
     async run(values, message, uID, fs, client, actionRunner, bridge) {
-        var tempVars = JSON.parse(fs.readFileSync('./AppData/Toolkit/tempVars.json', 'utf8'))
         const {InteractionTypes, ComponentTypes, ButtonStyles} = require('oceanic.js')
         let varTools = require(`../Toolkit/variableTools.js`)
         const interactionTools = require('../Toolkit/interactionTools.js')
@@ -383,7 +382,8 @@ module.exports = {
 
         let interactionPendingReply = bridge.variables[varTools.transf(values.to, bridge.variables)]
 
-        interactionPendingReply.createMessage({content: varTools.transf(values.messageContent, bridge.variables), embeds: embeds , components: endComponents, flags: values.ephemeral == 'Yes' ? 64 : null}).then(msg => {
+        interactionPendingReply.createMessage({content: varTools.transf(values.messageContent, bridge.variables), embeds: embeds , components: endComponents, flags: values.ephemeral == 'Yes' ? 64 : null}).then(async inter => {
+            let msg = await interactionPendingReply.getOriginal()
             if (values.storeAs != "") {
                 bridge.variables[values.storeAs] = msg
             }

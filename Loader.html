@@ -1,9 +1,10 @@
 <html>
     <link rel="stylesheet" href="main.css">
-    <div style="width: 100vw; height: 100vh; margin-top: -8px; margin-left: -8px; border-radius: 12px; background-color: #FFFFFF15;">
-    <div class="barbuttontexta textToLeft" style="margin-left: 1vw !important;">Please Select A Project!</div>
+    <div id="everything_container" style="width: 100vw; transform: scale(0.2); transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); height: 100vh; margin-top: -8px; margin-left: -8px; margin-bottom: -50px; margin-right: -50px; border-radius: 12px; background-color: #FFFFFF15;">
+    <div class="everything_container_2" style="background-color: #FFFFFF13; width: 100vw; height: 100vh; overflow: auto; border-radius: 12px;">
     <div id="projects">
     </div>
+</div>
 </div>
     <script src="./AppData/Kits/Loader.js"></script>
     <script>
@@ -43,7 +44,14 @@
         let settings = JSON.parse(fs.readFileSync('C:/ProgramData/settings.json'));
         let data = JSON.parse(fs.readFileSync('./AppData/data.json'));
         let projectContainer = document.getElementById('projects')
-
+        document.getElementById('everything_container').style.transform = `scale(1)`
+        document.getElementById('everything_container').style.background = `linear-gradient(45deg, ${data.color} 0%, rgb(18, 18, 18) 170%)`
+        projectContainer.innerHTML += `
+        <div class="dimension hoverablez" onclick="sendProject('_')" style="width: 95%; margin: auto; border-radius: 9px; padding: 9px; margin-top: 3vh; margin-bottom: 1vh;">
+                <div class="barbuttontexta textToLeft" style="font-size: 23px !important; margin-left: 1vw !important;">Create</div>
+                <div class="barbuttontexta textToLeft" style="margin-left: 1vw !important;">New Project</div>
+        </div>
+        `
         projectContainer.innerHTML += `
         <div class="dimension hoverablez" onclick="sendProject(undefined)" style="width: 95%; margin: auto; border-radius: 9px; padding: 9px; margin-top: 3vh; margin-bottom: 1vh;">
                 <div class="barbuttontexta textToLeft" style="font-size: 23px !important; margin-left: 1vw !important;">Local</div>
@@ -51,8 +59,13 @@
                 <div class="barbuttontexta textToLeft" style="opacity: 50%; margin-left: 1vw !important;">${Object.keys(data.commands).length} Groups</div>
         </div>
         `
+        let count = 0;
+        let shownProjects = []
         for (let project of settings.projects) {
+            count++
             let extra = ''
+            if (!shownProjects.includes(project)) {
+                shownProjects.push(project)
             if (data.prjSrc == project) {
                 console.log(JSON.parse(fs.readFileSync(project + '\\AppData\\data.json')))
             if (areObjectsEqual(Object.values(data.commands), Object.values(JSON.parse(fs.readFileSync(project + '\\AppData\\data.json')).commands)) == true) {
@@ -68,16 +81,23 @@
                 projectName = JSON.parse(fs.readFileSync(project + '/AppData/data.json')).name;
                 projectGroups = Object.keys(JSON.parse(fs.readFileSync(project + '/AppData/data.json')).commands).length
             } catch (err) {}
+            console.log(project)
             projectContainer.innerHTML += `
-            <div class="dimension hoverablez" onclick="sendProject('${project}')" style="width: 95%; margin: auto; border-radius: 9px; padding: 9px; margin-top: 1vh; margin-bottom: 1vh;">
+            <div class="dimension hoverablez" id="${count}" style="width: 95%; margin: auto; border-radius: 9px; padding: 9px; margin-top: 1vh; margin-bottom: 1vh;">
                 <div class="barbuttontexta textToLeft" style="font-size: 23px !important; margin-left: 1vw !important; margin-bottom: 2vh !important;">Exported ${extra}</div>
                 <div class="barbuttontexta textToLeft" style="margin-left: 1vw !important;">Project Name: ${projectName}</div>
                 <div class="barbuttontexta textToLeft" style="opacity: 50%; margin-left: 1vw !important;">${projectGroups} Groups</div>
             </div>
             `
+            }
+            try {
+                document.getElementById(count).addEventListener('mouseup', () => {
+                sendProject(project)
+            })
+            } catch (err) {}
         }
         function sendProject(dir) {
-            ipcRenderer.send('selectedProject', dir || undefined);
+            ipcRenderer.send('selectedProject', dir);
             document.body.style.scale = '0'
             setTimeout(() => {
                 document.body.style.background = 'unset !important'
@@ -85,7 +105,6 @@
                 projectContainer.innerHTML = `
                 <div class="barbuttontexta" style="padding: 12px; backdrop-filter: blur(12px); background-color: #FFFFFF10;">Loading...</div>
                 `
-
             }, 200)
         }
     </script>

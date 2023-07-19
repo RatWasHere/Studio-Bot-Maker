@@ -2,6 +2,11 @@
 # yarn lockfile v1
 
 
+"@aptabase/electron@^0.2.2":
+  "integrity" "sha512-Duutyc/3RAfJ18K0fr/mMutxPCdjjGJOyZFVqZEXdckT9ZlJjwwH2Dcq3IAcb3mnBbkJltlVOSQ2ktGzMQ4MhQ=="
+  "resolved" "https://registry.npmjs.org/@aptabase/electron/-/electron-0.2.2.tgz"
+  "version" "0.2.2"
+
 "@develar/schema-utils@~2.6.5":
   "integrity" "sha512-0cp4PsWQ/9avqTVMCtZ+GirikIA36ikvjtHweU4/j8yLtgObI0+JUPhYFScgwlteveGB1rt3Cm8UhN04XayDig=="
   "resolved" "https://registry.npmjs.org/@develar/schema-utils/-/schema-utils-2.6.5.tgz"
@@ -1443,7 +1448,7 @@
     "lodash.template" "^4.2.2"
     "temp" "^0.9.0"
 
-"electron@^25.2.0":
+"electron@^25.2.0", "electron@>= 8.x":
   "integrity" "sha512-I/rhcW2sV2fyiveVSBr2N7v5ZiCtdGY0UiNCDZgk2fpSC+irQjbeh7JT2b4vWmJ2ogOXBjqesrN9XszTIG6DHg=="
   "resolved" "https://registry.npmjs.org/electron/-/electron-25.2.0.tgz"
   "version" "25.2.0"
@@ -2744,6 +2749,11 @@
     "semver" "^7.3.5"
     "tar" "^6.1.2"
     "which" "^2.0.2"
+
+"node-run-cmd@^1.0.1":
+  "integrity" "sha512-OUePfObrxlzQa3NE9QFUGgyPvTi81/fV41gwSU+HE4tZ7sEHiRC+O88gjw68WXp7BSj9uWjEbdEv4ei0117ffA=="
+  "resolved" "https://registry.npmjs.org/node-run-cmd/-/node-run-cmd-1.0.1.tgz"
+  "version" "1.0.1"
 
 "nopt@^6.0.0":
   "integrity" "sha512-ZwLpbTgdhuZUnZzjd7nb1ZV+4DoiC6/sfiVKok72ym/4Tlf+DFdlHYmT2JPmcNNWV6Pi3SDf1kT+A4r9RTuT9g=="

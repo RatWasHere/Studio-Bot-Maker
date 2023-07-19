@@ -147,330 +147,57 @@ function findMentionsOfGroup() {
     return mentions
 }
 
+window.oncontextmenu = function (event) {
+    showCustomMenu(event.clientX, event.clientY);
+    return false;
+}
 function showCustomMenu(x, y) {
     if (!menu) {
-      var vt = 2;
-      menu = document.createElement('div')
-      menu.style.width = '25vw'
-      menu.style.height = '33vh'
-      menu.style.backgroundColor = '#00000060'
-      menu.style.borderRadius = '12px'
-      menu.style.backdropFilter = 'blur(12px)'
-      menu.style.position = 'fixed'
-      menu.style.top = y + 'px'
-      menu.style.left = x + 'px'
-      menu.style.overflowY = 'auto'
-      menu.id = 'customMenu'
-      document.body.appendChild(menu)
+        menu = document.createElement('div');
+        document.body.appendChild(menu);
+        menu.style.width = '20vw';
+        menu.style.height = '27vh';
+        menu.style.backgroundColor = '#00000060';
+        menu.style.borderRadius = '12px';
+        menu.style.backdropFilter = 'blur(12px)';
+        menu.style.position = 'fixed';
+        menu.className = 'dimension';
+        menu.id = 'customMenu';
+        menu.style.transition = 'all 0.2s ease';
+        menu.style.overflowY = 'auto';
+        menu.style.scale = '0'
+      }
       
-      if (document.getElementById('cndcl')) {
-          menu.innerHTML = `
-          <div class="barbuttontexta" style="background-color: #FFFFFF15; border-top-left-radius: 12px; border-top-right-radius: 12px; border-bottom: solid 2px #FFFFFF30; padding: 2px;">Insert Variable</div>
-          <div class="zaction fullwidth" style="margin-top: 5px;"><div class="barbuttontexta">Var. Template</div></div>
-      `
-  
-      if (document.activeElement.className == 'selectBar') {
-          var fieldSearch = require(`./AppData/Actions/${botData.commands[lastObj].actions[lastAct].file}`).UI
-          let fieldOptions = fieldSearch.variableSettings
-          let options;
-  
-          for (let field in fieldOptions) {
-              if (field == document.activeElement.id) {
-                  options = fieldOptions[field]
-              }
-          }
-          let elementStoredAs;
-          for (let uilm in fieldSearch) {
-              if (uilm.startsWith('menuBar')) {
-                  if (fieldSearch[uilm].extraField == document.activeElement.id) {
-                      elementStoredAs = fieldSearch[uilm].storeAs
-                  }
-              }
-          }
-          let stf = options[botData.commands[lastObj].actions[lastAct].data[elementStoredAs]]
-          let type = 2
-  
-          if (stf == 'novars')  {
-              type = 1
-              menu.innerHTML = `
-              <div class="barbuttontexta" style="background-color: #FFFFFF15; border-top-left-radius: 12px; border-top-right-radius: 12px; border-bottom: solid 2px #FFFFFF30; padding: 2px;">Variables Incompatible</div>
-              `
-          }
-          if (stf == 'direct') {
-              type = 0
-          }
-          vt = type;
-          if (botData.commands[lastObj].type == 'event') {
-              try {
-                  if (require('./AppData/Events/' + botData.commands[lastObj].eventFile).inputSchemes == 2) {
-                      menu.innerHTML += `
-                      <div class="zaction fullwidth" onclick="setVariableIn('${document.activeElement.id}', ${type}, this.innerText, true)"><div class="barbuttontexta">${botData.commands[lastObj].eventData[0]}</div></div>
-                      `
-                      menu.innerHTML += `
-                      <div class="zaction fullwidth" onclick="setVariableIn('${document.activeElement.id}', ${type}, this.innerText, true)"><div class="barbuttontexta">${botData.commands[lastObj].eventData[1]}</div></div>
-                      `
-                  } else {
-                      menu.innerHTML += `
-                      <div class="zaction fullwidth" onclick="setVariableIn('${document.activeElement.id}', ${type}, this.innerText, true)"><div class="barbuttontexta">${botData.commands[lastObj].eventData[0]}</div></div>
-                      `
-                  }} catch(err) {null}
-          } else {
-              if (botData.commands[lastObj].trigger == 'slashCommand') {
-                  for (let parameter of botData.commands[lastObj].parameters) {
-                      menu.innerHTML += `
-                      <div class="zaction fullwidth" onclick="setVariableIn('${document.activeElement.id}', ${type}, this.innerText, true)"><div class="barbuttontexta">${parameter.storeAs}</div></div>
-                      `
-                  }
-              }
-          }
-  
-  
-          for (let action in botData.commands[lastObj].actions) {
-              for (let UIelement in require(`./AppData/Actions/${botData.commands[lastObj].actions[action].file}`).UI) {
-                      let data = require(`./AppData/Actions/${botData.commands[lastObj].actions[action].file}`).UI
-                  if (UIelement.endsWith(`!*`) || UIelement.endsWith('!')) {
-                  var field;
-                      for (let fild in fieldSearch) {
-                          if (fieldSearch[fild] == document.activeElement.id && `${fild}` != 'preview') {
-                              field = fild
-                          }
-  
-                      }
+      // Calculate the maximum allowed coordinates based on window dimensions
+      const windowWidth = window.innerWidth;
+      const windowHeight = window.innerHeight;
+      const menuWidth = menu.offsetWidth;
+      const menuHeight = menu.offsetHeight;
+      const maxX = windowWidth - menuWidth;
+      const maxY = windowHeight - menuHeight;
+      let adjustedScale = 1
+      // Adjust the menu position if it exceeds the window boundaries
+      let adjustedX = x;
+      let adjustedY = y;
+      if (x > maxX) {
+        adjustedX = maxX;
+        adjustedScale = adjustedScale - 0.1
+      }
+      if (y > maxY) {
+        adjustedY = maxY - 48;
+        adjustedScale = adjustedScale - 0.1
+      }
       
-                      menu.innerHTML += `
-                      <div class="zaction fullwidth" onclick="setVariableIn('${document.activeElement.id}', ${type}, this.innerText, true)"><div class="barbuttontexta">${botData.commands[lastObj].actions[action].data[data[UIelement]]}</div></div>
-                      `
-                  }
-              }
-          }
-  
-          if (stf == 'actionGroup') {
-              var fieldSearch = require(`./AppData/Actions/${botData.commands[lastObj].actions[lastAct].file}`).UI
-  
-              
-                  menu.innerHTML = `
-                  <div class="barbuttontexta" style="background-color: #FFFFFF15; border-top-left-radius: 12px; border-top-right-radius: 12px; border-bottom: solid 2px #FFFFFF30; padding: 2px;">Insert Action Group</div>
-                  `
-                  for (let command in botData.commands) {
-                      menu.innerHTML += `
-                      <div class="zaction fullwidth" onclick="setVariableIn('${document.activeElement.id}', 0, '${botData.commands[command].customId}')"><div class="barbuttontexta">${botData.commands[command].name} | #${command}</div></div>
-                      `
-                  }
-                  raun = true
-      
-          }
-  
-  
-  } else {
-      if (document.activeElement.className == "inputB") {
-          
-          let type = 2
-          try {
-          if (require('./AppData/Actions/' + botData.commands[lastObj].actions[lastAct].file).UI.ButtonBarChoices[lastButton]== "direct") {
-              type = 0
-          }
-          if (require('./AppData/Actions/' + botData.commands[lastObj].actions[lastAct].file).UI.ButtonBarChoices[lastButton] == "novars") {
-              type = 1
-          }
-          vt = type;
-
-      } catch(err) {}
-      if (botData.commands[lastObj].type == 'event') {
-          console.log('event!')
-              if (require('./AppData/Events/' + botData.commands[lastObj].eventFile).inputSchemes == 2) {
-                  menu.innerHTML += `
-                  <div class="zaction fullwidth" onclick="setVariableIn('${document.activeElement.id}', ${type}, this.innerText, true)"><div class="barbuttontexta">${botData.commands[lastObj].eventData[0]}</div></div>
-                  `
-                  menu.innerHTML += `
-                  <div class="zaction fullwidth" onclick="setVariableIn('${document.activeElement.id}', ${type}, this.innerText, true)"><div class="barbuttontexta">${botData.commands[lastObj].eventData[1]}</div></div>
-                  `
-              } else {
-                  menu.innerHTML += `
-                  <div class="zaction fullwidth" onclick="setVariableIn('${document.activeElement.id}', ${type}, this.innerText, true)"><div class="barbuttontexta">${botData.commands[lastObj].eventData[0]}</div></div>
-                  `
-              }
-      }
-          for (let action in botData.commands[lastObj].actions) {
-              for (let UIelement in require(`./AppData/Actions/${botData.commands[lastObj].actions[action].file}`).UI) {
-                      let data = require(`./AppData/Actions/${botData.commands[lastObj].actions[action].file}`).UI
-                  if (UIelement.endsWith(`!*`) || UIelement.endsWith('!')) {
-                  var field;
-                      for (let fild in fieldSearch) {
-                          if (fieldSearch[fild] == document.activeElement.id && `${fild}` != 'preview') {
-                              field = fild
-                          }
-  
-                      }
-      
-                      menu.innerHTML += `
-                      <div class="zaction fullwidth" onclick="setVariableIn('${document.activeElement.id}', ${type}, this.innerText, true)"><div class="barbuttontexta">${botData.commands[lastObj].actions[action].data[data[UIelement]]}</div></div>
-                      `
-                  }
-              }
-          }
-      }   else {
-      let raun = false;
-  
-      for (let UIelement in require(`./AppData/Actions/${botData.commands[lastObj].actions[lastAct].file}`).UI) {
-          if (require(`./AppData/Actions/${botData.commands[lastObj].actions[lastAct].file}`).UI[UIelement] == document.activeElement.id) {
-              if (UIelement.endsWith('_actionGroup') || UIelement.endsWith('_actionGroup*')) {
-                  var fieldSearch = require(`./AppData/Actions/${botData.commands[lastObj].actions[lastAct].file}`).UI
-  
-                  
-                      menu.innerHTML = `
-                      <div class="barbuttontexta" style="background-color: #FFFFFF15; border-top-left-radius: 12px; border-top-right-radius: 12px; border-bottom: solid 2px #FFFFFF30; padding: 2px;">Insert Action Group</div>
-                      `
-                      for (let command in botData.commands) {
-                          menu.innerHTML += `
-                          <div class="zaction fullwidth" onclick="setVariableIn('${document.activeElement.id}', 0, '${botData.commands[command].customId}')"><div class="barbuttontexta">${botData.commands[command].name} | #${command}</div></div>
-                          `
-                      }
-                      raun = true
-          
-              }
-          }
-      }
-      if (raun == false) {
-          var field;
-          var fieldSearch = require(`./AppData/Actions/${botData.commands[lastObj].actions[lastAct].file}`).UI
-              for (let fild in fieldSearch) {
-                  if (fieldSearch[fild] == document.activeElement.id && `${fild}` != 'preview') {
-                      field = fild
-                  }
-              }
-          let type = 2;
-          if (field.endsWith('_direct*')) {
-              type = 0
-          }
-          if (field.endsWith('_direct')) {
-              type = 0
-          }
-          if (field.endsWith('_novars') || field.endsWith('_novars*') || field.endsWith('_novars*!') || field.endsWith('_novars!')) {
-              type = 1
-              menu.innerHTML = `<div class="barbuttontexta" style="background-color: #FFFFFF15; border-top-left-radius: 12px; border-top-right-radius: 12px; border-bottom: solid 2px #FFFFFF30; padding: 2px;">Variables Incompatible</div>`
-              return
-          }
-          vt = type;
-
-          if (botData.commands[lastObj].type == 'event') {
-              console.log('event!')
-                  if (require('./AppData/Events/' + botData.commands[lastObj].eventFile).inputSchemes == 2) {
-                      menu.innerHTML += `
-                      <div class="zaction fullwidth" onclick="setVariableIn('${document.activeElement.id}', ${type}, this.innerText, true)"><div class="barbuttontexta">${botData.commands[lastObj].eventData[0]}</div></div>
-                      `
-                      menu.innerHTML += `
-                      <div class="zaction fullwidth" onclick="setVariableIn('${document.activeElement.id}', ${type}, this.innerText, true)"><div class="barbuttontexta">${botData.commands[lastObj].eventData[1]}</div></div>
-                      `
-                  } else {
-                      menu.innerHTML += `
-                      <div class="zaction fullwidth" onclick="setVariableIn('${document.activeElement.id}', ${type}, this.innerText, true)"><div class="barbuttontexta">${botData.commands[lastObj].eventData[0]}</div></div>
-                      `
-                  }
-              } else {
-                  if (botData.commands[lastObj].trigger == 'slashCommand') {
-                      for (let parameter of botData.commands[lastObj].parameters) {
-                          menu.innerHTML += `
-                          <div class="zaction fullwidth" onclick="setVariableIn('${document.activeElement.id}', ${type}, this.innerText, true)"><div class="barbuttontexta">${parameter.storeAs}</div></div>
-                          `
-                      }
-                  }
-              }
-          delete type;
-          delete fieldSearch;
-          delete field;
-      for (let action in botData.commands[lastObj].actions) {
-          for (let UIelement in require(`./AppData/Actions/${botData.commands[lastObj].actions[action].file}`).UI) {
-                  let data = require(`./AppData/Actions/${botData.commands[lastObj].actions[action].file}`).UI
-              if (UIelement.endsWith(`!*`) || UIelement.endsWith('!')) {
-              var field;
-              var fieldSearch = require(`./AppData/Actions/${botData.commands[lastObj].actions[lastAct].file}`).UI
-                  for (let fild in fieldSearch) {
-                      if (fieldSearch[fild] == document.activeElement.id && `${fild}` != 'preview') {
-                          field = fild
-                      }
-                  }
-              
-                  let variableAsType = 2;
-                  if (field.endsWith('_direct*')) {
-                      variableAsType = 0
-                  }
-                  if (field.endsWith('_direct')) {
-                      variableAsType = 0
-                  }
-                  if (field.endsWith('_novars') || field.endsWith('_novars*') || field.endsWith('_novars*!') || field.endsWith('_novars!')) {
-                      variableAsType = 1
-                      menu.innerHTML = `<div class="barbuttontexta" style="background-color: #FFFFFF15; border-top-left-radius: 12px; border-top-right-radius: 12px; border-bottom: solid 2px #FFFFFF30; padding: 2px;">Variables Incompatible</div>`
-                      return
-                  }
-  
-                  vt = variableAsType;
-
-                      menu.innerHTML += `
-                      <div class="zaction fullwidth" onclick="setVariableIn('${document.activeElement.id}', ${variableAsType}, this.innerText)"><div class="barbuttontexta">${botData.commands[lastObj].actions[action].data[data[UIelement]]}</div></div>
-                      `
-              }
-          }
-      }
-      }
-    }}
-  
-  
-    let commandMentions = findMentionsOfGroup()
-    
-    for (let customId of commandMentions) {
-        for (let command in botData.commands) {
-            if (botData.commands[command].customId == customId) {
-                for (let act in botData.commands[command].actions) {
-                    for (let UIelement in require(`./AppData/Actions/${botData.commands[command].actions[act].file}`).UI) {
-                        if (UIelement.startsWith('input')) {
-                            if (UIelement.endsWith('!') || UIelement.endsWith('!*') || UIelement.endsWith('*!')) {
-                                let UIdata = require(`./AppData/Actions/${botData.commands[command].actions[act].file}`).UI
-                                console.log(botData.commands[command].actions[act])
-                                menu.innerHTML += `
-                                <div class="zaction fullwidth" onclick="setVariableIn('${document.activeElement.id}', ${vt}, this.innerText)"><div class="barbuttontexta">${botData.commands[command].actions[act].data[UIdata[UIelement]]} <div class="sepbar" style="margin-top: 4px; margin-bottom: 4px; width: 10vw;"></div><div class="smalltext" style="margin-bottom: 4px;"> From: ${botData.commands[command].name}</div></div></div>
-                                `
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-  
-  
-  } else {
-      menu.innerHTML = `       
-      <div class="barbuttontexta" style="background-color: #FFFFFF15; border-top-left-radius: 12px; border-top-right-radius: 12px; border-bottom: solid 2px #FFFFFF30; padding: 2px;">Quick Options</div>
-      <div class="zaction fullwidth" style="" onclick="searchCommand()"><div class="barbuttontexta">Search Command</div></div>
-      <div class="zaction fullwidth" style=""><div class="barbuttontexta">Search Action</div></div>
-      <div class="zaction fullwidth" style="" onclick="modifyActElm()"><div class="barbuttontexta">Home</div></div>
-      <div class="zaction fullwidth" style="" onclick="exportProject()"><div class="barbuttontexta">Export Bot</div></div>
-      <div class="zaction fullwidth" style="" onclick="savePrj(); uploadDataToPhantom()"><div class="barbuttontexta">Save</div></div>
-  
-      `
-      if (lastHovered) {
-          menu.innerHTML += `
-          <div class="zaction fullwidth" style="" onclick="()"><div class="barbuttontexta">Duplicate</div></div>
-          `
-          if (lastHovered.id.startsWith('Group')) {
-              menu.innerHTML += `
-              <div class="zaction fullwidth" style="" onclick="switchGroups()"><div class="barbuttontexta">Type</div></div>
-              `
-          }
-      }
-    }
-  }
-  }
-  function updateFoundActionGroup(ofWhat) {
-    let cmd = 'None'
-    for (let command in botData.commands) {
-        if (botData.commands[command].customId == ofWhat.innerText) {
-            cmd = botData.commands[command].name
-        }
-    }
-    ofWhat.nextElementSibling.innerHTML = `
-    <div class="barbuttontexta">Selected: ${cmd}</div>`
-  }
+      menu.style.top = adjustedY + 'px';
+      menu.style.left = adjustedX + 'px';
+      menu.style.scale = `${adjustedScale}`
+        let variableType = 2;
+        menu.innerHTML = `
+        <div class="flexbox" style="width: 100%; margin-top: 2vh;">
+        <div class="dimension hoverablez" style="width: 95%; padding-top: 4px; padding-bottom: 4px; margin: auto; margin-bottom: 4px; margin-top: 4px; border-radius: 4px;"><div class="barbuttontexta textToLeft" style="margin-left: 1vw;">Under Construction!</div></div>
+        </div>
+        `
+}
 
   window.oncontextmenu = function (event) {
     showCustomMenu(event.clientX, event.clientY);
@@ -484,7 +211,10 @@ function showCustomMenu(x, y) {
   });
   document.addEventListener('click', function(event) {
     if (menu && !menu.contains(event.target)) {
-      menu.remove();
+        menu.style.scale = '0'
+        setTimeout(() => {
+            menu.remove();
+        }, 250)
       menu = null;
     }
   });

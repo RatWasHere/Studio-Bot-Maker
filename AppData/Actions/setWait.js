@@ -20,8 +20,7 @@ module.exports = {
             });
         }
         const varTools = require('../Toolkit/variableTools.js')
-        let tempVars = JSON.parse(fs.readFileSync('./AppData/Toolkit/tempVars.json'));
-        var timeAmount = parseFloat(varTools.transf(values.time, tempVars, uID));
+        var timeAmount = parseFloat(varTools.transf(values.time, bridge.variables));
         let time;
         switch(values.amountOfTime) {
             case 'Seconds*': 

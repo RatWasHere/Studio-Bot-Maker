@@ -30,8 +30,8 @@ module.exports = {
 
         let matchesCriteria = false;
 
-        let firstValue = `${varTools.transf(values.firstinput, bridge.variables).toLowerCase()}`
-        let secondValue = `${varTools.transf(values.secondInput, bridge.variables).toLowerCase()}`
+        let firstValue = `${varTools.transf(values.firstinput, bridge.variables)}`
+        let secondValue = `${varTools.transf(values.secondInput, bridge.variables)}`
 
         switch (values.button) {
             case '!=':
