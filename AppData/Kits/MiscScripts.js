@@ -65,8 +65,8 @@ setInterval(async () => {
         presence.secondHeader = `Under ${botData.commands[lastObj].name}`
         presence.botName = botData.name
     } else {
-        presence.firstHeader = `Viewing Commands - ${Object.keys(botData.commands).length} Commands in total`
-        presence.secondHeader = `Highlighted: ${botData.commands[lastObj].name} - ${botData.commands[lastObj].count} actions`
+        presence.firstHeader = `Viewing Commands - ${botData.commands.length} Commands in total`
+        presence.secondHeader = `Highlighted: ${botData.commands[lastObj].name} - ${botData.commands[lastObj].actions.length} actions`
         presence.botName = botData.name
     }
     await fs.writeFileSync(processPath + '\\AppData\\presence.json', JSON.stringify(presence))

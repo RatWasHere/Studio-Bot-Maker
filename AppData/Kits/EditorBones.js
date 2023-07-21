@@ -17,16 +17,12 @@ function editAction() {
     } else {
         if (botData.commands[lastObj].trigger == 'slashCommand') {
             actionType = 'slash'
+            if (botData.commands[lastObj].parameters) {
             for (let parameter of botData.commands[lastObj].parameters) {
                 variables.push(parameter.storeAs)
             }
-        }
-        if (botData.commands[lastObj].bounds) {
-            if (botData.commands[lastObj].trigger == 'message' || botData.commands[lastObj].trigger == 'textCommand') {
-                if (botData.commands[lastObj].bounds == 1) {
-                    actionType = 'dm'
-                }
             }
+
         }
     }
 
@@ -62,7 +58,6 @@ ipcRenderer.on('childClose', () => {
     document.body.style.opacity = '100%'
 })
 
-let isUpdating = false;
 let lastMenuOption;
 let lastHovered;
 let customHTMLdfs;
@@ -101,25 +96,16 @@ document.onkeydown=function(event){handleKeybind(event)};
     function refreshActions() {
         var delay = 0;
         document.getElementById('actionbar').innerHTML = ''
-
+        let endHTML = ``
+        if (botData.commands[lastObj].actions.includes(undefined) || botData.commands[lastObj].actions.includes(null)) {
+            botData.commands[lastObj].actions = botData.commands[lastObj].actions.filter(e => e != undefined || e != null);
+            wast()
+        }
         for (let action in botData.commands[lastObj].actions) {
-            if (botData.commands[lastObj].actions[action] == undefined) {
-                let keyToRemove = action;
-
-                let filteredEntries = Object.entries(botData.commands[lastObj].actions).filter(([key]) => key != keyToRemove);
-                let newJson = {};
-                for (let i = 0; i < filteredEntries.length; i++) {
-                  newJson[i + 1] = filteredEntries[i][1];
-                }
-                botData.commands[lastObj].actions = newJson;
-                botData.commands[lastObj].count = botData.commands[lastObj].count - 1
-                wast()
-            } else {
-            let count = 0;
             let quickie = '';
             delay++;
-            let quickdata;
-            let dataquick;
+            let actionUI;
+            let previewCharacters;
             let borderType;
             if (botData.commands[lastObj].actions[parseFloat(action) - 1] == undefined) {
               borderType = 'borderbottom';
@@ -128,44 +114,46 @@ document.onkeydown=function(event){handleKeybind(event)};
             } else {
               borderType = 'bordercentere';
             }
+            let actionFile;
             try {
-            let actionFile = require(`./AppData/Actions/${botData.commands[lastObj].actions[action].file}`)
-            try {
-            quickdata = actionFile.UI;
-            dataquick = botData.commands[lastObj].actions[action].data[quickdata.preview].split('');
-                for (let character in dataquick) {
-                    if (count != 23) {
-                        const opacity = 100 - (count - 15) * 10;
-                        quickie = `${quickie}<span style="opacity: ${opacity}%;">${dataquick[character]}</span>`;
-                        count++;
+            actionFile = require(`./AppData/Actions/${botData.commands[lastObj].actions[action].file}`);
+
+                try {
+                let characterCount = 0;
+                actionUI = actionFile.UI;
+                previewCharacters = botData.commands[lastObj].actions[action].data[actionUI.preview].split('');
+                if (previewCharacters.length > 22) {
+                    for (let character in previewCharacters) {
+                        if (characterCount != 23) {
+                            const opacity = 100 - (characterCount - 15) * 10;
+                            quickie = `${quickie}<span style="opacity: ${opacity}%;">${previewCharacters[character]}</span>`;
+                            characterCount++;
+                        }
                     }
-                  }
-            } catch (err) {
-                quickie = `Error`
-            }
-        
-            document.getElementById('actionbar').innerHTML += `
+                } else {
+                    quickie = botData.commands[lastObj].actions[action].data[actionUI.preview]
+                }
+                } catch (err) {
+                    quickie = `Error`
+                }
+
+            endHTML += `
             <div id="Action${action}" onmouseenter="lastHovered = this" draggable="true" ondragleave="handleActionDragEnd(this)" ondragend="handleActionDrop()" ondragover="actionDragOverHandle(event, this)" ondragstart="handleActionDrag(this)" onmouseleave="lastHovered = null;" class="action textToLeft ${borderType}" style="animation-delay: ${delay * 3}0ms" ondblclick="editAction(this)" onclick="highlight(this)">
             ${botData.commands[lastObj].actions[action].name}
-            <div style="opacity: 50%; margin-left: 7px;">${`${quickdata.previewName}`}: ${quickie}</div>
-            <div class="deleteActionButton" onclick="deleteObject(this)">✕</div>`;
+            <div style="opacity: 50%; margin-left: 7px;">${`${actionUI.previewName}`}: ${quickie}</div>
+            <div class="deleteActionButton" onclick="deleteObject(this)">✕</div></div>`;
         } catch (err) {
-            if (!botData.commands[lastObj].actions[action]) {
-                document.getElementById('actionbar').innerHTML += `
+            if (!botData.commands[lastObj].actions[action] || actionFile == undefined) {
+                endHTML += `
                 <div id="Action${action}" onmouseenter="lastHovered = this" draggable="true" ondragleave="handleActionDragEnd(this)" ondragend="handleActionDrop()" ondragover="actionDragOverHandle(event, this)" ondragstart="handleActionDrag(this)" onmouseleave="lastHovered = null;" class="action textToLeft ${borderType}" style="animation-delay: ${delay * 3}0ms" ondblclick="editAction(this)" onclick="highlight(this)">
                 Error
                 <div style="opacity: 50%; margin-left: 7px;"> - Action Missing</div>
                 <div class="deleteActionButton" onclick="deleteObject(this)">✕</div></div>`;
             }
         }
-        
-            if (action === lastAct) {
-              setTimeout(() => {
-                highlight(document.getElementById('Action' + action));
-                }, 50);
-            }
-        }
     }
+
+    document.getElementById('actionbar').innerHTML = endHTML
     }
 
     function refreshGroups() {
@@ -174,6 +162,10 @@ document.onkeydown=function(event){handleKeybind(event)};
         let wasGroupHighlighted = false;
         let firstCompatibleGroup;
         for (let cmd in botData.commands) {
+            if (botData.commands[cmd].actions.includes(undefined) || botData.commands[cmd].actions.includes(null)) {
+                botData.commands[cmd].actions = botData.commands[cmd].actions.filter(e => e != undefined || e != null);
+                wast()
+            }
             let groupType = botData.commands[cmd].type;
             let groupTrigger = botData.commands[cmd].trigger;
             let endType;
@@ -190,7 +182,7 @@ document.onkeydown=function(event){handleKeybind(event)};
             if (endType == selectedGroupType) {
                 if (!firstCompatibleGroup) firstCompatibleGroup = cmd
                 delay++
-                document.getElementById('commandbar').innerHTML += `<div class="${botData.commands[cmd].color != undefined ? 'coloredAction' : 'action'} textToLeft" draggable="true" onmouseenter="lastHovered = this" ondragleave="handleGroupDragEnd(this)" ondragend="handleGroupDrop()" ondragover="groupDragOverHandle(event, this)" ondragstart="handleGroupDrag(this)" onmouseleave="lastHovered = null;" id="Group${parseFloat(cmd)}" style="animation-delay: ${delay * 3}5ms;" onclick="highlight(this)"><div id="name">${botData.commands[cmd].name}</div> <div style="opacity: 50%; margin-left: 7px;"> | ${Object.keys(botData.commands[cmd].actions).length} Actions </div> <div class="deleteActionButton forceRounded" style="border-radius: 124px;" onclick="deleteObject(this)">✕</div> `
+                document.getElementById('commandbar').innerHTML += `<div class="${botData.commands[cmd].color != undefined ? 'coloredAction' : 'action'} textToLeft" draggable="true" onmouseenter="lastHovered = this" ondragleave="handleGroupDragEnd(this)" ondragend="handleGroupDrop()" ondragover="groupDragOverHandle(event, this)" ondragstart="handleGroupDrag(this)" onmouseleave="lastHovered = null;" id="Group${parseFloat(cmd)}" style="animation-delay: ${delay * 3}5ms;" onclick="highlight(this)"><div id="${cmd}Groupname">${botData.commands[cmd].name}</div> <div style="opacity: 50%; margin-left: 7px;"> | <span id="${cmd}Groupcount">${botData.commands[cmd].actions.length}</span> Actions </div> <div class="deleteActionButton forceRounded" style="border-radius: 124px;" onclick="deleteObject(this)">✕</div> `
                 if (botData.commands[cmd].color != undefined) {
                     let groupColor = botData.commands[cmd].color.split(')')[0]
                     try {
@@ -225,7 +217,6 @@ document.onkeydown=function(event){handleKeybind(event)};
 
         }
         closeCommand()
-        console.log(firstCompatibleGroup)
         if (!wasGroupHighlighted) {
             setTimeout(() => {
                 highlight(document.getElementById(`Group${firstCompatibleGroup}`))
@@ -275,8 +266,11 @@ document.onkeydown=function(event){handleKeybind(event)};
         groupEvents.style.padding = ''
         groupEvents.style.width = '90%'
         groupEvents.style.opacity = ''
-
-        groupEvents.innerHTML = `<div style="margin: auto; margin-left: 1vw;">Triggered By: ${require('./AppData/Events/' + botData.commands[lastObj].eventFile).name}</div><div class="image openExternally"></div>`
+        try {
+            groupEvents.innerHTML = `<div style="margin: auto; margin-left: 1vw;">Triggered By: ${require('./AppData/Events/' + botData.commands[lastObj].eventFile).name}</div><div class="image openExternally"></div>`
+        } catch (err) {
+            groupEvents.innerHTML = `<div style="margin: auto; margin-left: 1vw;">Triggered By: Nothing</div><div class="image openExternally"></div>`
+        }
 
     }
 
@@ -287,7 +281,6 @@ document.onkeydown=function(event){handleKeybind(event)};
     function highlight(element) {
         try {
         if (element.id.startsWith('Group') == true) {
-
             try {
                 if (botData.commands[lastObj].color != undefined) {
                     document.getElementById(`Group${lastObj}`).style.backgroundColor =  botData.commands[lastObj].color.split(')') + ' 0.09)'
@@ -299,7 +292,7 @@ document.onkeydown=function(event){handleKeybind(event)};
             element.style.backgroundColor = '#FFFFFF25';
             lastObj = element.id.split('Group')[1]
 
-            document.getElementById('Command_Name').value = botData.commands[lastObj].name;
+            document.getElementById('Command_Name').innerText = botData.commands[lastObj].name;
 
             document.getElementById('actionsOf').innerHTML = `Actions Of ${element.innerText.split('|')[0]}`
 
@@ -339,8 +332,9 @@ document.onkeydown=function(event){handleKeybind(event)};
                 case 'textCommand':
                     groupType = 'Text Command'
                     var permissions = 'None'
-                    if (group.boundary) {
+                    if (group.boundary && group.boundary.limits.length != 0) {
                         permissions = `${group.boundary.limits.length} Permission Limits `
+                    } else if (group.boundary.permissions) {
                         if (group.boundary.worksIn == 'guild') {
                             permissions += '• Guild Only'
                         } else if (group.boundary.worksIn == 'dm') {
@@ -349,7 +343,7 @@ document.onkeydown=function(event){handleKeybind(event)};
                             permissions += '• Works Anywhere'
                         }
                     } else {
-                        permissions = 'Guild Only'
+                        permissions = 'Guild Only' 
                     }
                     extraGroupInformation = permissions
                     prioritizeCommandOptions()
@@ -370,20 +364,6 @@ document.onkeydown=function(event){handleKeybind(event)};
             let lastCheckedAction = null;
             for (let action in botData.commands[lastObj].actions) {
                 lastCheckedAction = action;
-            }
-            if (botData.commands[lastObj].count != botData.commands[lastObj].actions.length || botData.commands[lastObj].count != lastCheckedAction) {
-                let filteredEntries = Object.entries(botData.commands[lastObj].actions);
-                let newJson = {};
-                let newCount = 0;
-                for (let i = 0; i < filteredEntries.length; i++) {
-                    newCount++
-                  newJson[i + 1] = filteredEntries[i][1];
-                }
-                botData.commands[lastObj].count = newCount
-                botData.commands[lastObj].actions = newJson;
-                refreshActions()
-                wast()
-
             }
             botData.commands[lastObj].actions[lastAct] = botData.commands[lastObj].actions[lastAct]
         } else {
@@ -476,78 +456,6 @@ document.onkeydown=function(event){handleKeybind(event)};
         }, 400)
     }
 
-    function switchGroups() {
-            let bottombar = document.getElementById('bottombar')
-            bottombar.style.animationDuration = ''
-            bottombar.style.animationName = '';
-            bottombar.style.animationDuration = '0.49s'
-            bottombar.style.animationName = 'expandFrom';
-            bottombar.style.height = '30%'
-            bottombar.style.width = '40%'
-            bottombar.style.backdropFilter = 'blur(22px)'
-            bottombar.style.border = '#00000030 solid 2px'
-            bottombar.style.marginTop = '-90vh'
-            bottombar.style.zIndex = '50'
-            bottombar.style.marginLeft = '30%'
-            bottombar.style.borderRadius = '22px'
-            bottombar.style.backgroundColor = '#3d3d3d40'
-            bottombar.style.overflowY = 'none'
-            bottombar.style.boxShadow = '#00000050 0px 0px 12px'
-            document.getElementById('wedf').onclick = () => {unmodify()}
-
-            bottombar.onclick = () => {
-                document.getElementById('wedf').onclick = () => {switchGroups()}
-                unmodify()
-            }
-            setTimeout( () => {
-                bottombar.innerHTML = ''
-                let datkd = ''
-                if (botData.commands[lastObj].type == 'action') {
-                    datkd = `
-                    <div class="barbutton widerBB borderright" id="ttxtcmd" onmousedown="sltTxt()">
-                    <div class="barbuttontexta">Text Command</div></div>
-
-                    <div class="barbutton widerBB bordercenter" id="tslhscmd">
-                    <div class="barbuttontexta" onclick="tSlsh()">Slash Command</div></div>
-                     <div class="barbutton widerBB borderleft" id="ttxtmsgcmd" onmousedown="sltMsg()">
-                     <div class="barbuttontexta">Message</div></div>`
-                } else {
-                    datkd = `<div class="textse">Click "Command Options" to select an event!</div>`
-                }
-            bottombar.innerHTML += `
-            •••
-            <div class="flexbox" style="justify-content: center; align-items: center; width: 100%; height: 100%; margin-top: -3.5%; margin-right: auto; margin-left: auto;">
-            <div style="width: 100%;">
-            <div class="flexbox" style="width: 98%; margin-left: auto; margin-right: auto; height: 20%; justify-content: center;">
-            <div class="barbutton widerBB borderright" onmousedown="setCmd()"><div class="barbuttontexta">Command</div></div>
-            <div class="barbutton widerBB borderleft" onmouseup="setEvt()"><div class="barbuttontexta">Event</div></div>
-            </div>
-            <div class="sepbar"></div>
-            
-            <div class="flexbox" style="width: 98%; margin-left: auto; margin-right: auto; height: 20%; justify-content: center;">
-            ${datkd}
-
-            </div>
-            </div>
-
-            </div>`
-            bottombar.style.animationName = ''
-            bottombar.style.animationDuration = ''
-            if (botData.commands[lastObj].type == 'action') {
-                switch (botData.commands[lastObj].trigger) {
-                    case 'textCommand': 
-                        document.getElementById('ttxtcmd').style.backgroundColor = '#FFFFFF20'
-                    break
-                    case 'slashCommand': 
-                        document.getElementById('tslhscmd').style.backgroundColor = '#FFFFFF20'
-                    break
-                    case 'messageContent': 
-                document.getElementById('ttxtmsgcmd').style.backgroundColor = '#FFFFFF20'
-                    break
-                }
-            }
-}, 490)
-    }
     function sltTxt() {
         botData.commands[lastObj].trigger = 'textCommand'
         fs.writeFileSync(processPath + '\\AppData\\data.json', JSON.stringify(botData, null, 2));
@@ -929,16 +837,11 @@ document.onkeydown=function(event){handleKeybind(event)};
                     }  
                     fs.writeFileSync(exportFolder + '\\AppData\\Project\\data.json', fs.readFileSync(processPath + '\\AppData\\Project\\data.json'))
                 let actions = fs.readdirSync(processPath + '\\AppData\\Actions')
-                let counnt = 0;
                 document.getElementById('exprjt').innerHTML = '<div class="ring"></div> <br> Exporting Project!'
                     let acrnum = 0;
-                    for (let acf in botData.commands) {
-                        acrnum = parseFloat(acrnum) + parseFloat(botData.commands[acf].count)
-                    }
 
-                for (let action in actions) {
-                    counnt++
-                        await fs.writeFileSync(exportFolder + '\\AppData\\Actions\\' + actions[action], fs.readFileSync(processPath + '\\AppData\\Actions\\' + actions[action]))
+
+                    fs.writeFileSync(exportFolder + '\\AppData\\Actions\\' + actions[action], fs.readFileSync(processPath + '\\AppData\\Actions\\' + actions[action]))
                     document.getElementById('exprjt').innerHTML = '<div class="ring"></div> <br> Project Exported! <br>' + counnt + ' Actions Exported To  <span style="opacity:50%"> ' + botData.name + '</span><br>' + `
                     <div class="sepbar"></div>
                     <div class="barbuttontexta">Project Summary</div>
@@ -947,13 +850,17 @@ document.onkeydown=function(event){handleKeybind(event)};
                     <div></div>
                     <br>
                     `
-                }
                 setTimeout(() => {
                     location.reload()
                 }, 14000)
             } else {
                 elm.style.animationName = 'glowTwice'
                 elm.style.animationDuration = '1s'
+
+                setTimeout(() => {
+                    elm.style.animationName = ''
+                    elm.style.animationDuration = ''
+                }, 1000)
             }
         }
         
@@ -1554,24 +1461,21 @@ function saveSelection() {
 
 const { spawn } = require('child_process');
 
-if (botData.commands['1'].customId == undefined) {
-    for (let command in botData.commands) {
-        botData.commands[command].customId = new Date().getTime()
-        wast()
-        let r = 0
-        while (r < 3550) {
-            r++
-        }
-    }
-}
-
-
 function openEvent() {
-    ipcRenderer.send('editEvent', {
-        name: require('./AppData/Events/' + botData.commands[lastObj].eventFile).name,
-        event: botData.commands[lastObj].eventFile,
-        data: botData.commands[lastObj].eventData
-    })
+    try {
+        ipcRenderer.send('editEvent', {
+            name: require('./AppData/Events/' + botData.commands[lastObj].eventFile).name,
+            event: botData.commands[lastObj].eventFile,
+            data: botData.commands[lastObj].eventData
+        })
+    } catch (err) {
+        ipcRenderer.send('editEvent', {
+            name: 'Bot Ready',
+            event: 'bot_ready.js',
+            data: [""]
+        })
+    }
+    
 }
 
 ipcRenderer.on('eventSave', (event, eventData) => {
@@ -1623,10 +1527,14 @@ function toggleColorsVisibility(button) {
 }
 
 function openParameters() {
-    ipcRenderer.send('editParameters', {parameters: botData.commands[lastObj].parameters || [], name: botData.commands[lastObj].name})
+    ipcRenderer.send('editParameters', {parameters: botData.commands[lastObj].parameters || [], name: botData.commands[lastObj].name, description: botData.commands[lastObj].description || 'No Description'})
 }
 
-ipcRenderer.on('parameters', (event, parameters) => {
+ipcRenderer.on('parameters', (event, parameters, description) => {
     botData.commands[lastObj].parameters = parameters;
+    botData.commands[lastObj].description = description;
 })
 
+function wast() {
+    fs.writeFileSync(processPath + '\\AppData\\data.json', JSON.stringify(botData, null, 2));
+}
