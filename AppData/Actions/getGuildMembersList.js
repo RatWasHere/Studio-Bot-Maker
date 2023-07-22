@@ -26,7 +26,7 @@ module.exports = {
         let varTools = require(`../Toolkit/variableTools.js`)
 
         for (let member of bridge.guild.members) {
-            console.log(member)
+            
         }
     }
 }
