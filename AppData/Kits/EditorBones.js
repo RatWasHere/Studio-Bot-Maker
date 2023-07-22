@@ -843,9 +843,11 @@ document.onkeydown=function(event){handleKeybind(event)};
                 document.getElementById('exprjt').innerHTML = '<div class="ring"></div> <br> Exporting Project!'
                     let acrnum = 0;
 
+                    for (let action in actions) {
+                        fs.writeFileSync(exportFolder + '\\AppData\\Actions\\' + actions[action], fs.readFileSync(processPath + '\\AppData\\Actions\\' + actions[action]))
+                    }
 
-                    fs.writeFileSync(exportFolder + '\\AppData\\Actions\\' + actions[action], fs.readFileSync(processPath + '\\AppData\\Actions\\' + actions[action]))
-                    document.getElementById('exprjt').innerHTML = '<div class="ring"></div> <br> Project Exported! <br>' + counnt + ' Actions Exported To  <span style="opacity:50%"> ' + botData.name + '</span><br>' + `
+                    document.getElementById('exprjt').innerHTML = '<div class="ring"></div> <br> Project Exported! <br>' + actions.length + ' Actions Exported To  <span style="opacity:50%"> ' + botData.name + '</span><br>' + `
                     <div class="sepbar"></div>
                     <div class="barbuttontexta">Project Summary</div>
                     <br>

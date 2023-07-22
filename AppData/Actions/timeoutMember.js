@@ -73,7 +73,7 @@ module.exports = {
         if (values.reason == '') {
             member.timeout(duration)
         } else {
-            member.timeout(duration, varTools.transf(values.reason, bridge.variables))
+            member.edit()
         }
 
     }

@@ -109,7 +109,7 @@ function mbSelect(storeAs, menu, extraField, UIreference) {
     /* menu = the menu element */
     /* extraField = the input that appears when only a certain part of an input is selected */
     /* UIreference = how the menu is defined as in the action UI file */
-
+    cancelMenu = true;
     action.data[actionUI[UIreference].storeAs] = storeAs.innerText;
 
     let pending = "";
@@ -131,7 +131,7 @@ function mbSelect(storeAs, menu, extraField, UIreference) {
             pending.contentEditable = "true";
             pending.innerHTML = action.data[extraField];
             pending.oninput = (event) => {
-                setTimeout(() => {validateInput(event);}, 30)
+                setTimeout(() => {validateInput(event);}, 10)
                 saveField(extraField, menu);
             };
         }
@@ -173,6 +173,7 @@ function mbSelect(storeAs, menu, extraField, UIreference) {
         cachedParentNode.onclick = () => {
             openChoices(menu, cachedParentNode, extraField, UIreference);
         };
+        cancelMenu = false;
     }, 50);
 
     setTimeout(() => {
@@ -192,29 +193,44 @@ function closeMenu(elmett, nht, storesAs) {
     elmett.innerHTML = nht
     elmett.onclick = () => {openChoices(storesAs, elmett)}
 }
+let cancelMenu = false;
 function openChoices(storesAs, pElm, dElement, elementStores) {
-    const elmdf = pElm.innerHTML
-    const elmd = elmdf
-    const plmdf1 = pElm.innerHTML
-    const plmdf = plmdf1 
-    let chk = actionUI[elementStores].choices;
+    let choices = actionUI[elementStores].choices;
     for (let option in actionUI[elementStores].choices) {
-        if (chk[option] != plmdf) {
-            pElm.onclick = () => {}
-            let emnf = document.createElement('div')
-            emnf.className = 'menuBar flexbox'
-            emnf.style.textAlign = 'left'
-            emnf.style.justifyContent = 'left'
-            emnf.style.alignItems = 'left'
-            emnf.innerHTML = `<div style="width: 0.3vw; height: 10px; margin-right: 1vw; margin-top: auto; margin-bottom: auto; background-color: #FFFFFF85;"></div> ${chk[option]} `
-            emnf.onclick = () => {mbSelect(emnf, storesAs, dElement, elementStores)}
-            pElm.appendChild(emnf)
-            emnf.style.animationName = 'inittl'
-            emnf.style.animationDuration = '0.5s'
+        if (choices[option] != action.data[storesAs]) {
+            pElm.onclick = () => {closeMenu(storesAs, pElm, dElement, elementStores)}
+            let menuElement = document.createElement('div')
+            menuElement.className = 'menuBar flexbox'
+            menuElement.style.textAlign = 'left'
+            menuElement.style.justifyContent = 'left'
+            menuElement.style.alignItems = 'left'
+            menuElement.innerHTML = `<div style="width: 0.3vw; height: 10px; margin-right: 1vw; margin-top: auto; margin-bottom: auto; background-color: #FFFFFF85;"></div> ${choices[option]} `
+            menuElement.onclick = () => {mbSelect(menuElement, storesAs, dElement, elementStores)}
+            pElm.appendChild(menuElement)
+            menuElement.style.animationName = 'inittl'
+            menuElement.style.animationDuration = '0.5s'
         }
     }
 }
-
+function closeMenu(storesAs, pElm, inputStoredAs, elementStoredAs) {
+    if (cancelMenu == true) return;
+    pElm.style.animationName = "";
+    const innerHeight = pElm.clientHeight;
+    pElm.style.animationDuration = "";
+    pElm.style.setProperty("--inner-height", innerHeight + "px");
+    pElm.style.animationName = "shrink";
+    pElm.style.animationDuration = "300ms";
+    pElm.onclick = () => {
+        openChoices(storesAs, pElm, inputStoredAs, elementStoredAs)
+    }
+    setTimeout(() => {
+        pElm.innerHTML = action.data[storesAs]
+        setTimeout(() => {
+            pElm.style.animationName = "";
+            pElm.style.animationDuration = "";
+        }, 200);
+    }, 100);
+}
 Element.prototype.appendBefore = function (element) {
     element.parentNode.insertBefore(this, element);
   },false;

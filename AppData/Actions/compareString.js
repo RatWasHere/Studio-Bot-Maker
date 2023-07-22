@@ -1,5 +1,5 @@
 module.exports = {
-    data: {"name": "Compare", "button":"=", "firstInput":"", "secondInput":"", "runIfTrue": {}, "runIfFalse": {}},
+    data: {"name": "Compare", "comparator":"=", "firstInput":"", "secondInput":"", "runIfTrue": {}, "runIfFalse": {}},
     UI: {"compatibleWith": ["Any"],
 
     text:"Compare", "sepbar":"", 
@@ -7,9 +7,9 @@ module.exports = {
     "btext":"Compare",
     "input*":"firstInput",
 
-    "sepbar":"",
-    "ButtonBar":{"buttons":[">", "=", "!=", "<" ]},
-    "sepbar0":"", 
+    "sepbar0":"",
+    "menuBar": {choices: ["!=", "=", ">", "<"], storeAs: "comparator"},
+    "sepbar*":"",
 
     "btext0":"Compare To", 
     "input0*":"secondInput",
@@ -33,7 +33,7 @@ module.exports = {
         let firstValue = `${varTools.transf(values.firstinput, bridge.variables)}`
         let secondValue = `${varTools.transf(values.secondInput, bridge.variables)}`
 
-        switch (values.button) {
+        switch (values.comparator) {
             case '!=':
                 if (firstValue != secondValue) {
                     matchesCriteria = true

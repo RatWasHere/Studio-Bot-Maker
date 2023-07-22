@@ -547,8 +547,3 @@ function newActionEditorWindow(data) {
       } catch (err) {} 
     })
   })
-
-  ipcMain.on('restart', () => {
-    app.relaunch()
-    app.relaunch()
-  })

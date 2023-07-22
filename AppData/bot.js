@@ -1,4 +1,3 @@
-const { MessageFlags } = require('discord-api-types/v10');
 
 let colors = {
     Reset: "\x1b[0m",

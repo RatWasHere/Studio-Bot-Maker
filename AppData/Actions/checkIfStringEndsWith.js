@@ -11,7 +11,7 @@ module.exports = {
         "sepbar0":"",
 
         "btext0": "Check If It Ends With",
-        "input": "startWith",
+        "input0": "startWith",
 
         "sepbar1":"",
 
