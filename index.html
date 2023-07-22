@@ -65,15 +65,9 @@
             <div class="barbuttone borderrightz" onclick="lastType = 1; editAction(document.getElementById('Action' + lastAct));" style="width: 2.7vw; height: 3.5vh;">
                 <div class="imagefull editAction"></div>
             </div>
-            <div class="barbuttone bordercenter" onclick="lastType = 1; newObject();" style="width: 2.7vw; height: 3.5vh; margin-left: 0.12vw; margin-right: 0.12vw;">
+            <div class="barbuttone borderleftz" onclick="lastType = 1; newObject();" style="width: 2.7vw; height: 3.5vh; margin-left: 0.12vw; margin-right: 0.12vw;">
                 <div class="image add"></div>
             </div>
-            <div class="barbuttone bordercenter" onclick="lastType = 1; moveUp();" style="margin-left: 0.12vw; margin-right: 0.12vw; width: 2.7vw; height: 3.5vh;">
-                <div class="image actionUp"></div>
-            </div>
-        <div class="barbuttone borderleftz" onclick="lastType = 1; moveDown();" style="width: 2.7vw; height: 3.5vh;">
-            <div class="image actionDown"></div>
-        </div>
         </div>
     </div>
 </div>
@@ -83,7 +77,7 @@
         <div id="animationEditor" style="height: 100%;">
         <div class="tile borderbottomz" style="background: linear-gradient(0deg, #FFFFFF10, #FFFFFF15)">
         <div class="text clsr" style="margin-top: 0px;">Group Name</div>
-        <input class="inputBar" style="width: 96%; border-radius: 9px; margin: auto;" contenteditable="true" id="Command_Name" onkeydown="elementContentChecker(this, {maxLength: 31, isCommandName: true})" oninput="updateName(this)">
+        <div class="inputBar" style="width: 96%; border-radius: 9px; margin: auto;" contenteditable="true" id="Command_Name" oninput="validateInputSpaces(this); updateName(this)"></div>
         </div>
 
     <div class="tile bordercentere" style="background: linear-gradient(0deg, #FFFFFF15, #FFFFFF10); margin-top: 0px;">
@@ -93,16 +87,11 @@
     <div class="baction noanims hoverable optionright flexbox" style="overflow: auto; align-items: center; justify-content: center;" id="groupEvents" onclick="openEvent()"><div style="margin-right: auto; margin-left: 1vw;">Event: </div><div class="image openExternally"></div></div>
     <div class="baction noanims hoverable optionright flexbox" style="align-items: center; justify-content: center;"id="commandOptions" onclick="openPermissionEditor()"><div style="margin-right: auto; margin-left: 1vw;">Permissions</div><div class="image openExternally"></div></div>
     </div>
-    <div class="flexbox" style="width: 100%; overflow-x: auto;">
-        <div id="rawData" class="barbuttonshift borderright" onclick="switchGroups()" style="width: 30%; padding-left: 0px; padding-right: 0px;  padding-top: 1vh; padding-bottom: 1vh;"><div class="barbuttontexta" id="wedf">Type</div></div>
-        <div id="rawData" class="barbuttonshift bordercenter"   onclick="duplicate()" style="width: 30%; padding-left: 0px; padding-right: 0px;  padding-top: 1vh; padding-bottom: 1vh;"><div class="barbuttontexta">Duplicate</div></div>
-        <div id="rawData" class="barbuttonshift borderleft" onclick="commandOptions()" style="width: 30%; padding-left: 0px; padding-right: 0px; padding-top: 1vh; padding-bottom: 1vh;"><div class="barbuttontexta">Options</div></div>
-    </div>
     
     </div>
     <div class="tile bordertop any">
         <div class="flexbox" style="align-items: center; justify-content: center; margin-left: auto; margin-right: auto;">
-        <div class="dimension hoverablez flexbox" id="colorToggler" onclick="toggleColorsVisibility(this)" style="margin-right: 0.5vw; aspect-ratio: 1/1; height: calc(4vh + 10px); border-radius: 12px; cursor: pointer; margin-left: auto; transition: all 0.3s cubic-bezier(.47,1.64,.41,.8);">
+        <div class="dimension hoverablez flexbox" id="colorToggler" onclick="toggleColorsVisibility(this)" style="margin-right: 0.5vw; aspect-ratio: 1/1; height: calc(2.3vw + 10px); border-radius: 12px; cursor: pointer; margin-left: auto; transition: all 0.3s cubic-bezier(.47,1.64,.41,.8);">
             <div class="image editAction"></div>
         </div>
         <div class="flexbox dimension" id="colorsSelector" style="overflow-x: auto; overflow-y: none; height: 2.3vw; width: 85%; margin-right: auto; margin-left: auto; padding: 5px; border-radius: 12px; background-color: #FFFFFF10; transition: all 0.25s ease, padding 0.10s ease, width 0.25s ease;">
@@ -188,54 +177,13 @@ try {
     }
       let ActionTile = document.getElementById('commandbar');
       let SWT = document.getElementById('switchTask')
-      let CmdName = document.getElementById('Command_Name')
 
     let currentlyEditing = false;
 
-    function updateName(mnt) {
-        let type = 'event'
-            if (botData.commands[lastObj].type == 'action') {
-                console.log(botData.commands[lastObj])
-                    switch(botData.commands[lastObj].trigger) {
-                case 'slashCommand':
-                    type = 'slsh'
-                    break
-                case 'textCommand':
-                    type = 'txt'
-                break
-                case 'messageContent':
-                    type = 'msg'
-            }
-        }
-        if (type == 'txt' || type == 'msg') {
-            let text = mnt.value
-            let output = text.replaceAll('&nbsp;', "").replaceAll(" ", "")
-
-
-            botData.commands[lastObj].name = output.trim()
-            
-        if (lastType == 0) {
-            document.getElementById(`Group${lastObj}`).innerHTML = `<div id="name">${output.trim()}</div> <div style="opacity: 50%; margin-left: 7px;"> | ${Object.keys(botData.commands[lastObj].actions).length} Actions</div> <div class="deleteActionButton forceRounded" onclick="deleteObject(this)">✕</div>`
-        }
-        }
-        if (type == 'event') {
-            botData.commands[lastObj].name = mnt.value
-            if (lastType == 0) {
-            document.getElementById(`Group${lastObj}`).innerHTML = `<div id="name">${mnt.value}</div> <div style="opacity: 50%; margin-left: 7px;"> | ${Object.keys(botData.commands[lastObj].actions).length} Actions</div> <div class="deleteActionButton forceRounded" onclick="deleteObject(this)">✕</div>`
-            }
-        }
-        if (type == 'slsh') {
-            let text = mnt.value
-            let output = text.replaceAll('&nbsp;', "").replaceAll(" ", "")
-            botData.commands[lastObj].name = output.toLowerCase().trim()    
-            if (lastType == 0) {
-            document.getElementById(`Group${lastObj}`).innerHTML = `<div id="name">${output.toLowerCase().trim()}</div> <div style="opacity: 50%; margin-left: 7px;"> | ${Object.keys(botData.commands[lastObj].actions).length} Actions</div> <div class="deleteActionButton forceRounded" onclick="deleteObject(this)">✕</div>`
-        }
-        }
-
-
-
-        fs.writeFileSync(processPath + '\\AppData\\data.json', JSON.stringify(botData, null, 2))
+    function updateName() {
+        botData.commands[lastObj].name = document.getElementById('Command_Name').innerText
+        document.getElementById(`${lastObj}Groupname`).innerText = botData.commands[lastObj].name
+        wast()
     }
 
         refreshGroups()

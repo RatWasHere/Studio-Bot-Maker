@@ -87,7 +87,7 @@ module.exports = {
                     text: "Select Menu",
                     sepbar: "",
                     btext: "Stop Waiting After (Seconds)",
-                    input: "await",
+                    "input custom number <max>9999999999999999999</max> <min>1</min>": "await",
                     sepbar0: "",
                     btext0: "Max Selectable",
                     "input custom number <max>25</max> <min>1</min>": "maxSelectable",

@@ -1,113 +1,68 @@
 function newObject() {
     if (lastType == 1) {
-        let newAct = {
-            "name": "Send Message",
-            "file": "sendmessage.js",
-            "data": {
-                "messageContent": "Hello World!",
-                "button": "Command Channel",
-                "ExtraData": "",
-                "name": "Send Message"
-              }
+        let actionFile = 'sendmessage.js'
+
+        if (selectedGroupType == 'event') {
+            actionFile = 'sendmessage_event.js'
         }
-        delete require.cache[`./AppData/data.json`];
-        botData.commands[lastObj].actions[parseFloat(botData.commands[lastObj].count) + 1] = newAct
-        botData.commands[lastObj].count = botData.commands[lastObj].count + 1
-        lastAct = botData.commands[lastObj].count
+        let newAct = {
+            name: "Send Message",
+            file: actionFile,
+            data: {
+                "name": "Send Message",
+                "messageContent": "Hello World!"
+            }
+        }
+        botData.commands[lastObj].actions.push(newAct)
+        botData.commands[lastObj].actions.filter(e => e != undefined || e != null)
+        lastAct = botData.commands[lastObj].actions.length
         wast()
         refreshActions()
-        editAction(document.getElementById('Action' + botData.commands[lastObj].count))
-        setTimeout(() => {
-            selectAction()
-            document.getElementById('actionName00').innerHTML = `
-            <span class="goofyhovereffect" style="padding: 4px; padding-top: 2px; padding-bottom: 2px; margin-top: -2px; margin-bottom: -2px; border-radius: 5px; background-color: #FFFFFF10; margin-right: 1vw;">New </span> 
-            Send Message
-            `
-        }, 700)
+        document.getElementById(`${lastObj}Groupcount`).innerHTML = botData.commands[lastObj].actions.length
+        // editAction(document.getElementById('Action' + botData.commands[lastObj].count))
     }
     else {
-        let newAct = {
-                "count": 1,
-                "name": "New Command",
-                "type": "action",
-                "trigger": "textCommand",
-                "actions": {
-                  "1": {
-                    "name": "Send Message",
-                    "file": "sendmessage.js",
-                    "data": {
-                        "messageContent": "Hello World!",
-                        "button": "Message Channel",
-                        "ExtraData": "",
-                        "name": "Send Message"
-                    }
-                  }
-                },
-                "customId": new Date().getTime()
+        let type = 'action';
+        let trigger; 
+        if (selectedGroupType == 'text') {
+            trigger = 'textCommand';
         }
-        delete require.cache[`./AppData/data.json`];
-        botData.commands[botData.count + 1] = newAct
-        botData.count = parseFloat(botData.count) + 1
-        lastObj = botData.count
+        if (selectedGroupType == 'slash') {
+            trigger = 'slashCommand'
+        }
+        if (selectedGroupType == 'event') {
+            type = 'event'
+            trigger = 'event'
+        }
+
+        let newGroup = {
+            name: "",
+            type: type,
+            trigger: trigger,
+            actions: [],
+            customId: new Date().getTime()
+        }
+
+        botData.commands.push(newGroup);
+        lastObj = botData.commands.length
         wast()
         refreshGroups()
     }
-
-
 }
 function deleteObject(obj) {
     if (obj.parentNode.id.startsWith('Action')) {
-        if (botData.commands[lastObj].count == 1) return
-        let keyToRemove = obj.parentNode.id.split('Action')[1];
+        let position = obj.parentNode.id.split('Action')[1];
 
-        let filteredEntries = Object.entries(botData.commands[lastObj].actions).filter(([key]) => key != keyToRemove);
-        let newJson = {};
-        for (let i = 0; i < filteredEntries.length; i++) {
-          newJson[i + 1] = filteredEntries[i][1];
-        }
-        botData.commands[lastObj].actions = newJson;
-        botData.commands[lastObj].count = botData.commands[lastObj].count - 1;
+        botData.commands[lastObj].actions.splice(position, 1)
         wast()
-
-        document.getElementById(obj.parentNode.id).style.animationName = 'deleteObject';
-        document.getElementById(obj.parentNode.id).style.animationDelay = '0s'
-        document.getElementById(obj.parentNode.id).style.animationDuration = '0.4s'
-        setTimeout (() => {
-          document.getElementById(obj.parentNode.id).remove()
-
-            refreshActions()
-            refreshGroups()
-    }, 390)
+        refreshActions()
       } else {
-        if (botData.count == 1) return
+        let position = obj.parentNode.id.split('Group')[1];
 
-          let keyToRemove = obj.parentNode.id.split('Group')[1];
-
-          let filteredEntries = Object.entries(botData.commands).filter(([key]) => key != keyToRemove);
-          let newJson = {};
-          for (let i = 0; i < filteredEntries.length; i++) {
-            newJson[i + 1] = filteredEntries[i][1];
-          }
-
-          document.getElementById(obj.parentNode.id).style.animationName = 'deleteObject';
-          document.getElementById(obj.parentNode.id).style.animationDelay = '0s'
-      document.getElementById(obj.parentNode.id).style.animationDuration = '0.4s'
-          setTimeout( () => {
-            botData.count = botData.count - 1
-            botData.commands = newJson;
-            wast()
-          document.getElementById(obj.parentNode.id).remove()
-            refreshGroups()
-            setTimeout(() => {
-                highlight(document.getElementById('Group1'))
-                refreshActions()
-            }, 100)
-  }, 395)
+        botData.commands.splice(position, 1)
+        wast()
+        refreshGroups()
       }
-
-
-    fs.writeFileSync(processPath + '\\AppData\\data.json', JSON.stringify(botData, null, 2));
-    checkErrors()
 }
 
 let timing;
@@ -128,6 +83,9 @@ function groupDragOverHandle(event, group) {
     */
     event.preventDefault()
     draggedOverGroup = group.id.split('Group')[1]
+    group.style.animationName = ''
+    group.style.animationDuration = ''
+    group.style.animationDelay = ''
 }
 function handleGroupDragEnd(group) {
     group.classList.remove('goofyhovereffectlite')
@@ -137,22 +95,10 @@ function handleGroupDrop(group) {
     if (new Date().getTime() - timing < 100) return
     let oldPosition = parseFloat(draggedGroup)
     let newPosition = parseFloat(draggedOverGroup)
-    lastType = 0
-    if (oldPosition <  newPosition) {
-        while (newPosition != oldPosition) {
-            oldPosition++
-            highlight(document.getElementById(`Group${oldPosition}`))
-            moveUp()
-            refreshGroups()
-        }
-    } else {
-        while (newPosition != oldPosition) {
-            oldPosition--
-            highlight(document.getElementById(`Group${oldPosition}`))
-            moveDown()
-            refreshGroups()
-        }
-    }
+    lastType = 0    
+
+    botData.commands = moveArrayElement(botData.commands, oldPosition, newPosition);
+    wast()
     refreshGroups()
 }
 
@@ -164,198 +110,35 @@ function handleActionDrag(action) {
 }
 function actionDragOverHandle(event, action) {
     action.classList.add('goofyhovereffectlite')
-    /*
-    placeholderAction = document.createElement('div')
-    placeholderAction.style.animationName = 'fade'
-    placeholderAction.style.marginTop = '41px'
-    placeholderAction.style.marginBottom = '-35px'
-    */
+    action.style.animationName = ''
+    action.style.animationDuration = ''
+    action.style.animationDelay = ''
     event.preventDefault()
     draggedOverAction = action.id.split('Action')[1]
 }
 function handleActionDragEnd(action) {
     action.classList.remove('goofyhovereffectlite')
-
 }
+function moveArrayElement(arr, old_index, new_index) {
+      const element = arr[old_index];
+      arr.splice(old_index, 1);
+      arr.splice(new_index, 0, element);
+    
+      return arr;
+  }
 function handleActionDrop(action) {
     refreshActions()
     if (new Date().getTime() - timing < 100) return
 
     let oldPosition = parseFloat(draggedAction)
     let newPosition = parseFloat(draggedOverAction)
-    lastType = 1
-    if (oldPosition <  newPosition) {
-        while (newPosition != oldPosition) {
-            oldPosition++
-            highlight(document.getElementById(`Action${oldPosition}`))
-            moveUp()
-            refreshActions()
-        }
-    } else {
-        while (newPosition != oldPosition) {
-            oldPosition--
-            highlight(document.getElementById(`Action${oldPosition}`))
-            moveDown()
-            refreshActions()
-        }
-    }
+    lastType = 1;
+
+    botData.commands[lastObj].actions = moveArrayElement(botData.commands[lastObj].actions, oldPosition, newPosition);
+    wast()
     refreshActions()
 }
-function moveUp() {
-    let actionElement, currentAction, tempAction;
-    if (lastType == 1) {
-        let actione = botData.commands[lastObj].actions[lastAct];
-        if (botData.commands[lastObj].actions[`${parseFloat(lastAct)-1}`] != undefined) {
-            currentAction = actione;
-            tempAction = botData.commands[lastObj].actions[`${parseFloat(lastAct) - 1}`];
-            botData.commands[lastObj].actions[`${parseFloat(lastAct) - 1}`] = currentAction;
-            botData.commands[lastObj].actions[lastAct] = tempAction;
-            lastAct = `${parseFloat(lastAct) - 1}`;
-            refreshActions()
-        }
-    } else {
-        let command = botData.commands[lastObj];
-            currentAction = command;
-            if (botData.commands[`${parseFloat(lastObj) - 1}`] != undefined) {
-                tempAction = botData.commands[`${parseFloat(lastObj) - 1}`];
-                botData.commands[`${parseFloat(lastObj) - 1}`] = currentAction;
-                botData.commands[lastObj] = tempAction;
-                lastObj = `${parseFloat(lastObj) - 1}`
-                refreshGroups()
-            }
-        }
-    fs.writeFileSync(processPath +'\\AppData\\data.json', JSON.stringify(botData, null, 2));
-}
-function moveDown() {
-    let actionElement, currentAction, tempAction;
-    if (lastType == 1) {
-        let actione = botData.commands[lastObj].actions[lastAct];
-        if (botData.commands[lastObj].actions[`${parseFloat(lastAct) + 1}`] != undefined) {
-            currentAction = actione;
-            tempAction = botData.commands[lastObj].actions[`${parseFloat(lastAct) + 1}`];
-            botData.commands[lastObj].actions[`${parseFloat(lastAct) + 1}`] = currentAction;
-            botData.commands[lastObj].actions[lastAct] = tempAction;
-            lastAct = `${parseFloat(lastAct) + 1}`;
-            refreshActions()
-        }
-    } else {
-        let command = botData.commands[lastObj];
-        currentAction = command;
-        if (botData.commands[`${parseFloat(lastObj) + 1}`] != undefined) {
-            tempAction = botData.commands[`${parseFloat(lastObj) + 1}`];
-            botData.commands[`${parseFloat(lastObj) + 1}`] = currentAction;
-            botData.commands[lastObj] = tempAction;
-            lastObj = `${parseFloat(lastObj) + 1}`
-            refreshGroups()
-        }
-    }
-    fs.writeFileSync(processPath +'\\AppData\\data.json', JSON.stringify(botData, null, 2));
-}
 
-
-
-function buttonIfy(button, bar, what) {
-    let buttonEditor = document.getElementById('buttonsEditor')
-    let ba = botData.commands[lastObj].actions[lastAct].data.actionRows[bar]
-
-    if (lastButt != null || lastButt != undefined) {
-        lastButt.style.backgroundColor = ''
-    }
-    what.style.backgroundColor = '#FFFFFF25'
-    lastTempActions = ba.components[button].actions
-    lastButt = what;
-    buttonEditor.innerHTML = `
-    <div>
-    <div class="borderbottomz" style="padding: 6px; border-radius: 12px; background-color: #FFFFFF09; margin-bottom: 0.65vh;">
-    <div class="barbuttontexta fade">Button Label</div>
-    <input class="input" style="width: 35vw; margin-bottom: 0px;" onkeydown=" if (event.key != 'Backspace') return this.value.split('').length < 32" oninput="buttonren(${button}, this, ${bar})" type="text" value="${ba.components[button].name}" placeholder="Text On The Button, Required">
-
-    </div>
-    <div class="bordertopz" style="padding: 6px; border-radius: 12px; background-color: #FFFFFF09;">
-    <div class="barbuttontexta fade">Custom ID</div>
-    <input class="input" style="width: 35vw; margin-bottom: 0px;" onkeydown="return event.key !== ' '; if (event.key != 'Backspace') return this.value.split('').length < 32" oninput="buttonID(${button}, this, ${bar})" contenteditable="true" value="${ba.components[button].customId}" placeholder="Required">
-    </div>
-    <div class="hoverablez" onclick="modalActionSelector()" style="margin-top: 1vh; width: 40vw; margin-right: auto; margin-left: auto; border-radius: 12px; border-bottom-left-radius: 2px; border-bottom-right-radius: 2px; padding: 8px;">
-    <div class="barbuttontexta">Linked Actions</div>
-    </div>
-    <div class="bordertopz" style="background-color: #FFFFFF10; margin-top: 0.3vh;width: 40vw; margin-right: auto; margin-left: auto; border-radius: 12px; border-bottom-left-radius: 2px; border-bottom-right-radius: 2px; padding: 8px;" id="runButtonWhat" onclick="modalActionSelector()">
-    <div class="barbuttontexta">Edit</div>
-    </div>
-    <div class="barbuttone fade flexbox" style="margin-left: auto; margin-right: auto; margin-top: 22px;" onclick="deleteBtnBar(${button}, ${bar})"> 
-    <div class="barbuttontexta">Delete</div>
-    <div style="background-color: #f04747; opacity: 50%; width: 7px; height: 7px; border-radius: 100px; margin: auto; margin-right: 12px;"></div>
-    </div>
-    </div>
-
-    <div class="fade borderbottom" style="width: 3px; height: 90%; margin: auto; margin-left: 3vw; margin-right: 3vw; background-color: #FFFFFF30;"></div><br>
-    <div>
-
-        <div class="barbuttontexta">Button Style</div>
-        <div class="tiled borderbottomz" style="width: calc(95% + 10px); margin-bottom: 0.5vh; height: 12vh; padding: 0px; padding-top: 7px;">
-        <div class="zaction borderbottomz textToLeft" id="DefaultStyle" onclick="styledButton(this, ${bar}, ${button})"><div style="margin-left: 10px;"> </div> Default <div style="background-color: #5865f2; width: 12px; height: 12px; border-radius: 100px; margin: auto; margin-right: 12px;"></div></div>
-        <div class="zaction bordercenter textToLeft" id="SuccessStyle" onclick="styledButton(this, ${bar}, ${button})"><div style="margin-left: 10px;"> </div> Success <div style="background-color: #43b581; width: 12px; height: 12px; border-radius: 100px; margin: auto; margin-right: 12px;"></div></div>
-        <div class="zaction bordercenter textToLeft" id="DangerStyle" onclick="styledButton(this, ${bar}, ${button})"><div style="margin-left: 10px;"> </div> Danger <div style="background-color: #f04747; width: 12px; height: 12px; border-radius: 100px; margin: auto; margin-right: 12px;"></div></div>
-        <div class="zaction bordercenter textToLeft" id="NeutralStyle" onclick="styledButton(this, ${bar}, ${button})"><div style="margin-left: 10px;"> </div> Neutral <div style="background-color: #4f545c; width: 12px; height: 12px; border-radius: 100px; margin: auto; margin-right: 12px;"></div></div>
-        <div class="zaction bordertopz textToLeft" id="LinkStyle" style="margin-bottom: 10px;" onclick="styledButton(this, ${bar}, ${button}, true)"><div style="margin-left: 10px;"> </div> Link <div style="background-color: #4f545c; width: 12px; height: 12px; border-radius: 100px; margin: auto; margin-right: 12px;"></div></div>
-
-        </div>
-        <div class="flexbox bordertopz" style="align-items: center; justify-content: center; background-color: #FFFFFF10; border-radius: 9px; padding: 16px; padding-right: 4px; padding-top: 4px; padding-bottom: 4px; width: calc(95% - 10px); margin: auto;">
-
-        <div class="barbuttontexta">Disabled?</div>
-        <div class="barbuttone fade borderright" style="margin-right: 0.2vw; border-radius: 8px;" id="enabledbutton" onclick="toggleButton(${bar}, ${button}, true)"><div class="barbuttontexta">✓</div></div>
-        <div class="barbuttone fade borderleft"  style="margin-left: 0vw; border-radius: 8px;" id="disabledbutton" onclick="toggleButton(${bar}, ${button}, false)"><div class="barbuttontexta">✕</div></div>
-</div>           
-<div id="dpfgs"></div>
-<div id="dpfg" style="width: 35vw;">
-</div>
-   </div>
-        `
-
-        if (ba.components[button].disabled == true) {
-            document.getElementById('disabledbutton').style.backgroundColor = ''
-            document.getElementById('enabledbutton').style.backgroundColor = '#FFFFFF25'
-        } else {
-            document.getElementById('disabledbutton').style.backgroundColor = '#FFFFFF25'
-            document.getElementById('enabledbutton').style.backgroundColor = ''
-        }
-        switch (ba.components[button].style) {
-            case 'Default': 
-            document.getElementById('DefaultStyle').style.backgroundColor = '#FFFFFF25'
-            setLinked(false, bar, button)
-            break
-            case 'Success': 
-            document.getElementById('SuccessStyle').style.backgroundColor = '#FFFFFF25'
-            setLinked(false, bar, button)
-            break
-            case 'Danger': 
-            document.getElementById('DangerStyle').style.backgroundColor = '#FFFFFF25'
-            setLinked(false, bar, button)
-            break
-            case 'Neutral': 
-            document.getElementById('NeutralStyle').style.backgroundColor = '#FFFFFF25'
-            setLinked(false, bar, button)
-            break
-            case 'Link': 
-            document.getElementById('LinkStyle').style.backgroundColor = '#FFFFFF25'
-            setLinked(true, bar, button)
-            break
-        }
-} 
-function styledButton(what, bar, button) {
-    document.getElementById(botData.commands[lastObj].actions[lastAct].data.actionRows[bar].components[button].style + 'Style').style.backgroundColor = ''
-    document.getElementById(`${what.innerText}Style`).style.backgroundColor = '#FFFFFF25'
-    botData.commands[lastObj].actions[lastAct].data.actionRows[bar].components[button].style = `${what.innerText}`
-    if (botData.commands[lastObj].actions[lastAct].data.actionRows[bar].components[button].style == 'Link') {
-        setLinked(true, bar, button)
-    } else {
-        setLinked(false, bar, button)
-    }
-    fs.writeFileSync(processPath + '\\AppData\\data.json', JSON.stringify(botData, null, 2));
-}
-function setRunningElement(runs) {
-    let runningElement = document.getElementById('runButtonWhat')
-        runningElement.innerHTML = `<div class="barbuttontexta">${botData.commands[lastObj].actions[lastAct].data.actionRows[bar].components[button].runs.length}</div>`
-}
 
 function setHighlightedGroup(type) {
     let animationArea = document.getElementById('animationArea')
@@ -436,3 +219,69 @@ function setHighlightedGroup(type) {
     }, 400);
     }, 300);
 }
+
+if (!Array.isArray(botData.commands) || !Array.isArray(botData.commands[0]?.actions)) {
+    transferProject()
+
+    location.reload()
+}
+function transferProject() {
+    botData.commands = Object.values(botData.commands)
+    wast()
+    for (let command in botData.commands) {
+        botData.commands[command].actions = Object.values(botData.commands[command].actions)
+        console.log(botData.commands[command].actions)
+        wast()
+        for (let action of botData.commands[command].actions) {
+            try {
+                let actionBase = require(`./AppData/Actions/${action.file}`)
+                for (let UIelement in actionBase.UI) {
+                    if (UIelement.startsWith('actions')) {
+                        action.data[actionBase.UI[UIelement]] = Object.values(action.data[actionBase.UI[UIelement]])
+                        wast()
+                    }
+                }
+            } catch(err) {}
+        }
+    }
+}
+
+function storeCaretPosition(element) {
+    let selection = window.getSelection();
+    if (selection.rangeCount > 0) {
+      let range = selection.getRangeAt(0);
+      let preSelectionRange = range.cloneRange();
+      preSelectionRange.selectNodeContents(element);
+      preSelectionRange.setEnd(range.startContainer, range.startOffset);
+      let caretOffset = preSelectionRange.toString().length;
+  
+      element.dataset.caretOffset = caretOffset;
+    }
+  }
+  
+  function restoreCaretPosition(element) {
+    let caretOffset = parseInt(element.dataset.caretOffset) || 0;
+    let textNode = element.firstChild;
+  
+    if (textNode && textNode.nodeType === Node.TEXT_NODE) {
+      let range = document.createRange();
+      range.setStart(textNode, Math.min(caretOffset, textNode.length));
+      range.setEnd(textNode, Math.min(caretOffset, textNode.length));
+  
+      let selection = window.getSelection();
+      selection.removeAllRanges();
+      selection.addRange(range);
+    }
+  }
+  
+  
+  function validateInputSpaces(div) {
+      storeCaretPosition(div);
+  
+      var sanitizedText = div.innerText.trim().split(' ').join('');
+      sanitizedText = sanitizedText.substr(0, 32);
+      console.log(sanitizedText)
+  
+      div.innerHTML = sanitizedText.toLowerCase();
+      restoreCaretPosition(div);
+  }

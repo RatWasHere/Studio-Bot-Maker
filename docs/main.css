@@ -3,7 +3,7 @@
        width: calc(100% - 24px);
        border-radius: 12px;
        background-color: #FFFFFF10;
-       transition: all 0.3s ease;
+       transition: all 0.12s ease;
        }
        .tile:hover {
        box-shadow: #00000060 0px 0px 50px;
@@ -251,7 +251,8 @@
         animation-iteration-count: infinite !important;
        }
        .goofyhovereffectlite {
-        animation-name: giggleless;
+        animation-name: giggleless !important;
+        animation-delay: 0s !important;
         animation-duration: 0.3s !important;
         animation-iteration-count: infinite !important;
        }
@@ -288,8 +289,8 @@
        }
        .switchableButton {
            width: 20%; 
-           transition: background-color 0.3s ease-out;
-           transition: width 0.3s ease, background-color 0.2s ease;    
+           transition: background-color 0.12s ease-out;
+           transition: width 0.12s ease, background-color 0.2s ease;    
            background-color: #FFFFFF15;
            border-radius: 2px;
            padding: 8px;
@@ -328,7 +329,7 @@
        .hoverablez {
            cursor: pointer;
            background-color: #FFFFFF10;
-           transition: background-color ease 0.07s;
+           transition: background-color ease 0.12s;
        }
        .hoverablez:hover {
            background-color: #FFFFFF15;
@@ -443,7 +444,7 @@
             cursor: pointer;
             
 
-            transition: all 0.1s ease;
+            transition: all 0.12s ease;
         }
         .menuBar:hover {
             color: #FFFFFF90;
@@ -470,7 +471,7 @@
             color: #FFFFFF90;
             border-top-left-radius: 0px;
             border-top-right-radius: 0px;
-            transition: all 0.3s ease;
+            transition: all 0.12s ease;
         }
         .selectBar:hover {
             background-color: #FFFFFF13;
@@ -487,7 +488,7 @@
             overflow-x: auto; 
             cursor: text;
             height: 24px;
-            transition: background-color ease-in 0.3s;
+            transition: background-color ease-in 0.12s;
             font-size: 21px;
             padding: 2.5px;
             padding-left: 16px;
@@ -545,7 +546,7 @@
        border-radius: 0px !important;
        border-bottom-right-radius: 4px;
        border-bottom-left-radius: 4px;
-       transition: background-color 0.3s ease;
+       transition: background-color 0.12s ease;
    }
    @keyframes deleteActionGroupSelectors {
        0% {
@@ -728,7 +729,7 @@
        overflow-x: auto; 
        cursor: text;
        height: 24px;
-       transition: background-color ease-in 0.3s;
+       transition: background-color ease-in 0.12s;
        font-size: 21px;
        padding: 2.5px;
        padding-left: 16px;
@@ -751,7 +752,7 @@
            box-shadow: inset 0 0 2px #FFFFFF10;
            margin-top: 0px;
            cursor: pointer;
-           transition: background-color 0.3s ease;
+           transition: background-color 0.12s ease;
        }
        .actionGroupSelector:hover {
            background-color: #FFFFFF15;
@@ -1032,7 +1033,7 @@
        cursor: pointer;
        align-self: center;
        animation-name: appearfade;
-       transition: all 0.3s ease;
+       transition: all 0.12s ease;
        animation-duration: 0.4s;
        z-index: 1;
        }
@@ -1119,7 +1120,7 @@
         margin-left: 3px;
         margin-right: 3px;
         border-radius: 12px;
-        transition: background-color 0.2s ease;
+        transition: background-color 0.08s ease;
         border: #000000 hidden 5px;
         background-color: #FFFFFF10;
         display: flex;
@@ -1159,7 +1160,7 @@
            margin-bottom: auto;
            border-radius: 5px;
            cursor: pointer;
-           transition: background-color 0.2s ease;
+           transition: background-color 0.12 ease;
            border: #000000 hidden 5px;
            background-color: #FFFFFF10;
            display: flex;
@@ -1360,11 +1361,7 @@
            opacity: 0%;
            border-top-right-radius: 0px;
            border-bottom-right-radius: 0px;
-           transition: opacity 0.3s ease;
-           transition: background-color 0.3s ease;
-           transition: width 0.3s ease;
-           transition: height 0.3s ease;
-           transition: margin-left 0.3s ease;
+           transition: all 0.12s ease;
        }
        .deleteActionButton:hover .actionButton {
            width: 50px;
@@ -1435,7 +1432,7 @@
         .addButton {
             cursor: pointer;
             margin-left: auto; 
-            transition: all 0.3s ease; 
+            transition: all 0.12s ease; 
             margin-right: 2vh; 
             border-radius: 12px; 
             background-color: #FFFFFF10;
@@ -1467,7 +1464,6 @@
         }
        .barbutton:active {
        background-color: #FFFFFF50;
-       transition: background-color 0.3s ease;
        }
        .barbutton:active .barbuttontext {
        color: #FFFFFF99;
@@ -1538,7 +1534,7 @@
            border-bottom: #FFFFFF10 solid 2px;
            background-color: #00000050;
            animation-name: appearfaden;
-           animation-duration: 0.3s;
+           animation-duration: 0.12s;
            margin-left: auto;
            margin-right: auto;
            margin-bottom: 5px;
@@ -1553,7 +1549,7 @@
            width: 70%;
            height: 70%;
            opacity: 70%;
-           transition: all 0.3s ease;
+           transition: all 0.12s ease;
            text-align: center;
        }
        @keyframes marginbounce {
@@ -2209,10 +2205,74 @@
 
       .hov {
         filter: blur(7px);
-        transition: filter 0.3s ease;
+        transition: filter 0.12s ease;
         border-radius: 14px !important;
       }
 
       .hov:hover {
         filter: blur(0px);
+      }
+      .adaptForMobile {
+        nav-down: auto;
+      }
+
+      @keyframes heroSection {
+        0% {
+            margin-left: 0vw;
+        }
+        50% {
+            margin-left: 50vw;
+        }
+        100% {
+
+        }
+      }
+      @media (orientation: portrait) {
+        .hov {
+            width: 100vw;
+            height: 30vw !important;
+            background-size: cover !important;
+            padding-bottom: 0px !important;
+        }
+        .barbuttontext {
+            font-size: 5vh !important;
+        }
+        .adaptForMobile {
+            width: calc(100vw - 6vw) !important;
+            margin-left: none;
+            margin-right: none;
+            padding: 1vw;
+            padding-right: 5vw;
+        }
+
+        .negativeMargin {
+            margin-top: 42vh !important;
+        }
+
+        .barbuttonshift {
+            width: 28vw !important;
+            padding: 1vw;
+        }
+        .barbuttonshift > .barbuttontexta {
+            font-size: 2vh !important;
+            margin: auto !important;
+            margin-left: auto !important;
+        }
+        .barbuttontexta { 
+            font-size: 1vh !important;
+        }
+        .adaptedsize {
+            font-size: 2vh !important;
+        }
+        .smalltext {
+            font-size: 1.2vh !important;
+            opacity: 50%;
+        }
+        .adaptImages {
+            filter: blur(12px);
+            height: 40vh;
+            background-position: center;
+            width: 100vw !important;
+            transition: all 0.12s ease !important;
+        }
       }

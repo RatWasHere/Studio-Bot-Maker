@@ -114,12 +114,12 @@ function refreshMenuItems(menu) {
     }, 50)
 }
 
-function createAction(at, UIat) {
-    action.data[at][`${Object.keys(action.data[at]).length + 1}`] = {
-        name: "Send Message",
-        file: "sendmessage.js",
-        data: {name: "Send Message", messageContent: "Hello World!", button: "Command Channel"}
-    }
+function createAction(at) {
+    action.data[at].push({
+        name: "Calculate",
+        file: "calculate.js",
+        data: {name: "Calculate", operation: "Addition"}
+    })
     refreshActions(at)
 }
 let lastHovered;
@@ -161,7 +161,7 @@ function refreshActions(at) {
 
     
         endActions = `${endActions}
-        <div onmouseenter="lastHovered = this" draggable="true" ondragleave="handleActionDragEnd('${at}', '${actionNumber}')" ondragend="handleActionDrop('${at}', '${actionNumber}')" ondragover="actionDragOverHandle(event, '${at}', '${actionNumber}')" ondragstart="handleActionDrag('${at}', '${actionNumber}')" onmouseleave="lastHovered = null;" class="action textToLeft ${extrf}" style="animation-delay: ${delay * 3}0ms" ondblclick="editAction('${at}', '${actionNumber}')">
+        <div onmouseenter="lastHovered = this" draggable="true" ondragleave="handleActionDragEnd('${at}', '${actionNumber}')" ondragend="handleActionDrop('${at}', '${actionNumber}')" ondragover="actionDragOverHandle(event, '${at}', '${actionNumber}')" ondragstart="handleActionDrag('${at}', '${actionNumber}')" onmouseleave="lastHovered = null;" class="action textToLeft ${extrf}" style="animation-delay: ${delay * 3}0ms; width: 97% !important;" ondblclick="editAction('${at}', '${actionNumber}')">
         ${innerAction.name}
             <div style="opacity: 50%; margin-left: 7px;">
             ${quickdata.previewName}: ${quickie}</div>
@@ -169,10 +169,10 @@ function refreshActions(at) {
         </div>`;
     } catch (err) {
         endActions = `${endActions}
-        <div id="Action${action}" onmouseenter="lastHovered = this" draggable="true" ondragleave="handleActionDragEnd(this)" ondragend="handleActionDrop()" ondragover="actionDragOverHandle(event, this)" ondragstart="handleActionDrag(this)" onmouseleave="lastHovered = null;" class="action textToLeft ${extrf}" style="animation-delay: ${delay * 3}0ms" ondblclick="editAction(this)">
+        <div id="Action${action}" onmouseenter="lastHovered = this" draggable="true" ondragleave="handleActionDragEnd(this)" ondragend="handleActionDrop()" ondragover="actionDragOverHandle(event, this)" ondragstart="handleActionDrag(this)" onmouseleave="lastHovered = null;" class="action textToLeft ${extrf}" style="animation-delay: ${delay * 3}0ms; width: 97% !important;" ondblclick="editAction(this)">
         Error
         <div style="opacity: 50%; margin-left: 7px;"> - Action Missing</div>
-        <div class="deleteActionButton" onclick="deleteObject(this)">✕</div>
+        <div class="deleteActionButton" onclick="deleteAction('${at}', '${actionNumber}')">✕</div>
         </div>
         `;
     }
@@ -181,24 +181,17 @@ function refreshActions(at) {
 }
 
 function deleteAction(at, number) {
-    let keyToRemove = number
-
-    let filteredEntries = Object.entries(action.data[at]).filter(([key]) => key != keyToRemove);
-    let newJson = {};
-    for (let i = 0; i < filteredEntries.length; i++) {
-      newJson[i + 1] = filteredEntries[i][1];
-    }
-    action.data[at] = newJson;
-    setTimeout(() => {
-        refreshActions(at)
-    }, 10)
+    action.data[at].splice(number, 1) 
+    refreshActions(at)
 }
 var actionParent;
 var draggedAction;
 var draggedOverAction;
+let timing;
 function handleActionDrag(at, actionNumber) {
     draggedAction = actionNumber;
     actionParent = at;
+    timing = new Date().getTime()
 }
 function actionDragOverHandle(event, at, actionNumber) {
     if (at != actionParent) return;
@@ -208,42 +201,22 @@ function actionDragOverHandle(event, at, actionNumber) {
 
 function handleActionDragEnd() {}
 
-function moveUp(at, actionNumber) {
-    let actionMove = action.data[at][actionNumber];
-    if (action.data[at][`${parseFloat(actionNumber)-1}`] != undefined) {
-        var currentAction = actionMove;
-        var tempAction = action.data[at][`${parseFloat(actionNumber) - 1}`];
-        action.data[at][`${parseFloat(actionNumber) - 1}`] = currentAction;
-        action.data[at][actionNumber] = tempAction;
-        refreshActions(at)
-    }
+function moveArrayElement(arr, old_index, new_index) {
+    const element = arr[old_index];
+    arr.splice(old_index, 1);
+    arr.splice(new_index, 0, element);
+  
+    return arr;
 }
-function moveDown(at, actionNumber) {
-    let actionMove = action.data[at][actionNumber];
-    if (action.data[at][`${parseFloat(actionNumber) + 1}`] != undefined) {
-        currentAction = actionMove;
-        tempAction = action.data[at][`${parseFloat(actionNumber) + 1}`];
-        action.data[at][`${parseFloat(actionNumber) + 1}`] = currentAction;
-        action.data[at][actionNumber] = tempAction;
-        refreshActions(at)
-    }
-}
-function handleActionDrop(at, action) {
-    let oldPosition = parseFloat(draggedAction)
-    let newPosition = parseFloat(draggedOverAction)
-    lastType = 1
-    if (oldPosition <  newPosition) {
-        while (newPosition != oldPosition) {
-            oldPosition++
-            moveUp(at, oldPosition)
-            refreshActions(at)
-        }
-    } else {
-        while (newPosition != oldPosition) {
-            oldPosition--
-            moveDown(at, oldPosition)
-            refreshActions(at)
-        }
-    }
-    refreshActions(at)
+function handleActionDrop(at) {
+  if (new Date().getTime() - timing < 100) return
+
+  let oldPosition = parseFloat(draggedAction)
+  let newPosition = parseFloat(draggedOverAction)
+  lastType = 1
+
+  let modifiedActions = moveArrayElement(action.data[at], oldPosition, newPosition)
+
+  action.data[at] = modifiedActions;
+  refreshActions(at)
 }

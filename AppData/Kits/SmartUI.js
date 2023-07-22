@@ -10,22 +10,27 @@ function getUIelements(UIdata) {
         }
         menus.push(element)
         endHTML = `${endHTML}
-        <div class="barbuttontexta" style="margin-bottom: -4vh; margin-left: 5vw !important; text-align: left !important; border-radius: 8px; padding: 8px; width: auto !important;">${UIdata[element].name}</div>
+        <div class="textse" style="margin-bottom: -2.5vh !important;">${UIdata[element].name}</div>
         <div id="${element}AddButton" onclick="addObjectToCustomMenu('${element}')" class="addButton flexbox">
         <div class="image add"></div>
         </div>
-        <div id="${UIdata[element].storeAs}" style="background-color: #FFFFFF10; transition: all 0.23s ease; margin: auto; border-radius: 12px; padding: 12px; height: 40vh; overflow: auto; width: 90%;" class="dimension">
+        <div id="${UIdata[element].storeAs}" style="background-color: #FFFFFF10; transition: all 0.23s ease; margin: auto; border-radius: 9px; padding: 12px; height: 40vh; overflow: auto; width: calc(95% - 24px);" class="dimension">
             
         </div>`
     }
     if (element.startsWith('actions')) {
         actions.push(UIdata[element])
+        if (action.data[UIdata[element]] == undefined) {
+            action.data[UIdata[element]] = []
+        }
+        if (JSON.stringify(action.data[UIdata[element]]).startsWith('{')) {
+            action.data[UIdata[element]] = Object.values(action.data[UIdata[element]])
+        }
         endHTML = `${endHTML}
         <div onclick="createAction('${UIdata[element]}', '${element}')" class="flexbox addButton">
-        <div class="appearabletext">Create Action</div>
         <div class="image add"></div>
         </div>
-        <div id="${UIdata[element]}" style="background-color: #FFFFFF10; transition: all 0.23s ease; margin: auto; border-radius: 12px; padding: 12px; height: 40vh; overflow: auto; width: 90%;" class="dimension">
+        <div id="${UIdata[element]}" style="background-color: #FFFFFF10; transition: all 0.23s ease; margin: auto; border-radius: 9px; padding: 12px; height: 40vh; overflow: auto; width: calc(95% - 24px);" class="dimension">
         </div>`
     }
     if (element.startsWith('largeInput')) {
@@ -42,7 +47,9 @@ function getUIelements(UIdata) {
         if (element.split(' ').includes('custom')) {
             noModifiers = true
             if (element.split(' ').includes('number')) {
-                endHTML = `${endHTML} <input type="number" id="${UIdata[element]}" class="input" style="padding-top: 15px; padding-bottom: 15px;" onkeyup="if (parseFloat(this.value) < ${element.split('<min>')[1].split('</min>')[0]}) {this.value = ${element.split('<min>')[1].split('</min>')[0]}} else if (parseFloat(this.value) > ${element.split('<max>')[1].split('</max>')[0]}) {this.value = ${element.split('<max>')[1].split('</max>')[0]}} " value="${action.data[UIdata[element]]}">`
+                endHTML = `${endHTML}
+                <div class="flexbox" style="width: 95vw; margin-left: auto; margin-right: auto;"><div class="flexbox" style="height: 30px; background: linear-gradient(270deg, #FFFFFF10 0%, #FFFFFF07 100%); border-radius: 2px; border-top-left-radius: 7px; border-bottom-left-radius: 7px; width: 15.5%; margin-right: 0.3vw; margin-left: auto;"><div class="barbuttontexta">Number</div></div><input type="number" id="${UIdata[element]}" class="input" style="padding-top: 15px; padding-bottom: 15px; width: 84%; margin-left: 0vw; border-radius: 2px; border-top-right-radius: 7px; border-bottom-right-radius: 7px;" oninput="if (parseFloat(this.value) < ${element.split('<min>')[1].split('</min>')[0]}) {this.value = ${element.split('<min>')[1].split('</min>')[0]}} else if (parseFloat(this.value) > ${element.split('<max>')[1].split('</max>')[0]}) {this.value = ${element.split('<max>')[1].split('</max>')[0]}} " value="${action.data[UIdata[element]]}"></div>
+                `
             }
             if (element.split(' ').includes('emoji')) {
                 endHTML = `${endHTML} <div contenteditable="true" id="${UIdata[element]}" oninput="setTimeout(() => {validateInput(event)}, 100)" class="input">${action.data[UIdata[element]]}</div>`

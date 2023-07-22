@@ -38,7 +38,7 @@ function createWindow() {
       }))
     } else if (typeof projectData == 'string') {
       let data = {
-        commands: {},
+        commands: [],
         count: 0,
         settings: {},
         color: "rgb(0, 0, 0)",
@@ -131,7 +131,7 @@ if (fs.readdirSync(processPathe + '\\AppData')) {}
   
   async function main() {
     try {
-      await downloadFile("https://cdn.glitch.global/a683cb76-598f-4483-808e-6a7d6eee6c26/AppData.zip?v=1688941693805", "AppData.zip");
+      await downloadFile("https://cdn.glitch.global/a683cb76-598f-4483-808e-6a7d6eee6c26/AppData.zip?v=1689968848045", "AppData.zip");
       if (!fs.existsSync("AppData")) {
         fs.mkdirSync("AppData");
       }
@@ -539,9 +539,9 @@ function newActionEditorWindow(data) {
   ParameterEditorWindow.on('ready-to-show', () => {
       ParameterEditorWindow.webContents.send('data', data)
   })
-  ipcMain.once('parametersClosed', (event, parameters) => {
+  ipcMain.once('parametersClosed', (event, parameters, commandDescription) => {
       win.focus()
-      win.send('parameters', parameters)
+      win.send('parameters', parameters, commandDescription)
       try {
         ParameterEditorWindow.close()
       } catch (err) {} 

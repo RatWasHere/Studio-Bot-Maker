@@ -2,7 +2,7 @@
 ![image](https://github.com/RatWasHere/Studio-Bot-Maker/assets/100881234/2e255e0f-d8ba-4768-a1ed-a24776c6c884)
 
 # Studio Bot Maker
-Time to ditch Discord Bot Maker and Bot Studio For Discord - and whatever other app you're using, move on to something modern, something fluid and fast! Are you ready to move on from the old and the ugly to the new and better model? Just hit [Download](https://github.com/RatWasHere/Studio-Bot-Maker/releases/latest)!
+Time to ditch Discord Bot Maker and Bot Studio For Discord - and whatever other app you're using, move on to something modern, something fluid and fast! Are you ready to move on from the old and the ugly to something more lively, something with personality and great fluidity? Just hit [Download](https://github.com/RatWasHere/Studio-Bot-Maker/releases/latest)!
 
 **✌️ Honorable Mentions - [Phantom Hosting](https://l.linklyhq.com/l/1nohw)**
 <a href="https://l.linklyhq.com/l/1nohw" target="_blank"><img src="https://github-production-user-asset-6210df.s3.amazonaws.com/100881234/242099266-b6439c2d-958b-47bf-b10d-13e78d9fe5cd.png"></a>
@@ -24,7 +24,8 @@ It has plenty of actions and features making your bot's development fast and eas
 - It's plenty of fun - You couldn't believe how easy it is to kill time making Discord bots - especially without code! It's something that gets your brain's cogwheels spinnin' and starts up your creativity - The sky is the limit!
 - It's your creation and it's not going anywhere - whatever you create could make for a great showcase subject!
 
-Well, what is it not? First off, it's not a *completed* application (yet) - but it's got plenty to offer - everything for free! Continuing that, It's not [Discord Bot Maker](https://store.steampowered.com/app/682130/Discord_Bot_Maker/) - A (literally) great app, with a horrible userbase and community (**for the most part**, I know one of you guys @ DBM mods are reading this and are fuming to contradict me). Whilst Studio Bot Maker isn't competition towards none of those apps (due to the price gap), it's still comparable to them! 
+Well, what is it not? First off, it's not a *completed* application (yet) - but it's got plenty to offer - everything for free!
+To continue that, it's not anything special - it's just a simple webapp, but trust me when I say it's performance is superior!
 
 
 
@@ -39,4 +40,4 @@ Well, what is it not? First off, it's not a *completed* application (yet) - but 
 
 ### Quickly Fix Errors!
 ![Studio_Bot_Maker_SXysIwNT8v](https://github.com/RatWasHere/Studio-Bot-Maker/assets/100881234/20dd5fe0-35fe-4a19-a1ee-21d049f26479)
-<a href="https://www.producthunt.com/posts/studio-bot-maker?utm_source=badge-featured&utm_medium=badge&utm_souce=badge-studio&#0045;bot&#0045;maker" target="_blank"><img src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=396865&theme=dark" alt="Studio&#0032;Bot&#0032;Maker - A&#0032;no&#0032;code&#0032;Discord&#0032;bot&#0032;maker | Product Hunt" style="width: 250px; height: 54px;" width="250" height="54" /></a>
+<a href="https://www.producthunt.com/posts/studio-bot-maker?utm_source=badge-featured&utm_medium=badge&utm_souce=badge-studio&#0045;bot&#0045;maker" target="_blank"><img src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=396865&theme=dark" alt="Studio&#0032;Bot&#0032;Maker - A&#0032;no&#0032;code&#0032;Discord&#0032;bot&#0032;maker | Product Hunt" style="width: 250px; height: 54px;" width="250" height="54"/></a>

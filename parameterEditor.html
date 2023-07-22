@@ -5,7 +5,11 @@
    
    
     <div id="editorContent" style="height: 90vh; width: 100vw; background-color: #FFFFFF10; overflow: auto;">
-        <div class="flexbox" style="height: 90vh; width: 100vw;">
+        <div class="dimension flexbox" style="background-color: #FFFFFF03; width: 100vw; height: 11.5vh; margin-bottom: 0.5vh; justify-content: left;">
+            <div class="barbuttontexta" style="margin-left: 2vw; margin-top: 1.5vh; text-align: left;">Command Description</div>
+            <div class="input" oninput="storeCaretPosition(this); this.innerHTML = this.innerText.split('').splice(0, 32).join(''); restoreCaretPosition(this)" style="width: 95%;" id="commandDescription" contenteditable="true"></div>
+        </div>
+        <div class="flexbox" style="height: 78vh; width: 100vw;">
         <div class="dimension" id="parameters" style="width: 33vw; height: 95%; margin-top: auto; margin-bottom: auto; background-color: #FFFFFF08; border-radius: 9px; padding: 9px;"></div>
         <div class="dimension" id="parameterWindow" style="height: 95%; width: 60vw; margin-left: 1vw; margin-top: auto; margin-bottom: auto; padding: 9px; border-radius: 9px; background-color: #FFFFFF08;"></div>
         </div>
@@ -27,7 +31,7 @@
     <div class="barbuttonshift flexbox" style="margin-right: 1vw; width: 13vw; margin-left: auto;" onclick="closeparameters()">
         <div class="image checkmark" style="width: 30% !important; height: 30px !important; margin: auto !important;"></div>
         <div style="margin: auto;">
-        <div class="barbuttontexta">Close</div>
+        <div class="barbuttontexta">Done</div>
         <div class="smalltext" style="opacity: 50%; font-size: 8px;">CTRL+TAB</div>
         </div>
     </div>
@@ -62,6 +66,7 @@
         document.getElementById('everything_container').style.filter = 'blur(0px)'
         data = _data.parameters;
         console.log(data)
+        document.getElementById('commandDescription').innerHTML = data.description || '-'
         refreshParameters();
         document.getElementById('parameters-name').innerHTML = `<span style="opacity: 50%">Editing Parameters Of</span> ${_data.name}`
     })
@@ -212,10 +217,10 @@ function validateInputSpaces(event) {
     const div = event.target;
     storeCaretPosition(div);
 
-    var sanitizedText = div.innerText.trim(); // Remove leading and trailing spaces
+    var sanitizedText = div.innerText.trim().split(' ').join(''); // Remove leading and trailing spaces
     sanitizedText = sanitizedText.substr(0, 32); // Limit text size to 32 characters
 
-    div.innerHTML = sanitizedText;
+    div.innerHTML = sanitizedText.toLowerCase();
     restoreCaretPosition(div);
 }
 
@@ -225,7 +230,7 @@ function closeparameters() {
     document.body.style.backgroundColor = '#FFFFFF00'
     document.getElementById('everything_container').style.filter = 'blur(40px)'
     setTimeout(() => {
-        ipcRenderer.send('parametersClosed', data)
+        ipcRenderer.send('parametersClosed', data, document.getElementById('commandDescription').innerText)
     }, 500)
 }
 

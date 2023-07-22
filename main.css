@@ -928,7 +928,7 @@
        }
        .goofyhovereffectlite {
         animation-name: giggleless;
-        animation-duration: 0.3s !important;
+        animation-duration: 0.25s !important;
         animation-iteration-count: infinite !important;
        }
        .zaction {
@@ -1004,7 +1004,7 @@
        .hoverablez {
            cursor: pointer;
            background-color: #FFFFFF10;
-           transition: background-color ease 0.07s;
+           transition: background-color ease 0.11s;
        }
        .hoverablez:hover {
            background-color: #FFFFFF15;
@@ -1057,7 +1057,7 @@
             animation-name: appearfadenmt;
             width: calc(95% - 18px);
             text-align: left;
-            border-radius: 12px;
+            border-radius: 7px;
 
             border-bottom-left-radius: 0px;
             border-bottom-right-radius: 0px;
@@ -1457,10 +1457,10 @@
            transition: box-shadow ease 0.5s;
            }
        .largeInput {
-       width: 90%;
+       width: calc(95% - 24px);
        height: 40%;
        margin-left: auto;
-       border-radius: 12px;
+       border-radius: 9px;
        white-space: pre-line;
        overflow: auto;
        margin-right: auto;
@@ -2114,12 +2114,12 @@
             cursor: pointer;
             margin-left: auto; 
             transition: all 0.3s ease; 
-            margin-right: 2vh; 
+            margin-right: 1.5vh; 
             border-radius: 12px; 
             background-color: #FFFFFF10;
             backdrop-filter: blur(12px); 
             margin-bottom: -4vh; 
-            height: 7vh; 
+            height: 7vh;
             width: 7vh;
         }
         .addButton:hover {
@@ -2128,7 +2128,7 @@
         .addButton:active {
             background-color: #FFFFFF25;
         }
-
+        
         .appear {
             scale: unset;
         }
@@ -2836,4 +2836,11 @@
         color: #949494;
         text-align: center;
         margin: auto;
+    }
+
+    text {
+        color: #FFFFFF85;
+        font-size: 15.5px;
+        margin-left: calc(5% - 9px);
+        margin-top: 2.5px;
     }
