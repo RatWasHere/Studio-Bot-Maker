@@ -74,5 +74,5 @@
         "release": "electron-builder",
         "cert": "electron-builder create-self-signed-cert -p StudioCertificate"
     },
-    "version": "3.2.0"
+    "version": "3.2.1"
 }
