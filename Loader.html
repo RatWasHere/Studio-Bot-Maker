@@ -51,10 +51,11 @@
         document.getElementById('projects').innerHTML = `
         <div class="barbuttontext">Studio Bot Maker is downloading it's stuff! <br> Just a moment!</div>
         `
+        document.getElementById('everything_container').style.transform = `scale(0.9)`
     document.body.style.background = 'linear-gradient(45deg, rgb(0, 8, 20) 0%, rgb(18, 18, 18) 170%)'
         setTimeout(() => {
             ipcRenderer.send('restart')
-            document.getElementById('everything_container').style.transform = `scale(1)`
+            location.reload()
         }, 10500)
     }
 
