@@ -162,10 +162,13 @@ document.onkeydown=function(event){handleKeybind(event)};
         let wasGroupHighlighted = false;
         let firstCompatibleGroup;
         for (let cmd in botData.commands) {
+            try {
             if (botData.commands[cmd].actions.includes(undefined) || botData.commands[cmd].actions.includes(null)) {
                 botData.commands[cmd].actions = botData.commands[cmd].actions.filter(e => e != undefined || e != null);
                 wast()
             }
+            } catch (err) {}
+
             let groupType = botData.commands[cmd].type;
             let groupTrigger = botData.commands[cmd].trigger;
             let endType;
