@@ -1,4 +1,4 @@
-https://patreon.com/StudioBotMaker?utm_medium=clipboard_copy&utm_source=copyLink&utm_campaign=creatorshare_creator&utm_content=join_link
+<a href="https://patreon.com/StudioBotMaker"><img src="blob:https://www.patreon.com/3f99316f-2d47-4d04-9fee-00bd8b35f0b0"></img></a>
 
 ![image](https://github.com/RatWasHere/Studio-Bot-Maker/assets/100881234/2e255e0f-d8ba-4768-a1ed-a24776c6c884)
 
