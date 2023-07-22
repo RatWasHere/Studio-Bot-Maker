@@ -1,6 +1,5 @@
 <a href="https://patreon.com/StudioBotMaker"><img src="./3f99316f-2d47-4d04-9fee-00bd8b35f0b0.png"></img></a>
 
-![image](https://github.com/RatWasHere/Studio-Bot-Maker/assets/100881234/2e255e0f-d8ba-4768-a1ed-a24776c6c884)
 
 # Studio Bot Maker
 Time to ditch Discord Bot Maker and Bot Studio For Discord - and whatever other app you're using, move on to something modern, something fluid and fast! Are you ready to move on from the old and the ugly to something more lively, something with personality and great fluidity? Just hit [Download](https://github.com/RatWasHere/Studio-Bot-Maker/releases/latest)!
