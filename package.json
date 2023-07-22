@@ -35,6 +35,7 @@
         },
         "nsis": {
             "oneClick": false,
+            "allowToChangeInstallationDirectory": false,
             "perMachine": false,
             "uninstallDisplayName": "Uninstall Studio Bot Maker"
         }

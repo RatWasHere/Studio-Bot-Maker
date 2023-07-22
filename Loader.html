@@ -48,7 +48,13 @@
     data = JSON.parse(fs.readFileSync('./AppData/data.json'));
     projectContainer = document.getElementById('projects');
     } catch (err) {
-        location.reload()
+        document.getElementById('projects').innerHTML = `
+        <div class="barbuttontext">Studio Bot Maker is downloading it's stuff! <br> Just a moment!</div>
+        `
+    document.body.style.background = 'linear-gradient(45deg, rgb(0, 8, 20) 0%, rgb(18, 18, 18) 170%)'
+        setTimeout(() => {
+            location.reload()
+        }, 5500)
     }
 
         document.getElementById('everything_container').style.transform = `scale(1)`
