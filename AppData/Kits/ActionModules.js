@@ -220,7 +220,7 @@ function setHighlightedGroup(type) {
     }, 300);
 }
 
-if (!Array.isArray(botData.commands) || !Array.isArray(botData.commands[0]?.actions)) {
+if (!Array.isArray(botData.commands)) {
     transferProject()
 
     location.reload()

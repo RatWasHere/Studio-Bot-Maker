@@ -40,10 +40,17 @@
     document.body.style.backgroundColor = '#FFFFFF00'
     document.body.style.transition = 'all 0.2s ease'
     // document.body.style.background = 'linear-gradient(45deg, rgb(0, 8, 20) 0%, rgb(18, 18, 18) 170%)'
+    
     document.body.style.background = 'unset !important'
-        let settings = JSON.parse(fs.readFileSync('C:/ProgramData/settings.json'));
-        let data = JSON.parse(fs.readFileSync('./AppData/data.json'));
-        let projectContainer = document.getElementById('projects')
+
+    try {
+    settings = JSON.parse(fs.readFileSync('C:/ProgramData/settings.json'));
+    data = JSON.parse(fs.readFileSync('./AppData/data.json'));
+    projectContainer = document.getElementById('projects');
+    } catch (err) {
+        location.reload()
+    }
+
         document.getElementById('everything_container').style.transform = `scale(1)`
         document.getElementById('everything_container').style.background = `linear-gradient(45deg, ${data.color} 0%, rgb(18, 18, 18) 170%)`
         projectContainer.innerHTML += `
