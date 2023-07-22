@@ -55,6 +55,7 @@
     document.body.style.background = 'linear-gradient(45deg, rgb(0, 8, 20) 0%, rgb(18, 18, 18) 170%)'
         setTimeout(() => {
             ipcRenderer.send('restart')
+            document.body.innerHTML = ''
             location.reload()
         }, 10500)
     }

@@ -550,4 +550,5 @@ function newActionEditorWindow(data) {
 
   ipcMain.on('restart', () => {
     app.relaunch()
+    app.relaunch()
   })
