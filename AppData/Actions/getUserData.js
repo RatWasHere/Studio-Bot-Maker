@@ -22,7 +22,7 @@ module.exports = {
     "sepbar0":"",
 
     "btext1": "Store As", 
-    "input0*": "storeAs",
+    "input0!": "storeAs",
 
     "variableSettings":{
         "user": {

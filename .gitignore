@@ -1,6 +1,6 @@
 node_modules
 out/
 dist/
-AppData/data.json
 StudioCertificate.pfx
 GH_TOKEN
+/AppData/data.json

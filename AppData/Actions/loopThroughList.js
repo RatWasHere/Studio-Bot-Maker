@@ -11,7 +11,7 @@ module.exports = {
 
     "sepbar0":"",
 
-    "btext1":"Store Iterated Object Position As", "input1!":"storeAs",
+    "btext1":"Store Iterated Object Position As", "input!":"storeAs",
 
     "sepbar1":"",
 
@@ -23,10 +23,8 @@ module.exports = {
     async run(values, interaction, uID, fs, client, actionRunner, bridge) { 
         let varTools = require(`../Toolkit/variableTools.js`)
         let list = bridge.variables[varTools.transf(values.ListName)] ? bridge.variables[varTools.transf(values.ListName)] : []
-
         for (let element in list) {
-            bridge.variables[varTools.transf(values.storeAs, bridge.variables)] = element;    
-            actionRunner(values.actions, interaction, client, bridge.variables, true)
+            actionRunner(values.actions, interaction, client, {...bridge.variables, [varTools.transf(values.storeAs, bridge.variables)]: element}, true)
         }
     }
 }

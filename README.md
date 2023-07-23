@@ -1,11 +1,5 @@
-<a href="https://patreon.com/StudioBotMaker"><img src="./3f99316f-2d47-4d04-9fee-00bd8b35f0b0.png"></img></a>
-
-
 # Studio Bot Maker
 Time to ditch Discord Bot Maker and Bot Studio For Discord - and whatever other app you're using, move on to something modern, something fluid and fast! Are you ready to move on from the old and the ugly to something more lively, something with personality and great fluidity? Just hit [Download](https://github.com/RatWasHere/Studio-Bot-Maker/releases/latest)!
-
-**✌️ Honorable Mentions - [Phantom Hosting](https://l.linklyhq.com/l/1nohw)**
-<a href="https://l.linklyhq.com/l/1nohw" target="_blank"><img src="https://github-production-user-asset-6210df.s3.amazonaws.com/100881234/242099266-b6439c2d-958b-47bf-b10d-13e78d9fe5cd.png"></a>
 
 
 ## 🐛 No-Code **Free** Discord Bot Maker!

@@ -73,13 +73,15 @@ function createWindow() {
     });
     win.loadFile('./index.html');
     win.setMenuBarVisibility(false);
-    win.on('ready-to-show', () => {
-      const { trackEvent } = require("@aptabase/electron/main")
-      trackEvent("ready"); 
+    setTimeout(() => {
+      win.show()
       try {
         tempWindow.close()
       } catch (err) {}
-      win.show()
+    }, 570);
+    win.on('ready-to-show', () => {
+      const { trackEvent } = require("@aptabase/electron/main")
+      trackEvent("ready"); 
     })
 })
 
@@ -419,7 +421,9 @@ function newActionEditorWindow(data) {
       icon: 'icon.png',
       webPreferences: {
         nodeIntegration: true,
-        contextIsolation: false
+        contextIsolation: false,
+        nodeIntegrationInSubFrames: true,
+        nodeIntegrationInWorker: true
       }
     });
     botWindow.setMenuBarVisibility(false);

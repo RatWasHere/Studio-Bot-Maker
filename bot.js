@@ -65,17 +65,10 @@ try {
             cmdActions = at;
         }
 
-        let variables;
-        if (typeof actionBridge == 'object') {
-            variables = actionBridge
-        } else {
-            variables = {}
-        }
-
         let actionContextBridge = {
             guild: interaction.guild || null,
             stopActionRun: false,
-            variables: variables,
+            variables: typeof actionBridge == 'object' ? actionBridge : {},
             data: {
                 ranAt: cmdAt,
                 nodeName: cmdName,

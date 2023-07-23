@@ -11,13 +11,14 @@ module.exports = {
 
     "btext": "Get List Of Members':",
     "menuBar": {
-        choices: ["IDs", "Variables", "Usernames"]
+        choices: ["IDs", "Variables", "Usernames"],
+        storeAs: "get"
     },
 
     "sepbar0":"",
 
     "btext0":"Store List As",
-    "input":"storeAs",
+    "input!":"storeAs",
 
     "preview":"storeAs", 
     "previewName":"Store As"},
@@ -25,8 +26,20 @@ module.exports = {
    async run(values, message, uID, fs, client, runner, bridge)  { 
         let varTools = require(`../Toolkit/variableTools.js`)
 
-        for (let member of bridge.guild.members) {
-            
+        let output = [];
+
+        for (let [id, member] of bridge.guild.members) {
+            if (values.get == 'IDs') {
+                output.push(id)
+            } else if (values.get == 'Variables') {
+                output.push(member)
+            } else {
+                output.push(member.globalName)
+            }
         }
+
+        console.log('output', output)
+
+        bridge.variables[varTools.transf(values.storeAs, bridge.variables)] = output;
     }
 }
