@@ -65,8 +65,8 @@
         document.getElementById('everything_container').style.scale = '1'
         document.getElementById('everything_container').style.filter = 'blur(0px)'
         data = _data.parameters;
-        console.log(_data)
-        document.getElementById('commandDescription').innerHTML = data.description
+        console.log(_data, _data.description)
+        document.getElementById('commandDescription').innerHTML = _data.description
         refreshParameters();
         document.getElementById('parameters-name').innerHTML = `<span style="opacity: 50%">Editing Parameters Of</span> ${_data.name}`
     })
