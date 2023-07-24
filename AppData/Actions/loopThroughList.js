@@ -24,7 +24,8 @@ module.exports = {
         let varTools = require(`../Toolkit/variableTools.js`)
         let list = bridge.variables[varTools.transf(values.ListName)] ? bridge.variables[varTools.transf(values.ListName)] : []
         for (let element in list) {
-            actionRunner(values.actions, interaction, client, {...bridge.variables, [varTools.transf(values.storeAs, bridge.variables)]: element}, true)
+            bridge.variables[varTools.transf(values.storeAs, bridge.variables)] = element;
+            await actionRunner(values.actions, interaction, client, bridge.variables, true)
         }
     }
 }

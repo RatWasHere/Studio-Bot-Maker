@@ -1532,12 +1532,14 @@ function toggleColorsVisibility(button) {
 }
 
 function openParameters() {
-    ipcRenderer.send('editParameters', {parameters: botData.commands[lastObj].parameters || [], name: botData.commands[lastObj].name, description: botData.commands[lastObj].description || 'No Description'})
+    ipcRenderer.send('editParameters', {parameters: botData.commands[lastObj].parameters || [], name: botData.commands[lastObj].name, description: botData.commands[lastObj].description == undefined ? botData.commands[lastObj].description : 'No Description'})
 }
 
 ipcRenderer.on('parameters', (event, parameters, description) => {
     botData.commands[lastObj].parameters = parameters;
     botData.commands[lastObj].description = description;
+    console.log(description, botData.commands[lastObj].description)
+    wast()
 })
 
 function wast() {

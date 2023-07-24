@@ -1,9 +1,9 @@
 module.exports = {
-    data: {"name":"Get Mentioned User", "messageFrom":"Command Message", "message":"", 
-    "storeAs":"", "store":"User ID",
+    data: {"name":"Get Mentioned Channel", "messageFrom":"Command Message", "message":"", 
+    "storeAs":"", "store":"Channel ID",
     "position":"First", "numericPosition":"4"},
     UI: {"compatibleWith": ["Text", "DM"],
-    "text": "Get Mentioned User",
+    "text": "Get Mentioned Channel",
 
     "sepbar":"", 
     
@@ -15,7 +15,7 @@ module.exports = {
     "sepbar1":"",
 
     "btext1": "Store",
-    "menuBar1": {choices: ["User ID", "User Variable"], storeAs: "store"},
+    "menuBar1": {choices: ["Channel ID", "Channel Variable"], storeAs: "store"},
     
     "sepbar2":"",
 
@@ -38,7 +38,7 @@ module.exports = {
             msg = client.getChannel(bridge.variables[values.message].channelId).messages.get(bridge.variables[values.message].id)
         }
 
-        let mentions = msg.mentions.users
+        let mentions = msg.mentions.channels
         let mention;
         switch (values.position) {
             case 'First':
@@ -57,7 +57,7 @@ module.exports = {
         
         bridge.variables = {
             ...bridge.variables,
-            [values.storeAs]: values.store == 'User Variable' ? mention : mention.id
+            [values.storeAs]: values.store == 'Channel Variable' ? client.getChannel(mention) : mention
         }
     }
 }

@@ -214,7 +214,7 @@ module.exports = {
     "menuBar": {"choices": ["Command Interaction", "Variable*"], storeAs: "sendTo", extraField: "to"},
     "sepbar3":"",
     "btext2":"Ephemeral?",
-    "menuBar": {choices: ["Yes", "No"], storeAs: "ephemeral"},
+    "menuBar0": {choices: ["Yes", "No"], storeAs: "ephemeral"},
     "sepbar4":"",
     "btext1": "Store Message As",
     "input0!": "storeAs",

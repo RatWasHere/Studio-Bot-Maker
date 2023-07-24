@@ -1,8 +1,8 @@
         "nsis": {
-            "artifactName": "${productName}-${version}-Installer.${ext}",
-            "oneClick": false,
+            "artifactName": "AppUpdater-${productName}${version}.${ext}",
+            "oneClick": true,
             "perMachine": false,
-            "allowToChangeInstallationDirectory": true,
+            "allowToChangeInstallationDirectory": false,
             "runAfterFinish": true,
             "deleteAppDataOnUninstall": true
         }

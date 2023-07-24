@@ -1,9 +1,9 @@
 module.exports = {
-    data: {"name":"Get Mentioned User", "messageFrom":"Command Message", "message":"", 
-    "storeAs":"", "store":"User ID",
+    data: {"name":"Get Mentioned Role", "messageFrom":"Command Message", "message":"", 
+    "storeAs":"", "store":"Role ID",
     "position":"First", "numericPosition":"4"},
     UI: {"compatibleWith": ["Text", "DM"],
-    "text": "Get Mentioned User",
+    "text": "Get Mentioned Role",
 
     "sepbar":"", 
     
@@ -15,7 +15,7 @@ module.exports = {
     "sepbar1":"",
 
     "btext1": "Store",
-    "menuBar1": {choices: ["User ID", "User Variable"], storeAs: "store"},
+    "menuBar1": {choices: ["Role ID", "Role Variable"], storeAs: "store"},
     
     "sepbar2":"",
 
@@ -35,10 +35,10 @@ module.exports = {
         if (values.messageFrom == 'Command Message') {
             msg = message;
         } else {
-            msg = client.getChannel(bridge.variables[values.message].channelId).messages.get(bridge.variables[values.message].id)
+            msg = client.getRole(bridge.variables[values.message].channelId).messages.get(bridge.variables[values.message].id)
         }
 
-        let mentions = msg.mentions.users
+        let mentions = msg.mentions.roles
         let mention;
         switch (values.position) {
             case 'First':
@@ -57,7 +57,7 @@ module.exports = {
         
         bridge.variables = {
             ...bridge.variables,
-            [values.storeAs]: values.store == 'User Variable' ? mention : mention.id
+            [values.storeAs]: values.store == 'Role Variable' ? bridge.guild.roles.get(mention) : mention
         }
     }
 }

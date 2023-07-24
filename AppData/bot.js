@@ -54,6 +54,7 @@ try {
 
     /* Used For Running Action Arrays - Universal Action Array Runner */ 
     const runActionArray = async (at, interaction, client, actionBridge, tf) => {
+        new Promise( async (resolve) => {
         let cmdActions;
         let cmdName = 'Inbuilt';
         let cmdAt = 'Inbuilt';
@@ -87,9 +88,12 @@ try {
                     console.log(`${colors.BgRed}${colors.FgBlack}${cmdName} ${colors.FgBlack + colors.BgWhite}(@#${cmdAt})${colors.Reset + colors.BgRed + colors.FgBlack} >>> ${require(`./AppData/Actions/${cmdActions[action].file}`).data.name} ${colors.FgBlack + colors.BgWhite}(@#${action})${colors.Reset + colors.BgRed + colors.FgBlack} >>> Error: ${err}${colors.Reset}`)
                 }
             } else {
+                resolve()
                 return
             }
         }
+        resolve()
+    })
     }
     client.on('messageCreate', async msg => {
     if (msg.author.bot) return

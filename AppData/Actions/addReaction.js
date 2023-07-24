@@ -34,4 +34,5 @@ module.exports = {
             message = bridge.variables[varTools.transf(values.message, bridge.variables)]
         }
         message.createReaction(varTools.transf(values.emoji, bridge.variables))
-    }}
+    }
+}

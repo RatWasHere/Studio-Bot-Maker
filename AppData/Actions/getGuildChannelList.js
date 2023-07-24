@@ -1,17 +1,17 @@
 module.exports = {
-    data: {"name":"Get Guild Members List",
+    data: {"name":"Get Guild Channels List",
     "storeAs":"",
     "get": "IDs"
 },
      
     UI: {"compatibleWith":["Text", "Slash"], 
-    "text":"Get Guild Members List", 
+    "text":"Get Guild Channels List", 
 
     "sepbar":"",
 
-    "btext": "Get List Of Members':",
+    "btext": "Get List Of Channels':",
     "menuBar": {
-        choices: ["IDs", "Variables", "Usernames"],
+        choices: ["IDs", "Variables", "Names"],
         storeAs: "get"
     },
 
@@ -28,13 +28,15 @@ module.exports = {
 
         let output = [];
 
-        for (let [id, member] of bridge.guild.members) {
-            if (values.get == 'IDs') {
-                output.push(id)
-            } else if (values.get == 'Variables') {
-                output.push(member)
-            } else {
-                output.push(member.globalName)
+        for (let [id, channel] of bridge.guild.channels) {
+            if (channel.parent) {
+                if (values.get == 'IDs') {
+                    output.push(id)
+                } else if (values.get == 'Variables') {
+                    output.push(channel)
+                } else {
+                    output.push(channel.name)
+                }
             }
         }
 

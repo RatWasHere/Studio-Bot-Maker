@@ -1,17 +1,17 @@
 module.exports = {
-    data: {"name":"Get Guild Members List",
+    data: {"name":"Get Guild Roles List",
     "storeAs":"",
     "get": "IDs"
 },
      
     UI: {"compatibleWith":["Text", "Slash"], 
-    "text":"Get Guild Members List", 
+    "text":"Get Guild Roles List", 
 
     "sepbar":"",
 
-    "btext": "Get List Of Members':",
+    "btext": "Get List Of Roles':",
     "menuBar": {
-        choices: ["IDs", "Variables", "Usernames"],
+        choices: ["IDs", "Variables", "Names"],
         storeAs: "get"
     },
 
@@ -27,14 +27,14 @@ module.exports = {
         let varTools = require(`../Toolkit/variableTools.js`)
 
         let output = [];
-
-        for (let [id, member] of bridge.guild.members) {
+        
+        for (let [id, role] of bridge.guild.roles) {
             if (values.get == 'IDs') {
                 output.push(id)
             } else if (values.get == 'Variables') {
-                output.push(member)
+                output.push(role)
             } else {
-                output.push(member.globalName)
+                output.push(role.name)
             }
         }
 
