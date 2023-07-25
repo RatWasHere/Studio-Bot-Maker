@@ -4,6 +4,19 @@ function getUIelements(UIdata) {
     var menus = []
     var actions = []
     for (let element in UIdata) {
+    if (element.startsWith('toggle')) {
+        if (action.data[UIdata[element].storeAs] == undefined) {
+            action.data[UIdata[element].storeAs] = false;
+        }
+        endHTML += `
+            <div class="flexbox dimension hoverablez" onclick="toggleSwitch('${UIdata[element].storeAs}')" style="width: calc(95% - 24px); margin-left: auto; margin-right: auto; padding: 12px; border-radius: 9px;">
+            <div class="barbuttontexta" style="margin-left: 1vw;">${UIdata[element].name}</div>
+            <div class="textse noanims" style="margin-top: auto; margin-bottom: auto; opacity: 50%;">No</div>
+            <div class="dimension" style="width: 10vh; background-color: #FFFFFF10; height: 3vh; border-radius: 12px; margin-left: 1vw; margin-right: 1vw;"><div id="${UIdata[element].storeAs}" style="height: 5vh; cursor: pointer; margin-top: -1vh; backdrop-filter: blur(12px); width: 5vh; background-color: #FFFFFF25; border-radius: 12px; margin-left: ${action.data[UIdata[element].storeAs] == false ? "0vh" : "5vh"}; transition: all 0.15s ease;"></div></div>
+            <div class="textse noanims" style="margin-right: 1vw; margin-left: 0px !important; opacity: 50%; margin-top: auto; margin-bottom: auto;">Yes</div>
+            </div>
+        `
+    }
     if (element.startsWith('customMenu')) {
         if (action.data[UIdata[element].storeAs] == undefined) {
             action.data[UIdata[element].storeAs] = []
@@ -27,10 +40,10 @@ function getUIelements(UIdata) {
             action.data[UIdata[element]] = Object.values(action.data[UIdata[element]])
         }
         endHTML = `${endHTML}
-        <div onclick="createAction('${UIdata[element]}', '${element}')" class="flexbox addButton">
+        <div onclick="createAction('${UIdata[element]}', '${element}')" style="transition: all 0.2s ease;" id="${UIdata[element]}AddButton" class="flexbox addButton">
         <div class="image add"></div>
         </div>
-        <div id="${UIdata[element]}" style="background-color: #FFFFFF10; transition: all 0.23s ease; margin: auto; border-radius: 9px; padding: 12px; height: 40vh; overflow: auto; width: calc(95% - 24px);" class="dimension">
+        <div id="${UIdata[element]}" onmouseenter="lastActionContainer = '${element}'" onmouseleave="lastActionContainer = undefined;" style="background-color: #FFFFFF10; transition: all 0.23s ease; margin: auto; border-radius: 9px; padding: 12px; height: 40vh; overflow: auto; width: calc(95% - 24px); transition: all 0.2s ease;" class="dimension">
         </div>`
     }
     if (element.startsWith('largeInput')) {

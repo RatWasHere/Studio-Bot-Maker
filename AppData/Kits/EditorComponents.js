@@ -25,10 +25,12 @@ function openPopupOption(object, element) {
         UI: actionUI[element].UItypes[action.data[actionUI[element].storeAs][object].type].UI,
         name: actionUI[element].UItypes[action.data[actionUI[element].storeAs][object].type].name,
         variables: [...localVariables, ...variables],
-        actionType: actionType
+        actionType: actionType,
+        copiedAction: copiedAction
     })
-    ipcRenderer.once('menuData', (event, data) => {
+    ipcRenderer.once('menuData', (event, data, copied) => {
         action.data[actionUI[element].storeAs][object].data = data;
+        copiedAction = copied
     })
 }
 function editAction(at, actionNumber) {
@@ -57,12 +59,13 @@ function editAction(at, actionNumber) {
         action: actionNumber,
         variables: [...localVariables, ...variables],
         actionType: actionType,
-        customId: `${customId}`
+        customId: `${customId}`,
+        copiedAction: copiedAction
     })
     function storeActionData() {
-        ipcRenderer.once(`childSave${customId}`, (event, data) => {
-            console.log(data, actionNumber)
+        ipcRenderer.once(`childSave${customId}`, (event, data, copied) => {
             action.data[at][actionNumber] = data;
+            copiedAction = copied;
             storeActionData()
             refreshActions(at)
         });
@@ -161,7 +164,7 @@ function refreshActions(at) {
 
     
         endActions = `${endActions}
-        <div onmouseenter="lastHovered = this" draggable="true" ondragleave="handleActionDragEnd('${at}', '${actionNumber}')" ondragend="handleActionDrop('${at}', '${actionNumber}')" ondragover="actionDragOverHandle(event, '${at}', '${actionNumber}')" ondragstart="handleActionDrag('${at}', '${actionNumber}')" onmouseleave="lastHovered = null;" class="action textToLeft ${extrf}" style="animation-delay: ${delay * 3}0ms; width: 97% !important;" ondblclick="editAction('${at}', '${actionNumber}')">
+        <div onmouseenter="lastHovered = ${actionNumber}" draggable="true" ondragleave="handleActionDragEnd('${at}', '${actionNumber}')" ondragend="handleActionDrop('${at}', '${actionNumber}')" ondragover="actionDragOverHandle(event, '${at}', '${actionNumber}')" ondragstart="handleActionDrag('${at}', '${actionNumber}')" onmouseleave="lastHovered = null;" class="action textToLeft ${extrf}" style="animation-delay: ${delay * 3}0ms; width: 97% !important;" ondblclick="editAction('${at}', '${actionNumber}')">
         ${innerAction.name}
             <div style="opacity: 50%; margin-left: 7px;">
             ${quickdata.previewName}: ${quickie}</div>
@@ -169,7 +172,7 @@ function refreshActions(at) {
         </div>`;
     } catch (err) {
         endActions = `${endActions}
-        <div id="Action${action}" onmouseenter="lastHovered = this" draggable="true" ondragleave="handleActionDragEnd(this)" ondragend="handleActionDrop()" ondragover="actionDragOverHandle(event, this)" ondragstart="handleActionDrag(this)" onmouseleave="lastHovered = null;" class="action textToLeft ${extrf}" style="animation-delay: ${delay * 3}0ms; width: 97% !important;" ondblclick="editAction(this)">
+        <div id="Action${actionNumber}" onmouseenter="lastHovered = this" draggable="true" ondragleave="handleActionDragEnd(this)" ondragend="handleActionDrop()" ondragover="actionDragOverHandle(event, this)" ondragstart="handleActionDrag(this)" onmouseleave="lastHovered = null;" class="action textToLeft ${extrf}" style="animation-delay: ${delay * 3}0ms; width: 97% !important;" ondblclick="editAction(this)">
         Error
         <div style="opacity: 50%; margin-left: 7px;"> - Action Missing</div>
         <div class="deleteActionButton" onclick="deleteAction('${at}', '${actionNumber}')">✕</div>

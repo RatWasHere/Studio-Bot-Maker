@@ -325,18 +325,17 @@ function newActionEditorWindow(data) {
           lastWindow = actionEditorWindow.getParentWindow();
           lastWindow.focus()
           actionEditorWindow.getParentWindow().send('childClose')
-
       })
       
 
 
       ipcMain.on(`${windowTime}`, (event, data) => {
         if (data.event == 'customReceived') {
-          actionEditorWindow.getParentWindow().webContents.send('menuData', data.data)
+          actionEditorWindow.getParentWindow().webContents.send('menuData', data.data, data.copiedAction)
           actionEditorWindow.close()
         }
         if (data.event == 'save') {
-          actionEditorWindow.getParentWindow().webContents.send('childSave' + customId, data.action)
+          actionEditorWindow.getParentWindow().webContents.send('childSave' + customId, data.action, data.copiedAction)
         }
         if (data.event == 'close') {
           lastWindow = actionEditorWindow.getParentWindow();
@@ -354,7 +353,8 @@ function newActionEditorWindow(data) {
         UI: startData.UI,
         name: startData.name,
         variables: startData.variables,
-        actionType: startData.actionType
+        actionType: startData.actionType,
+        copiedAction: startData.copiedAction
       }
       let windowTime = new Date().getTime()
           const actionEditorWindow = new BrowserWindow({
@@ -396,14 +396,8 @@ function newActionEditorWindow(data) {
     
           ipcMain.on(`${windowTime}`, (event, data) => {
             if (data.event == 'customReceived') {
-              actionEditorWindow.getParentWindow().webContents.send('menuData', data.data)
+              actionEditorWindow.getParentWindow().webContents.send('menuData', data.data, data.copiedAction)
               actionEditorWindow.close()
-            }
-            if (data.event == 'close') {
-              lastWindow = actionEditorWindow.getParentWindow();
-              lastWindow.focus()
-              actionEditorWindow.close();
-              actionEditorWindow.getParentWindow().webContents.send('childSave', data.data)
             }
             if (data.event == 'openCustom') {
                newMenuEditorWindow(data)
@@ -548,6 +542,6 @@ function newActionEditorWindow(data) {
       win.send('parameters', parameters, commandDescription)
       try {
         ParameterEditorWindow.close()
-      } catch (err) {} 
+      } catch (err) {}
     })
   })

@@ -711,7 +711,7 @@
        margin-bottom: 1vh;
        }
        .actBarHalf {
-           width: calc(48.3vw - 24px);
+           width: calc(48.3vw);
            height: calc(39vh - 24px) !important;
            background-color: #ffffff16;
            backdrop-filter: blur(12px);
@@ -719,7 +719,8 @@
            margin-left: 0px;    
            border-radius: 12px;
            background-image: url(./AppData/grain.png);
-           padding: 12px;
+           padding-top: 12px;
+           padding-bottom: 12px;
            overflow-y: auto !important;
            overflow-x: none !important
        }

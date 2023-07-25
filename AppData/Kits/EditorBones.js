@@ -1,6 +1,8 @@
 let version = 3
 const { app, ipcRenderer } = require('electron');
 let selectedGroupType = 'text'
+let copiedAction;
+
 function editAction() {
     let variables = []
     let actionType = 'text'
@@ -44,14 +46,16 @@ function editAction() {
         action: lastAct,
         actions: botData.commands[lastObj].actions,
         variables: variables,
-        actionType: actionType
+        actionType: actionType,
+        copiedAction: copiedAction
     })
 }
-ipcRenderer.on('childSave', (event, data) => {
+ipcRenderer.on('childSave', (event, data, copied) => {
     console.log(data)
     botData.commands[lastObj].actions[lastAct] = data;
     wast()
     refreshActions()
+    copiedAction = copied;
 })
 
 ipcRenderer.on('childClose', () => {
@@ -138,14 +142,14 @@ document.onkeydown=function(event){handleKeybind(event)};
                 }
 
             endHTML += `
-            <div id="Action${action}" onmouseenter="lastHovered = this" draggable="true" ondragleave="handleActionDragEnd(this)" ondragend="handleActionDrop()" ondragover="actionDragOverHandle(event, this)" ondragstart="handleActionDrag(this)" onmouseleave="lastHovered = null;" class="action textToLeft ${borderType}" style="animation-delay: ${delay * 3}0ms" ondblclick="editAction(this)" onclick="highlight(this)">
+            <div id="Action${action}" onmouseenter="lastHovered = this" draggable="true" ondragleave="handleActionDragEnd(this)" ondragend="handleActionDrop()" ondragover="actionDragOverHandle(event, this)" ondragstart="handleActionDrag(this)" onmouseleave="lastHovered = null;" class="action textToLeft ${borderType}" style="animation-delay: ${delay * 3}0ms; width: 95% !important;" ondblclick="editAction(this)" onclick="highlight(this)">
             ${botData.commands[lastObj].actions[action].name}
             <div style="opacity: 50%; margin-left: 7px;">${`${actionUI.previewName}`}: ${quickie}</div>
             <div class="deleteActionButton" onclick="deleteObject(this)">✕</div></div>`;
         } catch (err) {
             if (!botData.commands[lastObj].actions[action] || actionFile == undefined) {
                 endHTML += `
-                <div id="Action${action}" onmouseenter="lastHovered = this" draggable="true" ondragleave="handleActionDragEnd(this)" ondragend="handleActionDrop()" ondragover="actionDragOverHandle(event, this)" ondragstart="handleActionDrag(this)" onmouseleave="lastHovered = null;" class="action textToLeft ${borderType}" style="animation-delay: ${delay * 3}0ms" ondblclick="editAction(this)" onclick="highlight(this)">
+                <div id="Action${action}" onmouseenter="lastHovered = this" draggable="true" ondragleave="handleActionDragEnd(this)" ondragend="handleActionDrop()" ondragover="actionDragOverHandle(event, this)" ondragstart="handleActionDrag(this)" onmouseleave="lastHovered = null;" class="action textToLeft ${borderType}" style="animation-delay: ${delay * 3}0ms; width: 95% !important" ondblclick="editAction(this)" onclick="highlight(this)">
                 Error
                 <div style="opacity: 50%; margin-left: 7px;"> - Action Missing</div>
                 <div class="deleteActionButton" onclick="deleteObject(this)">✕</div></div>`;
@@ -185,14 +189,14 @@ document.onkeydown=function(event){handleKeybind(event)};
             if (endType == selectedGroupType) {
                 if (!firstCompatibleGroup) firstCompatibleGroup = cmd
                 delay++
-                document.getElementById('commandbar').innerHTML += `<div class="${botData.commands[cmd].color != undefined ? 'coloredAction' : 'action'} textToLeft" draggable="true" onmouseenter="lastHovered = this" ondragleave="handleGroupDragEnd(this)" ondragend="handleGroupDrop()" ondragover="groupDragOverHandle(event, this)" ondragstart="handleGroupDrag(this)" onmouseleave="lastHovered = null;" id="Group${parseFloat(cmd)}" style="animation-delay: ${delay * 3}5ms;" onclick="highlight(this)"><div id="${cmd}Groupname">${botData.commands[cmd].name}</div> <div style="opacity: 50%; margin-left: 7px;"> | <span id="${cmd}Groupcount">${botData.commands[cmd].actions.length}</span> Actions </div> <div class="deleteActionButton forceRounded" style="border-radius: 124px;" onclick="deleteObject(this)">✕</div> `
+                document.getElementById('commandbar').innerHTML += `<div class="${botData.commands[cmd].color != undefined ? 'coloredAction' : 'action'} textToLeft" draggable="true" onmouseenter="lastHovered = this" ondragleave="handleGroupDragEnd(this)" ondragend="handleGroupDrop()" ondragover="groupDragOverHandle(event, this)" ondragstart="handleGroupDrag(this)" onmouseleave="lastHovered = null;" id="Group${parseFloat(cmd)}" style="animation-delay: ${delay * 3}5ms; width: 95% !important;" onclick="highlight(this)"><div id="${cmd}Groupname">${botData.commands[cmd].name}</div> <div style="opacity: 50%; margin-left: 7px;"> | <span id="${cmd}Groupcount">${botData.commands[cmd].actions.length}</span> Actions </div> <div class="deleteActionButton forceRounded" style="border-radius: 124px;" onclick="deleteObject(this)">✕</div> `
                 if (botData.commands[cmd].color != undefined) {
                     let groupColor = botData.commands[cmd].color.split(')')[0]
                     try {
                         if (document.getElementById(`Group${cmd}`) != undefined) {
                         setTimeout(() => {
                             document.getElementById(`Group${cmd}`).addEventListener('mouseover', () => {
-                                document.getElementById(`Group${cmd}`).style.backgroundColor = groupColor + `, 0.20)`
+                                document.getElementById(`Group${cmd}`).style.backgroundColor = groupColor + `, 0.17)`
                             })
                             
                             document.getElementById(`Group${cmd}`).addEventListener('mouseout', () => {
@@ -200,6 +204,17 @@ document.onkeydown=function(event){handleKeybind(event)};
                                     document.getElementById(`Group${cmd}`).style.backgroundColor = groupColor + ', 0.09)'
                                 } else {
                                     document.getElementById(`Group${cmd}`).style.backgroundColor = groupColor + ', 0.15)'
+                                }
+                            })
+
+                            document.getElementById(`Group${cmd}`).addEventListener('mousedown', () => {
+                                document.getElementById(`Group${cmd}`).style.backgroundColor = groupColor + `, 0.18)`
+                            })
+                            document.getElementById(`Group${cmd}`).addEventListener('mouseup', () => {
+                                if (lastObj != cmd) {
+                                    document.getElementById(`Group${cmd}`).style.backgroundColor = groupColor + ', 0.09)'
+                                } else {
+                                    document.getElementById(`Group${cmd}`).style.backgroundColor = groupColor + ', 0.17)'
                                 }
                             })
                         }, 100)
@@ -274,7 +289,6 @@ document.onkeydown=function(event){handleKeybind(event)};
         } catch (err) {
             groupEvents.innerHTML = `<div style="margin: auto; margin-left: 1vw;">Triggered By: Nothing</div><div class="image openExternally"></div>`
         }
-
     }
 
     function returnToNormal() {

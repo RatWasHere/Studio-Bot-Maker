@@ -36,7 +36,7 @@ module.exports = {
                         UItypes: {
                             "normal": {
                                 name: "Button",
-                                data: {label: "Button", color: "Default", actions: {}, button: "✕"},
+                                data: {label: "Button", color: "Default", actions: {}, disabled: false},
                                 UI: {
                                 text: "Button",
                                 sepbar: "",
@@ -46,8 +46,7 @@ module.exports = {
                                 btext0: "Button Style",
                                 menuBar: {choices: ["Default", "Success", "Danger", "Neutral"], storeAs: "color"},
                                 sepbar1:"",
-                                btext1: "Disabled?",
-                                ButtonBar: {buttons: ["✓", "✕"]},
+                                toggle: {name: "Disabled", storeAs: "disabled"},
                                 sepbar2: "",
                                 btext2: "Once Clicked, Run",
                                 actions: "actions"
@@ -82,7 +81,7 @@ module.exports = {
             },
             selectMenu: {
                 name: "Select Menu",
-                data: {"await": "60", options: [], button: "✕", maxSelectable: 1, minSelectable: 1, storeInteractionAs:"", placeholder: ""},
+                data: {"await": "60", options: [], button: "✕", maxSelectable: 1, minSelectable: 1, storeInteractionAs:"", placeholder: "", disabled: false},
                 UI: {
                     text: "Select Menu",
                     sepbar: "",
@@ -106,7 +105,7 @@ module.exports = {
                         UItypes: {
                             selectMenu: {
                                 name: "Select Menu Option",
-                                data: {"actions": {}, label: "", button: "✕"},
+                                data: {"actions": {}, label: "", disabled: false},
                                 UI: {
                                     text: "Select Menu Option",
                                     sepbar: "",
@@ -116,16 +115,14 @@ module.exports = {
                                     btext0: "If selected, Run:",
                                     actions: "actions",
                                     sepbar1: "",
-                                    btext1: "Disabled?",
-                                    ButtonBar: {buttons: ["✓", "✕"]},
+                                    toggle: {name: "Disabled", storeAs: "disabled"}
                                 }
                             }
                         },
                         storeAs: "options"
                     },
                     sepbar3: "",
-                    btext5: "Disabled?",
-                    ButtonBar: {buttons: ["✓", "✕"]},
+                    toggle: {name: "Disabled", storeAs: "disabled"},
                     sepbar5: "",
                     btext6: "Placeholder",
                     input1: "placeholder",
@@ -150,7 +147,7 @@ module.exports = {
         UItypes: {
             embed: {
             name: "Embed",
-            data: {title: "", embedColor: "#FFFFFF", footerContent: "", imageURL:"", footerIconURL:"", thumbnailURL:"", authorName: "", authorIcon: "", description: "", fields: []},
+            data: {title: "", embedColor: "#FFFFFF", footerContent: "", footerURL: "", imageURL:"", footerIconURL:"", thumbnailURL:"", authorName: "", authorIcon: "", description: "", fields: []},
                 UI: {
                 text: "Embed",
                 sepbar: "",
@@ -164,6 +161,8 @@ module.exports = {
                 input2: "footerContent", 
                 btext3: "Footer Icon URL",
                 input3: "footerIconURL",
+                btext3_: "Footer URL",
+                input3_: "footerURL",
                 sepbar2: "", 
                 btext4: "Author Name",
                 input4: "authorName",
@@ -265,7 +264,7 @@ module.exports = {
                                 type: ComponentTypes.BUTTON,
                                 label: varTools.transf(button.data.label, bridge.variables),
                                 style: style,
-                                disabled: button.data.button == '✓',
+                                disabled: button.data.disabled == true,
                                 customID: lastOptionNo
                             })
                             componentConnections[lastOptionNo] = button.data.actions;
@@ -296,19 +295,19 @@ module.exports = {
                         menuOptions.push({
                             label: varTools.transf(option.data.label, bridge.variables) || "-",
                             value: `${lastOptionNo}`,
-                            disabled: option.data.button == '✓'
+                            disabled: option.data.disabled == true
                         })
                     }
                     endComponents.push({
                         type: ComponentTypes.ACTION_ROW,
-                        disabled: components.data.button == '✓',
+                        disabled: components.data.disabled == true,
                         components: [{
                             type: ComponentTypes.STRING_SELECT,
                             customID: `${lastComponentNo}`,
                             minValues: components.data.minSelectable,
                             maxValues: components.data.maxSelectable,
                             placeholder: varTools.transf(components.data.placeholder, bridge.variables),
-                            disabled: components.data.button == '✓',
+                            disabled: components.data.disabled == true,
                             options: menuOptions
                         }]
                     })

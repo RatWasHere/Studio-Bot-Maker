@@ -1,4 +1,5 @@
 let kindOf;
+let lastActionContainer;
 function changeAction() {
     if (action.type == 'action') {
         if (action.trigger == 'textCommand' | action.trigger == 'messageContent') {
@@ -406,6 +407,30 @@ function Bselect(buttonElement) {
     action.data.button = buttonElement.innerText
 }
 
+let isEditingActions = false;
+
+function restoreActions() {
+    isEditingActions = false;
+    for (let UIelement in actionUI) {
+        if (UIelement.startsWith('actions')) {
+            let targetField = document.getElementById(actionUI[UIelement])
+            let targetAdd = document.getElementById(actionUI[UIelement] + 'AddButton')
+
+            targetField.style.filter = 'blur(22px)'
+            targetField.style.height = '40vh'
+
+            setTimeout(() => {
+                refreshActions(actionUI[UIelement])
+            }, 150)
+            
+            setTimeout(() => {
+                targetField.style.filter = ''
+                targetAdd.style.scale = '1';
+            }, 200)
+        }
+    }
+}
+
 function addObjectToCustomMenu(element) {
     if (actionUI[element].max > action.data[actionUI[element].storeAs].length) {
 
@@ -760,3 +785,41 @@ function validateInput(event) {
       event.preventDefault(); // Prevent default middle-click scroll behavior
     }
   });
+
+function pasteCopiedIn(at, index) {
+    action.data[at].push(copiedAction)
+
+    if (index != undefined) {
+        console.log(index)
+        action.data[at] = moveArrayElement(action.data[at], action.data[at].length - 1, index + 1)
+    }
+    refreshActions(at)
+}
+
+
+function toggleSwitch(storedAs) {
+    let toggle = document.getElementById(storedAs);
+    toggle.style.height = '3vh'
+    toggle.style.marginTop = '0vh'
+    if (action.data[storedAs] == false) {
+        action.data[storedAs] = true;
+        toggle.style.width = '10vh'
+
+        setTimeout(() => {
+        toggle.style.marginLeft = '5vh'
+        toggle.style.width = '5vh'  
+        }, 150);
+    } else {
+        action.data[storedAs] = false;
+        toggle.style.width = '10vh'
+        toggle.style.marginLeft = '0vh'
+
+        setTimeout(() => {
+        toggle.style.width = '5vh'  
+        }, 150);
+    }
+    setTimeout(() => {
+        toggle.style.height = '5vh'
+        toggle.style.marginTop = '-1vh'   
+    }, 150);
+}

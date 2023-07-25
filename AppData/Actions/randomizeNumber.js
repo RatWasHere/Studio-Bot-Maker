@@ -1,15 +1,15 @@
 module.exports = {
     data: {"firstNumber":"", "secondNumber":"", "storeAs":"", "name": "Randomize Number"},
     UI: {"compatibleWith": ["Any"], "text": "Randomize Number","sepbar":"", 
-    "btext":"From",
-    "input*":"firstNumber",
-    "sepbar0":"E",
-    "btext0":"To",
-    "input0*":"secondNumber",
+    "btext":"Minimum",
+    "input custom number <min>-99999999</min> <max>99999999</max>*":"firstNumber",
+    "sepbar0":"",
+    "btext0":"Maximum",
+    "input custom number <min>-99999999</min> <max>99999999</max>":"secondNumber",
     "sepbar1":"noice, 69!",
     "btext1":"Store As",
     "input!":"storeAs",
-    preview: "firstNumber", previewName: "Max Value"},
+    preview: "secondNumber", previewName: "Max Value"},
     run(values, message, uID, fs, client, runner, bridge)  {
         let varTools = require(`../Toolkit/variableTools.js`)
 

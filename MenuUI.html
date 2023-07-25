@@ -39,6 +39,48 @@
             save()
             closeWindow()
         }
+        if (event.key.toLowerCase() == 'v' && event.ctrlKey == true) {
+            if (lastActionContainer && copiedAction) {
+                let targetField = document.getElementById(actionUI[lastActionContainer])
+                if (targetField.style.height == '10vh') return;
+                event.preventDefault()
+                document.activeElement.blur()
+                action.data[actionUI[lastActionContainer]].push(copiedAction)
+                refreshActions(actionUI[lastActionContainer])
+            } else if (copiedAction) {
+                event.preventDefault()
+                document.activeElement.blur()
+                for (let UIelement in actionUI) {
+                    if (UIelement.startsWith('actions')) {
+                        let targetField = document.getElementById(actionUI[UIelement])
+                        if (targetField.style.height == '10vh') return;
+                        let targetAdd = document.getElementById(actionUI[UIelement] + 'AddButton')
+                        targetAdd.style.scale = '0';
+
+                        targetField.style.filter = 'blur(22px)'
+                        targetField.style.height = '10vh'
+
+                        setTimeout(() => {
+                        targetField.innerHTML = `
+                        <div class="flexbox" style="width: 100%; height: 100%;">
+                            <div class="barbuttontexta" style="width: 100%;">Pasting <span style="opacity: 50%;">${copiedAction.name}</span></div>
+                        <div class="barbuttonshift borderright" onclick="action.data[actionUI[lastActionContainer]].push(copiedAction); restoreActions()" style="margin: auto; margin-right: 0.3vw;">
+                            <div class="barbuttontexta">Paste Here</div>    
+                        </div>
+                        <div class="barbuttonshift borderleft" onclick="restoreActions()" style="margin: auto; margin-left: 0vw;">
+                            <div class="barbuttontexta">Nevermind</div>    
+                        </div>
+                        </div>
+                        `
+                        }, 150)
+                        
+                        setTimeout(() => {
+                            targetField.style.filter = ''
+                        }, 200)
+                    }
+                }
+            }
+        }
     }
     const { ipcRenderer } = require('electron');
 
@@ -49,17 +91,18 @@
     let actionUI;
     let awaitingStoreFrom;
     let variables;
+    let copiedAction;
     let isActionMenu = true;
     ipcRenderer.on('data', (event, data, windowTime) => {
         actionType = data.actionType;
         variables = data.variables;
+        copiedAction = data.copiedAction;
         console.log(data)
         time = windowTime;
         document.getElementById('everything_container').style.scale = '1'
         document.getElementById('everything_container').style.filter = 'blur(0px)'
-        actions = data
-        action = data
-        
+        actions = data;
+        action = data;
         actionFile = data;
         for (let dataElement in actionFile.data) {
             if (action.data[dataElement] == undefined) {
@@ -79,8 +122,9 @@
     setTimeout(() => {
         ipcRenderer.send(`${time}`, {
         event: 'customReceived',
-        data: savedData
-    });
+        data: savedData,
+        copiedAction: copiedAction
+        });
     }, 450)
     }
 
@@ -93,7 +137,7 @@
                 action.data.ExtraData = document.getElementById('ExtraData').innerText
             }
         } else {
-            if (i.startsWith('text') || i.startsWith('menuBar') || i == 'preview' || i.startsWith('actions') || i.startsWith('customMenu') ||i == 'previewName' || i.startsWith('sepbar') || i.startsWith('btext') || i.startsWith('invisible')) {} else {
+            if (i.startsWith('text') || i.startsWith('toggle') || i.startsWith('menuBar') || i == 'preview' || i.startsWith('actions') || i.startsWith('customMenu') ||i == 'previewName' || i.startsWith('sepbar') || i.startsWith('btext') || i.startsWith('invisible')) {} else {
                 try {
                     if (i.split(' ').includes('custom')) {
                         action.data[element] = document.getElementById(element).value;

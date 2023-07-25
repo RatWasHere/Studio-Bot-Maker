@@ -1,3 +1,5 @@
+# [Official Site](https://ratwashere.github.io/Studio-Bot-Maker/)
+
 # Studio Bot Maker
 Time to ditch Discord Bot Maker and Bot Studio For Discord - and whatever other app you're using, move on to something modern, something fluid and fast! Are you ready to move on from the old and the ugly to something more lively, something with personality and great fluidity? Just hit [Download](https://github.com/RatWasHere/Studio-Bot-Maker/releases/latest)!
 

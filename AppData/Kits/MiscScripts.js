@@ -151,6 +151,12 @@ window.oncontextmenu = function (event) {
     showCustomMenu(event.clientX, event.clientY);
     return false;
 }
+
+function copyAction(id) {
+    console.log(id)
+    copiedAction = botData.commands[lastObj].actions[id]
+}
+
 function showCustomMenu(x, y) {
     if (!menu) {
         menu = document.createElement('div');
@@ -167,6 +173,8 @@ function showCustomMenu(x, y) {
         menu.style.overflowY = 'auto';
         menu.style.scale = '0'
       }
+
+     
       
       // Calculate the maximum allowed coordinates based on window dimensions
       const windowWidth = window.innerWidth;
@@ -193,11 +201,33 @@ function showCustomMenu(x, y) {
       menu.style.scale = `${adjustedScale}`
         let variableType = 2;
         menu.innerHTML = `
-        <div class="flexbox" style="width: 100%; margin-top: 2vh;">
-        <div class="dimension hoverablez" style="width: 95%; padding-top: 4px; padding-bottom: 4px; margin: auto; margin-bottom: 4px; margin-top: 4px; border-radius: 4px;"><div class="barbuttontexta textToLeft" style="margin-left: 1vw;">Under Construction!</div></div>
-        </div>
+        <div class="sepbars noanims"></div>
         `
+    if (lastHovered) {
+    if (lastHovered.id.startsWith('Group')) {
+        menu.innerHTML += `
+        <div class="dimension hoverablez" style="width: 95%; padding-top: 4px; padding-bottom: 4px; margin: auto; margin-bottom: 4px; margin-top: 4px; border-radius: 4px;"><div class="barbuttontexta textToLeft" style="margin-left: 1vw;">Edit Data</div></div>
+        <div class="dimension hoverablez" style="width: 95%; padding-top: 4px; padding-bottom: 4px; margin: auto; margin-bottom: 4px; margin-top: 4px; border-radius: 4px;"><div class="barbuttontexta textToLeft" style="margin-left: 1vw;">Edit Actions</div></div>
+        <div class="dimension hoverablez" style="width: 95%; padding-top: 4px; padding-bottom: 4px; margin: auto; margin-bottom: 4px; margin-top: 4px; border-radius: 4px;"><div class="barbuttontexta textToLeft" style="margin-left: 1vw;">Duplicate</div></div>
+        `
+    }
+    if (lastHovered.id.startsWith('Action')) {
+        menu.innerHTML += `
+        <div class="dimension hoverablez" style="width: 95%; padding-top: 4px; padding-bottom: 4px; margin: auto; margin-bottom: 4px; margin-top: 4px; border-radius: 4px;"><div class="barbuttontexta textToLeft" style="margin-left: 1vw;">Edit Data</div></div>
+        <div class="dimension hoverablez" onmousedown="copyAction(${lastHovered.id.split('Action')[1]})" style="width: 95%; padding-top: 4px; padding-bottom: 4px; margin: auto; margin-bottom: 4px; margin-top: 4px; border-radius: 4px;"><div class="barbuttontexta textToLeft" style="margin-left: 1vw;">Copy</div></div>
+        <div class="dimension hoverablez" onmousedown="pasteActionTo(${lastHovered.id.split('Action')[1]})" style="width: 95%; padding-top: 4px; padding-bottom: 4px; margin: auto; margin-bottom: 4px; margin-top: 4px; border-radius: 4px;"><div class="barbuttontexta textToLeft" style="margin-left: 1vw;">Paste</div></div>
+        `
+    }
+    }
+
 }
+
+    function pasteActionTo(index) {
+        botData.commands[lastObj].actions.push(copiedAction)
+        botData.commands[lastObj].actions = moveArrayElement(botData.commands[lastObj].actions, botData.commands[lastObj].actions.length - 1, parseFloat(index) + 1)
+        wast()
+        refreshActions()
+    }
 
   window.oncontextmenu = function (event) {
     showCustomMenu(event.clientX, event.clientY);
@@ -209,8 +239,8 @@ function showCustomMenu(x, y) {
       event.preventDefault(); // Prevent default middle-click scroll behavior
     }
   });
-  document.addEventListener('click', function(event) {
-    if (menu && !menu.contains(event.target)) {
+  window.addEventListener('click', function(event) {
+    if (menu) {
         menu.style.scale = '0'
         setTimeout(() => {
             menu.remove();
