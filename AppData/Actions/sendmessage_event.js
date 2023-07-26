@@ -1,6 +1,6 @@
 module.exports = {
     data: {"messageContent": "", "storeAs":"", "sendTo":"Channel ID*", "to": "", "actionRows":[], "name": "Send Message", "ExtraData": "", "sendTo":""},
-    UI: {"compatibleWith": ["Event"], "text": "Send Message", "sepbar": "",
+    UI: {"compatibleWith": ["Text", "Slash"], "text": "Send Message", "sepbar": "",
     "btext": "Message Content", "largeInput": "messageContent",      
     "sepbar0":"",
     "customMenu": {
@@ -14,7 +14,7 @@ module.exports = {
             buttons: {
                 name: "Button Row",
                 data: {
-                    stopAwaitingAfter: "5",
+                    stopAwaitingAfter: "60",
                     buttons: []
                 },
                 UI: {
@@ -36,7 +36,7 @@ module.exports = {
                         UItypes: {
                             "normal": {
                                 name: "Button",
-                                data: {label: "Button", color: "Default", actions: {}, button: "✕"},
+                                data: {label: "Button", color: "Default", actions: {}, disabled: false},
                                 UI: {
                                 text: "Button",
                                 sepbar: "",
@@ -46,8 +46,7 @@ module.exports = {
                                 btext0: "Button Style",
                                 menuBar: {choices: ["Default", "Success", "Danger", "Neutral"], storeAs: "color"},
                                 sepbar1:"",
-                                btext1: "Disabled?",
-                                ButtonBar: {buttons: ["✓", "✕"]},
+                                toggle: {name: "Disabled", storeAs: "disabled"},
                                 sepbar2: "",
                                 btext2: "Once Clicked, Run",
                                 actions: "actions"
@@ -64,9 +63,6 @@ module.exports = {
                                 sepbar0: "",
                                 btext0: "Button Link",
                                 input0: "link",
-                                sepbar1: "",
-                                btext1: "Once Clicked, Run",
-                                actions: "actions"
                                 }
                             }
                         },
@@ -82,7 +78,7 @@ module.exports = {
             },
             selectMenu: {
                 name: "Select Menu",
-                data: {"await": "60", options: [], button: "✕", maxSelectable: 1, minSelectable: 1, storeInteractionAs:"", placeholder: ""},
+                data: {"await": "60", options: [], button: "✕", maxSelectable: 1, minSelectable: 1, storeInteractionAs:"", placeholder: "", disabled: false},
                 UI: {
                     text: "Select Menu",
                     sepbar: "",
@@ -106,7 +102,7 @@ module.exports = {
                         UItypes: {
                             selectMenu: {
                                 name: "Select Menu Option",
-                                data: {"actions": {}, label: "", button: "✕"},
+                                data: {"actions": {}, label: ""},
                                 UI: {
                                     text: "Select Menu Option",
                                     sepbar: "",
@@ -115,17 +111,13 @@ module.exports = {
                                     sepbar0: "",
                                     btext0: "If selected, Run:",
                                     actions: "actions",
-                                    sepbar1: "",
-                                    btext1: "Disabled?",
-                                    ButtonBar: {buttons: ["✓", "✕"]},
                                 }
                             }
                         },
                         storeAs: "options"
                     },
                     sepbar3: "",
-                    btext5: "Disabled?",
-                    ButtonBar: {buttons: ["✓", "✕"]},
+                    toggle: {name: "Disabled", storeAs: "disabled"},
                     sepbar5: "",
                     btext6: "Placeholder",
                     input1: "placeholder",
@@ -265,7 +257,7 @@ module.exports = {
                                 type: ComponentTypes.BUTTON,
                                 label: varTools.transf(button.data.label, bridge.variables),
                                 style: style,
-                                disabled: button.data.button == '✓',
+                                disabled: button.data.disabled == true,
                                 customID: lastOptionNo
                             })
                             componentConnections[lastOptionNo] = button.data.actions;
@@ -274,7 +266,7 @@ module.exports = {
                                 type: ComponentTypes.BUTTON,
                                 label: varTools.transf(button.data.label, bridge.variables),
                                 style: ButtonStyles.LINK,
-                                link: varTools.transf(button.data.link, bridge.variables),
+                                url: varTools.transf(button.data.link, bridge.variables),
                                 customID: lastOptionNo
                             })
                         }
@@ -295,20 +287,19 @@ module.exports = {
                         componentConnections[`${lastOptionNo}`] = option.data.actions;
                         menuOptions.push({
                             label: varTools.transf(option.data.label, bridge.variables) || "-",
-                            value: `${lastOptionNo}`,
-                            disabled: option.data.button == '✓'
+                            value: `${lastOptionNo}`
                         })
                     }
                     endComponents.push({
                         type: ComponentTypes.ACTION_ROW,
-                        disabled: components.data.button == '✓',
+                        disabled: components.data.disabled == true,
                         components: [{
                             type: ComponentTypes.STRING_SELECT,
                             customID: `${lastComponentNo}`,
                             minValues: components.data.minSelectable,
                             maxValues: components.data.maxSelectable,
                             placeholder: varTools.transf(components.data.placeholder, bridge.variables),
-                            disabled: components.data.button == '✓',
+                            disabled: components.data.disabled == true,
                             options: menuOptions
                         }]
                     })
@@ -396,7 +387,7 @@ module.exports = {
         }
         if (values.sendTo == 'User ID*') {
             const DMchannel = await client.users.get(varTools.transf(values.to, bridge.variables)).createDM()
-            channel = await DMchannel
+            channel = DMchannel
         }
         channel.createMessage({content: varTools.transf(values.messageContent, bridge.variables), embeds: embeds , components: endComponents}).then(msg => {
             if (values.storeAs != "") {

@@ -545,3 +545,8 @@ function newActionEditorWindow(data) {
       } catch (err) {}
     })
   })
+
+  ipcMain.on('restart', (event, confirm) => {
+    if (confirm != true) return
+    app.exit();
+  })

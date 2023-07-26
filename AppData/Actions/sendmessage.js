@@ -63,9 +63,6 @@ module.exports = {
                                 sepbar0: "",
                                 btext0: "Button Link",
                                 input0: "link",
-                                sepbar1: "",
-                                btext1: "Once Clicked, Run",
-                                actions: "actions"
                                 }
                             }
                         },
@@ -105,7 +102,7 @@ module.exports = {
                         UItypes: {
                             selectMenu: {
                                 name: "Select Menu Option",
-                                data: {"actions": {}, label: "", disabled: false},
+                                data: {"actions": {}, label: ""},
                                 UI: {
                                     text: "Select Menu Option",
                                     sepbar: "",
@@ -114,8 +111,6 @@ module.exports = {
                                     sepbar0: "",
                                     btext0: "If selected, Run:",
                                     actions: "actions",
-                                    sepbar1: "",
-                                    toggle: {name: "Disabled", storeAs: "disabled"}
                                 }
                             }
                         },
@@ -147,7 +142,7 @@ module.exports = {
         UItypes: {
             embed: {
             name: "Embed",
-            data: {title: "", embedColor: "#FFFFFF", footerContent: "", footerURL: "", imageURL:"", footerIconURL:"", thumbnailURL:"", authorName: "", authorIcon: "", description: "", fields: []},
+            data: {title: "", embedColor: "#FFFFFF", footerContent: "", imageURL:"", footerIconURL:"", thumbnailURL:"", authorName: "", authorIcon: "", description: "", fields: []},
                 UI: {
                 text: "Embed",
                 sepbar: "",
@@ -161,8 +156,6 @@ module.exports = {
                 input2: "footerContent", 
                 btext3: "Footer Icon URL",
                 input3: "footerIconURL",
-                btext3_: "Footer URL",
-                input3_: "footerURL",
                 sepbar2: "", 
                 btext4: "Author Name",
                 input4: "authorName",
@@ -273,7 +266,7 @@ module.exports = {
                                 type: ComponentTypes.BUTTON,
                                 label: varTools.transf(button.data.label, bridge.variables),
                                 style: ButtonStyles.LINK,
-                                link: varTools.transf(button.data.link, bridge.variables),
+                                url: varTools.transf(button.data.link, bridge.variables),
                                 customID: lastOptionNo
                             })
                         }
@@ -294,8 +287,7 @@ module.exports = {
                         componentConnections[`${lastOptionNo}`] = option.data.actions;
                         menuOptions.push({
                             label: varTools.transf(option.data.label, bridge.variables) || "-",
-                            value: `${lastOptionNo}`,
-                            disabled: option.data.disabled == true
+                            value: `${lastOptionNo}`
                         })
                     }
                     endComponents.push({
