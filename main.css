@@ -1,2926 +1,2936 @@
-
 @keyframes fadeoutspfload {
-    0% {
-       opacity: 0%;
-       filter: blur(50px)
-    }
-    10% {
-       opacity: 100%;
-       filter: blur(0px)
-   
-    }
-    90% {
-       opacity: 100%;
-       filter: blur(0px)
-   
-    }
-    100% {
-       opacity: 0%;
-       filter: blur(50px)
-   
-    }
-   }
-   @keyframes moveload {
-       from {
-           width: var(--previous-width)
-       } 
-       to {
-           width: var(--new-width)
-       }
-   }
-   @keyframes moveFrom {
-       0% {
-       opacity: 100%;
-       filter: blur(0px);
-       }
-       50% {
-       filter: blur(75px);
-       opacity: 70%;
-       }
-       100% {
-       opacity: 100%;
-       filter: blur(0px);
-       }
-       }
-       @keyframes ringify {
-           0% {
-               transform: rotate3d(0, 1, 0, 0deg);
-           }
-           100% {
-               transform: rotate3d(0, 1, 0, 360deg);
-           }
-       }
-       @keyframes ringifygo {
-           0% {
-               opacity: 0%;
-           }
-           50% {
-               opacity: 25%;
-           }
-           100% {
-               opacity: 0%;
-           }
-       }
-       @keyframes blurify {
-           0% {
-               filter: blur(0px);
-           }
-           100% {
-               filter: blur(30px);
-           }
-       }
-       @keyframes rotatefast {
-           0% {
-               transform: rotate(0deg);
-           }
-           100% {
-               transform: rotate(1440deg);
-           }
-       }
-   @keyframes degb {
-       0% {
-           width: 100%;
-           height: 100%;
-           margin-top: 0%;
-           filter: blur(0px);
-       }
-       30% {
-           opacity: 0%;
-       }
-       50% {
-           width: 10%;
-           margin-top: 25%;
-           border-radius: 1000px;
-           filter: blur(10px);
-           height: 10%;
-       }
-       70% {
-           opacity: 0%;
-           width: 100%;
-           border-radius: 100px;
-       }
-       100% {
-           margin-top: 0%;
-           width: 100%;
-           height: 100%;
-           filter: blur(0px);
-   
-       }
-   }
-   @keyframes fadeout {
-       0% {
-           opacity: 100%;
-       }
-       100% {
-           opacity: 0%;
-       }
-   }
-   @keyframes glowTwice {
-       0% {
-           background-color: #FFFFFF10
-       }
-       25% {
-           background-color: #FFFFFF40;
-       }
-       50% {
-           background-color: #FFFFFF10
-       }
-       70% {
-           background-color: #FFFFFF40
-       }
-       100% {
-           background-color: #FFFFFF10
-       }
-   }
-   @keyframes selectbarnmt2 {
-       0% {
-           opacity: 100%;
-           z-index: 0;
-           margin-top: -6px;
-           margin-bottom: 0px;
-           height: 21px;
-           padding-top: 4px;
-           padding-bottom: 4px;
-           overflow: auto;
-       }
-       100% {
-           z-index: 0;
-           padding-top: 0px;
-           padding-bottom: 0px;
-           height: 0px;
-           overflow: auto;
-           margin-bottom: 0px;
-       }
-   }
-   @keyframes selectbarnmt {
-       0% {
-           opacity: 0%;
-           z-index: 0;
-           margin-top: -21px;
-       }
-       100% {
-           opacity: 100%;
-           z-index: 0;
-           margin-top: -6px;
-       }
-   }
-   @keyframes popin {
-       0% {
-           width: 0px;
-       }
-       100% {
-           width: 6px;
-       }
-   }
-   @keyframes kinput {
-       0% {
-           opacity: 0%;
-       }
-       100% {
-           opacity: 100%;
-       }
-   }
-   @keyframes inittl {
-       0% {
-           opacity: 0%;
-           height: 0px;
-           margin-top: 0px;
-           margin-bottom: 0px;
-           filter: blur(50px)
-       }
-       50% {
-           filter: blur(50px);
-           height: 31px;
-           opacity: 100%;
-           margin-top: 5px;
-           margin-bottom: 5px;
-       }
-       100% {
-           opacity: 100%;
-           margin-top: 0px;
-           margin-bottom: 0px;
-           filter: blur(0px);
-       }
-   }
-   @keyframes kinputs {
-       0% {
-           opacity: 0%;
-           height: 10%;
-       }
-       30% {
-           opacity: 0%;
-           height: 10%;
-       }
-       100% {
-           opacity: 100%;
-           height: 40%;
-       }
-   }
-   @keyframes rvt {
-       0% {
-           filter: blur(0px);
-           margin-bottom: 0px;
-           opacity: 100%;
-       }
-       100% {
-           opacity: 0%;
-           filter: blur(0px);
-   }
-   }
-   @keyframes revert2 {
-       0% {
-           opacity: 0%;
-           background-color: #FFFFFF50;
-           filter: blur(40px);
-           height: 41px;
-       }
-       100% {
-           filter: blur(0px);
-           opacity: 100%;
-           background-color: #FFFFFF10;
-   
-       }
-   }
-   @keyframes separate {
-      0% {
-           margin-top: 20px;
-           opacity: 0%;
-           margin-bottom: 20px;
-       }
-       100% {
-           margin-top: 8px;
-           opacity: 100%;
-   
-           margin-bottom: 8px;
-       }
-   }
-   @keyframes appearAct {
-       0% {
-           opacity: 100%;
-           width: 95%
-       }
-       50% {
-           opacity: 50%;
-           width: 85%;
-       }
-       100% {
-           opacity: 100%;
-           width: 95%
-       }
-   }
-       @keyframes appearfade {
-           0% {
-               opacity: 0%;
-               margin-top: 22px;
-           }
-           100% {
-               margin-top: 0px;
-               opacity: 100%;
-           }
-       }
-       @keyframes appearfadenmt {
-           0% {
-               opacity: 0%;
-           }
-           100% {
-               opacity: 100%;
-           }
-       }
-       @keyframes appearfaden {
-           0% {
-               opacity: 0%;
-               margin-bottom:15px; 
-           }
-           100% {
-               margin-bottom: 5px;
-               opacity: 100%;
-           }
-       }
-       @keyframes shrink {
-           from {
-             height: var(--inner-height);
-           }
-           to {
-             height: 23px;
-           }
-         }
-         @keyframes expand {
-            from {
-              height: 0px;
-            }
-            to {
-              height: var(--inner-height);
-            }
-          }
-       @keyframes apfd {
-           0% {
-           height: auto;
-             min-height: 0px !important;
-             overflow-y: auto;
-             height: calc(inherit + 1px);
-             position: relative;
-             overflow: auto;
-             padding-top: 4px;
-             max-height: 10000000000000px;
-             padding-bottom: 4px;
-             font-size: 20px;
-             margin-bottom: 0px;
-           }
-           100% {
-             font-size: 20px;
-             max-height: 0px;
-             height: 1px !important; 
-             overflow: auto;
-             height: auto;
-   
-             overflow-y: auto;
-             min-height: 0px !important;
-             padding-bottom: 0px;
-           }
-         }
-       @keyframes apfdfd {
-           0% {
-               opacity: 100%;
-               min-height: 0px;
-               filter: blur(0px);
-               overflow-y: auto;
-               margin-top: -21px;
-   
-           }
-           100% {
-               height: 0px; overflow-y: auto;
-               filter: blur(20px);
-               opacity: 0%;
-               min-height: 0px;
-               margin-top: -21px;
-           }
-       }
-   @keyframes expandFrom {
-       0% {
-           background-color: #ffffff10;
-           backdrop-filter: blur(7px);
-           border-radius: 400px;
-           height: 1.9vh;
-           position: relative;
-           text-align: center;
-           color: #00000040;
-           margin-left: auto;
-           margin-right: auto;
-           width: 96.5vw;
-           overflow-block: hidden;
-           margin-top: 0%;
-   }
-   
-   40% {
-       height: 1.9vh;
-       border: #00000030 solid 0px;
-       margin-top: 0vh;
-   }
-   
-   65% {
-       border-radius: 100px;
-   }
-   100% {
-       background-color: #3d3d3d40;
-       height: 30%;
-       backdrop-filter: blur(22px);
-       margin-top: -90vh;
-       width: 40%;
-       border: #00000030 solid 2px;
-       z-index: 50;
-       border-radius: 22px;
-       box-shadow: #00000050 0px 0px 12px;
-       margin-left: auto;
-       margin-right: auto;
-   }
-   }
-   @keyframes expnd {
-       0% {
-           background-color: #3d3d3d40;
-           height: 30%;
-           backdrop-filter: blur(22px);
-           margin-top: -90vh;
-           width: 40%;
-           border: #00000030 solid 2px;
-           z-index: 50;
-           border-radius: 22px;
-           box-shadow: #00000050 0px 0px 12px;
-           margin-left: 30%;
-           margin-right: 30%;
-       }
-       20% {
-           background-color: #3d3d3d40;
-           height: 30%;
-           backdrop-filter: blur(22px);
-           margin-top: -90vh;
-           width: 40%;
-           border: #00000030 solid 2px;
-           z-index: 50;
-           border-radius: 22px;
-           box-shadow: #00000050 0px 0px 12px;
-           margin-left: 30%;
-           margin-right: 30%;
-       }
-       100% {
-           background-color: #3d3d3d40;
-           height: 100vh;
-           backdrop-filter: blur(22px);
-           margin-top: -97.5vh;
-           width: 100vw;
-           margin-left: -1.8vh;
-           border: #00000030 solid 2px;
-           z-index: 50;
-           border-radius: 0px;
-           box-shadow: #00000050 0px 0px 12px;
-       }
-   }
-   @keyframes menuExpand {
-       0% {
-           background-color: #3d3d3d40;
-           height: 95vh;
-           backdrop-filter: blur(22px);
-           margin-top: -95vh;
-           width: 90vw;
-           border: #00000030 solid 2px;
-           z-index: 50;
-           border-radius: 0px;
-           box-shadow: #00000050 0px 0px 12px;
-           margin-left: auto;
-           margin-right: auto;
-           
-   }
-   60% {
-       background-color: #3d3d3d40;
-       height: 30%;
-       backdrop-filter: blur(22px);
-       margin-top: -90vh;
-       width: 40%;
-       border: #00000030 solid 2px;
-       z-index: 50;
-       border-radius: 22px;
-       box-shadow: #00000050 0px 0px 12px;
-       margin-left: auto;
-       margin-right: auto;
-   }
-   
-   100% {
-       background-color: #ffffff10;
-       backdrop-filter: blur(7px);
-       border-radius: 400px;
-       position: relative;
-       text-align: center;
-       color: #00000040;
-       margin-left: auto;
-       margin-right: auto;
-       width: 96.5vw;
-       overflow-block: hidden;
-   } 
-   }
-   @keyframes fromExpand {
-       0% {
-           background-color: #3d3d3d40;
-           height: 30%;
-           backdrop-filter: blur(22px);
-           margin-top: -90vh;
-           width: 40%;
-           box-shadow: #00000050 0px 0px 12px;
-           border: #00000030 solid 2px;
-           z-index: 50;
-           margin-left: 30%;
-           border-radius: 22px;
-           
-   }
-   60% {
-       width: 40%;
-       margin-top: 0vh;
-   
-   }
-   
-   100% {
-       background-color: #ffffff10;
-       backdrop-filter: blur(7px);
-       border-radius: 400px;
-       position: relative;
-       text-align: center;
-       color: #00000040;
-       margin-left: auto;
-       margin-right: auto;
-       width: 96.5vw;
-       overflow-block: hidden;
-   }
-   }
-       @keyframes moveunder {
-       0% {
-       filter: blur(0px)
-       }
-       80% {
-       margin-top: -170vh;
-       filter: blur(80px)
-       }
-       100% {
-       filter: blur(120px)
-       }
-       }
-       @keyframes deleteObject {
-       0% {
-       margin-top: 6px;
-       opacity: 100%;
-       height: 39px;
-       }
-       100% {
-       margin-top: -9px;
-       height: 0px;
-       opacity: 0%;
-       font-size: 0px;
-       }
-       }
-       @keyframes deleteAct {
-       0% {
-       width: 50px;
-       backdrop-filter: blur(40px);
-       position: absolute;
-       margin-left: -2px;
-       
-       }
-       100% {
-       width: 40%;
-       backdrop-filter: blur(100px);
-       z-index: 4;
-       position: absolute;
-       margin-left: -2px;
-       }
-       }
-       @keyframes movefrom {
-       0% {
-       margin-top: -170vh;
-       filter: blur(50px)
-       }
-       70% {
-       margin-top: 15vh;
-       filter: blur(0px);
-       }
-       100% {
-           margin-top: 1.5vh;
-       }
-       }
-       @keyframes expande {
-       0% {
-       filter: blur(0px);
-       opacity: 100%;
-       margin-top: 0px;
-       font-size: 20px;
-       }
-       45% {
-       filter: blur(0px);
-       height: 25px;
-       width: 90%;
-       margin-top: 150px;
-       border-radius: 100px;
-       max-height: 80%;
-       opacity: 70%;
-       font-size: 20px;
-       }
-       75% {
-           filter: blur(20px);
-       }
-       100% {
-       max-height: 80%;
-       height: 50%;
-       opacity: 100%;
-       margin-top: 6px;
-       width: 90%;
-       filter: blur(0px);
-       border-radius: 20px;
-       }
-       }
-       
-       @keyframes inpande {
-       0% {
-       max-height: 80%;
-       height: 50%;
-       margin-top: 6px;
-       width: 90%;
-       filter: blur(0px);
-       opacity: 100%;
-       border-radius: 20px;
-       }
-       25% {
-       max-height: 80%;
-       height: 5%;
-       width: 40%;
-       filter: blur(15px);
-       border-radius: 440px;
-       opacity: 80%;
-   }
-       55% {
-       filter: blur(0px);
-       height: 20px;
-       width: 33%;
-       margin-top: 150px;
-       border-radius: 440px;
-       max-height: 80%;
-       }
-       80% {
-       border-radius: 44px;
-       }
-       100% {
-       filter: blur(0px);
-       border-radius: 50px;
-       opacity: 100%;
-       height: auto;
-       width: 45%;
-       margin-top: 6px;
-       }
-       }
-       @keyframes moveToTheRight {
-           0% {
-               margin-left: 0vw;
-               opacity: 100%;
-               margin-right: 0vw;
-           }
-           100% {
-               margin-right: 100vw;
-               opacity: 0%;
-               margin-left: -100vw
-           }
-       }
-       @keyframes moveToTheLeft {
-           0% {
-               margin-right: 0vw;
-               margin-left: 1vw;
-           }
-           100% {
-               margin-left: 100vw;
-               margin-right: -100vw;
-           }
-       }
-       @keyframes comeToTheLeft {
-           0% {
-               margin-left: 100vw
-           }
-           100% {
-               margin-left: 0vw;
-           }
-       }
-       @keyframes comeToTheLeft1 {
-           0% {
-               margin-left: 100vw;
-               margin-right: -100vw
-           }
-           100% {
-               margin-left: 1vw;
-               margin-right: 0vw;
-           }
-       }
-       @keyframes comeToTheRight1 {
-           0% {
-               margin-left: -100vw;
-               margin-right: 100vw;
-           }
-           100% {
-               margin-right: 0vw;
-               margin-left: 0vw;
-           }
-       }
-       
-       .tile {
-       padding: 12px;
-       width: calc(100% - 24px);
-       border-radius: 12px;
-       background-color: #FFFFFF10;
-       transition: all 0.3s ease;
-       }
-       .tile:hover {
-       box-shadow: #00000060 0px 0px 50px;
-       }
-       .inv {
-       color: #c0c0c095 !important;
-       background-color: #1f1f1f !important;
-       }
-       .tinv {
-       color: #FFFFFF !important;
-       }
-       .halft {
-       opacity: 50% !important;
-       }
-       .actionBar {
-       width: calc(47.3vw - 24px);
-       height: calc(97vh - 24px) !important;
-       background-color: #ffffff16;
-       backdrop-filter: blur(12px);
-       padding-top: -5px;
-       border-radius: 12px;
-       background-image: url(./AppData/grain.png);
-       padding: 12px;
-       display: flex;
-       flex-direction: column;
-       justify-content: auto;
-       overflow-y: auto !important;
-       overflow-x: none !important;
-       margin-bottom: 1vh;
-       }
-       .actBarHalf {
-           width: calc(48.3vw);
-           height: calc(41vh - 12px) !important;
-           background-color: #ffffff16;
-           backdrop-filter: blur(12px);
-           margin-right: 0px;
-           margin-left: 0px;    
-           border-radius: 12px;
-           background-image: url(./AppData/grain.png);
-           padding-top: 6px;
-           padding-bottom: 6px;
-           overflow-y: auto !important;
-           overflow-x: none !important
-       }
-       .actbartop {
-           border-bottom-right-radius: 0px;
-           border-bottom-left-radius: 0px;
-       }
-       .actbartoolbar {
-           width: calc(48.3vw - 8px);
-           height: calc(6vh - 8px) !important;
-           background-image: url(./AppData/grain.png);
-           padding: 4px;
-           border-radius: 12px;
-           background: linear-gradient(80deg, #FFFFFF09 0%, #FFFFFF12 100%)
-       }
-       .actbarbottom {
-           border-top-right-radius: 0px;
-           border-top-left-radius: 0px;
-       }
-       .actBar {
-       width: calc(48.3vw - 24px);
-       height: calc(83vh - 24px) !important;
-       background-color: #ffffff16;
-       backdrop-filter: blur(12px);    
-       border-radius: 12px;
-       background-image: url(./AppData/grain.png);
-       padding: 12px;
-       overflow-y: auto !important;
-       overflow-x: none !important
-       }
-       @keyframes showTooltip {
-           0% {        
-               margin-bottom: -4vh;    
-               opacity: 0%;
-           }
-           100% {
-               opacity: 100%;
-               margin-bottom: 0vh;
-           }
-       }
-       @keyframes hideTooltip {
-           0% {
-               margin-bottom: 0vh;
-               opacity: 100%;
-           }
-           100% {
-               opacity: 0%;
-               margin-bottom: -4vh;
-           }
-       }
-    .any {opacity: 1;}
-    .tooltiptext {
-        position: absolute;
-        width: auto;
-        border-radius: 9px;
-        color: #ffffff70;
-        text-align: center;
-        font-size: 17px;
-        margin-top: 0;
-        opacity: 0%;
-        left: 40%;
-        padding: 9px;
-        background-color: #00000040;
-        right: 40%;
-        transition: all 0.2s cubic-bezier(.47,1.64,.41,.8);
-    }
-    
-    .any:hover .tooltiptext {
-        opacity: 100%;
-        margin: auto;
-        margin-top: 5vh;
-    }
-    
-    
-    
-        
-       @keyframes actionExpand {
-           0% {
-               height: 33px;
-               margin-top: 6px;
-               width: 90%;
-               filter: blur(0px)
-           }
-           30% {
-               filter: blur(30px);
-           }
-           50% {
-               margin-top: 22.5vh;
-               padding-left: 6px;
-           }
-           100% {
-               margin-top: 0px;
-               width: 96%;
-               filter: blur(0px);
-               height: 45.5%;
-               border-radius: 15px;
-               padding-left: 6px;
-           }
-       }
-       @keyframes actionUnexpand {
-           0% {
-               width: 96%;
-               filter: blur(0px);
-               height: 45.5%;
-               border-radius: 15px;
-               padding-left: 6px;
-   
-           }
-           30% {
-               margin-top: 22.5vh;
-               padding-left: 6px;
-           }
-           50% {
-               filter: blur(30px);
-           }
-           100% {
-               height: 22px;
-               filter: blur(0px);
-               width: 90%;
-           }
-       }
-       .action {
-       width: 95%;
-       height: auto;
-       max-height: 50px;
-       font-size: 20px;
-       margin-left: auto;
-       margin-right: auto;
-       display: block;
-       padding: 5px;
-       padding-left: 12px;
-       margin-top: 6px;
-       display: flex;
-       flex-direction: column;
-       background-color: #FFFFFF15;
-       border-radius: 100px;
-       text-align: center;
-       animation-name: appearAct;
-       max-height: 300000000px;
-       animation-duration: 0.5s;
-       transition: background-color  0.1s ease;
-       box-shadow: inset 0 0 2px #FFFFFF10;
-   
-       color: #FFFFFF99;
-       }
-       @keyframes scrollfade {
-        from {
-            opacity: 100%;
-        }
-        to {
-            opacity: 50%
-        }
-       }
-       .coloredAction {
-        width: 95%;
-        height: auto;
-        max-height: 50px;
-        font-size: 20px;
-        margin-left: auto;
-        margin-right: auto;
-        display: block;
-        padding: 5px;
-        padding-left: 12px;
-        margin-top: 6px;
-        display: flex;
-        flex-direction: column;
-        background-color: #FFFFFF15;
-        border-radius: 100px;
-        text-align: center;
-        animation-name: appearAct;
-        max-height: 300000000px;
-        animation-duration: 0.5s;
-        transition: background-color  0.1s ease; 
-        box-shadow: inset 0 0 2px #FFFFFF10;
-    
-        color: #FFFFFF99;
-        }
-       .dimension {
-        box-shadow: inset 0 0 2px #FFFFFF10 !important;
-    }
-       @keyframes giggle {
-        0% {
-            transform: rotate(0deg)
-        }
-        25% {
-            transform: rotate(-2deg)
-        }
-        75% {
-            transform: rotate(2deg)
-        }
-        100% {
-            transform: rotate(0deg)
-        }
-       }
-       @keyframes giggleless {
-        0% {
-            transform: rotate(0deg)
-        }
-        25% {
-            transform: rotate(-0.5deg)
-        }
-        75% {
-            transform: rotate(0.5deg)
-        }
-        100% {
-            transform: rotate(0deg)
-        }
-       }
+  0% {
+    opacity: 0%;
+    filter: blur(50px);
+  }
+  10% {
+    opacity: 100%;
+    filter: blur(0px);
+  }
+  90% {
+    opacity: 100%;
+    filter: blur(0px);
+  }
+  100% {
+    opacity: 0%;
+    filter: blur(50px);
+  }
+}
+@keyframes moveload {
+  from {
+    width: var(--previous-width);
+  }
+  to {
+    width: var(--new-width);
+  }
+}
+@keyframes moveFrom {
+  0% {
+    opacity: 100%;
+    filter: blur(0px);
+  }
+  50% {
+    filter: blur(75px);
+    opacity: 70%;
+  }
+  100% {
+    opacity: 100%;
+    filter: blur(0px);
+  }
+}
+@keyframes ringify {
+  0% {
+    transform: rotate3d(0, 1, 0, 0deg);
+  }
+  100% {
+    transform: rotate3d(0, 1, 0, 360deg);
+  }
+}
+@keyframes ringifygo {
+  0% {
+    opacity: 0%;
+  }
+  50% {
+    opacity: 25%;
+  }
+  100% {
+    opacity: 0%;
+  }
+}
+@keyframes blurify {
+  0% {
+    filter: blur(0px);
+  }
+  100% {
+    filter: blur(30px);
+  }
+}
+@keyframes rotatefast {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(1440deg);
+  }
+}
+@keyframes degb {
+  0% {
+    width: 100%;
+    height: 100%;
+    margin-top: 0%;
+    filter: blur(0px);
+  }
+  30% {
+    opacity: 0%;
+  }
+  50% {
+    width: 10%;
+    margin-top: 25%;
+    border-radius: 1000px;
+    filter: blur(10px);
+    height: 10%;
+  }
+  70% {
+    opacity: 0%;
+    width: 100%;
+    border-radius: 100px;
+  }
+  100% {
+    margin-top: 0%;
+    width: 100%;
+    height: 100%;
+    filter: blur(0px);
+  }
+}
+@keyframes fadeout {
+  0% {
+    opacity: 100%;
+  }
+  100% {
+    opacity: 0%;
+  }
+}
+@keyframes glowTwice {
+  0% {
+    background-color: #ffffff10;
+  }
+  25% {
+    background-color: #ffffff40;
+  }
+  50% {
+    background-color: #ffffff10;
+  }
+  70% {
+    background-color: #ffffff40;
+  }
+  100% {
+    background-color: #ffffff10;
+  }
+}
+@keyframes selectbarnmt2 {
+  0% {
+    opacity: 100%;
+    z-index: 0;
+    margin-top: -6px;
+    margin-bottom: 0px;
+    height: 21px;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    overflow: auto;
+  }
+  100% {
+    z-index: 0;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    height: 0px;
+    overflow: auto;
+    margin-bottom: 0px;
+  }
+}
+@keyframes selectbarnmt {
+  0% {
+    opacity: 0%;
+    z-index: 0;
+    margin-top: -21px;
+  }
+  100% {
+    opacity: 100%;
+    z-index: 0;
+    margin-top: -6px;
+  }
+}
+@keyframes popin {
+  0% {
+    width: 0px;
+  }
+  100% {
+    width: 6px;
+  }
+}
+@keyframes kinput {
+  0% {
+    opacity: 0%;
+  }
+  100% {
+    opacity: 100%;
+  }
+}
+@keyframes inittl {
+  0% {
+    opacity: 0%;
+    height: 0px;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    filter: blur(50px);
+  }
+  50% {
+    filter: blur(50px);
+    height: 31px;
+    opacity: 100%;
+    margin-top: 5px;
+    margin-bottom: 5px;
+  }
+  100% {
+    opacity: 100%;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    filter: blur(0px);
+  }
+}
+@keyframes kinputs {
+  0% {
+    opacity: 0%;
+    height: 10%;
+  }
+  30% {
+    opacity: 0%;
+    height: 10%;
+  }
+  100% {
+    opacity: 100%;
+    height: 40%;
+  }
+}
+@keyframes rvt {
+  0% {
+    filter: blur(0px);
+    margin-bottom: 0px;
+    opacity: 100%;
+  }
+  100% {
+    opacity: 0%;
+    filter: blur(0px);
+  }
+}
+@keyframes revert2 {
+  0% {
+    opacity: 0%;
+    background-color: #ffffff50;
+    filter: blur(40px);
+    height: 41px;
+  }
+  100% {
+    filter: blur(0px);
+    opacity: 100%;
+    background-color: #ffffff10;
+  }
+}
+@keyframes separate {
+  0% {
+    margin-top: 20px;
+    opacity: 0%;
+    margin-bottom: 20px;
+  }
+  100% {
+    margin-top: 8px;
+    opacity: 100%;
 
-       .goofyhovereffect {
-        animation-name: giggle;
-        animation-duration: 0.3s !important;
-        animation-iteration-count: infinite !important;
-       }
-       .goofyhovereffectlite {
-        animation-name: giggleless;
-        animation-duration: 0.25s !important;
-        animation-iteration-count: infinite !important;
-       }
-       .zaction {
-           height: auto;
-           width: 95%;
-           max-height: 50px;
-           font-size: 20px;
-           margin-left: auto;
-           margin-right: auto;
-           display: block;
-           padding: 3px;
-           box-shadow: inset 0 0 2px #FFFFFF10;
-   
-           margin-top: 3px;
-           display: flex;
-           flex-direction: column;
-           background-color: #FFFFFF15;
-           border-radius: 6px;
-           text-align: center;
-           animation-name: appearAct;
-           max-height: 300000000px;
-           animation-duration: 0.5s;
-           transition: background-color  0.1s ease; 
-           color: #FFFFFF99;
-       }
-       .lessbrithb {
-           width: 100%;
-           animation-name: none;
-           background-color: #FFFFFF10;
-       }
-       .lessPadding {
-           padding: 1px !important;
-       }
-       .switchableButton {
-           width: 20%; 
-           transition: background-color 0.3s ease-out;
-           transition: width 0.3s ease, background-color 0.2s ease;    
-           background-color: #FFFFFF15;
-           border-radius: 2px;
-           padding: 8px;
-           box-shadow: inset 0 0 2px #FFFFFF10;
-           animation-name: appearfade;
-           animation-duration: 0.3s;
-           height: 5vh;
-           margin-right: 0.15vw;
-           margin-left: 0.15vw;
-           justify-content: center;
-           align-content: center;
-           cursor: pointer;
-           display: flex;
-           align-items: flex-start;
-       }
-       .switchableButton:hover .barbuttontexta {
-           color: #bebebe;
-       }
-       .switchableButton:hover {
-           background-color: #FFFFFF20;
-       }
-       .fullwidth {
-           width: calc(100% - 2px) !important;
-           border-radius: 0px;
-           margin-top: 0px;
-           padding: 1px !important;
-           border-bottom: #FFFFFF30 dashed 1px;
-       }
-       .fullwidth:hover {
-           background-color: #FFFFFF20;
-       }
-       .hoverable {
-           cursor: pointer;
-           transition: background-color ease 0.14s;
-       }
-       .hoverablez {
-           cursor: pointer;
-           background-color: #FFFFFF10;
-           transition: background-color ease 0.11s;
-       }
-       .hoverablez:hover {
-           background-color: #FFFFFF15;
-       }
-       .hoverablez:active {
-           background-color: #FFFFFF25;
-       }
-       .hoverablex {
-           cursor: pointer;
-           background-color: #FFFFFF15;
-           transition: background-color ease 0.14s;
-       }
-       .hoverablex:hover {
-           background-color: #FFFFFF20;
-       }
-       .hoverablex:active {
-           background-color: #FFFFFF25;
-       }
-       .hoverable:hover {
-           background-color: #FFFFFF20;
-       }
-       .hoverable:active {
-           background-color: #FFFFFF25;
-       }
-       .baction {
-           width: 95%;
-           height: auto;
-           max-height: 50px;
-           font-size: 20px;
-           margin-left: auto;
-           margin-right: auto;
-           display: block;
-           padding: 5px;
-           padding-left: 12px;
-           margin-top: 6px;
-           display: flex;
-           flex-direction: column;
-           background-color: #FFFFFF15;
-           box-shadow: inset 0 0 2px #FFFFFF10;
-   
-           border-radius: 100px;
-           text-align: center;
-           animation-name: appearAct;
-           max-height: 300000000px;
-           animation-duration: 0.5s;
-           color: #FFFFFF99;
-           }
-        
-        .dropdown {
-            animation-name: appearfadenmt;
-            width: calc(95% - 16px);
-            text-align: left;
-            border-radius: 7px;
+    margin-bottom: 8px;
+  }
+}
+@keyframes appearAct {
+  0% {
+    opacity: 100%;
+    width: 95%;
+  }
+  50% {
+    opacity: 50%;
+    width: 85%;
+  }
+  100% {
+    opacity: 100%;
+    width: 95%;
+  }
+}
+@keyframes appearfade {
+  0% {
+    opacity: 0%;
+    margin-top: 22px;
+  }
+  100% {
+    margin-top: 0px;
+    opacity: 100%;
+  }
+}
+@keyframes appearfadenmt {
+  0% {
+    opacity: 0%;
+  }
+  100% {
+    opacity: 100%;
+  }
+}
+@keyframes appearfaden {
+  0% {
+    opacity: 0%;
+    margin-bottom: 15px;
+  }
+  100% {
+    margin-bottom: 5px;
+    opacity: 100%;
+  }
+}
+@keyframes shrink {
+  from {
+    height: var(--inner-height);
+  }
+  to {
+    height: 23px;
+  }
+}
+@keyframes expand {
+  from {
+    height: 0px;
+  }
+  to {
+    height: var(--inner-height);
+  }
+}
+@keyframes apfd {
+  0% {
+    height: auto;
+    min-height: 0px !important;
+    overflow-y: auto;
+    height: calc(inherit + 1px);
+    position: relative;
+    overflow: auto;
+    padding-top: 4px;
+    max-height: 10000000000000px;
+    padding-bottom: 4px;
+    font-size: 20px;
+    margin-bottom: 0px;
+  }
+  100% {
+    font-size: 20px;
+    max-height: 0px;
+    height: 1px !important;
+    overflow: auto;
+    height: auto;
 
-            border-bottom-left-radius: 0px;
-            border-bottom-right-radius: 0px;
+    overflow-y: auto;
+    min-height: 0px !important;
+    padding-bottom: 0px;
+  }
+}
+@keyframes apfdfd {
+  0% {
+    opacity: 100%;
+    min-height: 0px;
+    filter: blur(0px);
+    overflow-y: auto;
+    margin-top: -21px;
+  }
+  100% {
+    height: 0px;
+    overflow-y: auto;
+    filter: blur(20px);
+    opacity: 0%;
+    min-height: 0px;
+    margin-top: -21px;
+  }
+}
+@keyframes expandFrom {
+  0% {
+    background-color: #ffffff10;
+    backdrop-filter: blur(7px);
+    border-radius: 400px;
+    height: 1.9vh;
+    position: relative;
+    text-align: center;
+    color: #00000040;
+    margin-left: auto;
+    margin-right: auto;
+    width: 96.5vw;
+    overflow-block: hidden;
+    margin-top: 0%;
+  }
 
-            border-bottom: solid 2px #FFFFFF40;
+  40% {
+    height: 1.9vh;
+    border: #00000030 solid 0px;
+    margin-top: 0vh;
+  }
 
-            padding-bottom: 3px;
-            padding-top: 3px;
-            padding-right: 0px;
-            padding-left: 16px;
+  65% {
+    border-radius: 100px;
+  }
+  100% {
+    background-color: #3d3d3d40;
+    height: 30%;
+    backdrop-filter: blur(22px);
+    margin-top: -90vh;
+    width: 40%;
+    border: #00000030 solid 2px;
+    z-index: 50;
+    border-radius: 22px;
+    box-shadow: #00000050 0px 0px 12px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+@keyframes expnd {
+  0% {
+    background-color: #3d3d3d40;
+    height: 30%;
+    backdrop-filter: blur(22px);
+    margin-top: -90vh;
+    width: 40%;
+    border: #00000030 solid 2px;
+    z-index: 50;
+    border-radius: 22px;
+    box-shadow: #00000050 0px 0px 12px;
+    margin-left: 30%;
+    margin-right: 30%;
+  }
+  20% {
+    background-color: #3d3d3d40;
+    height: 30%;
+    backdrop-filter: blur(22px);
+    margin-top: -90vh;
+    width: 40%;
+    border: #00000030 solid 2px;
+    z-index: 50;
+    border-radius: 22px;
+    box-shadow: #00000050 0px 0px 12px;
+    margin-left: 30%;
+    margin-right: 30%;
+  }
+  100% {
+    background-color: #3d3d3d40;
+    height: 100vh;
+    backdrop-filter: blur(22px);
+    margin-top: -97.5vh;
+    width: 100vw;
+    margin-left: -1.8vh;
+    border: #00000030 solid 2px;
+    z-index: 50;
+    border-radius: 0px;
+    box-shadow: #00000050 0px 0px 12px;
+  }
+}
+@keyframes menuExpand {
+  0% {
+    background-color: #3d3d3d40;
+    height: 95vh;
+    backdrop-filter: blur(22px);
+    margin-top: -95vh;
+    width: 90vw;
+    border: #00000030 solid 2px;
+    z-index: 50;
+    border-radius: 0px;
+    box-shadow: #00000050 0px 0px 12px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  60% {
+    background-color: #3d3d3d40;
+    height: 30%;
+    backdrop-filter: blur(22px);
+    margin-top: -90vh;
+    width: 40%;
+    border: #00000030 solid 2px;
+    z-index: 50;
+    border-radius: 22px;
+    box-shadow: #00000050 0px 0px 12px;
+    margin-left: auto;
+    margin-right: auto;
+  }
 
-            margin-left: auto;
-            margin-right: auto;
-            margin-bottom: 6px;
-            
-            display: flex;
-            flex-direction: column;
-            
-            max-height: 100vh;
-            
-            font-size: 20px;
-            color: #FFFFFF99;
-            cursor: pointer;
+  100% {
+    background-color: #ffffff10;
+    backdrop-filter: blur(7px);
+    border-radius: 400px;
+    position: relative;
+    text-align: center;
+    color: #00000040;
+    margin-left: auto;
+    margin-right: auto;
+    width: 96.5vw;
+    overflow-block: hidden;
+  }
+}
+@keyframes fromExpand {
+  0% {
+    background-color: #3d3d3d40;
+    height: 30%;
+    backdrop-filter: blur(22px);
+    margin-top: -90vh;
+    width: 40%;
+    box-shadow: #00000050 0px 0px 12px;
+    border: #00000030 solid 2px;
+    z-index: 50;
+    margin-left: 30%;
+    border-radius: 22px;
+  }
+  60% {
+    width: 40%;
+    margin-top: 0vh;
+  }
 
-            box-shadow: inset 0 0 2px #FFFFFF10;
-            background-color: #FFFFFF15;
+  100% {
+    background-color: #ffffff10;
+    backdrop-filter: blur(7px);
+    border-radius: 400px;
+    position: relative;
+    text-align: center;
+    color: #00000040;
+    margin-left: auto;
+    margin-right: auto;
+    width: 96.5vw;
+    overflow-block: hidden;
+  }
+}
+@keyframes moveunder {
+  0% {
+    filter: blur(0px);
+  }
+  80% {
+    margin-top: -170vh;
+    filter: blur(80px);
+  }
+  100% {
+    filter: blur(120px);
+  }
+}
+@keyframes deleteObject {
+  0% {
+    margin-top: 6px;
+    opacity: 100%;
+    height: 39px;
+  }
+  100% {
+    margin-top: -9px;
+    height: 0px;
+    opacity: 0%;
+    font-size: 0px;
+  }
+}
+@keyframes deleteAct {
+  0% {
+    width: 50px;
+    backdrop-filter: blur(40px);
+    position: absolute;
+    margin-left: -2px;
+  }
+  100% {
+    width: 40%;
+    backdrop-filter: blur(100px);
+    z-index: 4;
+    position: absolute;
+    margin-left: -2px;
+  }
+}
+@keyframes movefrom {
+  0% {
+    margin-top: -170vh;
+    filter: blur(50px);
+  }
+  70% {
+    margin-top: 15vh;
+    filter: blur(0px);
+  }
+  100% {
+    margin-top: 1.5vh;
+  }
+}
+@keyframes expande {
+  0% {
+    filter: blur(0px);
+    opacity: 100%;
+    margin-top: 0px;
+    font-size: 20px;
+  }
+  45% {
+    filter: blur(0px);
+    height: 25px;
+    width: 90%;
+    margin-top: 150px;
+    border-radius: 100px;
+    max-height: 80%;
+    opacity: 70%;
+    font-size: 20px;
+  }
+  75% {
+    filter: blur(20px);
+  }
+  100% {
+    max-height: 80%;
+    height: 50%;
+    opacity: 100%;
+    margin-top: 6px;
+    width: 90%;
+    filter: blur(0px);
+    border-radius: 20px;
+  }
+}
 
-            transition: all 0.16s ease;
-        }
+@keyframes inpande {
+  0% {
+    max-height: 80%;
+    height: 50%;
+    margin-top: 6px;
+    width: 90%;
+    filter: blur(0px);
+    opacity: 100%;
+    border-radius: 20px;
+  }
+  25% {
+    max-height: 80%;
+    height: 5%;
+    width: 40%;
+    filter: blur(15px);
+    border-radius: 440px;
+    opacity: 80%;
+  }
+  55% {
+    filter: blur(0px);
+    height: 20px;
+    width: 33%;
+    margin-top: 150px;
+    border-radius: 440px;
+    max-height: 80%;
+  }
+  80% {
+    border-radius: 44px;
+  }
+  100% {
+    filter: blur(0px);
+    border-radius: 50px;
+    opacity: 100%;
+    height: auto;
+    width: 45%;
+    margin-top: 6px;
+  }
+}
+@keyframes moveToTheRight {
+  0% {
+    margin-left: 0vw;
+    opacity: 100%;
+    margin-right: 0vw;
+  }
+  100% {
+    margin-right: 100vw;
+    opacity: 0%;
+    margin-left: -100vw;
+  }
+}
+@keyframes moveToTheLeft {
+  0% {
+    margin-right: 0vw;
+    margin-left: 1vw;
+  }
+  100% {
+    margin-left: 100vw;
+    margin-right: -100vw;
+  }
+}
+@keyframes comeToTheLeft {
+  0% {
+    margin-left: 100vw;
+  }
+  100% {
+    margin-left: 0vw;
+  }
+}
+@keyframes comeToTheLeft1 {
+  0% {
+    margin-left: 100vw;
+    margin-right: -100vw;
+  }
+  100% {
+    margin-left: 1vw;
+    margin-right: 0vw;
+  }
+}
+@keyframes comeToTheRight1 {
+  0% {
+    margin-left: -100vw;
+    margin-right: 100vw;
+  }
+  100% {
+    margin-right: 0vw;
+    margin-left: 0vw;
+  }
+}
 
-        .dropdown:hover {
-            background-color: #FFFFFF18;
-        }
+.tile {
+  padding: 12px;
+  width: calc(100% - 24px);
+  border-radius: 12px;
+  background-color: #ffffff10;
+  transition: all 0.3s ease;
+}
+.tile:hover {
+  box-shadow: #00000060 0px 0px 50px;
+}
+.inv {
+  color: #c0c0c095 !important;
+  background-color: #1f1f1f !important;
+}
+.tinv {
+  color: #ffffff !important;
+}
+.halft {
+  opacity: 50% !important;
+}
+.actionBar {
+  width: calc(47.3vw - 24px);
+  height: calc(97vh - 24px) !important;
+  background-color: #ffffff16;
+  backdrop-filter: blur(12px);
+  padding-top: -5px;
+  border-radius: 12px;
+  background-image: url(./AppData/grain.png);
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  justify-content: auto;
+  overflow-y: auto !important;
+  overflow-x: none !important;
+  margin-bottom: 1vh;
+}
+.actBarHalf {
+  width: calc(48.3vw);
+  height: calc(41vh - 12px) !important;
+  background-color: #ffffff16;
+  backdrop-filter: blur(12px);
+  margin-right: 0px;
+  margin-left: 0px;
+  border-radius: 12px;
+  background-image: url(./AppData/grain.png);
+  padding-top: 6px;
+  padding-bottom: 6px;
+  overflow-y: auto !important;
+  overflow-x: none !important;
+}
+.actbartop {
+  border-bottom-right-radius: 0px;
+  border-bottom-left-radius: 0px;
+}
+.actbartoolbar {
+  width: calc(48.3vw - 8px);
+  height: calc(6vh - 8px) !important;
+  background-image: url(./AppData/grain.png);
+  padding: 4px;
+  border-radius: 12px;
+  background: linear-gradient(80deg, #ffffff09 0%, #ffffff12 100%);
+}
+.actbarbottom {
+  border-top-right-radius: 0px;
+  border-top-left-radius: 0px;
+}
+.actBar {
+  width: calc(48.3vw - 24px);
+  height: calc(83vh - 24px) !important;
+  background-color: #ffffff16;
+  backdrop-filter: blur(12px);
+  border-radius: 12px;
+  background-image: url(./AppData/grain.png);
+  padding: 12px;
+  overflow-y: auto !important;
+  overflow-x: none !important;
+}
+@keyframes showTooltip {
+  0% {
+    margin-bottom: -4vh;
+    opacity: 0%;
+  }
+  100% {
+    opacity: 100%;
+    margin-bottom: 0vh;
+  }
+}
+@keyframes hideTooltip {
+  0% {
+    margin-bottom: 0vh;
+    opacity: 100%;
+  }
+  100% {
+    opacity: 0%;
+    margin-bottom: -4vh;
+  }
+}
+.any {
+  opacity: 1;
+}
+.tooltiptext {
+  position: absolute;
+  width: auto;
+  border-radius: 9px;
+  color: #ffffff70;
+  text-align: center;
+  font-size: 17px;
+  margin-top: 0;
+  opacity: 0%;
+  left: 40%;
+  padding: 9px;
+  background-color: #00000040;
+  right: 40%;
+  transition: all 0.2s cubic-bezier(0.47, 1.64, 0.41, 0.8);
+}
 
-        .menuBar {
-            width: calc(100% - 7.5px);
+.any:hover .tooltiptext {
+  opacity: 100%;
+  margin: auto;
+  margin-top: 5vh;
+}
 
-            font-size: 20px;
-            padding-left: 24px;
-            padding-bottom: 4px;
-            padding-top: 4px;
-            
-            z-index: 4;
-            
-            display: flex;
-            flex-direction: column;
-            
-            margin-left: -16px;
-            margin-top: 0px;
-            margin-bottom: 0px;
-            
-            background-color: #00000023;
-            border-top: solid 2px #FFFFFF40;
-            box-shadow: inset 0 0 2px #FFFFFF10;
+@keyframes actionExpand {
+  0% {
+    height: 33px;
+    margin-top: 6px;
+    width: 90%;
+    filter: blur(0px);
+  }
+  30% {
+    filter: blur(30px);
+  }
+  50% {
+    margin-top: 22.5vh;
+    padding-left: 6px;
+  }
+  100% {
+    margin-top: 0px;
+    width: 96%;
+    filter: blur(0px);
+    height: 45.5%;
+    border-radius: 15px;
+    padding-left: 6px;
+  }
+}
+@keyframes actionUnexpand {
+  0% {
+    width: 96%;
+    filter: blur(0px);
+    height: 45.5%;
+    border-radius: 15px;
+    padding-left: 6px;
+  }
+  30% {
+    margin-top: 22.5vh;
+    padding-left: 6px;
+  }
+  50% {
+    filter: blur(30px);
+  }
+  100% {
+    height: 22px;
+    filter: blur(0px);
+    width: 90%;
+  }
+}
+.action {
+  width: 95%;
+  height: auto;
+  max-height: 50px;
+  font-size: 20px;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+  padding: 5px;
+  padding-left: 12px;
+  margin-top: 6px;
+  display: flex;
+  flex-direction: column;
+  background-color: #ffffff15;
+  border-radius: 100px;
+  text-align: center;
+  animation-name: appearAct;
+  max-height: 300000000px;
+  animation-duration: 0.5s;
+  transition: background-color 0.1s ease;
+  box-shadow: inset 0 0 2px #ffffff10;
 
-            color: #FFFFFF90;
-            text-align: left;
-            overflow: auto;
-            cursor: pointer;
-            
+  color: #ffffff99;
+}
+@keyframes scrollfade {
+  from {
+    opacity: 100%;
+  }
+  to {
+    opacity: 50%;
+  }
+}
+.coloredAction {
+  width: 95%;
+  height: auto;
+  max-height: 50px;
+  font-size: 20px;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+  padding: 5px;
+  padding-left: 12px;
+  margin-top: 6px;
+  display: flex;
+  flex-direction: column;
+  background-color: #ffffff15;
+  border-radius: 100px;
+  text-align: center;
+  animation-name: appearAct;
+  max-height: 300000000px;
+  animation-duration: 0.5s;
+  transition: background-color 0.1s ease;
+  box-shadow: inset 0 0 2px #ffffff10;
 
-            transition: all 0.1s ease;
-        }
-        .menuBar:hover {
-            color: #FFFFFF90;
-            background-color: #FFFFFF05;
-        }
+  color: #ffffff99;
+}
+.dimension {
+  box-shadow: inset 0 0 2px #ffffff10 !important;
+}
+@keyframes giggle {
+  0% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(-2deg);
+  }
+  75% {
+    transform: rotate(2deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
+}
+@keyframes giggleless {
+  0% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(-0.5deg);
+  }
+  75% {
+    transform: rotate(0.5deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
+}
 
-        .selectBar {
-            width: calc(95% - 24px);
-            padding-top: 4px;
-            padding-bottom: 4px;
-            margin-left: auto;
-            margin-right: auto;
-            font-size: 18px;
-            padding-left: 24px;
-            margin-top: -6px;
-            box-shadow: inset 0 0 2px #FFFFFF10;
-        
-            padding-right: -24px;
-            background-color: #FFFFFF10;
-            animation-name: selectbarnmt;
-            animation-duration: 0.5s;
-            border-radius: 12px;
-            cursor: text;
-            color: #FFFFFF90;
-            border-top-left-radius: 0px;
-            border-top-right-radius: 0px;
-            transition: all 0.3s ease;
-        }
-        .selectBar:hover {
-            background-color: #FFFFFF13;
-        }
+.goofyhovereffect {
+  animation-name: giggle;
+  animation-duration: 0.3s !important;
+  animation-iteration-count: infinite !important;
+}
+.goofyhovereffectlite {
+  animation-name: giggleless;
+  animation-duration: 0.25s !important;
+  animation-iteration-count: infinite !important;
+}
+.zaction {
+  height: auto;
+  width: 95%;
+  max-height: 50px;
+  font-size: 20px;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+  padding: 3px;
+  box-shadow: inset 0 0 2px #ffffff10;
 
-           .input {
-            width: calc(95% - 18px);
-            background-color: #FFFFFF10;
-            margin-left: auto;
-            border-radius: 7px;
-            margin-right: auto;
-            margin-bottom: 4px;
-            color: #FFFFFF97;
-            overflow-x: auto; 
-            cursor: text;
-            height: 24px;
-            transition: background-color ease-in 0.3s;
-            font-size: 21px;
-            padding: 2.5px;
-            padding-left: 16px;
-            white-space: nowrap;
-            padding-right: 0px;
-            box-shadow: inset 0 0 2px #FFFFFF10;
-            animation-name: kinput;
-            animation-duration: 1.3s;
-            border-bottom: #FFFFFF25 0px solid;
-         }
-       .daction {
-           width: 95%;
-           height: auto;
-           max-height: 50px;
-           font-size: 20px;
-           margin-left: auto;
-           box-shadow: inset 0 0 2px #FFFFFF10;
-   
-           margin-right: auto;
-           display: block;
-           padding: 5px;
-           margin-top: 6px;
-           display: flex;
-           flex-direction: column;
-           background-color: #00000020;
-           border-radius: 100px;
-           text-align: center;
-           animation-name: appearAct;
-           max-height: 300000000px;
-           animation-duration: 0.5s;
-           color: #FFFFFF99;
-           }
-       .action:hover {
-           background-color: #FFFFFF20 !important;
-       }
-       .action:active {
-           background-color: #FFFFFF25 !important;
-       }
+  margin-top: 3px;
+  display: flex;
+  flex-direction: column;
+  background-color: #ffffff15;
+  border-radius: 6px;
+  text-align: center;
+  animation-name: appearAct;
+  max-height: 300000000px;
+  animation-duration: 0.5s;
+  transition: background-color 0.1s ease;
+  color: #ffffff99;
+}
+.lessbrithb {
+  width: 100%;
+  animation-name: none;
+  background-color: #ffffff10;
+}
+.lessPadding {
+  padding: 1px !important;
+}
+.switchableButton {
+  width: 20%;
+  transition: background-color 0.3s ease-out;
+  transition:
+    width 0.3s ease,
+    background-color 0.2s ease;
+  background-color: #ffffff15;
+  border-radius: 2px;
+  padding: 8px;
+  box-shadow: inset 0 0 2px #ffffff10;
+  animation-name: appearfade;
+  animation-duration: 0.3s;
+  height: 5vh;
+  margin-right: 0.15vw;
+  margin-left: 0.15vw;
+  justify-content: center;
+  align-content: center;
+  cursor: pointer;
+  display: flex;
+  align-items: flex-start;
+}
+.switchableButton:hover .barbuttontexta {
+  color: #bebebe;
+}
+.switchableButton:hover {
+  background-color: #ffffff20;
+}
+.fullwidth {
+  width: calc(100% - 2px) !important;
+  border-radius: 0px;
+  margin-top: 0px;
+  padding: 1px !important;
+  border-bottom: #ffffff30 dashed 1px;
+}
+.fullwidth:hover {
+  background-color: #ffffff20;
+}
+.hoverable {
+  cursor: pointer;
+  transition: background-color ease 0.14s;
+}
+.hoverablez {
+  cursor: pointer;
+  background-color: #ffffff10;
+  transition: background-color ease 0.11s;
+}
+.hoverablez:hover {
+  background-color: #ffffff15;
+}
+.hoverablez:active {
+  background-color: #ffffff25;
+}
+.hoverablex {
+  cursor: pointer;
+  background-color: #ffffff15;
+  transition: background-color ease 0.14s;
+}
+.hoverablex:hover {
+  background-color: #ffffff20;
+}
+.hoverablex:active {
+  background-color: #ffffff25;
+}
+.hoverable:hover {
+  background-color: #ffffff20;
+}
+.hoverable:active {
+  background-color: #ffffff25;
+}
+.baction {
+  width: 95%;
+  height: auto;
+  max-height: 50px;
+  font-size: 20px;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+  padding: 5px;
+  padding-left: 12px;
+  margin-top: 6px;
+  display: flex;
+  flex-direction: column;
+  background-color: #ffffff15;
+  box-shadow: inset 0 0 2px #ffffff10;
 
-   .actionGroupSelectorB {
-       margin-left: auto;
-       margin-right: auto;
-       animation-name: kinput;
-       border-top: 2px #FFFFFF40 solid;
-       width: 90%;
-       padding: 2.5px;
-       padding-left: 24px;
-       padding-right: 0px;
-       background-color: #FFFFFF10;
-       box-shadow: inset 0 0 2px #FFFFFF10;
-       margin-top: 0px;
-       animation-name: createActionGroupSelector;
-       animation-duration: 0.5s;
-       cursor: pointer;
-       border-radius: 0px !important;
-       border-bottom-right-radius: 4px;
-       border-bottom-left-radius: 4px;
-       transition: background-color 0.3s ease;
-   }
-   @keyframes deleteActionGroupSelectors {
-       0% {
-           border-top: 2px #FFFFFF40 solid;
-           height: 21px;
-           padding: 2.5px;
-           padding-left: 24px;
-           opacity: 100%;
-           padding-right: 0px;
-       }
-       100% {
-           border-top: 0px #FFFFFF40 solid;
-           height: 0px;
-           padding: 0px;
-           padding-left: 24px;
-           opacity: 0%;
-           padding-right: 0px;
-       }
-   }
-   @keyframes createActionGroupSelector {
-       0% {
-           border-top: 0px #FFFFFF40 solid;
-           height: 0px;
-           padding: 0px;
-           padding-left: 24px;
-           opacity: 0%;
-           padding-right: 0px;
-       }
-       100% {
-           border-top: 2px #FFFFFF40 solid;
-           height: 21px;
-           padding: 2.5px;
-           padding-left: 24px;
-           opacity: 100%;
-           padding-right: 0px;
-       }
-   }
-   .actionGroupSelectorB:hover {
-       background-color: #FFFFFF15;
-   }
-   .actionGroupSelectorB:active {
-       background-color: #FFFFFF20;
-   }
+  border-radius: 100px;
+  text-align: center;
+  animation-name: appearAct;
+  max-height: 300000000px;
+  animation-duration: 0.5s;
+  color: #ffffff99;
+}
 
-       .noanim {
-           animation-duration: 0s;
-       }
-       .noanims {
-           animation-name: none !important;
-           animation-duration: 0s !important;
-       }
-       .fullsize {
-       margin-left: 1vw;
-       width: 47.3vw;
-       height: calc(39.5vh - 12px);
-       backdrop-filter: blur(12px);
-       border-radius: 12px;
-       padding-right: 0px;
-       padding-left: 0px;
-       display: flex;
-       flex-direction: column;
-       justify-content: auto;
-       overflow-y: auto !important;
-       overflow-x: none !important;
-       margin-bottom: 1vh;
-       }
-       
-       .inputBar {
-       width: 90%;
-       margin-left: auto;
-       margin-right: auto;
-       margin-top: 4px;
-       text-align: center;
-       background-color: #ffffff10;
-       color: #FFFFFF90 !important;
-       font-size: 26px;
-       padding: 4px;
-       cursor: text;
-       border-radius: 12px;
-       transition: background-color ease 0.5s;
-       }
-       @keyframes appearInputField {
-           0% {margin-bottom: 12px; opacity: 0%;}
-           100% {margin-bottom: 4px; opacity: 100%;}
-       }
-       @keyframes startFrominput {
-           0% {
-               border-top: #FFFFFF15 solid 0x;
-               height: 0px;
-               margin-bottom: 0px;
-               font-size: 0px;
-               margin-top: 0px;
-               padding: 0px;
-               opacity: 0%;
-               font-size: 0px;
-           }
-           100% {
-               border-top: #FFFFFF15 solid 4px;
-               height: 24px;
-               margin-bottom: 4px;
-               margin-top: 5px;
-               font-size: 21px;
-               opacity: 100%;
-           }
-       }
-       @keyframes goFromInput {
-           0% {
-               border-top: #FFFFFF15 solid 4px;
-               height: 24px;
-               margin-bottom: 4px;
-               margin-top: 5px;
-               font-size: 21px;
-               opacity: 100%;
-           }
-           100% {
-               border-top: #FFFFFF15 solid 0x;
-               height: 0px;
-               margin-bottom: 0px;
-               font-size: 0px;
-               margin-top: 0px;
-               padding: 0px;
-               opacity: 0%;
-               font-size: 0px;
-           }
-       }
-       @keyframes animatedBar {
-           0% {
-               opacity: 0%;
-               width: 8%;
-               padding: 6px;
-           }
-           10% {
-               opacity: 100%;
-           }
-           100% {
-               padding: 6px;
-               width: 47%;
-           }
-       }
-       
-       @keyframes unanimatedBar {
-           0% {
-               padding: 6px;
-               width: 47%;
-   
-           }
-   
-           80% {
-               opacity: 100%;
-               height: auto;
-               width: 8%;
-           }
-   
-           100% {
-               opacity: 0%;
-               padding: 0px;
-               width: 0%;
-               overflow-y: auto;
-               overflow-x: auto;
-               overflow: auto;
-           }
-       }
-   
-       .unanimatedBar {
-           animation-name: unanimatedBar !important;
-           animation-duration: 0.3s !important;
-       }
-       .animatedBar {
-           animation-name: animatedBar !important;
-           animation-duration: 0.3s !important;
-       }
-       .input {
-       width: calc(95% - 18px);
-       background-color: #FFFFFF10;
-       margin-left: auto;
-       border-radius: 7px;
-       margin-right: auto;
-       margin-bottom: 4px;
-       color: #FFFFFF97;
-       overflow-x: auto; 
-       cursor: text;
-       height: 24px;
-       transition: background-color ease-in 0.3s;
-       font-size: 21px;
-       padding: 2.5px;
-       padding-left: 16px;
-       white-space: nowrap;
-       padding-right: 0px;
-       box-shadow: inset 0 0 2px #FFFFFF10;
-       animation-name: kinput;
-       animation-duration: 1.3s;
-       border-bottom: #FFFFFF25 0px solid;
-    }
-       .actionGroupSelector {
-           margin-left: auto;
-           margin-right: auto;
-           animation-name: kinput;
-           width: calc(95% - 18px);
-           padding: 2.5px;
-           padding-left: 16px;
-           padding-right: 0px;
-           background-color: #FFFFFF10;
-           box-shadow: inset 0 0 2px #FFFFFF10;
-           margin-top: 0px;
-           cursor: pointer;
-           transition: background-color 0.3s ease;
-       }
-       .actionGroupSelector:hover {
-           background-color: #FFFFFF15;
-       }
-       .actionGroupSelector:active {
-           background-color: #FFFFFF20;
-       }
-       
-       .inputB {
-           width: calc(95% - 16px);
-           cursor: text;
-           background-color: #FFFFFF10 !important;
-           margin-left: auto;
-           border-radius: 7px;
-           margin-top: 5px;
-           margin-right: auto;
-           margin-bottom: 4px;
-           color: #FFFFFF97;
-           font-size: 21px;
-           padding: 2.5px;
-           border-top: #FFFFFF15 solid 4px !important;
-           padding-left: 16px;
-           padding-right: 0px;
-           box-shadow: inset 0 0 2px #FFFFFF10;
-           animation-name: kinput;
-           animation-duration: 0.5s;
-           transition: box-shadow ease 0.5s;
-           }
-       .largeInput {
-       width: calc(95% - 24px);
-       height: 40%;
-       margin-left: auto;
-       border-radius: 9px;
-       white-space: pre-line;
-       overflow: auto;
-       margin-right: auto;
-       margin-top: 4px;
-       text-align: left;
-       background-color: #FFFFFF10;
-       cursor: text;
-       color: #b2b2b2;
-       margin-bottom: 6px;
-       font-size: 17px;
-       padding: 12px;
-       box-shadow: inset 0 0 2px #FFFFFF10;
-       transition: box-shadow ease 0.7s;
-       animation-name: kinputs;
-       animation-duration: 0.5s;
-       }
-       .sepbar {
-       background-color: #FFFFFF20 !important;
-       width: 90%;
-       margin-top: 22px;
-       margin-bottom: 22px;
-       margin-left: auto;
-       margin-right: auto;
-       height: 3px;
-   
-       border-radius: 20px;
-       }
-       .input:focus {
-           background-color: #FFFFFF15; 
-       transition: background-color ease-in 0.5s;
-       }
-       .clsr {
-       margin-bottom: -10px;
-       margin-left: 20px !important;
-       }
-       .inputBar:hover {
-            background-color: #FFFFFF13;
-       }
-       .inputBar:focus {
-        background-color: #FFFFFF15;
-   }
-       .text {
-       color: #FFFFFF90;
-       font-size: 20px;
-       margin-left: 13px;
-       margin-bottom: 4px;
-       text-align: left;
-       animation-name: kinput;
-       animation-duration: 1s;
-       }
-       .textse {
-       color: #FFFFFF85;
-       font-size: 15.5px;
-       margin-left: calc(5% - 9px);
-       margin-top: 2.5px;
-       animation-name: kinput;
-       animation-duration: 0.7s;
-       }
-       .sepbars {
-       background-color: #FFFFFF20;
-       width: 95%;
-       margin-top: 8px;
-       margin-bottom: 8px;
-       margin-left: auto;
-       margin-right: auto;
-       height: 2px;
-       border-radius: 20px;
-       animation-name: separate;
-       animation-duration: 0.5s;
-       }
-       .sepbarz {
-        background-color: #FFFFFF20;
-        width: 75%;
-        margin-top: 12px;
-        margin-bottom: 12px;
-        margin-left: auto;
-        margin-right: auto;
-        height: 2px;
-        border-radius: 20px;
-        }
-       .white {
-       color: #949494 !important;
-       }
-       .switchBar {
-       width: calc(48.3vw - 24px);
-       height: calc(12vh - 24px);
-       background-color: #202020;
-       padding: 12px;
-       border-radius: 15px;
-       box-shadow: inset 0 0 2px #FFFFFF10;
-       margin-top: 1.5vh;
-       flex-direction: row;
-       flex-wrap: wrap;
-       justify-content: center;
-       background-color: #ffffff13;
-       backdrop-filter: blur(12px);
-       }
-       .sepLine {
-           width: 1px;
-           background-color: #94949450;
-           height: 50%;
-           margin-top: auto;
-           margin-right: -25px;
-           margin-bottom: auto;
-       }
-       .unrounded {
-           border-radius: 20px !important;
-           height: 70% !important;
-       }
-       .fbh {
-       height: 100%;
-       width: 100%;
-       }
-       .tiletext {
-       font-size: 25px;
-       margin-top: 25px;
-       margin-left: 25px;
-       margin-right: 25px;
-       }
-       .barbuttonb {
-       height: 120px;
-       width: 120px;
-       background-color: #000000;
-       border: solid 12px #FFFFFF;
-       border-radius: 500px;
-       margin: 0px;
-       box-shadow: inset 0 0 2px #FFFFFF10;
-       transition: background-color 0.5s ease;
-       transition: border 0.5s ease;
-       transition: width 0.5s ease;
-       }
-   
-       .barbuttonbottom {
-       margin-top: 10%
-       }
-       .barbuttonb:hover {
-       background-color: #FFFFFF;
-       border: solid 12px #999999;
-       transition: background-color 0.5s ease;
-       transition: border 0.5s ease;
-       transition: width 0.5s ease;
-       width: 140px;
-       }
-       .barbuttonb:active {
-       background-color: #000000;
-       color: #FFFFFF;
-       width: 200px;
-       border: solid 12px #999999;
-       transition: all 0.1s ease;
-       }
-       .bottombar {
-           background-color: #ffffff10;
-           backdrop-filter: blur(7px);
-           border-radius: 400px;
-           height: 1.9vh;
-           position: relative;
-           text-align: center;
-           color: #00000040;
-           margin-left: auto;
-           box-shadow: inset 0 0 2px #FFFFFF10;
-           margin-right: auto;
-           width: 96.5vw;
-           overflow-block: hidden;
-       }
-       .borderright {
-           border-top-right-radius: 2px !important;
-           border-bottom-right-radius: 2px !important;
-       }
-       .bordercenter {
-           border-radius: 2px !important;
-       }
-       .borderleft {
-           border-top-left-radius: 2px !important;
-           border-bottom-left-radius: 2px !important;
-       }
-       
-       .borderleftz {
-           border-top-left-radius: 0px !important;
-           border-bottom-left-radius: 0px !important;
-           margin-left: 0.15vw !important;
-       }
-       .borderrightz {
-           border-top-right-radius: 0px !important;
-           border-bottom-right-radius: 0px !important;
-           margin-right: 0.15vw !important;
-       }
-       .bordercentere {
-           border-radius: 3px !important;
-           margin-top: 4px !important;
-       }
-       .bordertop {
-           border-radius: 12px !important; 
-           margin-top: 4px !important;
-           border-top-left-radius: 2px !important;
-           border-top-right-radius: 2px !important;
-       }
-       .borderbottom {
-           border-radius: 12px !important; 
-           margin-top: 4px !important;
-           border-bottom-left-radius: 2px !important;
-           border-bottom-right-radius: 2px !important;
-       }
-       .bordertopz {
-           border-radius: 12px !important; 
-           border-top-left-radius: 2px !important;
-           border-top-right-radius: 2px !important;
-       }
-       .borderbottomz {
-           border-radius: 12px !important; 
-           border-bottom-left-radius: 2px !important;
-           border-bottom-right-radius: 2px !important;
-       }
-       .bordertopy {
-           border-radius: 7px !important; 
-           border-top-left-radius: 2px !important;
-           border-top-right-radius: 2px !important;
-       }
-       .borderbottomy {
-           border-radius: 7px !important; 
-           border-bottom-left-radius: 2px !important;
-           border-bottom-right-radius: 2px !important;
-       }
-       .borderrighttop {
-           border-radius: 2px !important; 
-           border-bottom-left-radius: 12px !important;
-       }
-       .borderlefttop {
-           border-radius: 2px !important; 
-           border-bottom-right-radius: 12px !important;
-       }
-   
-       .borderrightbottom {
-           border-radius: 2px !important; 
-           border-top-left-radius: 12px !important;
-       }
-       .borderleftbottom {
-           border-radius: 2px !important; 
-           border-top-right-radius: 12px !important;
-       }
-       .barbutton {
-       height: 80%;
-       width: 23% !important;
-       padding: 7.5px;
-       padding-bottom: 7.5px;
-       margin-top: auto;
-       box-shadow: inset 0 0 2px #FFFFFF10;
-       margin-bottom: auto;
-       margin-left: 3px;
-       margin-right: 3px;
-       border-radius: 12px;
-       transition: background-color 0.2s ease;
-       border: #000000 hidden 5px;
-       background-color: #FFFFFF10;
-       display: flex;
-       cursor: pointer;
-       align-self: center;
-       animation-name: appearfade;
-       transition: all 0.3s ease;
-       animation-duration: 0.4s;
-       z-index: 1;
-       }
-       .widerBB {
-           width: 27% !important;
-       }
-       @keyframes startWidening {
-           0% {
-               overflow: auto;
-               width: 0%;
-               margin-left: 0px;
-               margin-right: 0px;
-               padding-top: 7.5px;
-               padding-bottom: 7.5px;
-               padding: 0px;
-           }
-           100% {
-               overflow: auto;
-               width: 17%;
-               margin-left: 3px;
-               margin-right: 3px;
-               padding: 7.5px;
-               padding-top: 7.5px;
-               padding-bottom: 7.5px;
-           }
-   
-       }
-       @keyframes startShrinking {
-           0% {
-               overflow: auto;
-               width: 17%;
-               margin-left: 3px;
-               margin-right: 3px;
-               padding-top: 7.5px;
-               padding-bottom: 7.5px;
-               padding: 7.5px;
-           }
-           100% {
-               overflow: auto;
-               width: 0%;
-               margin-left: 0px;
-               padding-top: 7.5px;
-               padding-bottom: 7.5px;
-               margin-right: 0px;
-               padding: 0px;
-           }
-       }
-       .startShrinking {
-           animation-name: startShrinking !important;
-           animation-duration: 0.35s !important;
-       }
-       .startWidening {
-           animation-name: startWidening !important;
-           animation-duration: 0.35s !important;
-       }
-       .barbuttond {
-           height: 80%;
-           width: 23%;
-           padding: 7.5px;
-           padding-bottom: 7.5px;
-           margin-top: auto;
-           cursor: pointer;
-           box-shadow: inset 0 0 2px #FFFFFF10;
-           margin-bottom: auto;
-           margin-left: 3px;
-           margin-right: 3px;
-           border-radius: 12px;
-           transition: background-color 0.2s ease;
-           border: #000000 hidden 5px;
-           background-color: #FFFFFF10;
-           display: flex;
-           align-self: center;
-           animation-name: appearfade;
-           animation-duration: 0.4s;
-           }
-        .barbuttonshift {
-        width: 23%;
-        padding: 7.5px;
-        padding-bottom: 7.5px;
-        margin-top: auto;
-        cursor: pointer;
-        box-shadow: inset 0 0 2px #FFFFFF10;
-        margin-bottom: auto;
-        margin-left: 3px;
-        margin-right: 3px;
-        border-radius: 12px;
-        transition: background-color 0.2s ease;
-        border: #000000 hidden 5px;
-        background-color: #FFFFFF10;
-        display: flex;
-        align-self: center;
-        z-index: 1;
-        }
-        .barbuttonshift:hover {
-            background-color: #FFFFFF20;
-        }
-        .barbuttonshift:active {
-            background-color: #FFFFFF25;
-        }
-       .barbuttond:hover {
-           background-color: #FFFFFF20;
-       }
-       .barbuttond:active {
-           background-color: #FFFFFF25;
-       }
-           .blurbb {
-               backdrop-filter: blur(65px) !important;
-               -webkit-backdrop-filter: blur(65px) !important;
-           }
-           .unhoverable {
-               box-shadow: inset 0 0 2px #FFFFFF10;
-           }
-           .unhoverable:hover {
-               background-color: #FFFFFF10 !important;
-           }
-       .barbuttone {
-           height: auto;
-           width: 25%;
-           padding: 2px;
-           margin-top: auto;
-           box-shadow: inset 0 0 2px #FFFFFF10;
-           margin-left: 5px;
-           margin-top: auto;
-           margin-bottom: auto;
-           border-radius: 5px;
-           cursor: pointer;
-           transition: background-color 0.2s ease;
-           border: #000000 hidden 5px;
-           background-color: #FFFFFF10;
-           display: flex;
-           align-self: center;
-           animation-name: appearfade;
-           animation-duration: 0.4s;
-           }
-   
-       .lessMarginBT {
-           border-left: solid 0.3vh solid;
-           margin-top: 0.4vh !important;
-           margin-bottom: 0.4vh !important;
-           transition: background-color 0.2s ease;
-   
-       }
-       .barbuttone:hover {
-           background-color: #FFFFFF15;
-       }
-       .barbuttone:active {
-           background-color: #FFFFFF25;
-       }
-       .barbuttontexta:active .barbuttone {
-           margin-left: 0vw !important;
-       }
-       .barbutton:hover {
-           background-color: #FFFFFF15;
-       }
-       .barbuttonhalf {
-           justify-content: center;
-           background-color: #00000030;
-           border-radius: 12px;
-           width: 45%;
-           margin-right: 2.5%;
-           height: 95%;
-           margin-top: auto;
-           margin-bottom: auto;
-           border-top-left-radius: 12px;
-           border-bottom-left-radius: 12px;
-       }
-       .barbuttonhalfr {
-           justify-content: center;
-           background-color: #00000030;
-           border-radius: 12px;
-           width: 45%;
-           margin-top: auto;
-           margin-bottom: auto;
-           height: 95%;
-           margin-left: 2.5%;
-           border-top-right-radius: 12px;
-           border-bottom-right-radius: 12px;
-       }
-       .marginTB {
-           margin-top: 2.5px !important;
-           margin-bottom: 2.5px !important;
-       }
-       .barbutton:active {
-           background-color: #FFFFFF20;
-           transition: background-color 0.5s ease;
-               }
-       .textToLeft {
-       -align: left !important;
-       align-items: flex;
-       text-align: left !important;
-       flex-direction: row;
-       }
-       .textLeft {
-           text-align: left !important;
-       }
-       .action:hover .deleteActionButton {
-        width: 50px;
-        animation-name: biggerXbutton;
-        font-size: 16px;
-        height: 24px;
-        padding: 0px;
-        padding-top: 0px;
-        padding-bottom: 0px;
-       }
+.dropdown {
+  animation-name: appearfadenmt;
+  width: calc(95% - 16px);
+  text-align: left;
+  border-radius: 7px;
 
-       .coloredAction:hover .deleteActionButton {
-        width: 50px;
-        animation-name: biggerXbutton;
-        font-size: 16px;
-        height: 24px;
-        padding: 0px;
-        padding-top: 0px;
-        padding-bottom: 0px;
-       }
-       @keyframes smallerXbutton {
-        0% {
-            font-size: 16px;
-            padding: 0px;
-            padding-top: 0px;
-            padding-bottom: 0px;
-            height: 24px;
-        }
-        100% {
-            height: 16px;
-            padding: 2px;
-            padding-top: 4px;
-            padding-bottom: 4px;
-            font-size: 12px;
-    }
-       }
-       @keyframes biggerXbutton {
-        100% {
-            font-size: 16px;
-            padding: 0px;
-            padding-top: 0px;
-            padding-bottom: 0px;
-            height: 24px;
-        }
-        0% {
-            height: 16px;
-            padding: 2px;
-            padding-top: 4px;
-            padding-bottom: 4px;
-            font-size: 12px;
-        }
-       }
-       .deleteActionButton {
-        width: 22px;
-        animation-name: smallerXbutton;
-        animation-duration: 0.2s;
-       cursor: pointer;
-       height: 16px;
-       padding: 2px;
-       padding-top: 4px;
-       padding-bottom: 4px;
-       margin-top: auto;
-       margin-bottom: auto;
-       border-radius: 7px;
-       text-align: center;
-       background-color: #00000055;
-       position: relative;
-       box-shadow: inset 0 0 2px #FFFFFF20;
-       color: #FFFFFF80;
-       margin-right: 0px;
-       font-size: 12px;
-       z-index: 1;
-       text-align: center;
-       margin-left: auto;
-       transition: width 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-       }
-       .noWidthDelete {
-        width: 22px;
-        animation-name: smallerXbutton;
-        animation-duration: 0.2s;
-       cursor: pointer;
-       height: 16px;
-       padding: 2px;
-       padding-top: 4px;
-       padding-bottom: 4px;
-       margin-top: auto;
-       margin-bottom: auto;
-       border-radius: 7px;
-       text-align: center;
-       background-color: #00000055;
-       position: relative;
-       box-shadow: inset 0 0 2px #FFFFFF20;
-       color: #FFFFFF80;
-       margin-right: 0px;
-       font-size: 12px;
-       z-index: 1;
-       text-align: center;
-       margin-left: auto;
-       transition: width 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-       }
-       @keyframes det {
-           0% {
-               border-top-left-radius: 40px;
-               border-bottom-left-radius: 40px;
-   
-           }
-           100% {
-               border-top-left-radius: 0px;
-               border-bottom-left-radius: 0px;
-           }
-       }
-   
-       @keyframes bet {
-           0% {
-               margin-left: 0px;
-               opacity: 0%;
-               background-color: #00000050;
-   
-               border-top-right-radius: 40px;
-               border-bottom-right-radius: 40px;
-   
-           }
-           100% {
-               margin-left: -50px;
-               background-color: #00000050;
-               opacity: 100%;
-   
-   
-               border-top-right-radius: 0px;
-               border-bottom-right-radius: 0px;
-           }
-       }
-       .deleteActionButton:hover {
-           background-color: #00000070;
-           width: 50px !important;
-       }
-       .actionButton {
-           width: 50px;
-           position: relative;
-   
-           height: 20px;
-           margin-top: auto;
-           margin-bottom: auto;
-           border-radius: 40px;
-           text-align: center;
-           padding-top: 4px;
-           background-color: #00000030;
-           box-shadow: inset 0 0 2px #FFFFFF20;
-           color: #FFFFFF80;
-           margin-top: -21px;
-           margin-left: 0px;
-           z-index: 0;
-           font-size: 16px;
-           margin-left: auto;
-           opacity: 0%;
-           border-top-right-radius: 0px;
-           border-bottom-right-radius: 0px;
-           transition: opacity 0.3s ease;
-           transition: background-color 0.3s ease;
-           transition: width 0.3s ease;
-           transition: height 0.3s ease;
-           transition: margin-left 0.3s ease;
-       }
-       .deleteActionButton:hover .actionButton {
-           width: 50px;
-           opacity: 100%;
-           background-color: #00000050;
-           animation-name: bet;
-           animation-duration: 0.5s;
-           margin-left: -50px;
-       }
+  border-bottom-left-radius: 0px;
+  border-bottom-right-radius: 0px;
 
-       .deleteActionButton:active {
-            width: 55px !important;
-       }
+  border-bottom: solid 2px #ffffff40;
 
-       .barbut {
-       height: 85%;
-       width: 115px;
-       margin: 0px;
-       border-radius: 120px;
-       border: #131313 solid 5px;
-       background-color: #131313;
-       margin-left: 6px;
-       display: flex;
-       align-self: center;
-       z-index: 1;
-       }
-       .frst {
-       margin-left: 10% !important;
-       }
-       .barbuttontext {
-       font-size: 2rem;
-       color: #949494;
-       margin-left: auto;
-       margin-right: auto;
-       margin-top: auto;
-       margin-bottom: auto;
-       }
-       .texta {
-        font-size: 15px;
-        color: #949494;
-        text-align: left;
-        width: 90%;
-        padding: 12px;
-       }
-       .barbuttontexta {
-        transition: color 0.4s ease;
-        font-size: 18px;
-        color: #949494;
-        text-align: center;
-        margin-left: auto;
-        margin-right: auto;
-        margin-top: auto;
-        margin-bottom: auto;
-       }
-       btext {
-        transition: color 0.4s ease;
-        font-size: 18px;
-        color: #949494;
-        text-align: center;
-        margin-left: auto;
-        margin-right: auto;
-        margin-top: auto;
-        margin-bottom: auto;
-       }
-       .appearabletext {
-        transition: all 0.2s ease, font-size 0.15s ease;
-        font-size: 0px;
-        animation-name: giggle;
-        animation-duration: 0.4s;
-        animation-iteration-count: infinite;
-        scale: 0;
-        color: #949494;
-        text-align: center;
-        margin-left: 0vw;
-        margin-right: 0vw;
-        margin-top: auto;
-        margin-bottom: auto;
-        padding: 0px;
-        }
-        .addButton {
-            cursor: pointer;
-            margin-left: auto; 
-            transition: all 0.3s ease; 
-            margin-right: 1.5vh; 
-            border-radius: 12px; 
-            background-color: #FFFFFF10;
-            backdrop-filter: blur(12px); 
-            margin-bottom: -4vh; 
-            height: 7vh;
-            width: 7vh;
-        }
-        .addButton:hover {
-            background-color: #FFFFFF15;
-        }
-        .addButton:active {
-            background-color: #FFFFFF25;
-        }
-        
-        .appear {
-            scale: unset;
-        }
-        .appear:hover .appearabletext {
-            font-size: 18px;
-            margin-left: 1.5vw;
-            margin-right: 1.5vw;
-            scale: 1;
-        }
-        .appear:hover .trash {
-            animation-name: giggle;
-            animation-duration: 0.3s;
-            animation-iteration-count: infinite;
-        }
-       .barbutton:active {
-       background-color: #FFFFFF50;
-       transition: background-color 0.3s ease;
-       }
-       .barbutton:active .barbuttontext {
-       color: #FFFFFF99;
-       }
-       .margintop {
-       margin-top: 30px;
-       }
-       .title {
-       color: #FFFFFF;
-       font-size: 33px;
-       }
-       .blk {
-       color: #b2b2b2 !important;
-       }
-       .smalltext {
-       font-size: 12px;
-       color: #FFFFFF80;
-       
-       }
-       .halftransparent {
-       opacity: 75%;
-       }
-       
-       .flexbox {
-       display: flex;
-       flex-direction: row;
-       flex-wrap: wrap;
-       justify-content: center;
-       }
+  padding-bottom: 3px;
+  padding-top: 3px;
+  padding-right: 0px;
+  padding-left: 16px;
 
-       [contenteditable] {
-       outline: 0px solid transparent;
-       }
-       .center {
-       display: flex;
-       justify-content: center;
-       align-items: center;
-       }
-       .tiled {
-           width: 100%;
-           height: 100%;
-           border-radius: 12px;
-           background-color: #FFFFFF10;
-           margin: auto;
-           overflow-y: auto;
-           overflow-x: hidden;
-       }
-       .tiledbottom {
-           width: 100%;
-           position: static;
-           background-color: #00000070;
-           text-align: center;
-           padding: 6px;
-           font-size: 20px;
-           color: #FFFFFF90;
-           border-radius: 0px;
-           border-top-right-radius: 12px;
-           border-top-left-radius: 12px;
-           margin-top: auto;
-           margin-left: auto;
-           margin-right: auto;
-       }
-       .issue {
-           width: calc(95% - 6px);
-           height: 30%;
-           padding: 6px;
-           border-radius: 12px;
-           border-bottom: #FFFFFF10 solid 2px;
-           background-color: #00000050;
-           animation-name: appearfaden;
-           animation-duration: 0.3s;
-           margin-left: auto;
-           margin-right: auto;
-           margin-bottom: 5px;
-           box-shadow: inset 0 0 2px #FFFFFF10;
-       }
-       .image {
-           margin: auto;
-           background-size: contain;
-           background-repeat: no-repeat;  
-           background-clip: content-box;
-           background-position: center;
-           width: 70%;
-           height: 70%;
-           opacity: 70%;
-           transition: all 0.3s ease;
-           text-align: center;
-       }
-       @keyframes marginbounce {
-            0% { 
-                margin-top: -98vh;
-            }
-            50% {
-                margin-top: -94vh;
-            }
-            100% {
-                margin-top: -98vh;
-            }
-       }
-       @keyframes marginbouncesecondpart {
-        0% {
-            margin-top: -94vh;
-        }
-        100% {
-            margin-top: -98vh;
-        }
-       }
-       .imagefull {
-           margin: auto;
-           background-size: contain;
-           background-repeat: no-repeat;  
-           background-clip: content-box;
-           background-position: center;
-           width: 900%;
-           height: 100%;
-           opacity: 70%;
-           text-align: center;
-       }
-       @keyframes savedldk {
-           0% {
-               width: 160%;
-               height: 160%;
-           }
-           100% {
-               height: 70%;
-               width: 70%;
-           }
-       }
-       @keyframes showBarsButton {
-           0% {
-               max-height: 80%;
-               margin-top: auto;
-               height: 45%;
-               background-color: #00000060;
-               opacity: 100%;
-               margin-bottom: 5px;
-               width: 90%;
-               filter: blur(0px);
-               border-radius: 20px;
-           }
-           20% {
-               filter: blur(0px);
-           }
-           41% {
-               height: 21px;
-               width: 45%;
-               max-height: 80%;
-               filter: blur(22px);
-               opacity: 70%;
-               margin-bottom: 35%;
-               background-color: #FFFFFF15;
-               font-size: 20px;  
-           }
-           55% {
-               height: 21px;
-               width: 35%;
-               max-height: 80%;
-               opacity: 70%;
-               background-color: #FFFFFF15;
-               font-size: 20px;
-           }
-           60% {
-               filter: blur(0px);
-           }
-           80% {
-               margin-bottom: -1.5vh;
-           }
-           100% {
-               filter: blur(0px);
-               opacity: 100%;
-               border-radius: 6px;
-               margin-bottom: 0px;
-               font-size: 20px;
-               width: 45%;
-               height: 21px;
-               background-color: #FFFFFF15;
-               }
-       }
-       @keyframes showButtonBars {
-           0% {
-               filter: blur(0px);
-               opacity: 100%;
-               margin-bottom: 0px;
-               font-size: 20px;
-               width: 45%;
-               max-height: 80%;
-               height: 21px;
-               background-color: #FFFFFF15;
-               }
-               45% {
-               opacity: 70%;
-               margin-bottom: 45%;
-               height: 30px;
-               border-radius: 10px;
-               background-color: #FFFFFF15;
-               font-size: 20px;
-               }
-               100% {
-               max-height: 80%;
-               margin-top: auto;
-               height: 45%;
-               background-color: #00000060;
-               opacity: 100%;
-               margin-bottom: 5px;
-               width: 90%;
-               filter: blur(0px);
-               border-radius: 20px;
-               }
-           
-       }
-       .switchObjs {
-           background-image: url(./AppData/switchobjs.png);
-           animation-name: savedldk;
-           animation-duration: 0.55s;
-       }
-       .openExternally {
-        opacity: 50%;
-        background-image: url(./AppData/openExternally.png);
-        height: 90%;
-        width: 8%;
-        margin-left: auto;
-        margin-right: 1vw !important;
-        }
-       .actionUp {
-           background-image: url(./AppData/actionUp.png);
-           animation-name: savedldk;
-           animation-duration: 0.65s;
-       }
-       .trash {
-        background-image: url(./AppData/trash.png);
-        }
-       .add {
-           background-image: url(./AppData/add.png);
-           animation-name: savedldk;
-           opacity: 50%;
-           animation-duration: 0.65s;
-       }
-       .editAction {
-           background-image: url(./AppData/view.png);
-           animation-name: savedldk;
-           opacity: 50%;
-           animation-duration: 0.65s;
-       }
-       .actionDown {
-           background-image: url(./AppData/actionDown.png);
-           animation-name: savedldk;
-           animation-duration: 0.75s;
-       }
-   
-       @keyframes savedldk2 {
-           0% {
-               width: 160%;
-               height: 160%;
-           }
-           100% {
-               height: 100%;
-               width: 100%;
-           }
-   
-       }
-       @keyframes swipeToLeft {
-           0% {
-               margin-right: 5%;
-               width: 90% !important;
-               z-index: 0;
-               min-width: 89%;
-           }
-           100% {
-               margin-right: 250%;
-               z-index: 0;
-               width: 90% !important;
-               min-width: 89%;
-           }
-       }
-       @keyframes swipeToLeft2 {
-           0% {
-               margin-left: 250%;
-               width: 90% !important;
-               z-index: 0;
-               min-width: 89%;
-           }
-           100% {
-               margin-left: 4%;
-               z-index: 0;
-               width: 90% !important;
-               min-width: 89%;
-           }
-       }
-       .save {
-           background-image: url(./AppData/save.png);
-           width: 100%;
-           height: 100%;
-           opacity: 20%;
-           animation-name: savedldk2;
-           animation-duration: 0.75s;
-       }
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 6px;
 
-       .savenm {
-        background-image: url(./AppData/save.png);
-        width: 100%;
-        height: 100%;
-        opacity: 20%;
-        }
-        .colors {
-            background-image: url(./AppData/colors.png);
-            width: 100%;
-            height: 100%;
-        }
-        .export {
-            background-image: url(./AppData/export.png);
-            width: 100%;
-            height: 100%;
-        }
-        .import {
-            background-image: url(./AppData/import.png);
-            width: 100%;
-            height: 100%;
-        }
-        .startbot {
-            background-image: url(./AppData/startbot.png);
-            width: 100%;
-            height: 100%;
-        }
-        .botsetup {
-            background-image: url(./AppData/setup.png);
-            width: 100%;
-            height: 100%;
-        }
-       .backArrow {
-           background-image: url(./AppData/backArrow.png);
-           width: 110%;
-           margin-top: -5%;
-           height: 110%;
-           opacity: 20%;
-           margin-left: 0%;
-           transition: margin-left 0.25s ease;
-       }
-       .backArrow:hover {
-           margin-left: -15%;
-       }
-       .openMenu {
-           background-image: url(./AppData/openMenu.png);
-           animation-name: savedldk;
-           animation-duration: 0.75s;
-       }
-       .focuds {
-           background-image: url(./AppData/focusHighlight.png);
-           width: 100%;
-           height: 100%;
-       }
-       .checkmark {
-        background-image: url(./AppData/checkmark.png);
-        width: 100%;
-        opacity: 30%;
-        height: 100%;
-    }
-       .saveGif {
-           background-image: url(./AppData/save.gif);
-           width: 100%;
-           height: 100%;
-           opacity: 20%;
-       }
-       .saveAN {
-           background-image: url(./AppData/save.png);
-           width: 100%;
-           height: 100%;
-           opacity: 20%;
-       }
-       @keyframes fdn {
-           0% {
-               width: 45%;
-           }
-           50% {
-               width: 40%;
-           }
-           100% {
-               width: 45%;
-           }
-       }
-       .fade {
-           animation-name: appearfadenmt !important;
-           animation-duration: 0.5s;
-       }
-       @keyframes fadeinout {
-           0% {
-               transform: rotate('0deg');
-               opacity: 100%;
-           }
-           25% {
-               transform: rotate('15deg')
-           }
-           50% {
-               opacity: 20%;
-           }
-           75% {
-               transform: rotate('-15deg')
-           }
-           100% {
-               opacity: 100%;
-               transform: rotate('0deg')
-           }
-       }
-       .fadeinout {
-           animation-name: fadeinout !important;
-           animation-duration: 1s;
-           animation-iteration-count: infinite;
-       }
-       .slower {
-           animation-duration: 1s !important;
-       }
-       .ring {
-           background-image: url(./AppData/loading.gif);
-           margin: auto;
-           background-size: contain;
-           background-repeat: no-repeat;  
-           background-clip: content-box;
-           background-position: center;
-           width: 90%;
-           height: 90%;
-           text-align: center;
-           opacity: 20%;
-           width: 10vh;
-           height: 10vh;
-           margin: auto;
-       }
-       body {
-       font-family : 'Arial', Arial, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif, sans-serif !important; 
-       padding: -8px; 
-       overflow: hidden; 
-       cursor: default;
-       user-select: none;
-       background-color: unset;
-       justify-content: center;
-       align-items: center;
-       transition: all ease 0.5s;
-       }
-       .colorTile {
-        width: 95%;
-        margin-left: auto;
-        margin-right: auto;
-        margin-bottom: 1.3vh;
-        border-radius: 12px;
-       }
-       .colorTileText {
-        font-size: 18px;
-        color: #949494;
-        text-align: center;
-        background: linear-gradient(70deg, #FFFFFF15 0%, #FFFFFF25 70%, #FFFFFF05 130%);
-        backdrop-filter: blur(12px);
-        margin-top: auto;
-        border-radius: 12px;
-        padding: 12px;
-        margin-bottom: auto;
-        width: calc(100% - 24px);
-       }
+  display: flex;
+  flex-direction: column;
 
-       ::-webkit-scrollbar {
-       width: 0px;
-       height: 0px !important;
-       }
-       ::-webkit-scrollbar-track {
-           height: 0px !important;
-   
-       border-radius: 100px;
-       }
-       ::-webkit-scrollbar-thumb {
-           height: 0px !important;
-   
-       border-radius: 100px;
-       background: #FFFFFF00;
-       }
-       ::-webkit-scrollbar-thumb:hover {
-       background: #FFFFFF00;
-       }
-       html {
-           scroll-behavior: smooth; 
-           /**/
-       }
-       
-   .forceRounded {
-       border-radius: 100px !important;
-   }
-   
-   ::selection {
-       background-color: var(--highlight-color);
-       border-radius: 12px !important;
-     }
-   
-     @keyframes dcreateeActionButtonorsum {
-       0% {
-           overflow-y: auto;
-           height: 0px;
-           width: 70%;
-           padding: 0px;
-           margin-top: 0vh;
-       }
-       100% {
-           overflow-y: auto;
-           width: 95%;
-           margin-top: 0.7vh;
-           padding: 4px;
-           height: 24px;
-       }
-     }
-     .animatednewactionanim {
-       animation-name: dcreateeActionButtonorsum !important;
-       animation-duration: 0.25s !important;
-     }
+  max-height: 100vh;
 
-     input {
-        transition: border 0.4s;
-        border: inherit;
-        margin: inherit;
-        margin-left: inherit;
-        margin-right: inherit;
-        margin-top: inherit;
-        margin-bottom: inherit;
-        margin: inherit;
-        display: block; 
-        padding: inherit;
-     }
-     input:focus {
-        border: inherit;
-        outline: none;
-        background-color: inherit;
-     }
-     input:active {
-        border: inherit;
-        background-color: inherit;
-        outline: none;
-     }
-     @keyframes fromlighttodark {
-        0%{ 
-            background-color: #FFFFFF10;  
-        }
-        100% {
-            background-color: #00000050;  
-        }
-     }
-     @keyframes fromdarktolight {
-        100%{ 
-            background-color: #FFFFFF10;  
-        }
-        0% {
-            background-color: #00000050;  
-        }
-     }
-     .sidebar {
-        position: fixed;
-        margin-top: -2vh;
-        margin-left: -1.7vw; 
-        height: 100vh;
-        width: 1vw;
-        transition: width 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        z-index: 2147483647;
-        animation-name: fromdarktolight;
-        animation-duration: 0.2s;
-        backdrop-filter: blur(12px);
-        overflow: auto; 
-        background-color: #FFFFFF10;
+  font-size: 20px;
+  color: #ffffff99;
+  cursor: pointer;
 
-     }
-     .sidebar:hover {
-        width: 15vw;
-        background-color: #00000050;
-        animation-name: fromlighttodark;
-     }
-     .sidebartext {
-        font-size: 0px;
-        color: #949494;
-        text-align: center;
-        margin: auto;
-        margin-right: 0vw;
-        margin-left: 0vw;
-     }
-     .sidebar:hover .sidebartext {
-        font-size: 2vh;
-        transition: font-size 0.3s ease;
-        margin-right: 1vw;
-        margin-left: 1vw;
-     }
-     .sidebarbutton {
-        width: 0vw;
-        height: auto;
-        margin-left: auto;
-        margin-right: auto;
-        transition: all 0.2s ease;
-        background-color: #FFFFFF10;
-        padding: 6px;
-        border-radius: 6px;
-        cursor: pointer;
-        margin-top: 1vh;
-        box-shadow: inset 0 0 2px #FFFFFF10;
-     }
-     .sidebar:hover .sidebarbutton {
-        width: calc(14vw - 12px);
-     }
-     .sidebarbutton:hover {
-        background-color: #FFFFFF15;
-     }
-     .outlined {
-        outline: #FFFFFF30 solid 3px;
-     }
-     @keyframes snaptoscale {
-        0% {
-            opacity: 0%;
-            transform: scale(0.5);
-        }
-        50% {
-            opacity: 100%;
-        }
-        100% {
-            opacity: 100%;
-            transform: scale(1);
-        }
-     }
-     .settingspane {
-        animation-name: snaptoscale;
-        animation-duration: 0.4s;
-        width: 95vw;
-        height: 90vh;
-        margin: auto;
-        align-self: center;
-        justify-self: center;
-        background-color: #FFFFFF09;
-        margin-top: -95vh;
-        border-radius: 12px;
-        overflow: auto;
-        border-top-left-radius: 0px;
-        position: absolute;
-        z-index: 2147483627;
-     }
-     .pad {
-        padding: 12px;
-        border-radius: 12px;
-     }
-     .bpad {
-        padding-top: 4px !important;
-        padding-bottom: 4px !important;
-        height: 28px !important;
-     }
-     .ml {
-        margin-left: 1vw;
-     }
-     input[type=number]::-webkit-inner-spin-button,
-     input[type=number]::-webkit-outer-spin-button { 
-      -webkit-appearance: none; 
-      margin: 0;    
-    }
-    ::selection {
-        background-color: #000000;
-    }
-    .optionright {
-        width: calc(46.5% - 10px);
-        padding: 5px;
-        margin-left: 0%;
-        margin-right: 0%;
-        margin-top: 0px;
-        height: 23px;
-        overflow: auto;
-        transition: all 0.30s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    }
-    .optionleft {
-        width: calc(43.5% - 10px);
-        margin-right: 1.5%;
-        margin-left: 0%;
-        padding: 5px;
-        margin-top: 0px;
-        overflow: auto;
-        height: 23px;
-        transition: all 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    }
-    .coloredTile {
-        opacity: 40%;
-        transition: opacity 0.15s ease;
-    }
-    .coloredTile:hover {
-        opacity: 60%;
-    }
+  box-shadow: inset 0 0 2px #ffffff10;
+  background-color: #ffffff15;
 
-    .betaIndicator {
-        background: linear-gradient(45deg, #FFFFFF10 0%, #4260f5 180%);
-        padding: 4px;
-        padding-left: 7px;
-        padding-right: 7px;
-        border-radius: 1000px;
-        font-size: 13px;
-        color: #949494;
-        text-align: center;
-        margin: auto;
-    }
+  transition: all 0.16s ease;
+}
 
-    text {
-        color: #FFFFFF85;
-        font-size: 15.5px;
-        margin-left: calc(5% - 9px);
-        margin-top: 2.5px;
-    }
+.dropdown:hover {
+  background-color: #ffffff18;
+}
 
-    @keyframes flash {
-        0% {
-            opacity: 100%;
-        }
-        50% {
-            opacity: 50%;
-        }
-        100% {
-            opacity: 100%;
-        }
-    }
-    .flash {
-        opacity: 100%;
-        animation-name: flash;
-        animation-duration: 1s;
-        animation-iteration-count: infinite;
-    }
+.menuBar {
+  width: calc(100% - 7.5px);
+
+  font-size: 20px;
+  padding-left: 24px;
+  padding-bottom: 4px;
+  padding-top: 4px;
+
+  z-index: 4;
+
+  display: flex;
+  flex-direction: column;
+
+  margin-left: -16px;
+  margin-top: 0px;
+  margin-bottom: 0px;
+
+  background-color: #00000023;
+  border-top: solid 2px #ffffff40;
+  box-shadow: inset 0 0 2px #ffffff10;
+
+  color: #ffffff90;
+  text-align: left;
+  overflow: auto;
+  cursor: pointer;
+
+  transition: all 0.1s ease;
+}
+.menuBar:hover {
+  color: #ffffff90;
+  background-color: #ffffff05;
+}
+
+.selectBar {
+  width: calc(95% - 24px);
+  padding-top: 4px;
+  padding-bottom: 4px;
+  margin-left: auto;
+  margin-right: auto;
+  font-size: 18px;
+  padding-left: 24px;
+  margin-top: -6px;
+  box-shadow: inset 0 0 2px #ffffff10;
+
+  padding-right: -24px;
+  background-color: #ffffff10;
+  animation-name: selectbarnmt;
+  animation-duration: 0.5s;
+  border-radius: 12px;
+  cursor: text;
+  color: #ffffff90;
+  border-top-left-radius: 0px;
+  border-top-right-radius: 0px;
+  transition: all 0.3s ease;
+}
+.selectBar:hover {
+  background-color: #ffffff13;
+}
+
+.input {
+  width: calc(95% - 18px);
+  background-color: #ffffff10;
+  margin-left: auto;
+  border-radius: 7px;
+  margin-right: auto;
+  margin-bottom: 4px;
+  color: #ffffff97;
+  overflow-x: auto;
+  cursor: text;
+  height: 24px;
+  transition: background-color ease-in 0.3s;
+  font-size: 21px;
+  padding: 2.5px;
+  padding-left: 16px;
+  white-space: nowrap;
+  padding-right: 0px;
+  box-shadow: inset 0 0 2px #ffffff10;
+  animation-name: kinput;
+  animation-duration: 1.3s;
+  border-bottom: #ffffff25 0px solid;
+}
+.daction {
+  width: 95%;
+  height: auto;
+  max-height: 50px;
+  font-size: 20px;
+  margin-left: auto;
+  box-shadow: inset 0 0 2px #ffffff10;
+
+  margin-right: auto;
+  display: block;
+  padding: 5px;
+  margin-top: 6px;
+  display: flex;
+  flex-direction: column;
+  background-color: #00000020;
+  border-radius: 100px;
+  text-align: center;
+  animation-name: appearAct;
+  max-height: 300000000px;
+  animation-duration: 0.5s;
+  color: #ffffff99;
+}
+.action:hover {
+  background-color: #ffffff20 !important;
+}
+.action:active {
+  background-color: #ffffff25 !important;
+}
+
+.actionGroupSelectorB {
+  margin-left: auto;
+  margin-right: auto;
+  animation-name: kinput;
+  border-top: 2px #ffffff40 solid;
+  width: 90%;
+  padding: 2.5px;
+  padding-left: 24px;
+  padding-right: 0px;
+  background-color: #ffffff10;
+  box-shadow: inset 0 0 2px #ffffff10;
+  margin-top: 0px;
+  animation-name: createActionGroupSelector;
+  animation-duration: 0.5s;
+  cursor: pointer;
+  border-radius: 0px !important;
+  border-bottom-right-radius: 4px;
+  border-bottom-left-radius: 4px;
+  transition: background-color 0.3s ease;
+}
+@keyframes deleteActionGroupSelectors {
+  0% {
+    border-top: 2px #ffffff40 solid;
+    height: 21px;
+    padding: 2.5px;
+    padding-left: 24px;
+    opacity: 100%;
+    padding-right: 0px;
+  }
+  100% {
+    border-top: 0px #ffffff40 solid;
+    height: 0px;
+    padding: 0px;
+    padding-left: 24px;
+    opacity: 0%;
+    padding-right: 0px;
+  }
+}
+@keyframes createActionGroupSelector {
+  0% {
+    border-top: 0px #ffffff40 solid;
+    height: 0px;
+    padding: 0px;
+    padding-left: 24px;
+    opacity: 0%;
+    padding-right: 0px;
+  }
+  100% {
+    border-top: 2px #ffffff40 solid;
+    height: 21px;
+    padding: 2.5px;
+    padding-left: 24px;
+    opacity: 100%;
+    padding-right: 0px;
+  }
+}
+.actionGroupSelectorB:hover {
+  background-color: #ffffff15;
+}
+.actionGroupSelectorB:active {
+  background-color: #ffffff20;
+}
+
+.noanim {
+  animation-duration: 0s;
+}
+.noanims {
+  animation-name: none !important;
+  animation-duration: 0s !important;
+}
+.fullsize {
+  margin-left: 1vw;
+  width: 47.3vw;
+  height: calc(39.5vh - 12px);
+  backdrop-filter: blur(12px);
+  border-radius: 12px;
+  padding-right: 0px;
+  padding-left: 0px;
+  display: flex;
+  flex-direction: column;
+  justify-content: auto;
+  overflow-y: auto !important;
+  overflow-x: none !important;
+  margin-bottom: 1vh;
+}
+
+.inputBar {
+  width: 90%;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 4px;
+  text-align: center;
+  background-color: #ffffff10;
+  color: #ffffff90 !important;
+  font-size: 26px;
+  padding: 4px;
+  cursor: text;
+  border-radius: 12px;
+  transition: background-color ease 0.5s;
+}
+@keyframes appearInputField {
+  0% {
+    margin-bottom: 12px;
+    opacity: 0%;
+  }
+  100% {
+    margin-bottom: 4px;
+    opacity: 100%;
+  }
+}
+@keyframes startFrominput {
+  0% {
+    border-top: #ffffff15 solid 0x;
+    height: 0px;
+    margin-bottom: 0px;
+    font-size: 0px;
+    margin-top: 0px;
+    padding: 0px;
+    opacity: 0%;
+    font-size: 0px;
+  }
+  100% {
+    border-top: #ffffff15 solid 4px;
+    height: 24px;
+    margin-bottom: 4px;
+    margin-top: 5px;
+    font-size: 21px;
+    opacity: 100%;
+  }
+}
+@keyframes goFromInput {
+  0% {
+    border-top: #ffffff15 solid 4px;
+    height: 24px;
+    margin-bottom: 4px;
+    margin-top: 5px;
+    font-size: 21px;
+    opacity: 100%;
+  }
+  100% {
+    border-top: #ffffff15 solid 0x;
+    height: 0px;
+    margin-bottom: 0px;
+    font-size: 0px;
+    margin-top: 0px;
+    padding: 0px;
+    opacity: 0%;
+    font-size: 0px;
+  }
+}
+@keyframes animatedBar {
+  0% {
+    opacity: 0%;
+    width: 8%;
+    padding: 6px;
+  }
+  10% {
+    opacity: 100%;
+  }
+  100% {
+    padding: 6px;
+    width: 47%;
+  }
+}
+
+@keyframes unanimatedBar {
+  0% {
+    padding: 6px;
+    width: 47%;
+  }
+
+  80% {
+    opacity: 100%;
+    height: auto;
+    width: 8%;
+  }
+
+  100% {
+    opacity: 0%;
+    padding: 0px;
+    width: 0%;
+    overflow-y: auto;
+    overflow-x: auto;
+    overflow: auto;
+  }
+}
+
+.unanimatedBar {
+  animation-name: unanimatedBar !important;
+  animation-duration: 0.3s !important;
+}
+.animatedBar {
+  animation-name: animatedBar !important;
+  animation-duration: 0.3s !important;
+}
+.input {
+  width: calc(95% - 18px);
+  background-color: #ffffff10;
+  margin-left: auto;
+  border-radius: 7px;
+  margin-right: auto;
+  margin-bottom: 4px;
+  color: #ffffff97;
+  overflow-x: auto;
+  cursor: text;
+  height: 24px;
+  transition: background-color ease-in 0.3s;
+  font-size: 21px;
+  padding: 2.5px;
+  padding-left: 16px;
+  white-space: nowrap;
+  padding-right: 0px;
+  box-shadow: inset 0 0 2px #ffffff10;
+  animation-name: kinput;
+  animation-duration: 1.3s;
+  border-bottom: #ffffff25 0px solid;
+}
+.actionGroupSelector {
+  margin-left: auto;
+  margin-right: auto;
+  animation-name: kinput;
+  width: calc(95% - 18px);
+  padding: 2.5px;
+  padding-left: 16px;
+  padding-right: 0px;
+  background-color: #ffffff10;
+  box-shadow: inset 0 0 2px #ffffff10;
+  margin-top: 0px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+.actionGroupSelector:hover {
+  background-color: #ffffff15;
+}
+.actionGroupSelector:active {
+  background-color: #ffffff20;
+}
+
+.inputB {
+  width: calc(95% - 16px);
+  cursor: text;
+  background-color: #ffffff10 !important;
+  margin-left: auto;
+  border-radius: 7px;
+  margin-top: 5px;
+  margin-right: auto;
+  margin-bottom: 4px;
+  color: #ffffff97;
+  font-size: 21px;
+  padding: 2.5px;
+  border-top: #ffffff15 solid 4px !important;
+  padding-left: 16px;
+  padding-right: 0px;
+  box-shadow: inset 0 0 2px #ffffff10;
+  animation-name: kinput;
+  animation-duration: 0.5s;
+  transition: box-shadow ease 0.5s;
+}
+.largeInput {
+  width: calc(95% - 24px);
+  height: 40%;
+  margin-left: auto;
+  border-radius: 9px;
+  white-space: pre-line;
+  overflow: auto;
+  margin-right: auto;
+  margin-top: 4px;
+  text-align: left;
+  background-color: #ffffff10;
+  cursor: text;
+  color: #b2b2b2;
+  margin-bottom: 6px;
+  font-size: 17px;
+  padding: 12px;
+  box-shadow: inset 0 0 2px #ffffff10;
+  transition: box-shadow ease 0.7s;
+  animation-name: kinputs;
+  animation-duration: 0.5s;
+}
+.sepbar {
+  background-color: #ffffff20 !important;
+  width: 90%;
+  margin-top: 22px;
+  margin-bottom: 22px;
+  margin-left: auto;
+  margin-right: auto;
+  height: 3px;
+
+  border-radius: 20px;
+}
+.input:focus {
+  background-color: #ffffff15;
+  transition: background-color ease-in 0.5s;
+}
+.clsr {
+  margin-bottom: -10px;
+  margin-left: 20px !important;
+}
+.inputBar:hover {
+  background-color: #ffffff13;
+}
+.inputBar:focus {
+  background-color: #ffffff15;
+}
+.text {
+  color: #ffffff90;
+  font-size: 20px;
+  margin-left: 13px;
+  margin-bottom: 4px;
+  text-align: left;
+  animation-name: kinput;
+  animation-duration: 1s;
+}
+.textse {
+  color: #ffffff85;
+  font-size: 15.5px;
+  margin-left: calc(5% - 9px);
+  margin-top: 2.5px;
+  animation-name: kinput;
+  animation-duration: 0.7s;
+}
+.sepbars {
+  background-color: #ffffff20;
+  width: 95%;
+  margin-top: 8px;
+  margin-bottom: 8px;
+  margin-left: auto;
+  margin-right: auto;
+  height: 2px;
+  border-radius: 20px;
+  animation-name: separate;
+  animation-duration: 0.5s;
+}
+.sepbarz {
+  background-color: #ffffff20;
+  width: 75%;
+  margin-top: 12px;
+  margin-bottom: 12px;
+  margin-left: auto;
+  margin-right: auto;
+  height: 2px;
+  border-radius: 20px;
+}
+.white {
+  color: #949494 !important;
+}
+.switchBar {
+  width: calc(48.3vw - 24px);
+  height: calc(12vh - 24px);
+  background-color: #202020;
+  padding: 12px;
+  border-radius: 15px;
+  box-shadow: inset 0 0 2px #ffffff10;
+  margin-top: 1.5vh;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  background-color: #ffffff13;
+  backdrop-filter: blur(12px);
+}
+.sepLine {
+  width: 1px;
+  background-color: #94949450;
+  height: 50%;
+  margin-top: auto;
+  margin-right: -25px;
+  margin-bottom: auto;
+}
+.unrounded {
+  border-radius: 20px !important;
+  height: 70% !important;
+}
+.fbh {
+  height: 100%;
+  width: 100%;
+}
+.tiletext {
+  font-size: 25px;
+  margin-top: 25px;
+  margin-left: 25px;
+  margin-right: 25px;
+}
+.barbuttonb {
+  height: 120px;
+  width: 120px;
+  background-color: #000000;
+  border: solid 12px #ffffff;
+  border-radius: 500px;
+  margin: 0px;
+  box-shadow: inset 0 0 2px #ffffff10;
+  transition: background-color 0.5s ease;
+  transition: border 0.5s ease;
+  transition: width 0.5s ease;
+}
+
+.barbuttonbottom {
+  margin-top: 10%;
+}
+.barbuttonb:hover {
+  background-color: #ffffff;
+  border: solid 12px #999999;
+  transition: background-color 0.5s ease;
+  transition: border 0.5s ease;
+  transition: width 0.5s ease;
+  width: 140px;
+}
+.barbuttonb:active {
+  background-color: #000000;
+  color: #ffffff;
+  width: 200px;
+  border: solid 12px #999999;
+  transition: all 0.1s ease;
+}
+.bottombar {
+  background-color: #ffffff10;
+  backdrop-filter: blur(7px);
+  border-radius: 400px;
+  height: 1.9vh;
+  position: relative;
+  text-align: center;
+  color: #00000040;
+  margin-left: auto;
+  box-shadow: inset 0 0 2px #ffffff10;
+  margin-right: auto;
+  width: 96.5vw;
+  overflow-block: hidden;
+}
+.borderright {
+  border-top-right-radius: 2px !important;
+  border-bottom-right-radius: 2px !important;
+}
+.bordercenter {
+  border-radius: 2px !important;
+}
+.borderleft {
+  border-top-left-radius: 2px !important;
+  border-bottom-left-radius: 2px !important;
+}
+
+.borderleftz {
+  border-top-left-radius: 0px !important;
+  border-bottom-left-radius: 0px !important;
+  margin-left: 0.15vw !important;
+}
+.borderrightz {
+  border-top-right-radius: 0px !important;
+  border-bottom-right-radius: 0px !important;
+  margin-right: 0.15vw !important;
+}
+.bordercentere {
+  border-radius: 3px !important;
+  margin-top: 4px !important;
+}
+.bordertop {
+  border-radius: 12px !important;
+  margin-top: 4px !important;
+  border-top-left-radius: 2px !important;
+  border-top-right-radius: 2px !important;
+}
+.borderbottom {
+  border-radius: 12px !important;
+  margin-top: 4px !important;
+  border-bottom-left-radius: 2px !important;
+  border-bottom-right-radius: 2px !important;
+}
+.bordertopz {
+  border-radius: 12px !important;
+  border-top-left-radius: 2px !important;
+  border-top-right-radius: 2px !important;
+}
+.borderbottomz {
+  border-radius: 12px !important;
+  border-bottom-left-radius: 2px !important;
+  border-bottom-right-radius: 2px !important;
+}
+.bordertopy {
+  border-radius: 7px !important;
+  border-top-left-radius: 2px !important;
+  border-top-right-radius: 2px !important;
+}
+.borderbottomy {
+  border-radius: 7px !important;
+  border-bottom-left-radius: 2px !important;
+  border-bottom-right-radius: 2px !important;
+}
+.borderrighttop {
+  border-radius: 2px !important;
+  border-bottom-left-radius: 12px !important;
+}
+.borderlefttop {
+  border-radius: 2px !important;
+  border-bottom-right-radius: 12px !important;
+}
+
+.borderrightbottom {
+  border-radius: 2px !important;
+  border-top-left-radius: 12px !important;
+}
+.borderleftbottom {
+  border-radius: 2px !important;
+  border-top-right-radius: 12px !important;
+}
+.barbutton {
+  height: 80%;
+  width: 23% !important;
+  padding: 7.5px;
+  padding-bottom: 7.5px;
+  margin-top: auto;
+  box-shadow: inset 0 0 2px #ffffff10;
+  margin-bottom: auto;
+  margin-left: 3px;
+  margin-right: 3px;
+  border-radius: 12px;
+  transition: background-color 0.2s ease;
+  border: #000000 hidden 5px;
+  background-color: #ffffff10;
+  display: flex;
+  cursor: pointer;
+  align-self: center;
+  animation-name: appearfade;
+  transition: all 0.3s ease;
+  animation-duration: 0.4s;
+  z-index: 1;
+}
+.widerBB {
+  width: 27% !important;
+}
+@keyframes startWidening {
+  0% {
+    overflow: auto;
+    width: 0%;
+    margin-left: 0px;
+    margin-right: 0px;
+    padding-top: 7.5px;
+    padding-bottom: 7.5px;
+    padding: 0px;
+  }
+  100% {
+    overflow: auto;
+    width: 17%;
+    margin-left: 3px;
+    margin-right: 3px;
+    padding: 7.5px;
+    padding-top: 7.5px;
+    padding-bottom: 7.5px;
+  }
+}
+@keyframes startShrinking {
+  0% {
+    overflow: auto;
+    width: 17%;
+    margin-left: 3px;
+    margin-right: 3px;
+    padding-top: 7.5px;
+    padding-bottom: 7.5px;
+    padding: 7.5px;
+  }
+  100% {
+    overflow: auto;
+    width: 0%;
+    margin-left: 0px;
+    padding-top: 7.5px;
+    padding-bottom: 7.5px;
+    margin-right: 0px;
+    padding: 0px;
+  }
+}
+.startShrinking {
+  animation-name: startShrinking !important;
+  animation-duration: 0.35s !important;
+}
+.startWidening {
+  animation-name: startWidening !important;
+  animation-duration: 0.35s !important;
+}
+.barbuttond {
+  height: 80%;
+  width: 23%;
+  padding: 7.5px;
+  padding-bottom: 7.5px;
+  margin-top: auto;
+  cursor: pointer;
+  box-shadow: inset 0 0 2px #ffffff10;
+  margin-bottom: auto;
+  margin-left: 3px;
+  margin-right: 3px;
+  border-radius: 12px;
+  transition: background-color 0.2s ease;
+  border: #000000 hidden 5px;
+  background-color: #ffffff10;
+  display: flex;
+  align-self: center;
+  animation-name: appearfade;
+  animation-duration: 0.4s;
+}
+.barbuttonshift {
+  width: 23%;
+  padding: 7.5px;
+  padding-bottom: 7.5px;
+  margin-top: auto;
+  cursor: pointer;
+  box-shadow: inset 0 0 2px #ffffff10;
+  margin-bottom: auto;
+  margin-left: 3px;
+  margin-right: 3px;
+  border-radius: 12px;
+  transition: background-color 0.2s ease;
+  border: #000000 hidden 5px;
+  background-color: #ffffff10;
+  display: flex;
+  align-self: center;
+  z-index: 1;
+}
+.barbuttonshift:hover {
+  background-color: #ffffff20;
+}
+.barbuttonshift:active {
+  background-color: #ffffff25;
+}
+.barbuttond:hover {
+  background-color: #ffffff20;
+}
+.barbuttond:active {
+  background-color: #ffffff25;
+}
+.blurbb {
+  backdrop-filter: blur(65px) !important;
+  -webkit-backdrop-filter: blur(65px) !important;
+}
+.unhoverable {
+  box-shadow: inset 0 0 2px #ffffff10;
+}
+.unhoverable:hover {
+  background-color: #ffffff10 !important;
+}
+.barbuttone {
+  height: auto;
+  width: 25%;
+  padding: 2px;
+  margin-top: auto;
+  box-shadow: inset 0 0 2px #ffffff10;
+  margin-left: 5px;
+  margin-top: auto;
+  margin-bottom: auto;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  border: #000000 hidden 5px;
+  background-color: #ffffff10;
+  display: flex;
+  align-self: center;
+  animation-name: appearfade;
+  animation-duration: 0.4s;
+}
+
+.lessMarginBT {
+  border-left: solid 0.3vh solid;
+  margin-top: 0.4vh !important;
+  margin-bottom: 0.4vh !important;
+  transition: background-color 0.2s ease;
+}
+.barbuttone:hover {
+  background-color: #ffffff15;
+}
+.barbuttone:active {
+  background-color: #ffffff25;
+}
+.barbuttontexta:active .barbuttone {
+  margin-left: 0vw !important;
+}
+.barbutton:hover {
+  background-color: #ffffff15;
+}
+.barbuttonhalf {
+  justify-content: center;
+  background-color: #00000030;
+  border-radius: 12px;
+  width: 45%;
+  margin-right: 2.5%;
+  height: 95%;
+  margin-top: auto;
+  margin-bottom: auto;
+  border-top-left-radius: 12px;
+  border-bottom-left-radius: 12px;
+}
+.barbuttonhalfr {
+  justify-content: center;
+  background-color: #00000030;
+  border-radius: 12px;
+  width: 45%;
+  margin-top: auto;
+  margin-bottom: auto;
+  height: 95%;
+  margin-left: 2.5%;
+  border-top-right-radius: 12px;
+  border-bottom-right-radius: 12px;
+}
+.marginTB {
+  margin-top: 2.5px !important;
+  margin-bottom: 2.5px !important;
+}
+.barbutton:active {
+  background-color: #ffffff20;
+  transition: background-color 0.5s ease;
+}
+.textToLeft {
+  -align: left !important;
+  align-items: flex;
+  text-align: left !important;
+  flex-direction: row;
+}
+.textLeft {
+  text-align: left !important;
+}
+.action:hover .deleteActionButton {
+  width: 50px;
+  animation-name: biggerXbutton;
+  font-size: 16px;
+  height: 24px;
+  padding: 0px;
+  padding-top: 0px;
+  padding-bottom: 0px;
+}
+
+.coloredAction:hover .deleteActionButton {
+  width: 50px;
+  animation-name: biggerXbutton;
+  font-size: 16px;
+  height: 24px;
+  padding: 0px;
+  padding-top: 0px;
+  padding-bottom: 0px;
+}
+@keyframes smallerXbutton {
+  0% {
+    font-size: 16px;
+    padding: 0px;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    height: 24px;
+  }
+  100% {
+    height: 16px;
+    padding: 2px;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    font-size: 12px;
+  }
+}
+@keyframes biggerXbutton {
+  100% {
+    font-size: 16px;
+    padding: 0px;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    height: 24px;
+  }
+  0% {
+    height: 16px;
+    padding: 2px;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    font-size: 12px;
+  }
+}
+.deleteActionButton {
+  width: 22px;
+  animation-name: smallerXbutton;
+  animation-duration: 0.2s;
+  cursor: pointer;
+  height: 16px;
+  padding: 2px;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  margin-top: auto;
+  margin-bottom: auto;
+  border-radius: 7px;
+  text-align: center;
+  background-color: #00000055;
+  position: relative;
+  box-shadow: inset 0 0 2px #ffffff20;
+  color: #ffffff80;
+  margin-right: 0px;
+  font-size: 12px;
+  z-index: 1;
+  text-align: center;
+  margin-left: auto;
+  transition: width 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+.noWidthDelete {
+  width: 22px;
+  animation-name: smallerXbutton;
+  animation-duration: 0.2s;
+  cursor: pointer;
+  height: 16px;
+  padding: 2px;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  margin-top: auto;
+  margin-bottom: auto;
+  border-radius: 7px;
+  text-align: center;
+  background-color: #00000055;
+  position: relative;
+  box-shadow: inset 0 0 2px #ffffff20;
+  color: #ffffff80;
+  margin-right: 0px;
+  font-size: 12px;
+  z-index: 1;
+  text-align: center;
+  margin-left: auto;
+  transition: width 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+@keyframes det {
+  0% {
+    border-top-left-radius: 40px;
+    border-bottom-left-radius: 40px;
+  }
+  100% {
+    border-top-left-radius: 0px;
+    border-bottom-left-radius: 0px;
+  }
+}
+
+@keyframes bet {
+  0% {
+    margin-left: 0px;
+    opacity: 0%;
+    background-color: #00000050;
+
+    border-top-right-radius: 40px;
+    border-bottom-right-radius: 40px;
+  }
+  100% {
+    margin-left: -50px;
+    background-color: #00000050;
+    opacity: 100%;
+
+    border-top-right-radius: 0px;
+    border-bottom-right-radius: 0px;
+  }
+}
+.deleteActionButton:hover {
+  background-color: #00000070;
+  width: 50px !important;
+}
+.actionButton {
+  width: 50px;
+  position: relative;
+
+  height: 20px;
+  margin-top: auto;
+  margin-bottom: auto;
+  border-radius: 40px;
+  text-align: center;
+  padding-top: 4px;
+  background-color: #00000030;
+  box-shadow: inset 0 0 2px #ffffff20;
+  color: #ffffff80;
+  margin-top: -21px;
+  margin-left: 0px;
+  z-index: 0;
+  font-size: 16px;
+  margin-left: auto;
+  opacity: 0%;
+  border-top-right-radius: 0px;
+  border-bottom-right-radius: 0px;
+  transition: opacity 0.3s ease;
+  transition: background-color 0.3s ease;
+  transition: width 0.3s ease;
+  transition: height 0.3s ease;
+  transition: margin-left 0.3s ease;
+}
+.deleteActionButton:hover .actionButton {
+  width: 50px;
+  opacity: 100%;
+  background-color: #00000050;
+  animation-name: bet;
+  animation-duration: 0.5s;
+  margin-left: -50px;
+}
+
+.deleteActionButton:active {
+  width: 55px !important;
+}
+
+.barbut {
+  height: 85%;
+  width: 115px;
+  margin: 0px;
+  border-radius: 120px;
+  border: #131313 solid 5px;
+  background-color: #131313;
+  margin-left: 6px;
+  display: flex;
+  align-self: center;
+  z-index: 1;
+}
+.frst {
+  margin-left: 10% !important;
+}
+.barbuttontext {
+  font-size: 2rem;
+  color: #949494;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: auto;
+  margin-bottom: auto;
+}
+.texta {
+  font-size: 15px;
+  color: #949494;
+  text-align: left;
+  width: 90%;
+  padding: 12px;
+}
+.barbuttontexta {
+  transition: color 0.4s ease;
+  font-size: 18px;
+  color: #949494;
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: auto;
+  margin-bottom: auto;
+}
+btext {
+  transition: color 0.4s ease;
+  font-size: 18px;
+  color: #949494;
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: auto;
+  margin-bottom: auto;
+}
+.appearabletext {
+  transition:
+    all 0.2s ease,
+    font-size 0.15s ease;
+  font-size: 0px;
+  animation-name: giggle;
+  animation-duration: 0.4s;
+  animation-iteration-count: infinite;
+  scale: 0;
+  color: #949494;
+  text-align: center;
+  margin-left: 0vw;
+  margin-right: 0vw;
+  margin-top: auto;
+  margin-bottom: auto;
+  padding: 0px;
+}
+.addButton {
+  cursor: pointer;
+  margin-left: auto;
+  transition: all 0.3s ease;
+  margin-right: 1.5vh;
+  border-radius: 12px;
+  background-color: #ffffff10;
+  backdrop-filter: blur(12px);
+  margin-bottom: -4vh;
+  height: 7vh;
+  width: 7vh;
+}
+.addButton:hover {
+  background-color: #ffffff15;
+}
+.addButton:active {
+  background-color: #ffffff25;
+}
+
+.appear {
+  scale: unset;
+}
+.appear:hover .appearabletext {
+  font-size: 18px;
+  margin-left: 1.5vw;
+  margin-right: 1.5vw;
+  scale: 1;
+}
+.appear:hover .trash {
+  animation-name: giggle;
+  animation-duration: 0.3s;
+  animation-iteration-count: infinite;
+}
+.barbutton:active {
+  background-color: #ffffff50;
+  transition: background-color 0.3s ease;
+}
+.barbutton:active .barbuttontext {
+  color: #ffffff99;
+}
+.margintop {
+  margin-top: 30px;
+}
+.title {
+  color: #ffffff;
+  font-size: 33px;
+}
+.blk {
+  color: #b2b2b2 !important;
+}
+.smalltext {
+  font-size: 12px;
+  color: #ffffff80;
+}
+.halftransparent {
+  opacity: 75%;
+}
+
+.flexbox {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+[contenteditable] {
+  outline: 0px solid transparent;
+}
+.center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.tiled {
+  width: 100%;
+  height: 100%;
+  border-radius: 12px;
+  background-color: #ffffff10;
+  margin: auto;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+.tiledbottom {
+  width: 100%;
+  position: static;
+  background-color: #00000070;
+  text-align: center;
+  padding: 6px;
+  font-size: 20px;
+  color: #ffffff90;
+  border-radius: 0px;
+  border-top-right-radius: 12px;
+  border-top-left-radius: 12px;
+  margin-top: auto;
+  margin-left: auto;
+  margin-right: auto;
+}
+.issue {
+  width: calc(95% - 6px);
+  height: 30%;
+  padding: 6px;
+  border-radius: 12px;
+  border-bottom: #ffffff10 solid 2px;
+  background-color: #00000050;
+  animation-name: appearfaden;
+  animation-duration: 0.3s;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 5px;
+  box-shadow: inset 0 0 2px #ffffff10;
+}
+.image {
+  margin: auto;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-clip: content-box;
+  background-position: center;
+  width: 70%;
+  height: 70%;
+  opacity: 70%;
+  transition: all 0.3s ease;
+  text-align: center;
+}
+@keyframes marginbounce {
+  0% {
+    margin-top: -98vh;
+  }
+  50% {
+    margin-top: -94vh;
+  }
+  100% {
+    margin-top: -98vh;
+  }
+}
+@keyframes marginbouncesecondpart {
+  0% {
+    margin-top: -94vh;
+  }
+  100% {
+    margin-top: -98vh;
+  }
+}
+.imagefull {
+  margin: auto;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-clip: content-box;
+  background-position: center;
+  width: 900%;
+  height: 100%;
+  opacity: 70%;
+  text-align: center;
+}
+@keyframes savedldk {
+  0% {
+    width: 160%;
+    height: 160%;
+  }
+  100% {
+    height: 70%;
+    width: 70%;
+  }
+}
+@keyframes showBarsButton {
+  0% {
+    max-height: 80%;
+    margin-top: auto;
+    height: 45%;
+    background-color: #00000060;
+    opacity: 100%;
+    margin-bottom: 5px;
+    width: 90%;
+    filter: blur(0px);
+    border-radius: 20px;
+  }
+  20% {
+    filter: blur(0px);
+  }
+  41% {
+    height: 21px;
+    width: 45%;
+    max-height: 80%;
+    filter: blur(22px);
+    opacity: 70%;
+    margin-bottom: 35%;
+    background-color: #ffffff15;
+    font-size: 20px;
+  }
+  55% {
+    height: 21px;
+    width: 35%;
+    max-height: 80%;
+    opacity: 70%;
+    background-color: #ffffff15;
+    font-size: 20px;
+  }
+  60% {
+    filter: blur(0px);
+  }
+  80% {
+    margin-bottom: -1.5vh;
+  }
+  100% {
+    filter: blur(0px);
+    opacity: 100%;
+    border-radius: 6px;
+    margin-bottom: 0px;
+    font-size: 20px;
+    width: 45%;
+    height: 21px;
+    background-color: #ffffff15;
+  }
+}
+@keyframes showButtonBars {
+  0% {
+    filter: blur(0px);
+    opacity: 100%;
+    margin-bottom: 0px;
+    font-size: 20px;
+    width: 45%;
+    max-height: 80%;
+    height: 21px;
+    background-color: #ffffff15;
+  }
+  45% {
+    opacity: 70%;
+    margin-bottom: 45%;
+    height: 30px;
+    border-radius: 10px;
+    background-color: #ffffff15;
+    font-size: 20px;
+  }
+  100% {
+    max-height: 80%;
+    margin-top: auto;
+    height: 45%;
+    background-color: #00000060;
+    opacity: 100%;
+    margin-bottom: 5px;
+    width: 90%;
+    filter: blur(0px);
+    border-radius: 20px;
+  }
+}
+.switchObjs {
+  background-image: url(./AppData/switchobjs.png);
+  animation-name: savedldk;
+  animation-duration: 0.55s;
+}
+.openExternally {
+  opacity: 50%;
+  background-image: url(./AppData/openExternally.png);
+  height: 90%;
+  width: 8%;
+  margin-left: auto;
+  margin-right: 1vw !important;
+}
+.actionUp {
+  background-image: url(./AppData/actionUp.png);
+  animation-name: savedldk;
+  animation-duration: 0.65s;
+}
+.trash {
+  background-image: url(./AppData/trash.png);
+}
+.add {
+  background-image: url(./AppData/add.png);
+  animation-name: savedldk;
+  opacity: 50%;
+  animation-duration: 0.65s;
+}
+.editAction {
+  background-image: url(./AppData/view.png);
+  animation-name: savedldk;
+  opacity: 50%;
+  animation-duration: 0.65s;
+}
+.actionDown {
+  background-image: url(./AppData/actionDown.png);
+  animation-name: savedldk;
+  animation-duration: 0.75s;
+}
+
+@keyframes savedldk2 {
+  0% {
+    width: 160%;
+    height: 160%;
+  }
+  100% {
+    height: 100%;
+    width: 100%;
+  }
+}
+@keyframes swipeToLeft {
+  0% {
+    margin-right: 5%;
+    width: 90% !important;
+    z-index: 0;
+    min-width: 89%;
+  }
+  100% {
+    margin-right: 250%;
+    z-index: 0;
+    width: 90% !important;
+    min-width: 89%;
+  }
+}
+@keyframes swipeToLeft2 {
+  0% {
+    margin-left: 250%;
+    width: 90% !important;
+    z-index: 0;
+    min-width: 89%;
+  }
+  100% {
+    margin-left: 4%;
+    z-index: 0;
+    width: 90% !important;
+    min-width: 89%;
+  }
+}
+.save {
+  background-image: url(./AppData/save.png);
+  width: 100%;
+  height: 100%;
+  opacity: 20%;
+  animation-name: savedldk2;
+  animation-duration: 0.75s;
+}
+
+.savenm {
+  background-image: url(./AppData/save.png);
+  width: 100%;
+  height: 100%;
+  opacity: 20%;
+}
+.colors {
+  background-image: url(./AppData/colors.png);
+  width: 100%;
+  height: 100%;
+}
+.export {
+  background-image: url(./AppData/export.png);
+  width: 100%;
+  height: 100%;
+}
+.import {
+  background-image: url(./AppData/import.png);
+  width: 100%;
+  height: 100%;
+}
+.startbot {
+  background-image: url(./AppData/startbot.png);
+  width: 100%;
+  height: 100%;
+}
+.botsetup {
+  background-image: url(./AppData/setup.png);
+  width: 100%;
+  height: 100%;
+}
+.backArrow {
+  background-image: url(./AppData/backArrow.png);
+  width: 110%;
+  margin-top: -5%;
+  height: 110%;
+  opacity: 20%;
+  margin-left: 0%;
+  transition: margin-left 0.25s ease;
+}
+.backArrow:hover {
+  margin-left: -15%;
+}
+.openMenu {
+  background-image: url(./AppData/openMenu.png);
+  animation-name: savedldk;
+  animation-duration: 0.75s;
+}
+.focuds {
+  background-image: url(./AppData/focusHighlight.png);
+  width: 100%;
+  height: 100%;
+}
+.checkmark {
+  background-image: url(./AppData/checkmark.png);
+  width: 100%;
+  opacity: 30%;
+  height: 100%;
+}
+.saveGif {
+  background-image: url(./AppData/save.gif);
+  width: 100%;
+  height: 100%;
+  opacity: 20%;
+}
+.saveAN {
+  background-image: url(./AppData/save.png);
+  width: 100%;
+  height: 100%;
+  opacity: 20%;
+}
+@keyframes fdn {
+  0% {
+    width: 45%;
+  }
+  50% {
+    width: 40%;
+  }
+  100% {
+    width: 45%;
+  }
+}
+.fade {
+  animation-name: appearfadenmt !important;
+  animation-duration: 0.5s;
+}
+@keyframes fadeinout {
+  0% {
+    transform: rotate("0deg");
+    opacity: 100%;
+  }
+  25% {
+    transform: rotate("15deg");
+  }
+  50% {
+    opacity: 20%;
+  }
+  75% {
+    transform: rotate("-15deg");
+  }
+  100% {
+    opacity: 100%;
+    transform: rotate("0deg");
+  }
+}
+.fadeinout {
+  animation-name: fadeinout !important;
+  animation-duration: 1s;
+  animation-iteration-count: infinite;
+}
+.slower {
+  animation-duration: 1s !important;
+}
+.ring {
+  background-image: url(./AppData/loading.gif);
+  margin: auto;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-clip: content-box;
+  background-position: center;
+  width: 90%;
+  height: 90%;
+  text-align: center;
+  opacity: 20%;
+  width: 10vh;
+  height: 10vh;
+  margin: auto;
+}
+body {
+  font-family:
+    "Arial",
+    Arial,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    Oxygen,
+    Ubuntu,
+    Cantarell,
+    "Open Sans",
+    "Helvetica Neue",
+    sans-serif,
+    sans-serif !important;
+  padding: -8px;
+  overflow: hidden;
+  cursor: default;
+  user-select: none;
+  background-color: unset;
+  justify-content: center;
+  align-items: center;
+  transition: all ease 0.5s;
+}
+.colorTile {
+  width: 95%;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 1.3vh;
+  border-radius: 12px;
+}
+.colorTileText {
+  font-size: 18px;
+  color: #949494;
+  text-align: center;
+  background: linear-gradient(
+    70deg,
+    #ffffff15 0%,
+    #ffffff25 70%,
+    #ffffff05 130%
+  );
+  backdrop-filter: blur(12px);
+  margin-top: auto;
+  border-radius: 12px;
+  padding: 12px;
+  margin-bottom: auto;
+  width: calc(100% - 24px);
+}
+
+::-webkit-scrollbar {
+  width: 0px;
+  height: 0px !important;
+}
+::-webkit-scrollbar-track {
+  height: 0px !important;
+
+  border-radius: 100px;
+}
+::-webkit-scrollbar-thumb {
+  height: 0px !important;
+
+  border-radius: 100px;
+  background: #ffffff00;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #ffffff00;
+}
+html {
+  scroll-behavior: smooth;
+  /**/
+}
+
+.forceRounded {
+  border-radius: 100px !important;
+}
+
+::selection {
+  background-color: var(--highlight-color);
+  border-radius: 12px !important;
+}
+
+@keyframes dcreateeActionButtonorsum {
+  0% {
+    overflow-y: auto;
+    height: 0px;
+    width: 70%;
+    padding: 0px;
+    margin-top: 0vh;
+  }
+  100% {
+    overflow-y: auto;
+    width: 95%;
+    margin-top: 0.7vh;
+    padding: 4px;
+    height: 24px;
+  }
+}
+.animatednewactionanim {
+  animation-name: dcreateeActionButtonorsum !important;
+  animation-duration: 0.25s !important;
+}
+
+input {
+  transition: border 0.4s;
+  border: inherit;
+  margin: inherit;
+  margin-left: inherit;
+  margin-right: inherit;
+  margin-top: inherit;
+  margin-bottom: inherit;
+  margin: inherit;
+  display: block;
+  padding: inherit;
+}
+input:focus {
+  border: inherit;
+  outline: none;
+  background-color: inherit;
+}
+input:active {
+  border: inherit;
+  background-color: inherit;
+  outline: none;
+}
+@keyframes fromlighttodark {
+  0% {
+    background-color: #ffffff10;
+  }
+  100% {
+    background-color: #00000050;
+  }
+}
+@keyframes fromdarktolight {
+  100% {
+    background-color: #ffffff10;
+  }
+  0% {
+    background-color: #00000050;
+  }
+}
+.sidebar {
+  position: fixed;
+  margin-top: -2vh;
+  margin-left: -1.7vw;
+  height: 100vh;
+  width: 1vw;
+  transition: width 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  z-index: 2147483647;
+  animation-name: fromdarktolight;
+  animation-duration: 0.2s;
+  backdrop-filter: blur(12px);
+  overflow: auto;
+  background-color: #ffffff10;
+}
+.sidebar:hover {
+  width: 15vw;
+  background-color: #00000050;
+  animation-name: fromlighttodark;
+}
+.sidebartext {
+  font-size: 0px;
+  color: #949494;
+  text-align: center;
+  margin: auto;
+  margin-right: 0vw;
+  margin-left: 0vw;
+}
+.sidebar:hover .sidebartext {
+  font-size: 2vh;
+  transition: font-size 0.3s ease;
+  margin-right: 1vw;
+  margin-left: 1vw;
+}
+.sidebarbutton {
+  width: 0vw;
+  height: auto;
+  margin-left: auto;
+  margin-right: auto;
+  transition: all 0.2s ease;
+  background-color: #ffffff10;
+  padding: 6px;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-top: 1vh;
+  box-shadow: inset 0 0 2px #ffffff10;
+}
+.sidebar:hover .sidebarbutton {
+  width: calc(14vw - 12px);
+}
+.sidebarbutton:hover {
+  background-color: #ffffff15;
+}
+.outlined {
+  outline: #ffffff30 solid 3px;
+}
+@keyframes snaptoscale {
+  0% {
+    opacity: 0%;
+    transform: scale(0.5);
+  }
+  50% {
+    opacity: 100%;
+  }
+  100% {
+    opacity: 100%;
+    transform: scale(1);
+  }
+}
+.settingspane {
+  animation-name: snaptoscale;
+  animation-duration: 0.4s;
+  width: 95vw;
+  height: 90vh;
+  margin: auto;
+  align-self: center;
+  justify-self: center;
+  background-color: #ffffff09;
+  margin-top: -95vh;
+  border-radius: 12px;
+  overflow: auto;
+  border-top-left-radius: 0px;
+  position: absolute;
+  z-index: 2147483627;
+}
+.pad {
+  padding: 12px;
+  border-radius: 12px;
+}
+.bpad {
+  padding-top: 4px !important;
+  padding-bottom: 4px !important;
+  height: 28px !important;
+}
+.ml {
+  margin-left: 1vw;
+}
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+::selection {
+  background-color: #000000;
+}
+.optionright {
+  width: calc(46.5% - 10px);
+  padding: 5px;
+  margin-left: 0%;
+  margin-right: 0%;
+  margin-top: 0px;
+  height: 23px;
+  overflow: auto;
+  transition:
+    all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+    opacity 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+.optionleft {
+  width: calc(43.5% - 10px);
+  margin-right: 1.5%;
+  margin-left: 0%;
+  padding: 5px;
+  margin-top: 0px;
+  overflow: auto;
+  height: 23px;
+  transition:
+    all 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+    opacity 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+.coloredTile {
+  opacity: 40%;
+  transition: opacity 0.15s ease;
+}
+.coloredTile:hover {
+  opacity: 60%;
+}
+
+.betaIndicator {
+  background: linear-gradient(45deg, #ffffff10 0%, #4260f5 180%);
+  padding: 4px;
+  padding-left: 7px;
+  padding-right: 7px;
+  border-radius: 1000px;
+  font-size: 13px;
+  color: #949494;
+  text-align: center;
+  margin: auto;
+}
+
+text {
+  color: #ffffff85;
+  font-size: 15.5px;
+  margin-left: calc(5% - 9px);
+  margin-top: 2.5px;
+}
+
+@keyframes flash {
+  0% {
+    opacity: 100%;
+  }
+  50% {
+    opacity: 50%;
+  }
+  100% {
+    opacity: 100%;
+  }
+}
+.flash {
+  opacity: 100%;
+  animation-name: flash;
+  animation-duration: 1s;
+  animation-iteration-count: infinite;
+}

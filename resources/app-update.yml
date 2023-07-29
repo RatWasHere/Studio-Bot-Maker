@@ -1,8 +1,9 @@
-        "nsis": {
-            "artifactName": "AppUpdater-${productName}${version}.${ext}",
-            "oneClick": true,
-            "perMachine": false,
-            "allowToChangeInstallationDirectory": false,
-            "runAfterFinish": true,
-            "deleteAppDataOnUninstall": true
-        }
+"nsis":
+  {
+    "artifactName": "AppUpdater-${productName}${version}.${ext}",
+    "oneClick": true,
+    "perMachine": false,
+    "allowToChangeInstallationDirectory": false,
+    "runAfterFinish": true,
+    "deleteAppDataOnUninstall": true,
+  }

@@ -1,11 +1,11 @@
 ---
 name: Feature Suggestion
-about: Suggest a new function Studio Bot Maker should have. It can range anywhere
+about:
+  Suggest a new function Studio Bot Maker should have. It can range anywhere
   from an action to a redesign!
-title: ''
-labels: ''
+title: ""
+labels: ""
 assignees: RatWasHere
-
 ---
 
 **Is this feature you're requesting related to a bug?**
