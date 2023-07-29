@@ -1,24 +1,26 @@
 module.exports = {
-    data: {"name":"Create List", "listName":""},
-     
-    UI: {"compatibleWith":["Any"],
+  data: { name: "Create List", listName: "" },
 
-    "text":"Create List",
-    "sepbar":"", 
+  UI: {
+    compatibleWith: ["Any"],
 
-    "btext":"List Name",
-    "input!":"listName",
+    text: "Create List",
+    sepbar: "",
 
-    "preview":"listName", 
-    "previewName":"Name"},
+    btext: "List Name",
+    "input!": "listName",
 
-    async run(values, message, uID, fs, client, runner, bridge)  { 
-      let transferVariables = require(`../Toolkit/variableTools.js`).transf
-      
-      const transf = (value) => {
-        transferVariables(value, bridge.variables)
-      }
+    preview: "listName",
+    previewName: "Name",
+  },
 
-      bridge.variables[transf(values.listName)] = []
-    }
-}
+  async run(values, message, uID, fs, client, runner, bridge) {
+    let transferVariables = require(`../Toolkit/variableTools.js`).transf;
+
+    const transf = (value) => {
+      transferVariables(value, bridge.variables);
+    };
+
+    bridge.variables[transf(values.listName)] = [];
+  },
+};

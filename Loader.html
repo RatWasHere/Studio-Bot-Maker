@@ -1,51 +1,74 @@
 <html>
-    <link rel="stylesheet" href="main.css">
-    <div id="everything_container" style="width: 100vw; transform: scale(0.2); transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); height: 100vh; margin-top: -8px; margin-left: -8px; margin-bottom: -50px; margin-right: -50px; border-radius: 12px; background-color: #FFFFFF15;">
-    <div class="everything_container_2" style="background-color: #FFFFFF13; width: 100vw; height: 100vh; overflow: auto; border-radius: 12px;">
-    <div id="projects">
+  <link rel="stylesheet" href="main.css" />
+  <div
+    id="everything_container"
+    style="
+      width: 100vw;
+      transform: scale(0.2);
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      height: 100vh;
+      margin-top: -8px;
+      margin-left: -8px;
+      margin-bottom: -50px;
+      margin-right: -50px;
+      border-radius: 12px;
+      background-color: #ffffff15;
+    "
+  >
+    <div
+      class="everything_container_2"
+      style="
+        background-color: #ffffff13;
+        width: 100vw;
+        height: 100vh;
+        overflow: auto;
+        border-radius: 12px;
+      "
+    >
+      <div id="projects"></div>
     </div>
-</div>
-</div>
-    <script src="./AppData/Kits/Loader.js"></script>
-    <script>
+  </div>
+  <script src="./AppData/Kits/Loader.js"></script>
+  <script>
     /* Cheers, ChatGPT */
     function areObjectsEqual(obj1, obj2) {
-    // Check if both objects are of type 'object'
-    if (typeof obj1 !== 'object' || typeof obj2 !== 'object') {
+      // Check if both objects are of type 'object'
+      if (typeof obj1 !== "object" || typeof obj2 !== "object") {
         return false;
-    }
+      }
 
-    // Check if the number of properties is the same
-    const obj1Keys = Object.keys(obj1);
-    const obj2Keys = Object.keys(obj2);
-    if (obj1Keys.length !== obj2Keys.length) {
+      // Check if the number of properties is the same
+      const obj1Keys = Object.keys(obj1);
+      const obj2Keys = Object.keys(obj2);
+      if (obj1Keys.length !== obj2Keys.length) {
         return false;
-    }
+      }
 
-    // Check if the property values are equal
-    for (let key of obj1Keys) {
+      // Check if the property values are equal
+      for (let key of obj1Keys) {
         if (!obj2.hasOwnProperty(key) || obj1[key] !== obj2[key]) {
-        return false;
+          return false;
         }
+      }
+      return true;
     }
-    return true;
-    }
-    const {ipcRenderer} = require('electron')
-    document.body.style.padding = '0px !important';
-    document.body.style.paddingTop = '0px !important';
-    document.body.style.paddingBottom = '0px !important';
-    document.body.style.paddingLeft = '0px !important';
-    document.body.style.paddingRight = '0px !important';
-    document.body.style.borderRadius = '12px !important'
-    document.body.style.backgroundColor = '#FFFFFF00'
-    document.body.style.transition = 'all 0.2s ease'
-    document.body.style.background = 'linear-gradient(45deg, rgb(0, 8, 20) 0%, rgb(18, 18, 18) 170%)'
-    
+    const { ipcRenderer } = require("electron");
+    document.body.style.padding = "0px !important";
+    document.body.style.paddingTop = "0px !important";
+    document.body.style.paddingBottom = "0px !important";
+    document.body.style.paddingLeft = "0px !important";
+    document.body.style.paddingRight = "0px !important";
+    document.body.style.borderRadius = "12px !important";
+    document.body.style.backgroundColor = "#FFFFFF00";
+    document.body.style.transition = "all 0.2s ease";
+    document.body.style.background =
+      "linear-gradient(45deg, rgb(0, 8, 20) 0%, rgb(18, 18, 18) 170%)";
 
     try {
-    settings = JSON.parse(fs.readFileSync('C:/ProgramData/settings.json'));
-    data = JSON.parse(fs.readFileSync('./AppData/data.json'));
-    projectContainer = document.getElementById('projects');
+      ndask[oofskf];
+      settings = JSON.parse(fs.readFileSync("C:/ProgramData/settings.json"));
+      data = JSON.parse(fs.readFileSync("./AppData/data.json"));
+      projectContainer = document.getElementById("projects");
     } catch (err) {
         document.getElementById('projects').innerHTML = `
         <div class="image flash" style="background-image: url(./icon.png)"></div>
@@ -58,70 +81,111 @@
             document.body.innerHTML = ''
             location.reload()
         }, 10500)
+      document.getElementById("projects").innerHTML = `
+        <div class="flexbox" style="width: 100vw; height: 100vh">
+        <div class="image" url=""></div>
+        </div>
+
+        `;
+      document.getElementById(
+        "everything_container",
+      ).style.transform = `scale(0.9)`;
+      document.body.style.background = "unset !important";
+      document.getElementById(
+        "everything_container",
+      ).style.background = `linear-gradient(45deg, ${data.color} 0%, rgb(18, 18, 18) 170%)`;
+      setTimeout(() => {
+        ipcRenderer.send("restart");
+        document.body.innerHTML = "";
+        location.reload();
+      }, 10500);
     }
 
-        document.getElementById('everything_container').style.transform = `scale(1)`
-        document.getElementById('everything_container').style.background = `linear-gradient(45deg, ${data.color} 0%, rgb(18, 18, 18) 170%)`
-        projectContainer.innerHTML += `
+    document.getElementById(
+      "everything_container",
+    ).style.transform = `scale(1)`;
+    document.getElementById(
+      "everything_container",
+    ).style.background = `linear-gradient(45deg, ${data.color} 0%, rgb(18, 18, 18) 170%)`;
+    projectContainer.innerHTML += `
         <div class="dimension hoverablez" onclick="sendProject('_')" style="width: 95%; margin: auto; border-radius: 9px; padding: 9px; margin-top: 3vh; margin-bottom: 1vh;">
                 <div class="barbuttontexta textToLeft" style="font-size: 23px !important; margin-left: 1vw !important;">Create</div>
                 <div class="barbuttontexta textToLeft" style="margin-left: 1vw !important;">New Project</div>
         </div>
-        `
-        projectContainer.innerHTML += `
+        `;
+    projectContainer.innerHTML += `
         <div class="dimension hoverablez" onclick="sendProject(undefined)" style="width: 95%; margin: auto; border-radius: 9px; padding: 9px; margin-top: 3vh; margin-bottom: 1vh;">
                 <div class="barbuttontexta textToLeft" style="font-size: 23px !important; margin-left: 1vw !important;">Local</div>
-                <div class="barbuttontexta textToLeft" style="margin-left: 1vw !important;">Project Name: ${data.name}</div>
-                <div class="barbuttontexta textToLeft" style="opacity: 50%; margin-left: 1vw !important;">${Object.keys(data.commands).length} Groups</div>
+                <div class="barbuttontexta textToLeft" style="margin-left: 1vw !important;">Project Name: ${
+                  data.name
+                }</div>
+                <div class="barbuttontexta textToLeft" style="opacity: 50%; margin-left: 1vw !important;">${
+                  Object.keys(data.commands).length
+                } Groups</div>
         </div>
-        `
-        let count = 0;
-        let shownProjects = []
-        for (let project of settings.projects) {
-            count++
-            let extra = ''
-            if (!shownProjects.includes(project)) {
-                shownProjects.push(project)
-            if (data.prjSrc == project) {
-                console.log(JSON.parse(fs.readFileSync(project + '\\AppData\\data.json')))
-            if (areObjectsEqual(Object.values(data.commands), Object.values(JSON.parse(fs.readFileSync(project + '\\AppData\\data.json')).commands)) == true) {
-                extra = ` - Latest - On Par With Local`
-            } else {
-                extra = ` - Unsaved - Older Than Local`
-            }
-            }
+        `;
+    let count = 0;
+    let shownProjects = [];
+    for (let project of settings.projects) {
+      count++;
+      let extra = "";
+      if (!shownProjects.includes(project)) {
+        shownProjects.push(project);
+        if (data.prjSrc == project) {
+          console.log(
+            JSON.parse(fs.readFileSync(project + "\\AppData\\data.json")),
+          );
+          if (
+            areObjectsEqual(
+              Object.values(data.commands),
+              Object.values(
+                JSON.parse(fs.readFileSync(project + "\\AppData\\data.json"))
+                  .commands,
+              ),
+            ) == true
+          ) {
+            extra = ` - Latest - On Par With Local`;
+          } else {
+            extra = ` - Unsaved - Older Than Local`;
+          }
+        }
 
-            let projectName = '<span style="opacity: 50%;">Deleted</span>'
-            let projectGroups = 0;
-            try {
-                projectName = JSON.parse(fs.readFileSync(project + '/AppData/data.json')).name;
-                projectGroups = Object.keys(JSON.parse(fs.readFileSync(project + '/AppData/data.json')).commands).length
-            } catch (err) {}
-            console.log(project)
-            projectContainer.innerHTML += `
+        let projectName = '<span style="opacity: 50%;">Deleted</span>';
+        let projectGroups = 0;
+        try {
+          projectName = JSON.parse(
+            fs.readFileSync(project + "/AppData/data.json"),
+          ).name;
+          projectGroups = Object.keys(
+            JSON.parse(fs.readFileSync(project + "/AppData/data.json"))
+              .commands,
+          ).length;
+        } catch (err) {}
+        console.log(project);
+        projectContainer.innerHTML += `
             <div class="dimension hoverablez" id="${count}" style="width: 95%; margin: auto; border-radius: 9px; padding: 9px; margin-top: 1vh; margin-bottom: 1vh;">
                 <div class="barbuttontexta textToLeft" style="font-size: 23px !important; margin-left: 1vw !important; margin-bottom: 2vh !important;">Exported ${extra}</div>
                 <div class="barbuttontexta textToLeft" style="margin-left: 1vw !important;">Project Name: ${projectName}</div>
                 <div class="barbuttontexta textToLeft" style="opacity: 50%; margin-left: 1vw !important;">${projectGroups} Groups</div>
             </div>
-            `
-            }
-            try {
-                document.getElementById(count).addEventListener('mouseup', () => {
-                sendProject(project)
-            })
-            } catch (err) {}
-        }
-        function sendProject(dir) {
-            ipcRenderer.send('selectedProject', dir);
-            document.body.style.scale = '0'
-            setTimeout(() => {
-                document.body.style.background = 'unset !important'
-                document.body.style.scale = '1'
-                projectContainer.innerHTML = `
+            `;
+      }
+      try {
+        document.getElementById(count).addEventListener("mouseup", () => {
+          sendProject(project);
+        });
+      } catch (err) {}
+    }
+    function sendProject(dir) {
+      ipcRenderer.send("selectedProject", dir);
+      document.body.style.scale = "0";
+      setTimeout(() => {
+        document.body.style.background = "unset !important";
+        document.body.style.scale = "1";
+        projectContainer.innerHTML = `
                 <div class="barbuttontexta" style="padding: 12px; backdrop-filter: blur(12px); background-color: #FFFFFF10;">Loading...</div>
-                `
-            }, 200)
-        }
-    </script>
+                `;
+      }, 200);
+    }
+  </script>
 </html>

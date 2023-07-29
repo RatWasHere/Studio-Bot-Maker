@@ -1,7 +1,9 @@
-node_modules
+node_modules/
 out/
 dist/
 StudioCertificate.pfx
 GH_TOKEN
 /AppData/data.json
 .vscode
+docs
+resources

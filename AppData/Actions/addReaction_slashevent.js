@@ -1,31 +1,31 @@
 module.exports = {
-    data: {"name":"Add Reaction", 
-    "message":"",
-    "emoji":""
-},
+  data: { name: "Add Reaction", message: "", emoji: "" },
 
-    UI: {"compatibleWith":["Slash", "Event"], 
-    "text":"Add Reaction", 
-    
-    "sepbar":"",
+  UI: {
+    compatibleWith: ["Slash", "Event"],
+    text: "Add Reaction",
 
-    "btext":"Message Variable",
-    "input_direct":"message",
+    sepbar: "",
 
-    "sepbar0":"",
+    btext: "Message Variable",
+    input_direct: "message",
 
-    "btext0":"Reaction Emoji",
+    sepbar0: "",
+
+    btext0: "Reaction Emoji",
 
     "input*": "emoji",
 
-    "preview":"emoji",
-    "previewName":"Emoji"
-    },
+    preview: "emoji",
+    previewName: "Emoji",
+  },
 
-    async run(values, inter, uID, fs, client, bridge) { 
-        const varTools = require(`../Toolkit/variableTools.js`)
+  async run(values, inter, uID, fs, client, bridge) {
+    const varTools = require(`../Toolkit/variableTools.js`);
 
-        let message = bridge.variables[varTools.transf(values.message, bridge.variables)];
+    let message =
+      bridge.variables[varTools.transf(values.message, bridge.variables)];
 
-        message.createReaction(varTools.transf(values.emoji, bridge.variables))
-    }}
+    message.createReaction(varTools.transf(values.emoji, bridge.variables));
+  },
+};
