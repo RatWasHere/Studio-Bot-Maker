@@ -61,11 +61,8 @@
     document.body.style.borderRadius = "12px !important";
     document.body.style.backgroundColor = "#FFFFFF00";
     document.body.style.transition = "all 0.2s ease";
-    document.body.style.background =
-      "linear-gradient(45deg, rgb(0, 8, 20) 0%, rgb(18, 18, 18) 170%)";
-
+    document.body.style.background = "unset !important";
     try {
-      ndask[oofskf];
       settings = JSON.parse(fs.readFileSync("C:/ProgramData/settings.json"));
       data = JSON.parse(fs.readFileSync("./AppData/data.json"));
       projectContainer = document.getElementById("projects");
@@ -84,10 +81,11 @@
         ipcRenderer.send("restart");
         document.body.innerHTML = "";
         location.reload();
-      }, 10500);
+      }, 5500);
       document.getElementById("projects").innerHTML = `
         <div class="flexbox" style="width: 100vw; height: 100vh">
-        <div class="image" url=""></div>
+        <div class="ring" style="margin: auto; height: 100px; width: 100px;"></div>
+        <div class="barbuttontexta">Loading Enviroment</div>
         </div>
 
         `;

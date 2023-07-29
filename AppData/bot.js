@@ -320,57 +320,48 @@ try {
           data.commands[i].parameters[0] != undefined
         ) {
           for (let e in data.commands[i].parameters) {
-            let parameterTypes = data.commands[i].parameters[e].type;
+            let parameterType = data.commands[i].parameters[e].type;
             let values = data.commands[i].parameters[e].name;
             let option;
-            switch (parameterTypes) {
-              case "String":
+
+            console.log(parameterType)
+            switch (parameterType) {
+              case "string":
                 option =
                   interaction.data.options.getString(values, false) ||
                   defaultStringReturn;
                 break;
-              case "Boolean":
+              case "boolean":
                 option =
                   interaction.data.options.getBoolean(values, false) ||
                   defaultBooleanReturn;
                 break;
-              case "User":
+              case "user":
                 option =
                   interaction.data.options.getUser(values, false) ||
                   defaultUserReturn;
                 break;
-              case "Role":
+              case "role":
                 option =
                   interaction.data.options.getRole(values, false) ||
                   defaultRoleReturn;
                 break;
-              case "Channel":
+              case "channel":
                 option =
                   interaction.data.options.getChannel(values, false) ||
                   defaultChannelReturn;
                 break;
-              case "Integer":
+              case "integer":
                 option =
                   interaction.data.options.getInteger(values, false) ||
                   defaultIntegerReturn;
                 break;
-              case "Mentionable":
-                option =
-                  interaction.data.options.getMentionable(values, false) ||
-                  defaultMentionableReturn;
-                break;
             }
 
-            if (
-              data.commands[i].parameters[e].storeAs != undefined &&
-              data.commands[i].parameters[e].storeAs.replace(/\s/g, "")
-                .length == 0
-            ) {
-              commandParametersStorage[data.commands[i].parameters[e].storeAs] =
-                option;
-            }
+            commandParametersStorage[data.commands[i].parameters[e].storeAs] = option;
           }
         }
+        console.log(commandParametersStorage)
         runActionArray(i, interaction, client, commandParametersStorage, true);
       }
     }

@@ -83,7 +83,7 @@ module.exports = {
         ).length;
         break;
       case "Guild Owner":
-        bridge.variables[values.storeAs] = guild.fetchOwner();
+        bridge.variables[values.storeAs] = guild.owner;
         break;
     }
   },

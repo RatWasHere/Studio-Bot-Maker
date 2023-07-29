@@ -172,7 +172,7 @@ function getUIelements(UIdata) {
                   UIdata[element].extraField
                 }', '${
                   UIdata[element].storeAs
-                }'); updateFoundActionGroup(this)" onkeyup="saveField('${
+                }'); updateFoundActionGroup(this)" oninput="saveField('${
                   UIdata[element].extraField
                 }', '${
                   UIdata[element].storeAs

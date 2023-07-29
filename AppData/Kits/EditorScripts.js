@@ -149,6 +149,14 @@ function mbSelect(storeAs, menu, extraField, UIreference) {
         }, 10);
         saveField(extraField, menu);
       };
+
+      pending.addEventListener('blur', (event) => {
+        console.log('dkadadjfdkfjm')
+        setTimeout(() => {
+          validateInput(event);
+        }, 10);
+        saveField(extraField, menu);
+      })
     }
   }
 
@@ -166,11 +174,15 @@ function mbSelect(storeAs, menu, extraField, UIreference) {
 
   setTimeout(() => {
     storeAs.parentNode.innerHTML = storeAs.innerText;
-    if (
-      pending != "" &&
-      cachedParentNode.nextSibling.className !== "selectBar"
-    ) {
+    if (pending != "" && cachedParentNode.nextSibling.className !== "selectBar") {
       pending.appendAfter(cachedParentNode);
+      pending.onblur = (event) => {
+        console.log('dkadadjfdkfjm')
+        setTimeout(() => {
+          validateInput(event);
+        }, 10);
+        saveField(extraField, menu);
+      }
     }
     if (document.getElementById(extraField)) {
       if (document.getElementById(extraField + "Selector")) {
@@ -801,7 +813,7 @@ function setCaretPosition(element, caretPos) {
 
 function validateInput(event) {
   const div = event.target;
-  const text = div.textContent;
+  const text = div.innerText;
 
   // Save the current cursor position
   const selection = window.getSelection();
