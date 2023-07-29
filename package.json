@@ -72,7 +72,7 @@
     "dist": "electron-builder",
     "release": "electron-builder",
     "cert": "electron-builder create-self-signed-cert -p StudioCertificate",
-    "pretty":"prettier ."
+    "pretty": "prettier . --write"
   },
   "version": "3.5.0"
 }

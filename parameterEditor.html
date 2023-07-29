@@ -1,149 +1,259 @@
 <html>
-    <link rel="stylesheet" href="main.css">
-    <meta charset="utf8">
-    <div style="width: 100vw; overflow: auto; height: 100vh; margin-top: -8px; margin-left: -8px; filter: blur(22px); border-radius: 14px; transition: scale 0.3s ease, filter 0.5s ease; scale: 0.1;" id="everything_container">
-   
-   
-    <div id="editorContent" style="height: 90vh; width: 100vw; background-color: #FFFFFF10; overflow: auto;">
-        <div class="dimension flexbox" style="background-color: #FFFFFF03; width: 100vw; height: 11.5vh; margin-bottom: 0.5vh; justify-content: left;">
-            <div class="barbuttontexta" style="margin-left: 2vw; margin-top: 1.5vh; text-align: left;">Command Description</div>
-            <div class="input" oninput="storeCaretPosition(this); this.innerHTML = this.innerText.split('').splice(0, 32).join(''); restoreCaretPosition(this)" style="width: 95%;" id="commandDescription" contenteditable="true"></div>
+  <link rel="stylesheet" href="main.css" />
+  <meta charset="utf8" />
+  <div
+    style="
+      width: 100vw;
+      overflow: auto;
+      height: 100vh;
+      margin-top: -8px;
+      margin-left: -8px;
+      filter: blur(22px);
+      border-radius: 14px;
+      transition:
+        scale 0.3s ease,
+        filter 0.5s ease;
+      scale: 0.1;
+    "
+    id="everything_container"
+  >
+    <div
+      id="editorContent"
+      style="
+        height: 90vh;
+        width: 100vw;
+        background-color: #ffffff10;
+        overflow: auto;
+      "
+    >
+      <div
+        class="dimension flexbox"
+        style="
+          background-color: #ffffff03;
+          width: 100vw;
+          height: 11.5vh;
+          margin-bottom: 0.5vh;
+          justify-content: left;
+        "
+      >
+        <div
+          class="barbuttontexta"
+          style="margin-left: 2vw; margin-top: 1.5vh; text-align: left"
+        >
+          Command Description
         </div>
-        <div class="flexbox" style="height: 78vh; width: 100vw;">
-        <div class="dimension" id="parameters" style="width: 33vw; height: 95%; margin-top: auto; margin-bottom: auto; background-color: #FFFFFF08; border-radius: 9px; padding: 9px;"></div>
-        <div class="dimension" id="parameterWindow" style="height: 95%; width: 60vw; margin-left: 1vw; margin-top: auto; margin-bottom: auto; padding: 9px; border-radius: 9px; background-color: #FFFFFF08;"></div>
-        </div>
+        <div
+          class="input"
+          oninput="storeCaretPosition(this); this.innerHTML = this.innerText.split('').splice(0, 32).join(''); restoreCaretPosition(this)"
+          style="width: 95%"
+          id="commandDescription"
+          contenteditable="true"
+        ></div>
+      </div>
+      <div class="flexbox" style="height: 78vh; width: 100vw">
+        <div
+          class="dimension"
+          id="parameters"
+          style="
+            width: 33vw;
+            height: 95%;
+            margin-top: auto;
+            margin-bottom: auto;
+            background-color: #ffffff08;
+            border-radius: 9px;
+            padding: 9px;
+          "
+        ></div>
+        <div
+          class="dimension"
+          id="parameterWindow"
+          style="
+            height: 95%;
+            width: 60vw;
+            margin-left: 1vw;
+            margin-top: auto;
+            margin-bottom: auto;
+            padding: 9px;
+            border-radius: 9px;
+            background-color: #ffffff08;
+          "
+        ></div>
+      </div>
     </div>
 
-
-
-    <div id="selectorMenu" class="flexbox" style="height: auto; justify-content: left; width: 100vw; background-color: #FFFFFF08;">
-        <div id="buttonsContainer" class="flexbox" style="width: 100vw; height: 10vh; transition: scale 5.3s ease;">
-        <div class="barbuttonshift flexbox" style="margin-right: auto; width: 22.5vw; margin-left: 1vw;" onclick="newParameter()">
-            <div class="image add" style="width: 30% !important; height: 30px !important; margin: auto !important;"></div>
-            <div style="margin: auto;">
+    <div
+      id="selectorMenu"
+      class="flexbox"
+      style="
+        height: auto;
+        justify-content: left;
+        width: 100vw;
+        background-color: #ffffff08;
+      "
+    >
+      <div
+        id="buttonsContainer"
+        class="flexbox"
+        style="width: 100vw; height: 10vh; transition: scale 5.3s ease"
+      >
+        <div
+          class="barbuttonshift flexbox"
+          style="margin-right: auto; width: 22.5vw; margin-left: 1vw"
+          onclick="newParameter()"
+        >
+          <div
+            class="image add"
+            style="
+              width: 30% !important;
+              height: 30px !important;
+              margin: auto !important;
+            "
+          ></div>
+          <div style="margin: auto">
             <div class="barbuttontexta">Add Parameter</div>
-            <div class="smalltext" style="opacity: 50%; font-size: 8px;">CTRL+D</div>
+            <div class="smalltext" style="opacity: 50%; font-size: 8px">
+              CTRL+D
             </div>
+          </div>
         </div>
-            <div class="barbuttontexta" id="parameters-name"></div>
+        <div class="barbuttontexta" id="parameters-name"></div>
         <div class="betaIndicator">BETA</div>
-    <div class="barbuttonshift flexbox" style="margin-right: 1vw; width: 13vw; margin-left: auto;" onclick="closeparameters()">
-        <div class="image checkmark" style="width: 30% !important; height: 30px !important; margin: auto !important;"></div>
-        <div style="margin: auto;">
-        <div class="barbuttontexta">Done</div>
-        <div class="smalltext" style="opacity: 50%; font-size: 8px;">CTRL+TAB</div>
+        <div
+          class="barbuttonshift flexbox"
+          style="margin-right: 1vw; width: 13vw; margin-left: auto"
+          onclick="closeparameters()"
+        >
+          <div
+            class="image checkmark"
+            style="
+              width: 30% !important;
+              height: 30px !important;
+              margin: auto !important;
+            "
+          ></div>
+          <div style="margin: auto">
+            <div class="barbuttontexta">Done</div>
+            <div class="smalltext" style="opacity: 50%; font-size: 8px">
+              CTRL+TAB
+            </div>
+          </div>
         </div>
+      </div>
     </div>
-    </div>
-    </div>
-    </div>
-</div>
-    <script src="./AppData/Kits/Loader.js"></script>
-    <script src="./AppData/Kits/settings.js"></script>
+  </div>
+  <script src="./AppData/Kits/Loader.js"></script>
+  <script src="./AppData/Kits/settings.js"></script>
 
-<script>
-
-    var datjson = JSON.parse(fs.readFileSync('./AppData/data.json'))
-    let themeColor = datjson.color
-    document.getElementById('everything_container').style.background = `linear-gradient(45deg, ${themeColor} 0%, #121212 ${editorSettings.smoothness})`
-    document.body.style.transition = 'all 0.2s ease'
-    document.body.style.backgroundColor = '#FFFFFF00'
-    const {ipcRenderer} = require('electron')
+  <script>
+    var datjson = JSON.parse(fs.readFileSync("./AppData/data.json"));
+    let themeColor = datjson.color;
+    document.getElementById(
+      "everything_container",
+    ).style.background = `linear-gradient(45deg, ${themeColor} 0%, #121212 ${editorSettings.smoothness})`;
+    document.body.style.transition = "all 0.2s ease";
+    document.body.style.backgroundColor = "#FFFFFF00";
+    const { ipcRenderer } = require("electron");
     let data;
-    document.onkeydown=function(event) {
-        if (event.key == 'Tab' && event.ctrlKey == true) {
-            closeparameters()
-        }
-        if (event.key.toLowerCase() == 'q' && event.ctrlKey == true) {
-            closeparameters()
-        }
-        if (event.key.toLowerCase() == 'd' && event.ctrlKey == true) {
-            newParameter()
-        }
-    }
+    document.onkeydown = function (event) {
+      if (event.key == "Tab" && event.ctrlKey == true) {
+        closeparameters();
+      }
+      if (event.key.toLowerCase() == "q" && event.ctrlKey == true) {
+        closeparameters();
+      }
+      if (event.key.toLowerCase() == "d" && event.ctrlKey == true) {
+        newParameter();
+      }
+    };
 
-    ipcRenderer.on('data', (event, _data) => {
-        document.getElementById('everything_container').style.transition = `all 0.${editorSettings.commonAnimation}s ease`
+    ipcRenderer.on("data", (event, _data) => {
+      document.getElementById(
+        "everything_container",
+      ).style.transition = `all 0.${editorSettings.commonAnimation}s ease`;
 
-        document.getElementById('everything_container').style.scale = '1'
-        document.getElementById('everything_container').style.filter = 'blur(0px)'
-        data = _data.parameters;
-        console.log(_data, _data.description)
-        document.getElementById('commandDescription').innerHTML = _data.description
-        refreshParameters();
-        document.getElementById('parameters-name').innerHTML = `<span style="opacity: 50%">Editing Parameters Of</span> ${_data.name}`
-    })
+      document.getElementById("everything_container").style.scale = "1";
+      document.getElementById("everything_container").style.filter =
+        "blur(0px)";
+      data = _data.parameters;
+      console.log(_data, _data.description);
+      document.getElementById("commandDescription").innerHTML =
+        _data.description;
+      refreshParameters();
+      document.getElementById(
+        "parameters-name",
+      ).innerHTML = `<span style="opacity: 50%">Editing Parameters Of</span> ${_data.name}`;
+    });
 
     function newParameter() {
-        if (data.length == 10) return;
-        let newParameter = {
-            name: 'parameter',
-            type: 'string',
-            description: '-',
-            required: false,
-            choices: [],
-            storeAs: ''
-        }
-        data.push(newParameter)
-        refreshParameters()
+      if (data.length == 10) return;
+      let newParameter = {
+        name: "parameter",
+        type: "string",
+        description: "-",
+        required: false,
+        choices: [],
+        storeAs: "",
+      };
+      data.push(newParameter);
+      refreshParameters();
     }
     function deleteParameter(position) {
-        data.splice(position, 1)
-        refreshParameters()
-        if (highlightedParameter == position) {
-            document.getElementById('parameterWindow').innerHTML = ``
-        }
+      data.splice(position, 1);
+      refreshParameters();
+      if (highlightedParameter == position) {
+        document.getElementById("parameterWindow").innerHTML = ``;
+      }
     }
-    
+
     let draggedPos;
     let draggedOver;
     function startDrag(at) {
-        draggedPos = at
+      draggedPos = at;
     }
     function dragOver(at) {
-        draggedOver = at;
+      draggedOver = at;
     }
     function dragend() {
-        if (!draggedOver) return
-        data = moveArrayElement(data, draggedPos, draggedOver)
-        draggedOver = undefined;
+      if (!draggedOver) return;
+      data = moveArrayElement(data, draggedPos, draggedOver);
+      draggedOver = undefined;
 
-        refreshParameters()
+      refreshParameters();
     }
-    
-        function moveArrayElement(arr, old_index, new_index) {
-            const element = arr[old_index];
-            arr.splice(old_index, 1);
-            arr.splice(new_index, 0, element);
-        
-            return arr;
-        }
+
+    function moveArrayElement(arr, old_index, new_index) {
+      const element = arr[old_index];
+      arr.splice(old_index, 1);
+      arr.splice(new_index, 0, element);
+
+      return arr;
+    }
     function refreshParameters() {
-        let endHTML = ``
-        for (let parameter in data) {
-            let parameterName = data[parameter].name;
-            if (parameterName.split('').length > 12) {
-                parameterName = parameterName.split('').splice(0, 10).join('') + '..'
-            }
-            endHTML += `
+      let endHTML = ``;
+      for (let parameter in data) {
+        let parameterName = data[parameter].name;
+        if (parameterName.split("").length > 12) {
+          parameterName = parameterName.split("").splice(0, 10).join("") + "..";
+        }
+        endHTML += `
             <div class="action textToLeft" ondragstart="startDrag(${parameter})" ondragover="${parameter}" ondragend="dragend()" id="${parameter}" onclick="openParameter(${parameter})" style="height:24px; border-radius: 6px !important;">
                 ${parameterName}
             <div class="deleteActionButton" onclick="deleteParameter(${parameter})">✕</div>
             </div>
-            `
-        }
-        document.getElementById('parameters').innerHTML = endHTML
+            `;
+      }
+      document.getElementById("parameters").innerHTML = endHTML;
     }
     let highlightedParameter;
 
     function openParameter(parameter) {
-        try {
-            document.getElementById(highlightedParameter).style.backgroundColor = ''
-        } catch (err) {}
-        document.getElementById(parameter).style.backgroundColor = '#FFFFFF23'
-        highlightedParameter = parameter;
-        document.getElementById('parameterWindow').innerHTML = `
+      try {
+        document.getElementById(highlightedParameter).style.backgroundColor =
+          "";
+      } catch (err) {}
+      document.getElementById(parameter).style.backgroundColor = "#FFFFFF23";
+      highlightedParameter = parameter;
+      document.getElementById("parameterWindow").innerHTML = `
             <div class="barbuttontexta" style="margin-left: 1vw; text-align: left;">Parameter Name</div>
             <div class="input noanims" oninput="validateInputSpaces(event); data[highlightedParameter].name = this.innerText; refreshParameters();" contenteditable="true">${data[parameter].name}</div>
             <div class="sepbars noanims"></div>
@@ -168,99 +278,107 @@
             <div class="sepbars noanims"></div>
             <div class="barbuttontexta" style="margin-left: 1vw; text-align: left;">Store Parameter As</div>
             <div class="input noanims" oninput="validateInput(event); data[highlightedParameter].storeAs = this.innerText;" contenteditable="true">${data[parameter].storeAs}</div>
-        `
-        refreshTypes()    
+        `;
+      refreshTypes();
     }
-function setParameterType(newType) {
-    try {
-        document.getElementById(data[highlightedParameter].type).style.backgroundColor = ''
-    } catch (err){}
-    data[highlightedParameter].type = newType;
-    refreshTypes()
-}
-function refreshTypes() {
-    document.getElementById(data[highlightedParameter].type).style.backgroundColor = '#FFFFFF20'
-    if (data[highlightedParameter].required == true) {
-        document.getElementById('required').style.backgroundColor = '#FFFFFF20'
-        document.getElementById('notRequired').style.backgroundColor = ''
-    } else {
-        document.getElementById('notRequired').style.backgroundColor = '#FFFFFF20'
-        document.getElementById('required').style.backgroundColor = ''
+    function setParameterType(newType) {
+      try {
+        document.getElementById(
+          data[highlightedParameter].type,
+        ).style.backgroundColor = "";
+      } catch (err) {}
+      data[highlightedParameter].type = newType;
+      refreshTypes();
     }
-}
-function validateInput(event) {
-    const div = event.target;
-    const text = div.textContent;
-    
-    // Save the current cursor position
-    const selection = window.getSelection();
-    const range = selection.getRangeAt(0);
-    const offset = range.startOffset;
-  
-    // Remove image tags
-    const sanitizedText = text.replace(/<img\b[^>]*>/gi, '');
-  
-    // Update the content of the div with sanitized text
-    div.innerHTML = sanitizedText;
-    
-    // Restore the cursor position
-    const updatedRange = document.createRange();
-    updatedRange.setStart(div.firstChild, offset);
-    updatedRange.collapse(true);
-    selection.removeAllRanges();
-    selection.addRange(updatedRange);
-}
+    function refreshTypes() {
+      document.getElementById(
+        data[highlightedParameter].type,
+      ).style.backgroundColor = "#FFFFFF20";
+      if (data[highlightedParameter].required == true) {
+        document.getElementById("required").style.backgroundColor = "#FFFFFF20";
+        document.getElementById("notRequired").style.backgroundColor = "";
+      } else {
+        document.getElementById("notRequired").style.backgroundColor =
+          "#FFFFFF20";
+        document.getElementById("required").style.backgroundColor = "";
+      }
+    }
+    function validateInput(event) {
+      const div = event.target;
+      const text = div.textContent;
 
-function storeCaretPosition(element) {
-  let selection = window.getSelection();
-  if (selection.rangeCount > 0) {
-    let range = selection.getRangeAt(0);
-    let preSelectionRange = range.cloneRange();
-    preSelectionRange.selectNodeContents(element);
-    preSelectionRange.setEnd(range.startContainer, range.startOffset);
-    let caretOffset = preSelectionRange.toString().length;
+      // Save the current cursor position
+      const selection = window.getSelection();
+      const range = selection.getRangeAt(0);
+      const offset = range.startOffset;
 
-    element.dataset.caretOffset = caretOffset;
-  }
-}
+      // Remove image tags
+      const sanitizedText = text.replace(/<img\b[^>]*>/gi, "");
 
-function restoreCaretPosition(element) {
-  let caretOffset = parseInt(element.dataset.caretOffset) || 0;
-  let textNode = element.firstChild;
+      // Update the content of the div with sanitized text
+      div.innerHTML = sanitizedText;
 
-  if (textNode && textNode.nodeType === Node.TEXT_NODE) {
-    let range = document.createRange();
-    range.setStart(textNode, Math.min(caretOffset, textNode.length));
-    range.setEnd(textNode, Math.min(caretOffset, textNode.length));
+      // Restore the cursor position
+      const updatedRange = document.createRange();
+      updatedRange.setStart(div.firstChild, offset);
+      updatedRange.collapse(true);
+      selection.removeAllRanges();
+      selection.addRange(updatedRange);
+    }
 
-    let selection = window.getSelection();
-    selection.removeAllRanges();
-    selection.addRange(range);
-  }
-}
+    function storeCaretPosition(element) {
+      let selection = window.getSelection();
+      if (selection.rangeCount > 0) {
+        let range = selection.getRangeAt(0);
+        let preSelectionRange = range.cloneRange();
+        preSelectionRange.selectNodeContents(element);
+        preSelectionRange.setEnd(range.startContainer, range.startOffset);
+        let caretOffset = preSelectionRange.toString().length;
 
+        element.dataset.caretOffset = caretOffset;
+      }
+    }
 
-function validateInputSpaces(event) {
-    /* Cheers, ChatGPT */
-    const div = event.target;
-    storeCaretPosition(div);
+    function restoreCaretPosition(element) {
+      let caretOffset = parseInt(element.dataset.caretOffset) || 0;
+      let textNode = element.firstChild;
 
-    var sanitizedText = div.innerText.trim().split(' ').join(''); // Remove leading and trailing spaces
-    sanitizedText = sanitizedText.substr(0, 32); // Limit text size to 32 characters
+      if (textNode && textNode.nodeType === Node.TEXT_NODE) {
+        let range = document.createRange();
+        range.setStart(textNode, Math.min(caretOffset, textNode.length));
+        range.setEnd(textNode, Math.min(caretOffset, textNode.length));
 
-    div.innerHTML = sanitizedText.toLowerCase();
-    restoreCaretPosition(div);
-}
+        let selection = window.getSelection();
+        selection.removeAllRanges();
+        selection.addRange(range);
+      }
+    }
 
-function closeparameters() {
-    document.getElementById('everything_container').style.scale = '0'
-    document.body.style.transition = 'all 0.2s ease'
-    document.body.style.backgroundColor = '#FFFFFF00'
-    document.getElementById('everything_container').style.filter = 'blur(40px)'
-    setTimeout(() => {
-        ipcRenderer.send('parametersClosed', data, document.getElementById('commandDescription').innerText)
-    }, 500)
-}
+    function validateInputSpaces(event) {
+      /* Cheers, ChatGPT */
+      const div = event.target;
+      storeCaretPosition(div);
 
-</script>
+      var sanitizedText = div.innerText.trim().split(" ").join(""); // Remove leading and trailing spaces
+      sanitizedText = sanitizedText.substr(0, 32); // Limit text size to 32 characters
+
+      div.innerHTML = sanitizedText.toLowerCase();
+      restoreCaretPosition(div);
+    }
+
+    function closeparameters() {
+      document.getElementById("everything_container").style.scale = "0";
+      document.body.style.transition = "all 0.2s ease";
+      document.body.style.backgroundColor = "#FFFFFF00";
+      document.getElementById("everything_container").style.filter =
+        "blur(40px)";
+      setTimeout(() => {
+        ipcRenderer.send(
+          "parametersClosed",
+          data,
+          document.getElementById("commandDescription").innerText,
+        );
+      }, 500);
+    }
+  </script>
 </html>

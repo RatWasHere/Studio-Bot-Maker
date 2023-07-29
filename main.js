@@ -183,9 +183,7 @@ app.on("ready", () => {
   }
 });
 
-  
-
-  const { autoUpdater } = require("electron")
+const { autoUpdater } = require("electron");
 
 autoUpdater.setFeedURL({
   url: "https://github.com/RatWasHere/Studio-Bot-Maker",
@@ -194,20 +192,20 @@ autoUpdater.setFeedURL({
   owner: "RatWasHere",
 });
 
-  autoUpdater.checkForUpdates()
-  
-  autoUpdater.on('update-available', (_event, releaseName, releaseNotes) => {
-    autoUpdater.downloadUpdate()
-    fs.writeFileSync('./updateavailable.txt', 'available')
-    updatePending = true;
-   })
-  autoUpdater.on('update-not-available', () => {
-    fs.writeFileSync('./updatenotavailable.txt', 'notavailable')
-  })
-  autoUpdater.on('login', () => {
-    fs.writeFileSync('./login.txt', 'success')
-  })
-  let lastKnownUpdateProgress = 0;
+autoUpdater.checkForUpdates();
+
+autoUpdater.on("update-available", (_event, releaseName, releaseNotes) => {
+  autoUpdater.downloadUpdate();
+  fs.writeFileSync("./updateavailable.txt", "available");
+  updatePending = true;
+});
+autoUpdater.on("update-not-available", () => {
+  fs.writeFileSync("./updatenotavailable.txt", "notavailable");
+});
+autoUpdater.on("login", () => {
+  fs.writeFileSync("./login.txt", "success");
+});
+let lastKnownUpdateProgress = 0;
 
 autoUpdater.on("update-downloaded", (_event, releaseNotes, releaseName) => {
   fs.writeFileSync("./downloadedupdate", "downlod");
