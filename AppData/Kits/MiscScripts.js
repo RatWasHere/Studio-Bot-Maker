@@ -377,7 +377,7 @@ function showCustomMenu(x, y) {
         createSettingSelector('actionPreviewPosition', {stored: 'actionPreviewPosition', choices: ['Left', 'Right', 'Center'], name: 'Action Preview Position'})
         createSettingSelector('actionPreviewSeparator', {stored: 'separatorPos', choices: ['Left', 'Right', 'Both', 'None'], name: 'Action Separator Position'})
 
-        createSettingSelector('prefferedActionPane', {stored: 'subtitlePosition', choices: ['None', 'Action Pane', 'Group Pane'], name: 'Preffered Pane'})
+        createSettingSelector('prefferedActionPane', {stored: 'preffered', choices: ['None', 'Action Pane', 'Group Pane'], name: 'Preffered Pane'})
         createSettingSelector('coloringsmoothness', {stored: 'colorsmoothness', choices: ['Default', 'High', 'Low'], name: 'Coloring Smoothness'})
         createSettingSelector('changingWidth', {stored: 'widthChanges', choices: ['On', 'Off'], name: 'Variable Width Effects'})
         createSettingSelector('animationsSpeed', {stored: 'animations', choices: ['Default', 'Fast', 'Slow', 'Relaxed', 'Off'], name: 'Animations'})

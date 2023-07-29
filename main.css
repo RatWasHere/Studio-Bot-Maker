@@ -705,7 +705,7 @@
        }
        .actionBar {
        width: calc(47.3vw - 24px);
-       height: calc(97vh - 24px) !important;
+       height: calc(97vh - 24px);
        background-color: #ffffff16;
        backdrop-filter: blur(12px);
        padding-top: -5px;
@@ -721,7 +721,6 @@
        }
        .actBarHalf {
            width: calc(48.3vw);
-           height: calc(41vh - 12px) !important;
            background-color: #ffffff16;
            backdrop-filter: blur(12px);
            margin-right: 0px;

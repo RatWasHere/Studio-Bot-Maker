@@ -5,7 +5,7 @@ try {
 } catch (err) {console.log(err)}
 
 let editorSettings = {}
-console.log(ownSettings, editorSettings)
+console.log(ownSettings.preffered)
     switch (ownSettings.preffered) {
         default:
             editorSettings.groupPaneHeight = 'inherit'
@@ -16,8 +16,9 @@ console.log(ownSettings, editorSettings)
             editorSettings.groupPaneHeight = 'calc(44.5vh - 12px)'
         break
         case 'Action Pane':
-            editorSettings.groupPaneHeight = 'calc(35.5vh - 12px)'
-            editorSettings.actionPaneHeight = 'calc(44.5vh - 12px)'
+            console.log('kys')
+            editorSettings.groupPaneHeight = 'calc(35vh - 12px)'
+            editorSettings.actionPaneHeight = 'calc(45vh - 12px)'
         break
     }
     switch (ownSettings.colorSmoothness) {
@@ -39,7 +40,7 @@ console.log(ownSettings, editorSettings)
             editorSettings.subtitlePosition = 'right'
         break
         case 'Left':
-            editorSettings.subtitlePosition = 'right'
+            editorSettings.subtitlePosition = 'left'
         break
     }
     switch (ownSettings.separatorPos) {

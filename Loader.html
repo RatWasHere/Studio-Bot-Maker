@@ -43,20 +43,16 @@
     
 
     try {
-        ndask[oofskf]
     settings = JSON.parse(fs.readFileSync('C:/ProgramData/settings.json'));
     data = JSON.parse(fs.readFileSync('./AppData/data.json'));
     projectContainer = document.getElementById('projects');
     } catch (err) {
         document.getElementById('projects').innerHTML = `
-        <div class="flexbox" style="width: 100vw; height: 100vh">
-        <div class="image" url=""></div>
-        </div>
-
+        <div class="image flash" style="background-image: url(./icon.png)"></div>
         `
-        document.getElementById('everything_container').style.transform = `scale(0.9)`
+        document.getElementById('everything_container').style.transform = `scale(0.7)`
     document.body.style.background = 'unset !important'
-    document.getElementById('everything_container').style.background = `linear-gradient(45deg, ${data.color} 0%, rgb(18, 18, 18) 170%)`
+    document.getElementById('everything_container').style.background = `linear-gradient(45deg, rgb(0, 0,0) 0%, rgb(18, 18, 18) 170%)`
         setTimeout(() => {
             ipcRenderer.send('restart')
             document.body.innerHTML = ''

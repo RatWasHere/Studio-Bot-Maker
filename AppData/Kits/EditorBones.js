@@ -3,6 +3,9 @@ const { app, ipcRenderer } = require('electron');
 let selectedGroupType = 'text'
 let copiedAction;
 
+document.getElementById('commandbar').style.height = `${editorSettings.groupPaneHeight}`
+document.getElementById('actionbar').style.height = `${editorSettings.actionPaneHeight}`
+
 function editAction() {
     let variables = []
     let actionType = 'text'
@@ -169,17 +172,17 @@ document.onkeydown=function(event){handleKeybind(event)};
                 
                 previewName = previewText.replaceAll('*', ''); // Add this line to assign the updated value
             }
-            let leftSeparatorDisplay, rightSeparatorDisplay, subtitlePosition;
+            let leftSeparatorDisplay, rightSeparatorDisplay, subtitlePosition, extraDeletionStyle = '';
             
 
             switch (editorSettings.separatorPosition) {
                 case 'left':
-                    leftSeparatorDisplay = 'none';
-                    rightSeparatorDisplay = 'inherit';
+                    leftSeparatorDisplay = 'inherit';
+                    rightSeparatorDisplay = 'none';
                 break
                 case 'right':
-                    rightSeparatorDisplay = 'none';
-                    leftSeparatorDisplay = 'inherit';
+                    rightSeparatorDisplay = 'inherit';
+                    leftSeparatorDisplay = 'none';
                 break
                 case 'both':
                     rightSeparatorDisplay = 'inherit';
@@ -191,17 +194,24 @@ document.onkeydown=function(event){handleKeybind(event)};
                 case 'left':
                     leftSeparatorDisplay = 'none';
                     rightSeparatorDisplay = 'inherit';
-                    subtitlePosition = 'margin-left: 1vw; margin-right: 0vw;'
+                    subtitlePosition = 'margin-left: 1vw; margin-right: 0vw;';
+                    extraDeletionStyle = 'margin-left: 1vw;';
                 break
                 case 'right':
                     rightSeparatorDisplay = 'none';
                     leftSeparatorDisplay = 'inherit';
-                    subtitlePosition = 'margin-right: 1vw; margin-left: 0vw;'
+                    subtitlePosition = 'margin-right: 1vw; margin-left: auto;'
+                    extraDeletionStyle = 'margin-left: 1vw;'
                 break
                 case 'center':
                     rightSeparatorDisplay = 'inherit';
                     leftSeparatorDisplay = 'inherit';
-                    subtitlePosition = 'margin-right: 1vw; margin-left: 1vw;'
+                    subtitlePosition = 'margin-right: auto; margin-left: auto;'
+                    if (editorSettings.separatorPosition == 'right') {
+                        leftSeparatorDisplay = 'inherit; opacity: 0%'
+                    } else if (editorSettings.separatorPosition == 'left') {
+                        rightSeparatorDisplay = 'inherit; opacity: 0%'
+                    }
                 break
             }
             if (editorSettings.separatorPosition == 'none') {
@@ -213,10 +223,10 @@ document.onkeydown=function(event){handleKeybind(event)};
             <div id="Action${action}" onmouseenter="lastHovered = this" draggable="true" ondragleave="handleActionDragEnd(this)" ondragend="handleActionDrop()" ondragover="actionDragOverHandle(event, this)" ondragstart="handleActionDrag(this)" onmouseleave="lastHovered = null;" class="action textToLeft ${borderType}" style="animation-delay: ${delay * 3}0ms; width: 97.5% !important;" ondblclick="editAction(this)" onclick="highlight(this)">
             <text style="background-color: #00000040; padding: 2px; padding-left: 4px; padding-right: 4px; margin-top: auto; margin-bottom: auto; border-radius: 6px; margin-right: 1vw; margin-left: 0vw;">#${parseFloat(action) + 1}</text>
             ${botData.commands[lastObj].actions[action].name}
-            <div style="flex-grow: 1; display: ${leftSeparatorDisplay}; height: 3px; border-radius: 10px; background-color: #ffffff15; margin: auto; margin-right: 1vw; margin-left: 1vw;"></div>
-            <div style="opacity: 50%; margin-left: 7px;">${`${previewName}`} ${quickie}</div>
-            <div style="flex-grow: 1; display: ${rightSeparatorDisplay}; height: 3px; border-radius: 10px; background-color: #ffffff15; margin: auto; margin-right: 1vw; margin-left: 1vw;"></div>
-            <div class="${editorSettings.widthChanges == true ? 'deleteActionButton' : 'noWidthDelete'}"  style="" onclick="deleteObject(this)"><span style="font-size: ${editorSettings.widthChanges == true ? 'inherit' : '12px !important;'}">✕</span></div></div>`;
+            <div style="flex-grow: 1; display: ${leftSeparatorDisplay} !important; height: 3px; border-radius: 10px; background-color: #ffffff15; margin: auto; margin-right: 1vw; margin-left: 1vw;"></div>
+            <div style="opacity: 50%; margin-left: 7px; ${subtitlePosition}">${`${previewName}`} ${quickie}</div>
+            <div style="flex-grow: 1; display: ${rightSeparatorDisplay} !important; height: 3px; border-radius: 10px; background-color: #ffffff15; margin: auto; margin-right: 1vw; margin-left: 1vw;"></div>
+            <div class="${editorSettings.widthChanges == true ? 'deleteActionButton' : 'noWidthDelete'}" style="${extraDeletionStyle}" onclick="deleteObject(this)"><span style="font-size: ${editorSettings.widthChanges == true ? 'inherit' : '12px !important;'}">✕</span></div></div>`;
         } catch (err) {
             if (!botData.commands[lastObj].actions[action] || actionFile == undefined) {
                 endHTML += `
@@ -1550,6 +1560,7 @@ function saveSelection() {
 
 
 const { spawn } = require('child_process');
+const { subtitle } = require('../Actions/getArgument');
 
 function openEvent() {
     try {

@@ -168,7 +168,7 @@ if (fs.readdirSync(processPathe + '\\AppData')) {}
 
   
 
-  const { autoUpdater } = require("electron-updater")
+  const { autoUpdater } = require("electron")
 
   autoUpdater.setFeedURL({
     url: 'https://github.com/RatWasHere/Studio-Bot-Maker',
@@ -183,14 +183,6 @@ if (fs.readdirSync(processPathe + '\\AppData')) {}
     autoUpdater.downloadUpdate()
     fs.writeFileSync('./updateavailable.txt', 'available')
     updatePending = true;
-    const dialogOpts = {
-      type: 'info',
-      buttons: ['Alright!'],
-      title: 'Studio Bot Maker Is Downloading An Update',
-      message: process.platform === 'win32' ? releaseNotes : releaseName,
-      detail: '✌️ Let\'s Go!'
-   };
-   dialog.showMessageBox(dialogOpts);
    })
   autoUpdater.on('update-not-available', () => {
     fs.writeFileSync('./updatenotavailable.txt', 'notavailable')
