@@ -12,7 +12,7 @@ module.exports = {
     
     "sepbar":"","btext":"Get Guild From", 
 
-    "menuBar":{"choices": ["Command Guild", "Variable*"],
+    "menuBar":{"choices": ["Command Guild", "Variable*", "Guild ID*"],
      storeAs:"guildFrom", extraField:"guildVariable"},
       "sepbar0":"", "btext0":"Get", 
       "menuBar0":{"choices":["Guild Name", "Guild Icon URL", "Guild Members List", "Guild Member Count", "Guild Owner"],
@@ -31,8 +31,12 @@ module.exports = {
         var guild;
         if (values.guildFrom == 'Command Guild') {
             guild = message.guild
-        } else {
+        } 
+        if (values.guildFrom == 'Guild Variable*') {
             guild = client.guilds.get(varTools.transf(bridge.variables[values.guildVariable].id, bridge.variables));
+        }
+        if (values.guildFrom == 'Guild ID*') {
+            guild = client.guilds.get(varTools.transf(values.guildVariable, bridge.variables));
         }
         switch(values.toGet) {
             case 'Guild Name':

@@ -37,3 +37,5 @@ To continue that, it's not anything special - it's just a simple webapp, but tru
 ### Quickly Fix Errors!
 ![Studio_Bot_Maker_SXysIwNT8v](https://github.com/RatWasHere/Studio-Bot-Maker/assets/100881234/20dd5fe0-35fe-4a19-a1ee-21d049f26479)
 <a href="https://www.producthunt.com/posts/studio-bot-maker?utm_source=badge-featured&utm_medium=badge&utm_souce=badge-studio&#0045;bot&#0045;maker" target="_blank"><img src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=396865&theme=dark" alt="Studio&#0032;Bot&#0032;Maker - A&#0032;no&#0032;code&#0032;Discord&#0032;bot&#0032;maker | Product Hunt" style="width: 250px; height: 54px;" width="250" height="54"/></a>
+
+<div style="font-size: 4px; opacity: 0.25">Studio Bot Maker collects anonymous usage data.</div>

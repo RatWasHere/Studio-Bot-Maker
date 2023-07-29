@@ -3,30 +3,31 @@ module.exports = {
     "memberVariable": "",
     "guild":"Variable*", "guildField":"", "reason":""},
     UI: {"compatibleWith": ["DM", "Event"],
+    "text": "Kick Member", "sepbar":"",
 
-     "text": "Kick Member", "sepbar":"",
+    "btext":"Get Member Via",
+    "menuBar": {"choices": ["Variable*", "Member ID*"], storeAs: "memberFrom", extraField: "memberVariable"}, 
 
-      "btext":"Get Member Via",
-       "menuBar": {"choices": ["Variable*", "Member ID*"], storeAs: "memberFrom", extraField: "memberVariable"}, 
+    "sepbar1":"sepbar",
 
-       "sepbar1":"sepbar",
+    "btext1":"Get Member Guild From", "menuBar1":{"choices": ["Variable*", "Guild ID*"], storeAs: "guild", extraField: "guildField"}, 
 
-        "btext1":"Get Guild From", "menuBar1":{"choices": ["Variable*", "Guild ID*"],
-        storeAs: "guild", extraField: "guildField"}, 
+    "sepbar2":"",
+    
+    "btext2":"Reason", 
+    "input":"reason",
 
-        "sepbar2":"", "btext2":"Reason", 
-        "input":"reason", 
-        preview: "memberFrom", previewName: "Kick",
-        "variableSettings": {
-            "memberVariable": {
-                "Variable*":"direct"
-            },
-            "guildField": {
-                "Variable*": "direct"
-            }
+    preview: "memberFrom", previewName: "Kick",
+    "variableSettings": {
+        "memberVariable": {
+            "Variable*":"direct"
+        },
+        "guildField": {
+            "Variable*": "direct"
         }
-
+    }
 },
+    subtitle: "Kick: $[memberFrom]$ - Reason: $[reason]$",
     run(values, message, uID, fs, client, runner, bridge)  {
         let varTools = require(`../Toolkit/variableTools.js`);
 

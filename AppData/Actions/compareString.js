@@ -1,5 +1,5 @@
 module.exports = {
-    data: {"name": "Compare", "comparator":"=", "firstInput":"", "secondInput":"", "runIfTrue": {}, "runIfFalse": {}},
+    data: {"name": "Compare", "comparator":"=", "firstInput":"", "secondInput":"", "runIfTrue": [], "runIfFalse": []},
     UI: {"compatibleWith": ["Any"],
 
     text:"Compare", "sepbar":"", 

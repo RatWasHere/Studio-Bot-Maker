@@ -179,7 +179,7 @@ module.exports = {
                     UItypes: {
                         field: {
                             name: "Field",
-                            data: {title: "", value: "", inline: "Yes"},
+                            data: {title: "", value: "", inline: true},
                             UI: {
                                 text: "Field",
                                 sepbar: "",
@@ -189,8 +189,7 @@ module.exports = {
                                 btext0: "Field Value",
                                 largeInput: "value",
                                 sepbar1: "",
-                                btext1: "Make Field Inline?",
-                                menuBar: {choices: ["Yes", "No"], storeAs: "inline"}
+                                toggle: {name: "Make Field Inline", storeAs: "inline"}
                             }
                         }
                     },
@@ -216,6 +215,7 @@ module.exports = {
     "preview": "messageContent",
     "previewName": "Content"
     },
+    subtitle: "Content: $[messageContent]$ - Get Channel Via: $[sendTo]$",
     async run(values, message, uID, fs, client, actionRunner, bridge) {
         const {InteractionTypes, ComponentTypes, ButtonStyles} = require('oceanic.js')
         let varTools = require(`../Toolkit/variableTools.js`)
@@ -356,7 +356,7 @@ module.exports = {
                     endEmbed.fields.push({
                         name: varTools.transf(field.data.title, bridge.variables),
                         value: varTools.transf(field.data.value, bridge.variables),
-                        inline: field.data.inline == 'Yes'
+                        inline: field.data.inline == true
                     })
                 }
             }

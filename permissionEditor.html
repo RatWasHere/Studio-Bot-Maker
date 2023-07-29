@@ -20,12 +20,13 @@
     </div>
     </div>
 </div>
+    <script src="./AppData/Kits/settings.js"></script>
     <script src="./AppData/Kits/Loader.js"></script>
 <script>
 
     var datjson = JSON.parse(fs.readFileSync('./AppData/data.json'))
     let themeColor = datjson.color
-    document.getElementById('everything_container').style.background = `linear-gradient(45deg, ${themeColor} 0%, #121212 170%)`
+    document.getElementById('everything_container').style.background = `linear-gradient(45deg, ${themeColor} 0%, #121212 ${editorSettings.smoothness})`
     document.body.style.transition = 'all 0.2s ease'
     document.body.style.backgroundColor = '#FFFFFF00'
     const {ipcRenderer} = require('electron')
@@ -40,6 +41,8 @@
     }
 
     ipcRenderer.on('data', (event, _data) => {
+        document.getElementById('everything_container').style.transition = `all 0.${editorSettings.commonAnimation}s ease`
+
         document.getElementById('everything_container').style.scale = '1'
         document.getElementById('everything_container').style.filter = 'blur(0px)'
         data = _data;

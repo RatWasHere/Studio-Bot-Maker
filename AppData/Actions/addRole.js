@@ -44,7 +44,7 @@ module.exports = {
     var member;
     if (values.addTo == 'Command Author') {
         member = guild.getMember(message.member.id)
-    } 
+    }
     if (values.addTo == 'Variable*') {
         member = bridge.variables[varTools.transf(values.member, bridge.variables)]
     }

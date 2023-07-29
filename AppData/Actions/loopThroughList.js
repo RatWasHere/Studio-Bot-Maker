@@ -1,31 +1,47 @@
 module.exports = {
-    data: {"name":"Loop Through List", "ListName":"", "actions":{}, "storeAs":""},
+    data: {"name":"Loop Through List", "list":"", "storeIterationAs":"", "storeValueAs":"", "actions":[]},
+     
+    UI: {"compatibleWith":["Any"],
 
-    UI: {"compatibleWith":["Any"], 
+    "text":"Loop Through List",
+    "sepbar":"", 
+    
+    "btext*":"List Name",
+    "input_direct":"list",
+    
+    "sepbar*":"",
 
-    "text": "Loop Through List",
-
-    "sepbar":"",
-
-    "btext":"List Name", "input_direct*":"ListName",
+    "btext":"Store Iteration Number As",
+    "input!":"storeIterationAs",
 
     "sepbar0":"",
-
-    "btext1":"Store Iterated Object Position As", "input!":"storeAs",
+    
+    "btext0":"Store Iteration Value As",
+    "input0!":"storeValueAs",
 
     "sepbar1":"",
 
-    "btext2":"For Every Iteration, Run",
+    "btext1":"For Each Item In List, Run",
     "actions":"actions",
 
-    "preview":"ListName", "previewName":"List Name"},
-    
-    async run(values, interaction, uID, fs, client, actionRunner, bridge) { 
-        let varTools = require(`../Toolkit/variableTools.js`)
-        let list = bridge.variables[varTools.transf(values.ListName)] ? bridge.variables[varTools.transf(values.ListName)] : []
+    "preview":"list", 
+    "previewName":"List"},
+    subtitle: "List Name: $[list]$ - Store Iteration As: $[storeIterationAs]$ - Store Iteration Value As: $[storeValueAs]$",
+
+    async run(values, message, uID, fs, client, runner, bridge)  { 
+        let transferVariables = require(`../Toolkit/variableTools.js`).transf
+      
+        const transf = (value) => {
+          return transferVariables(value, bridge.variables)
+        }
+        
+        let list = bridge.variables[transf(values.list)]
+
         for (let element in list) {
-            bridge.variables[varTools.transf(values.storeAs, bridge.variables)] = element;
-            await actionRunner(values.actions, interaction, client, bridge.variables, true)
+            bridge.variable[transf(values.storeIterationAs)] = element;
+            bridge.variable[transf(values.storeValueAs)] = list[element];
+
+            await runner(values.actions, interaction, client, bridge.variables, true)
         }
     }
 }

@@ -1,5 +1,5 @@
 module.exports = {
-    data: {"name":"Add Role", "storeAs":"", "addTo":"Command Author", "guildFrom":"Guild ID*", "guild":"", "reason":"", "member":"", "roleFrom": "Variable*", "role": ""},
+    data: {"name":"Add Role", "storeAs":"", "addTo":"Member ID*", "guildFrom":"Guild ID*", "guild":"", "reason":"", "member":"", "roleFrom": "Variable*", "role": ""},
     UI: {"compatibleWith":["Event", "DM"], 
     "text":"Add Role", "sepbar":"", 
     "btext":"Get Role Via",
@@ -57,9 +57,6 @@ module.exports = {
     }
 
     var member;
-    if (values.addTo == 'Command Author') {
-        member = guild.getMember(message.member.id)
-    } 
     if (values.addTo == 'Variable*') {
         member = guild.getMember(bridge.variables[varTools.transf(values.member, bridge)].id)
     }

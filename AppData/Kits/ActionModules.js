@@ -23,14 +23,19 @@ function newObject() {
     }
     else {
         let type = 'action';
-        let trigger; 
+        let trigger;
+        let extra = {}
         if (selectedGroupType == 'text') {
             trigger = 'textCommand';
+            extra = {boundary: {worksIn: "guild", limits: []}}
         }
         if (selectedGroupType == 'slash') {
+            extra = {parameters: [], description: ""}
             trigger = 'slashCommand'
         }
         if (selectedGroupType == 'event') {
+            extra = {eventFile: "message_create.js", eventData: ["", ""]}
+
             type = 'event'
             trigger = 'event'
         }
@@ -40,7 +45,8 @@ function newObject() {
             type: type,
             trigger: trigger,
             actions: [],
-            customId: new Date().getTime()
+            customId: new Date().getTime(),
+            ...extra
         }
 
         botData.commands.push(newGroup);
@@ -157,12 +163,12 @@ function setHighlightedGroup(type) {
     animationArea.parentElement.style.overflowX = 'none'
 
     if (oldGroupType > type) {
-        animationArea.style.scale = '0.3'
+        animationArea.style.scale = '0'
         animationArea.style.filter = 'blur(12px)'
-        animationArea.style.marginLeft = '-110vw'
+        animationArea.style.marginLeft = '-250vw'
         setTimeout(() => {
             animationArea.style.transition = 'all 0s ease'
-            animationArea.style.marginRight = '-110vw'
+            animationArea.style.marginRight = '-250vw'
             animationArea.style.marginLeft = ''
 
             setTimeout(() => {
@@ -170,18 +176,20 @@ function setHighlightedGroup(type) {
             }, 30);
 
             setTimeout(() => {
-                animationArea.style.scale = ''
+                setTimeout(() => {
+                    animationArea.style.scale = ''
+                    }, 50);
                 animationArea.style.filter = ''
                 animationArea.style.marginRight = ''
             }, 300)
         }, 300)
     } else if (oldGroupType < type) {
         animationArea.style.filter = 'blur(12px)'
-        animationArea.style.scale = '0.3'
-        animationArea.style.marginRight = '-110vw'
+        animationArea.style.scale = '0'
+        animationArea.style.marginRight = '-250vw'
         setTimeout(() => {
             animationArea.style.transition = 'all 0s ease'
-            animationArea.style.marginLeft = '-110vw'
+            animationArea.style.marginLeft = '-250vw'
             animationArea.style.marginRight = ''
 
             setTimeout(() => {
@@ -189,7 +197,9 @@ function setHighlightedGroup(type) {
             }, 30);
 
             setTimeout(() => {
+                setTimeout(() => {
                 animationArea.style.scale = ''
+                }, 50);
                 animationArea.style.filter = ''
                 animationArea.style.marginLeft = ''
             }, 300)
@@ -202,11 +212,14 @@ function setHighlightedGroup(type) {
 
     if (type == 1) {
         selectedGroupType = 'text'
+        prioritizeCommandOptions()
     }
     if (type == 2) {
         selectedGroupType = 'slash'
+        resetElements()
     }
     if (type == 3) {
+        prioritizeEvents()
         selectedGroupType = 'event'
     }
 

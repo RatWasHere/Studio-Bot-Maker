@@ -25,6 +25,7 @@ module.exports = {
         }
     },
     previewName: "Get", preview: "get"},
+    subtitle: "Get $[get]$ From: $[userFrom]$ - Store As $[storeAs]$",
     async run(values, message, uID, fs, client, runner, bridge)  {
         let varTools = require(`../Toolkit/variableTools.js`);
         let user;
@@ -37,29 +38,31 @@ module.exports = {
         if (values.userFrom == 'User ID*') {
             user = client.users.get(varTools.transf(values.user, bridge.variables));
         }
+
+        let storeAs = varTools.transf(values.storeAs, bridge.variables)
     switch(values.get) {
             case 'User Name':
-                bridge.variables[values.storeAs] = user.username
+                bridge.variables[storeAs] = user.username
             break
             
             case 'User Discriminator':
-                bridge.variables[values.storeAs] = user.discriminator 
+                bridge.variables[storeAs] = user.discriminator 
             break 
 
             case 'User Profile Picture (URL)': 
-                bridge.variables[values.storeAs] = user.avatarURL()
+                bridge.variables[storeAs] = user.avatarURL()
             break
 
             case 'User ID':
-                bridge.variables[values.storeAs] = user.id
+                bridge.variables[storeAs] = user.id
             break
 
             case 'User Accent Color':
-                bridge.variables[values.storeAs] = user.accentColor || '-'
+                bridge.variables[storeAs] = user.accentColor || '-'
             break
 
             case 'User Display Name': 
-                bridge.variables[values.storeAs] = user.globalName || '-'
+                bridge.variables[storeAs] = user.globalName || '-'
             break
         }
     }

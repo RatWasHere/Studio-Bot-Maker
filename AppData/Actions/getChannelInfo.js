@@ -9,7 +9,7 @@ module.exports = {
     "sepbar0":"",
 
     "btext0":"Get",
-    "menuBar0": {choices: ["Channel Name", "Channel ID", "Channel Description", "Channel Guild", "Channel Topic", "Channel URL", "Channel Server"]},
+    "menuBar0": {choices: ["Channel Name", "Channel ID", "Channel Description", "Channel Guild", "Channel Topic", "Channel URL", "Channel Server"], storeAs: "get"},
     
     "sepbar1":"",
     "btext1":"Store As",

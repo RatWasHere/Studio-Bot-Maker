@@ -1,59 +1,82 @@
+const variableTools = require("../Toolkit/variableTools.js")
+
 module.exports = {
-    data: {"name": "Get Argument", "message":"Command Message", "messageFrom":"", "firstArgument":"", "secondArgument":"", "elementAs":"Variable*", "guild":"Message Guild", "argumentParameter":"", "storesAs":"", "ArgumentFrom":  "Argument #*"},
-    UI: {"compatibleWith": ["Text"], "text": "Get Argument","sepbar44423":"sepbar", "btextmsg":"Get Message Via", "menuBar1":{"choices":["Command Message", "Variable*"], storeAs:"message", extraField:"messageFrom"}, "sepbarmsg":"sepb", "btextEmbVar":"From Argument #", "inputargument":"firstArgument", "sepbarargs":"", "btextArg":"To", "menuBar":{"choices":["None", "Argument #*", "End"], storeAs:"ArgumentFrom", extraField:"argumentParameter"}, "sepbarextrafield":"seb","btextstoreas":"Store As", "inputstoresas!*":"storesAs", "preview":"storesAs", "previewName":"Store As",
+    data: {"name": "Get Argument", "message":"Command Message",
+    "messageFrom":"", "firstArgument":"", "secondArgument":"", "argumentParameter":"", "storesAs":"", "ArgumentFrom": "Argument #*"},
+    UI: {"compatibleWith": ["Text"], "text": "Get Argument",
+
+    "sepbar":"",
+
+    "btext":"Get Message Via", 
+    "menuBar":{"choices":["Command Message", "Variable*"], storeAs:"message", extraField:"messageFrom"}, 
+    
+    "sepbar0":"",
+
+    "btext0":"From Argument #",
+    "input custom number <min>0</min> <max>2048</max>":"firstArgument",
+    
+    "sepbar1":"",
+
+    "btext1":"To",
+    "menuBar0":{"choices":["None", "Argument #*", "End"], storeAs:"ArgumentFrom", extraField:"argumentParameter"},
+
+    "sepbar2":"",
+    
+    "btext2":"Store As",
+    "input!":"storesAs",
+    
+    "preview":"storesAs", "previewName":"Store As",
+    
     "variableSettings":{
         "messageFrom": {
             "Variable*": "direct", 
             "Command Message": "novars",
         },
-        "argumentParameter": { 
-            "None": "novars",
-            "Argument #*": "novars",
-            "End": "novars"
-        }
+        "argumentParameter": {}
     }
 },
-    run(values, inter, uID, fs, client, runner, bridge)  {
-        let varTools = require(`../Toolkit/variableTools.js`)
+    subtitle: "Starting At: $[firstArgument]$ to $[ArgumentFrom]$ $[argumentParameter]$ - Store As: $[storesAs]$",
+    run(values, msg, uID, fs, client, runner, bridge)  {
+        // i left comments so i dont completely shit myself next time i update this
+      
+        const transf = (value) => {
+          return variableTools.transf(value, bridge.variables)
+        }
 
         var output = ''
         let message;
         if (values.message == 'Command Message') {
-            message = inter;
+            message = msg;
         } else {
-            message = bridge.variables[values.messageFrom]
+            message = bridge.variables[transf(values.messageFrom)]
         }
-            if (values.ArgumentFrom == 'None') {
-                output = message.content.split(' ')[parseFloat(values.firstArgument)]
-            } 
-            if (values.ArgumentFrom == 'Argument #*') {
-                let fd =  message.content.split(' ')
-                var argumentsParsed = 0
-                for (let argument in fd) {
-                    // if the argument is higher or equal to the first argument where it should begin
-                    if (argument >= parseFloat(values.firstArgument)) {
-                        argumentsParsed++ 
-                        // increment the arguments parsed
 
-                        // if the arguments parsed are smaller or equal to the end argument's number
-                        if (argumentsParsed <= parseFloat(values.argumentParameter)) {
-                            output = `${output} ${fd[argument]}`
-                        }
+        if (values.ArgumentFrom == 'None') {
+            output = message.content.split(' ')[variableTools.transf(values.firstArgument, bridge.variables)]
+        }
+
+        if (values.ArgumentFrom == 'Argument #*') {
+            let argumentList = message.content.split(' ')
+            var argumentsParsed = 0
+            for (let argument in argumentList) {
+                // if the argument is higher or equal to the first argument where it should begin
+                if (argument >= transf(values.firstArgument)) {
+                    argumentsParsed++
+
+                    // if the arguments parsed are smaller or equal to the end argument's number
+                    if (argumentsParsed <= parseFloat(transf(values.argumentParameter))) {
+                        output = `${output} ${argumentList[argument]}`
                     }
                 }
-
             }
+        }
             if (values.ArgumentFrom == 'End') {
-                let specificIndex = parseFloat(values.firstArgument);
+                let specificIndex = parseFloat(transf(values.firstArgument));
                 let words = message.content.substring(specificIndex).split(" ").join(" ");
 
                 // Get all words after the specific index
-                output = message.content.split(" ").slice(specificIndex).join(" ");      
+                output = message.content.split(" ").slice(transf(specificIndex)).join(" ");      
             }
-
-            bridge.variables = {
-                ...bridge.variables,
-                [varTools.transf(values.storesAs, bridge)]: output
-            };
+            bridge.variables[transf(values.storesAs)] = output;
     }
 }

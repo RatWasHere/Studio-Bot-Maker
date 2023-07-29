@@ -41,7 +41,7 @@ module.exports = {
         let guild = bridge.guild;
         var user = message.member
         if (values.memberChoice == 'Variable*') {
-            user = guild.getMember(varTools.transf(bridge.variables[values.memberVariable].id, bridge.variables));
+            user = guild.getMember(bridge.variables[varTools.transf(values.memberVariable, bridge.variables)].id);
         }
         if (values.memberChoice == 'Member ID*') {
             user = guild.getMember(varTools.transf(values.memberVariable, bridge.variables));
@@ -55,10 +55,7 @@ module.exports = {
             role = bridge.variables[varTools.transf(values.role, bridge.variables)].id
         }
 
-        let hasRole = false;
-        if (member.roles.has(role)) {
-            hasRole = true
-        }
+        let hasRole = member.roles.has(role);
 
         if (hasRole == true) {
             actionRunner(values.runIfTrue, message, client, bridge.variables, true);

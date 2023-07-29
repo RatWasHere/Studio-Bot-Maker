@@ -20,11 +20,10 @@ function editAction() {
         if (botData.commands[lastObj].trigger == 'slashCommand') {
             actionType = 'slash'
             if (botData.commands[lastObj].parameters) {
-            for (let parameter of botData.commands[lastObj].parameters) {
-                variables.push(parameter.storeAs)
+                for (let parameter of botData.commands[lastObj].parameters) {
+                    variables.push(parameter.storeAs)
+                }
             }
-            }
-
         }
     }
 
@@ -121,35 +120,107 @@ document.onkeydown=function(event){handleKeybind(event)};
             let actionFile;
             try {
             actionFile = require(`./AppData/Actions/${botData.commands[lastObj].actions[action].file}`);
-
+                let previewName = ''
+            if (!actionFile.subtitle) {
+                previewName = actionFile.UI.previewName + ':';
                 try {
+                    let characterCount = 0;
+                    actionUI = actionFile.UI;
+                    previewCharacters = botData.commands[lastObj].actions[action].data[actionUI.preview].split('');
+                    if (previewCharacters.length > 50) {
+                        for (let character in previewCharacters) {
+                            if (characterCount != 50) {
+                                const opacity = 100 - (characterCount - 40) * 10;
+                                quickie = `${quickie}<span style="opacity: ${opacity}%;">${previewCharacters[character]}</span>`;
+                                characterCount++;
+                            }
+                        }
+                    } else {
+                        quickie = botData.commands[lastObj].actions[action].data[actionUI.preview]
+                    }
+                    } catch (err) {
+                        quickie = `Error`
+                    }
+            } else {
+                quickie = ``
+                let subtitleActionData;
+                let actionSubtitle = actionFile.subtitle;
+                const subtitleRegex = /(\$\[.*?\]\$)/g;
+                const replacedSubtitle = actionSubtitle.replace(subtitleRegex, (match, key) => {
+                    let dataName = key.split('$[')[1].split(']$')[0].replaceAll('*', '');
+                    console.log(dataName)
+                    return botData.commands[lastObj].actions[action].data[dataName];
+                });
+                let previewCharacters = replacedSubtitle.replaceAll('*', 's').split('');
+                let previewText = '';
                 let characterCount = 0;
-                actionUI = actionFile.UI;
-                previewCharacters = botData.commands[lastObj].actions[action].data[actionUI.preview].split('');
-                if (previewCharacters.length > 22) {
-                    for (let character in previewCharacters) {
-                        if (characterCount != 23) {
-                            const opacity = 100 - (characterCount - 15) * 10;
-                            quickie = `${quickie}<span style="opacity: ${opacity}%;">${previewCharacters[character]}</span>`;
+                
+                if (previewCharacters.length > 70) {
+                    for (let character of previewCharacters) {
+                        if (characterCount !== 70) {
+                            const opacity = 100 - (characterCount - 70) * 10;
+                            previewText += `<span style="opacity: ${opacity}%;">${character}</span>`;
                             characterCount++;
                         }
                     }
                 } else {
-                    quickie = botData.commands[lastObj].actions[action].data[actionUI.preview]
+                    previewText = replacedSubtitle;
                 }
-                } catch (err) {
-                    quickie = `Error`
-                }
+                
+                previewName = previewText.replaceAll('*', ''); // Add this line to assign the updated value
+            }
+            let leftSeparatorDisplay, rightSeparatorDisplay, subtitlePosition;
+            
 
+            switch (editorSettings.separatorPosition) {
+                case 'left':
+                    leftSeparatorDisplay = 'none';
+                    rightSeparatorDisplay = 'inherit';
+                break
+                case 'right':
+                    rightSeparatorDisplay = 'none';
+                    leftSeparatorDisplay = 'inherit';
+                break
+                case 'both':
+                    rightSeparatorDisplay = 'inherit';
+                    leftSeparatorDisplay = 'inherit';
+                break
+            }
+            
+            switch (editorSettings.subtitlePosition) {
+                case 'left':
+                    leftSeparatorDisplay = 'none';
+                    rightSeparatorDisplay = 'inherit';
+                    subtitlePosition = 'margin-left: 1vw; margin-right: 0vw;'
+                break
+                case 'right':
+                    rightSeparatorDisplay = 'none';
+                    leftSeparatorDisplay = 'inherit';
+                    subtitlePosition = 'margin-right: 1vw; margin-left: 0vw;'
+                break
+                case 'center':
+                    rightSeparatorDisplay = 'inherit';
+                    leftSeparatorDisplay = 'inherit';
+                    subtitlePosition = 'margin-right: 1vw; margin-left: 1vw;'
+                break
+            }
+            if (editorSettings.separatorPosition == 'none') {
+                leftSeparatorDisplay = 'none'
+                rightSeparatorDisplay = 'none'
+            }
+            console.log(leftSeparatorDisplay, rightSeparatorDisplay, subtitlePosition)
             endHTML += `
-            <div id="Action${action}" onmouseenter="lastHovered = this" draggable="true" ondragleave="handleActionDragEnd(this)" ondragend="handleActionDrop()" ondragover="actionDragOverHandle(event, this)" ondragstart="handleActionDrag(this)" onmouseleave="lastHovered = null;" class="action textToLeft ${borderType}" style="animation-delay: ${delay * 3}0ms; width: 95% !important;" ondblclick="editAction(this)" onclick="highlight(this)">
+            <div id="Action${action}" onmouseenter="lastHovered = this" draggable="true" ondragleave="handleActionDragEnd(this)" ondragend="handleActionDrop()" ondragover="actionDragOverHandle(event, this)" ondragstart="handleActionDrag(this)" onmouseleave="lastHovered = null;" class="action textToLeft ${borderType}" style="animation-delay: ${delay * 3}0ms; width: 97.5% !important;" ondblclick="editAction(this)" onclick="highlight(this)">
+            <text style="background-color: #00000040; padding: 2px; padding-left: 4px; padding-right: 4px; margin-top: auto; margin-bottom: auto; border-radius: 6px; margin-right: 1vw; margin-left: 0vw;">#${parseFloat(action) + 1}</text>
             ${botData.commands[lastObj].actions[action].name}
-            <div style="opacity: 50%; margin-left: 7px;">${`${actionUI.previewName}`}: ${quickie}</div>
-            <div class="deleteActionButton" onclick="deleteObject(this)">✕</div></div>`;
+            <div style="flex-grow: 1; display: ${leftSeparatorDisplay}; height: 3px; border-radius: 10px; background-color: #ffffff15; margin: auto; margin-right: 1vw; margin-left: 1vw;"></div>
+            <div style="opacity: 50%; margin-left: 7px;">${`${previewName}`} ${quickie}</div>
+            <div style="flex-grow: 1; display: ${rightSeparatorDisplay}; height: 3px; border-radius: 10px; background-color: #ffffff15; margin: auto; margin-right: 1vw; margin-left: 1vw;"></div>
+            <div class="${editorSettings.widthChanges == true ? 'deleteActionButton' : 'noWidthDelete'}"  style="" onclick="deleteObject(this)"><span style="font-size: ${editorSettings.widthChanges == true ? 'inherit' : '12px !important;'}">✕</span></div></div>`;
         } catch (err) {
             if (!botData.commands[lastObj].actions[action] || actionFile == undefined) {
                 endHTML += `
-                <div id="Action${action}" onmouseenter="lastHovered = this" draggable="true" ondragleave="handleActionDragEnd(this)" ondragend="handleActionDrop()" ondragover="actionDragOverHandle(event, this)" ondragstart="handleActionDrag(this)" onmouseleave="lastHovered = null;" class="action textToLeft ${borderType}" style="animation-delay: ${delay * 3}0ms; width: 95% !important" ondblclick="editAction(this)" onclick="highlight(this)">
+                <div id="Action${action}" onmouseenter="lastHovered = this" draggable="true" ondragleave="handleActionDragEnd(this)" ondragend="handleActionDrop()" ondragover="actionDragOverHandle(event, this)" ondragstart="handleActionDrag(this)" onmouseleave="lastHovered = null;" class="action textToLeft ${borderType}" style="animation-delay: ${delay * 3}0ms; width: 97.5% !important" ondblclick="editAction(this)" onclick="highlight(this)">
                 Error
                 <div style="opacity: 50%; margin-left: 7px;"> - Action Missing</div>
                 <div class="deleteActionButton" onclick="deleteObject(this)">✕</div></div>`;
@@ -349,7 +420,7 @@ document.onkeydown=function(event){handleKeybind(event)};
                 case 'textCommand':
                     groupType = 'Text Command'
                     var permissions = 'None'
-                    if (group.boundary && group.boundary.limits.length != 0) {
+                    if (group.boundary != undefined && group.boundary.limits && group.boundary.limits.length != 0) {
                         permissions = `${group.boundary.limits.length} Permission Limits `
                     } else if (group.boundary.permissions) {
                         if (group.boundary.worksIn == 'guild') {
@@ -360,7 +431,7 @@ document.onkeydown=function(event){handleKeybind(event)};
                             permissions += '• Works Anywhere'
                         }
                     } else {
-                        permissions = 'Guild Only' 
+                        permissions = 'Guild Only'
                     }
                     extraGroupInformation = permissions
                     prioritizeCommandOptions()

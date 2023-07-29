@@ -12,6 +12,7 @@ function createWindow() {
     maxWidth: 800,
     icon: 'icon.png',
     title: 'Studio Bot Maker',
+    fullscreenable: false,
     center: true,
     transparent: true,
     titleBarStyle: 'hidden',
@@ -160,18 +161,9 @@ if (fs.readdirSync(processPathe + '\\AppData')) {}
   setTimeout(() => {
     try {
       main();
-
     } catch (err) {}
   }, 6000)
-  
-  
 }
-
-/* UPDATES */
-
-
-
-
   });
 
   
@@ -293,16 +285,13 @@ function newActionEditorWindow(data) {
   let customId = data.customId || ''
   let windowTime = new Date().getTime()
       const actionEditorWindow = new BrowserWindow({
-          width: 800,
+          width: 870,
           height: 600,
-          minHeight: 600,
-          minWidth: 800,
-          maxHeight: 600,
-          maxWidth: 800,
           icon: 'icon.png',
           title: `Studio Bot Maker | #${data.action} - ${data.actions[data.action].name}`,
           center: true,
           resizable: false,
+          fullscreenable: false,
           parent: lastWindow || win,
           transparent: true,
           titleBarStyle: 'hidden',
@@ -358,16 +347,13 @@ function newActionEditorWindow(data) {
       }
       let windowTime = new Date().getTime()
           const actionEditorWindow = new BrowserWindow({
-              width: 800,
+              width: 870,
               height: 600,
-              minHeight: 600,
-              minWidth: 800,
-              maxHeight: 600,
-              maxWidth: 800,
               icon: 'icon.png',
               title: `Studio Bot Maker | Editing Menu`,
               center: true,
               resizable: false,
+              fullscreenable: false,
               parent: lastWindow || win,
               transparent: true,
               titleBarStyle: 'hidden',
@@ -433,11 +419,8 @@ function newActionEditorWindow(data) {
     let time = new Date().getTime()
     const EventEditorWindow = new BrowserWindow({
       width: 800,
-      height: 600,
-      minHeight: 600,
-      minWidth: 800,
-      maxHeight: 600,
-      maxWidth: 800,
+      height: 650,
+      fullscreenable: false,
       icon: 'icon.png',
       title: `Studio Bot Maker | Editing Menu`,
       center: true,
@@ -478,6 +461,7 @@ function newActionEditorWindow(data) {
       minWidth: 800,
       maxHeight: 600,
       maxWidth: 800,
+      fullscreenable: false,
       icon: 'icon.png',
       title: `Studio Bot Maker | Editing Menu`,
       center: true,
@@ -518,6 +502,7 @@ function newActionEditorWindow(data) {
       maxHeight: 600,
       maxWidth: 800,
       icon: 'icon.png',
+      fullscreenable: false,
       title: `Studio Bot Maker | Editing Menu`,
       center: true,
       resizable: false,

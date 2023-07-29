@@ -114,7 +114,7 @@ function showCustomMenu(x, y) {
         try {
             if (variables[variable].trim() != '') {
                 menu.innerHTML += `
-                <div class="dimension hoverablez" onclick="setVariableIn(${variableType}, '${variables[variable]}', '${document.activeElement.id}')" style="width: 95%; padding-top: 4px; padding-bottom: 4px; margin: auto; margin-bottom: 4px; margin-top: 4px; border-radius: 6px;"><div class="barbuttontexta textToLeft" style="margin-left: 1vw;">${variables[variable]}</div></div>
+                <div class="dimension hoverablez" onclick="setVariableIn(${variableType}, '${variables[variable].replaceAll('\'', "\\'")}', '${document.activeElement.id}')" style="width: 95%; padding-top: 4px; padding-bottom: 4px; margin: auto; margin-bottom: 4px; margin-top: 4px; border-radius: 6px;"><div class="barbuttontexta textToLeft" style="margin-left: 1vw;">${variables[variable]}</div></div>
                 `
             }
         } catch (err) {}

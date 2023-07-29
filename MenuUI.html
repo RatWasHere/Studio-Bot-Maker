@@ -18,10 +18,12 @@
     </div>
 </div>
     <script src="./AppData/Kits/Loader.js"></script>
+    <script src="./AppData/Kits/settings.js"></script>
+
 <script>
     var datjson = JSON.parse(fs.readFileSync('./AppData/data.json'))
     let themeColor = datjson.color
-    document.getElementById('everything_container').style.background = `linear-gradient(45deg, ${themeColor} 0%, #121212 170%)`
+    document.getElementById('everything_container').style.background = `linear-gradient(45deg, ${themeColor} 0%, #121212 ${editorSettings.smoothness})`
     document.body.style.padding = '0px !important';
     document.body.style.paddingTop = '0px !important';
     document.body.style.paddingBottom = '0px !important';
@@ -94,6 +96,8 @@
     let copiedAction;
     let isActionMenu = true;
     ipcRenderer.on('data', (event, data, windowTime) => {
+        document.getElementById('everything_container').style.transition = `all 0.${editorSettings.commonAnimation}s ease`
+
         actionType = data.actionType;
         variables = data.variables;
         copiedAction = data.copiedAction;
@@ -137,7 +141,7 @@
                 action.data.ExtraData = document.getElementById('ExtraData').innerText
             }
         } else {
-            if (i.startsWith('text') || i.startsWith('toggle') || i.startsWith('menuBar') || i == 'preview' || i.startsWith('actions') || i.startsWith('customMenu') ||i == 'previewName' || i.startsWith('sepbar') || i.startsWith('btext') || i.startsWith('invisible')) {} else {
+            if (i.startsWith('text') || i == 'script' || i.startsWith('toggle') || i.startsWith('menuBar') || i == 'preview' || i.startsWith('actions') || i.startsWith('customMenu') ||i == 'previewName' || i.startsWith('sepbar') || i.startsWith('btext') || i.startsWith('invisible')) {} else {
                 try {
                     if (i.split(' ').includes('custom')) {
                         action.data[element] = document.getElementById(element).value;

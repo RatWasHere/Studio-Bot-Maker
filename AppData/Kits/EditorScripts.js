@@ -82,6 +82,9 @@ function setVariableIn(type, varName, elementId) {
     if (!element.isContentEditable) return
     if (type == 2) {
         insertTextAtCaret("${tempVars('" + varName + "')}")
+        setTimeout(() => {
+            element.focus()
+        }, 150);
     }
     if (type == 0) {
         element.innerHTML = `${varName}`
@@ -122,7 +125,7 @@ function mbSelect(storeAs, menu, extraField, UIreference) {
             menuElement.style.animationDuration = "0.5s";
             setTimeout(() => {
                 menuElement.remove();
-            }, 495);
+            }, 485);
         }
     } else {
         if (storeAs.innerText.endsWith("*")) {
@@ -194,8 +197,10 @@ function closeMenu(elmett, nht, storesAs) {
     elmett.innerHTML = nht
     elmett.onclick = () => {openChoices(storesAs, elmett)}
 }
+// 32.8
 let cancelMenu = false;
 function openChoices(storesAs, pElm, dElement, elementStores) {
+    pElm.style.transition = 'all 0.5s ease';
     let choices = actionUI[elementStores].choices;
     for (let option in actionUI[elementStores].choices) {
         if (choices[option] != action.data[storesAs]) {

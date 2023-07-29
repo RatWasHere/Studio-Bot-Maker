@@ -7,16 +7,18 @@ module.exports = {
     UI: {"compatibleWith":["Any"], 
     "text":"Get List", 
     
-    "sepbar3":"", 
-      "btext33333333":"Stored List Name", 
-      "input1*":"listName",
-       "sepbar12345":"", 
-       "btext3333ds3333":"Store List As", 
-       "input341!*":"storeAs",
+    "sepbar":"",
+    
+    
+    "btext":"Stored List Name", 
+    "input":"listName",
+    "sepbar0":"", 
+    "btext0":"Store List As", 
+    "input!":"storeAs",
 
 
-      "preview":"listName", 
-      "previewName":"List Name"},
+    "preview":"listName", 
+    "previewName":"List Name"},
 
    async run(values, message, uID, fs, client, runner, bridge)  { 
         let varTools = require(`../Toolkit/variableTools.js`)

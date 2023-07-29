@@ -223,3 +223,31 @@ function handleActionDrop(at) {
   action.data[at] = modifiedActions;
   refreshActions(at)
 }
+
+var actionAPI = {
+    showElement: (eID) => {
+        let element = document.getElementById(eID);
+        let elementHeight = element.clientHeight;
+        document.getElementById(appendUnder).appendAfter(element);
+        
+        element.style.setProperty("--inner-height", elementHeight + "px");
+        element.style.animationName = 'expand';
+        element.style.animationDuration = "300ms";
+        element.style.display = ''
+    },
+    hideElement: (eID) => {
+        let element = document.getElementById(eID);
+
+        let elementHeight = element.clientHeight;
+        element.style.setProperty("--inner-height", elementHeight + "px");
+        element.style.animationName = 'shrink';
+        element.style.animationDuration = "300ms";
+        element.style.display = 'none'
+    },
+    getActionData: () => {
+        return action.data
+    },
+    getDocument: () => {
+        return document
+    }
+}

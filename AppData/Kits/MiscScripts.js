@@ -336,200 +336,113 @@ function showCustomMenu(x, y) {
         }, 400)
 
     }
-    function deleteBtBar(bar) {
-        botData.commands[lastObj].actions[lastAct].data.actionRows.splice(bar, 1)
-        fs.writeFileSync(processPath + '\\AppData\\data.json', JSON.stringify(botData, null, 2));
-        document.getElementById('buttonsDisplay').innerHTML = ''
-        controlActionRows(true)
-    }
-    function storeBarAs(bar, meh) {
-        botData.buttons.bars[bar].storeAs = meh.value
-        fs.writeFileSync(processPath + '\\AppData\\data.json', JSON.stringify(botData, null, 2));
-    }
 
-    function setLinked(trfa, bar, button) {
-        console.log('setting linked!')
-        let dpfg = document.getElementById('dpfg')
-        if (trfa == true) {
-            document.getElementById('dpfgs').className = 'sepbars'
-            dpfg.innerHTML = `
-            <div class="barbuttontexta">Link</div>
-            <input id="customLinked" class="input" style="width: 35vw; margin-bottom: 0px;" onkeydown="return event.key !== ' '; if (event.key != 'Backspace') return this.value.split('').length < 32" oninput="buttonID(${button}, this, ${bar}) setCustomLinked(this, ${bar}, ${button});" contenteditable="true" value="${botData.commands[lastObj].actions[lastAct].data.actionRows[bar].components[button].field}" placeholder="Required">
-            `
-        } 
-        if (trfa == false) {
-            document.getElementById('dpfgs').className = 'sepbars'
-            dpfg.innerHTML = `
-            <div class="barbuttontexta">Emoji (Format: emojiName:emojiId)</div>
-            <input id="customLinked" class="input" style="width: 35vw; margin-bottom: 0px;" onkeydown="return event.key !== ' '; if (event.key != 'Backspace') return this.value.split('').length < 32" oninput="buttonID(${button}, this, ${bar}) setCustomLinked(this, ${bar}, ${button});" contenteditable="true" value="${botData.commands[lastObj].actions[lastAct].data.actionRows[bar].components[button].field}" placeholder="Optional">
-            `
-        }
-    }
-    function setCustomLinked(toWhat, bar, button) {
-        botData.commands[lastObj].actions[lastAct].data.actionRows[bar].components[button].field = toWhat.value
-        fs.writeFileSync(processPath + '\\AppData\\data.json', JSON.stringify(botData, null, 2));
-    }
-    function toggleButton(bar, button, nw) {
-        botData.commands[lastObj].actions[lastAct].data.actionRows[bar].components[button].disabled = nw
-
-        if (nw == true) {
-            document.getElementById('disabledbutton').style.backgroundColor = ''
-            document.getElementById('enabledbutton').style.backgroundColor = '#FFFFFF25'
-        } else {
-            document.getElementById('enabledbutton').style.backgroundColor = ''
-            document.getElementById('disabledbutton').style.backgroundColor = '#FFFFFF25'
-
-        }
-        fs.writeFileSync(processPath + '\\AppData\\data.json', JSON.stringify(botData, null, 2));
-
-    }
-
-    function buttonren(button, element, bar) {
-        botData.commands[lastObj].actions[lastAct].data.actionRows[bar].components[button].name = element.value
-        fs.writeFileSync(processPath + '\\AppData\\data.json', JSON.stringify(botData, null, 2));
-        document.getElementById(`${bar}${button}BUT`).innerHTML = element.value
-    }
-    function buttonID(button, element, bar) {
-        botData.commands[lastObj].actions[lastAct].data.actionRows[bar].components[button].customId = element.value
-        fs.writeFileSync(processPath + '\\AppData\\data.json', JSON.stringify(botData, null, 2));
-    }
-    function storeName(bar, meh) {
-        botData.commands[lastObj].actions[lastAct].data.actionRows[bar].name = meh.innerText
-        fs.writeFileSync(processPath + '\\AppData\\data.json', JSON.stringify(botData, null, 2));
-    }
-
-    function showActRows(atIndex) {
-        let elm = document.getElementById('actionElements')
-        elm.innerHTML = `<div class="barbuttontexta" style="margin: 5px; margin-bottom: -5px;">Select An Action Row </div> <div class="sepbars"></div>
-        <div class="flexbox" style="align-items: center; width: 95%; justify-content: center; margin: auto; margin-bottom: 2vh;">
-        <div class="barbuttone" onclick="showActRows(${atIndex})" style="width: 45%;"><div class="barbuttontexta">Buttons</div></div>
-        <div class="barbuttone" onclick="showMenuBars(${atIndex})" style="width: 45%;"><div class="barbuttontexta">Select Menus</div></div>
-        </div>
-        `
-        elm.style.overflowY = 'auto'
-        let fdr = botData.commands[lastObj].actions[lastAct].data.actionRowElements
-        for (let bar in botData.buttons.bars) {
-            var buttonColors = ''
-            for (let button in botData.buttons.bars[bar].buttons) {
-                switch (botData.buttons.bars[bar].buttons[button].style) {
-                    case 'Default': 
-                    buttonColors = `${buttonColors}<div style="width: 12px; opacity: 50%; height: 12px; margin-right: 3px; background-color: #695dfb; border-radius: 100px;"></div>`
-                    break
-                    case 'Success': 
-                    buttonColors = `${buttonColors}<div style="width: 12px; opacity: 50%; height: 12px; margin-right: 3px; background-color: #5fb77a; border-radius: 100px;"></div>`
-                    break
-                    case 'Danger': 
-                    buttonColors = `${buttonColors}<div style="width: 12px; opacity: 50%; height: 12px; margin-right: 3px; background-color: #de4447; border-radius: 100px;"></div>`
-                    break
-                    case 'Neutral': 
-                    buttonColors = `${buttonColors}<div style="width: 12px; opacity: 50%; height: 12px; margin-right: 3px; background-color: #50545d; border-radius: 100px;"></div>`
-                    break
-                    case 'Link': 
-                    buttonColors = `${buttonColors}<div style="width: 12px; opacity: 50%; height: 12px; margin-right: 3px; background-color: #FFFFFF90; border-radius: 100px;"></div>`
-                    break
-                }
-            }
-            elm.innerHTML += `
-            <div class="issue flexbox" onclick="setButtoenBar(${bar}, ${atIndex})" style="height: auto; border-bottom: none; box-shadow: none; background-color: #ffffff15; height: 4vh; align-content: center; justify-items: center;" onclick="selectbar(${bar}, ${atIndex})">${botData.buttons.bars[bar].name} - ${botData.buttons.bars[bar].buttons.length} Buttons <div style="margin-left: 12px; align-items: center; justify-content: center;" class="flexbox">${buttonColors}</div></div>
-            `
-        }
-    }
-    
+    let aresettingsopen = false;
 
     function initSetup() {
+        aresettingsopen = true;
         let commandDisplay = document.getElementById('animationArea');
-        commandDisplay.style.animationName = 'moveToTheRight'
-        commandDisplay.style.animationDuration = '0.35s'
-        commandDisplay.style.marginLeft = '-100vw'
+        commandDisplay.style.marginLeft = '-200vw'
 
         let editorOptions = document.getElementById('edutor')
-        editorOptions.style.animationName = 'moveToTheLeft'
-        editorOptions.style.animationDuration = '0.35s'
-        editorOptions.style.marginRight = '-100vw'
+        editorOptions.style.marginRight = '-200vw'
 
         document.body.innerHTML += `
         <div class="settingspane">
-        <div style="padding: 12px;">
-        <div class="barbuttontext" style="margin-bottom: 2vh;">Settings</div>
+        <div  class="flexbox" style="padding: 12px; margin: auto;">
+        <div class="barbuttontext" style="margin-bottom: 2vh; width: 100%;">Settings</div><br>
+        <btext style="width: 100%;">Editor</btext>
+        <div id="actionPreviews"></div>
+        <div id="actionPreviewPosition"></div>
+        <div id="actionPreviewSeparator"></div>
+        <text style="width: 100%; text-align: center;">Action Preview Position can overwrite Action Separator Position</text>
 
-        <div class="flexbox">
-        <div class="barbuttontexta textToLeft">Misc</div>
-            <div class="sepbars" style="width: 90%;"></div>
-        <div>
 
-        <br>
-        <div class="flexbox textToLeft" style="margin-left: 1vw; justify-content: left; align-items: left;">
-        <div class="barbuttontexta pad outlined" style="border-radius: 12px; background-color: #FFFFFF06; margin-right: 10vw;">Autosave Frequency</div>
-        <div class="barbuttontexta ml textLeft" id="120s" onclick="setAutosaveInterval(120)">120s</div>
-        <div class="barbuttontexta ml textToLeft" id="60s" onclick="setAutosaveInterval(60)">60s</div>
-        <div class="barbuttontexta ml textToLeft" id="30s" onclick="setAutosaveInterval(30)">30s</div>
-        <div class="barbuttontexta ml textToLeft" id="0s" onclick="setAutosaveInterval(0)">On Every Change</div>
-        <div class="barbuttontexta ml textToLeft" id="nulls" onclick="setAutosaveInterval(null)">Off</div>
-        </div>
+        <div class="sepbarz"></div>
+        <btext style="width: 100%;">Visuals</btext>
+        <div id="prefferedActionPane"></div>
+        <div id="coloringsmoothness"></div>
+
+
+        <div class="sepbarz"></div>
+        <btext style="width: 100%;">Behaviour</btext>
+        <div id="changingWidth"></div>
+        <div id="animationsSpeed"></div>
+
 
         </div>
         </div>
 
         `
-        let autoSaveInterval = 60
-        if (botData.autoSaveInterval) {
-            let asi = botData.autoSaveInterval;
-            if (asi == 30000) {
-                autoSaveInterval = 30
-            }
-            if (asi == 120000) {
-                autoSaveInterval = 60
-            }
-            if (asi == null) {
-                autoSaveInterval = null
-            }
-            if (asi == 0) {
-                autoSaveInterval = 0
-            }
+        createSettingSelector('actionPreviewPosition', {stored: 'actionPreviewPosition', choices: ['Left', 'Right', 'Center'], name: 'Action Preview Position'})
+        createSettingSelector('actionPreviewSeparator', {stored: 'separatorPos', choices: ['Left', 'Right', 'Both', 'None'], name: 'Action Separator Position'})
+
+        createSettingSelector('prefferedActionPane', {stored: 'subtitlePosition', choices: ['None', 'Action Pane', 'Group Pane'], name: 'Preffered Pane'})
+        createSettingSelector('coloringsmoothness', {stored: 'colorsmoothness', choices: ['Default', 'High', 'Low'], name: 'Coloring Smoothness'})
+        createSettingSelector('changingWidth', {stored: 'widthChanges', choices: ['On', 'Off'], name: 'Variable Width Effects'})
+        createSettingSelector('animationsSpeed', {stored: 'animations', choices: ['Default', 'Fast', 'Slow', 'Relaxed', 'Off'], name: 'Animations'})
+        
+    }
+    let settings;
+    try {
+        settings = JSON.parse(fs.readFileSync('C:/ProgramData/EditorSettings.json', 'utf8'));
+    } catch (err) {}
+
+    if (!settings) {
+        fs.writeFileSync('C:/ProgramData/EditorSettings.json', '{}')
+        settings = JSON.parse(fs.readFileSync('C:/ProgramData/EditorSettings.json', 'utf8'));
+    }
+
+
+    function createSettingSelector(eID, options) {
+        let element = document.getElementById(eID);
+        let choices = options.choices;
+        let storedAs = options.stored;
+
+
+        if (!settings[storedAs] || settings[storedAs] == undefined) {
+            settings[storedAs] = choices[0];
+            saveSettings()
         }
-        document.getElementById(`${autoSaveInterval}s`).classList.add('outlined')
-        document.getElementById(`${autoSaveInterval}s`).classList.add('pad')
+        
+        let choicesHTML = ``;
+
+        for (let choice in choices) {
+            if (settings[storedAs] == choices[choice]) {
+                choicesHTML += `
+                <div class="barbuttonshift outlined" style="transition: all 0.1s ease; width: auto !important; padding: 10px; padding-left: 12px; padding-right: 12px;" onclick="setChoice('${storedAs}', '${choices[choice]}')" id="${storedAs}${choices[choice]}"><btext>${choices[choice]}</btext></div>
+                `
+            } else {
+                choicesHTML += `
+                <div class="barbuttonshift" style="transition: all 0.1s ease; width: auto !important; padding-left: 12px; padding-right: 12px;" onclick="setChoice('${storedAs}', '${choices[choice]}')" id="${storedAs}${choices[choice]}"><btext>${choices[choice]}</btext></div>
+                `
+            }
         }
 
-    function setAutosaveInterval(seconds) {
-        let autoSaveInterval = 60
-        if (botData.autoSaveInterval) {
-            let asi = botData.autoSaveInterval;
-            if (asi == 30000) {
-                autoSaveInterval = 30
-            }
-            if (asi == 60000) {
-                autoSaveInterval = 60
-            }
-            if (asi == 120000) {
-                autoSaveInterval = 120
-            }
-            if (asi == null) {
-                autoSaveInterval = null
-            }
-            if (asi == 0) {
-                autoSaveInterval = 0
-            }
-        }
-        if (seconds == null) {
-            botData.autoSaveInterval = null
-        }
-        if (seconds == 30) {
-            botData.autoSaveInterval = 30000
-        }
-        if (seconds == 60) {
-            botData.autoSaveInterval = 60000
-        }
-        if (seconds == 120) {
-            botData.autoSaveInterval = 120000
-        }
-        if (seconds == 0) {
-            botData.autoSaveInterval = 0
-        }
-        document.getElementById(`${autoSaveInterval}s`).classList.remove('outlined')
-        document.getElementById(`${autoSaveInterval}s`).classList.remove('pad')
-        document.getElementById(`${seconds}s`).classList.add('outlined')
-        document.getElementById(`${seconds}s`).classList.add('pad')
+
+        element.innerHTML = `
+        <div class="flexbox" style="height: 7vh; margin-bottom: 0.5vh; background-color: #FFFFFF09; width: 70vw; border-radius: 12px;"><btext style="margin-left: 1vw;">${options.name}</btext><div class="flexbox" style="margin-right: 1vw;">${choicesHTML}</div></div>
+        `
+    }
+
+    function setChoice(storedAs, choice) {
+        document.getElementById(storedAs + settings[storedAs]).classList.remove('outlined')
+        document.getElementById(storedAs + settings[storedAs]).style.padding = ''
+        document.getElementById(storedAs + settings[storedAs]).style.paddingLeft = '12px'
+        document.getElementById(storedAs + settings[storedAs]).style.paddingRight = '12px'
+
+        settings[storedAs] = choice;
+        document.getElementById(storedAs + settings[storedAs]).classList.add('outlined')
+        document.getElementById(storedAs + settings[storedAs]).style.padding = '10px'
+        document.getElementById(storedAs + settings[storedAs]).style.paddingLeft = '12px'
+        document.getElementById(storedAs + settings[storedAs]).style.paddingRight = '12px'
+
+
+
+        saveSettings()
+    }
+    function saveSettings() {
+        fs.writeFileSync('C:/ProgramData/EditorSettings.json', JSON.stringify(settings))
     }
     function cmdOpen(cmdpending) {
         lastObj = cmdpending

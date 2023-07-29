@@ -1,27 +1,37 @@
+const variableTools = require("../Toolkit/variableTools.js");
+
 module.exports = {
-    data: {"messageContent": "", "button": "Command Guild", "name": "Get User", "userFrom":"ID*", "memberValue":"", "storeAs":""},
-    UI: {"compatibleWith": ["Text", "Slash"], "text": "Get User", "sepbar":"", "btext": "Get User Via", "menuBar": {choices: ["ID*", "Command Author"], storeAs: "userFrom", extraField:"memberValue"}, 
-    "sepbar0":"", "btext0":"Store As", 
-    "input!*":"storeAs",
+    data: {"name":"Get User", "from":"User ID*", "userID":"", "storeAs":""},
+     
+    UI: {"compatibleWith":["Text", "Slash"],
 
-    "variableSettings": {
-        "memberValue": {
-                "Command Author": "novars",
-                "id*": "indirect"
-        }
-    },
-    
-    preview: "userFrom", previewName: "Via"},
-    async run(values, message, uID, fs, client, runner, bridge)  {
-        let varTools = require(`../Toolkit/variableTools.js`)
+    "text":"Get User",
+    "sepbar":"", 
 
-        if (values.userFrom == "Command Author") {
-            const member = client.users.get(message.author.id); 
-            bridge.variables[values.storeAs] = member
+    "btext":"Get User From",
+    "menuBar": {choices: ["User ID*", "Command Author"], storeAs: "from", extraField: "userID"},
+    "sepbar0":"",
+    "btext0":"Store As",
+    "input!":"storeAs",
+
+    "variableSettings": {"userID":{}},
+
+    "preview":"from", 
+    "previewName":"From"},
+    subtitle: "From: $[from]$ $[userID]$ - Store As $[storeAs]$",
+    async run(values, message, uID, fs, client, runner, bridge)  { 
+        let transferVariables = require(`../Toolkit/variableTools.js`).transf
+      
+        const transf = (value) => {
+          return transferVariables(value, bridge.variables)
         }
-        if (values.userFrom == "ID*") {
-            const member = client.users.get(varTools.transf(values.memberValue, bridge.variables)); 
-            bridge.variables[values.storeAs] = member
+        let result;
+        if (values.from == 'User ID*') {
+          result = client.users.get(transf(values.userID))
+          if (result == undefined) result = await client.rest.users.get(transf(values.userID))
+        } else {
+          result = message.author;
         }
+        bridge.variables[transf(values.storeAs)] = result;
     }
 }

@@ -141,14 +141,15 @@
            height: 21px;
            padding-top: 4px;
            padding-bottom: 4px;
+           overflow: auto;
        }
        100% {
-           opacity: 0%;
            z-index: 0;
            padding-top: 0px;
            padding-bottom: 0px;
-           margin-top: 0px;
            height: 0px;
+           overflow: auto;
+           margin-bottom: 0px;
        }
    }
    @keyframes selectbarnmt {
@@ -303,6 +304,14 @@
              height: 23px;
            }
          }
+         @keyframes expand {
+            from {
+              height: 0px;
+            }
+            to {
+              height: var(--inner-height);
+            }
+          }
        @keyframes apfd {
            0% {
            height: auto;
@@ -712,15 +721,15 @@
        }
        .actBarHalf {
            width: calc(48.3vw);
-           height: calc(39vh - 24px) !important;
+           height: calc(41vh - 12px) !important;
            background-color: #ffffff16;
            backdrop-filter: blur(12px);
            margin-right: 0px;
            margin-left: 0px;    
            border-radius: 12px;
            background-image: url(./AppData/grain.png);
-           padding-top: 12px;
-           padding-bottom: 12px;
+           padding-top: 6px;
+           padding-bottom: 6px;
            overflow-y: auto !important;
            overflow-x: none !important
        }
@@ -729,10 +738,10 @@
            border-bottom-left-radius: 0px;
        }
        .actbartoolbar {
-           width: calc(48.3vw - 24px);
-           height: calc(7vh - 24px) !important;
+           width: calc(48.3vw - 8px);
+           height: calc(6vh - 8px) !important;
            background-image: url(./AppData/grain.png);
-           padding: 12px;
+           padding: 4px;
            border-radius: 12px;
            background: linear-gradient(80deg, #FFFFFF09 0%, #FFFFFF12 100%)
        }
@@ -861,10 +870,18 @@
        animation-name: appearAct;
        max-height: 300000000px;
        animation-duration: 0.5s;
-       transition: background-color  0.1s ease; 
+       transition: background-color  0.1s ease;
        box-shadow: inset 0 0 2px #FFFFFF10;
    
        color: #FFFFFF99;
+       }
+       @keyframes scrollfade {
+        from {
+            opacity: 100%;
+        }
+        to {
+            opacity: 50%
+        }
        }
        .coloredAction {
         width: 95%;
@@ -1056,7 +1073,7 @@
         
         .dropdown {
             animation-name: appearfadenmt;
-            width: calc(95% - 18px);
+            width: calc(95% - 16px);
             text-align: left;
             border-radius: 7px;
 
@@ -1277,7 +1294,7 @@
        .fullsize {
        margin-left: 1vw;
        width: 47.3vw;
-       height: calc(97vh - 24px) !important;
+       height: calc(39.5vh - 12px);
        backdrop-filter: blur(12px);
        border-radius: 12px;
        padding-right: 0px;
@@ -1532,6 +1549,16 @@
        animation-name: separate;
        animation-duration: 0.5s;
        }
+       .sepbarz {
+        background-color: #FFFFFF20;
+        width: 75%;
+        margin-top: 12px;
+        margin-bottom: 12px;
+        margin-left: auto;
+        margin-right: auto;
+        height: 2px;
+        border-radius: 20px;
+        }
        .white {
        color: #949494 !important;
        }
@@ -1980,6 +2007,30 @@
        margin-left: auto;
        transition: width 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
        }
+       .noWidthDelete {
+        width: 22px;
+        animation-name: smallerXbutton;
+        animation-duration: 0.2s;
+       cursor: pointer;
+       height: 16px;
+       padding: 2px;
+       padding-top: 4px;
+       padding-bottom: 4px;
+       margin-top: auto;
+       margin-bottom: auto;
+       border-radius: 7px;
+       text-align: center;
+       background-color: #00000055;
+       position: relative;
+       box-shadow: inset 0 0 2px #FFFFFF20;
+       color: #FFFFFF80;
+       margin-right: 0px;
+       font-size: 12px;
+       z-index: 1;
+       text-align: center;
+       margin-left: auto;
+       transition: width 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+       }
        @keyframes det {
            0% {
                border-top-left-radius: 40px;
@@ -2087,6 +2138,16 @@
         padding: 12px;
        }
        .barbuttontexta {
+        transition: color 0.4s ease;
+        font-size: 18px;
+        color: #949494;
+        text-align: center;
+        margin-left: auto;
+        margin-right: auto;
+        margin-top: auto;
+        margin-bottom: auto;
+       }
+       btext {
         transition: color 0.4s ease;
         font-size: 18px;
         color: #949494;
@@ -2748,7 +2809,7 @@
         background-color: #FFFFFF15;
      }
      .outlined {
-        outline: #FFFFFF30 solid 1px;
+        outline: #FFFFFF30 solid 3px;
      }
      @keyframes snaptoscale {
         0% {
@@ -2766,13 +2827,13 @@
      .settingspane {
         animation-name: snaptoscale;
         animation-duration: 0.4s;
-        width: 90vw;
+        width: 95vw;
         height: 90vh;
         margin: auto;
         align-self: center;
         justify-self: center;
         background-color: #FFFFFF09;
-        margin-top: -98vh;
+        margin-top: -95vh;
         border-radius: 12px;
         overflow: auto;
         border-top-left-radius: 0px;
@@ -2844,4 +2905,22 @@
         font-size: 15.5px;
         margin-left: calc(5% - 9px);
         margin-top: 2.5px;
+    }
+
+    @keyframes flash {
+        0% {
+            opacity: 100%;
+        }
+        50% {
+            opacity: 50%;
+        }
+        100% {
+            opacity: 100%;
+        }
+    }
+    .flash {
+        opacity: 100%;
+        animation-name: flash;
+        animation-duration: 1s;
+        animation-iteration-count: infinite;
     }

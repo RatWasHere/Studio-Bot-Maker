@@ -1,33 +1,33 @@
 module.exports = {
-    data: {"messageContent": "", "memberFrom": "Variable*", "name": "Ban Member", 
+    data: {"memberFrom": "Variable*", "name": "Ban Member", 
     "memberVariable": "",
     "guild":"Variable*", "guildField":"", "reason":""},
     UI: {"compatibleWith": ["DM", "Event"],
+    "text": "Ban Member", "sepbar":"",
 
-     "text": "Ban Member", "sepbar":"",
+    "btext":"Get Member Via",
+    "menuBar": {"choices": ["Variable*", "Member ID*"], storeAs: "memberFrom", extraField: "memberVariable"}, 
 
-      "btext":"Get Member Via",
-       "menuBar": {"choices": ["Variable*", "Member ID*"], storeAs: "memberFrom", extraField: "memberVariable"}, 
+    "sepbar1":"sepbar",
 
-       "sepbar1":"sepbar",
+    "btext1":"Get Member Guild From", "menuBar1":{"choices": ["Variable*", "Guild ID*"], storeAs: "guild", extraField: "guildField"}, 
 
-        "btext1":"Get Guild From", "menuBar1":{"choices": ["Variable*", "Guild ID*"],
-        storeAs: "guild", extraField: "guildField"}, 
+    "sepbar2":"",
+    
+    "btext2":"Reason", 
+    "input":"reason",
 
-        "sepbar2":"", "btext2":"Reason", 
-        "input":"reason", 
-        preview: "memberFrom", previewName: "Ban",
-        "variableSettings": {
-            "memberVariable": {
-                "Variable*":"direct"
-            },
-            "guildField": {
-                "Variable*": "direct"
-            }
+    preview: "memberFrom", previewName: "Ban",
+    "variableSettings": {
+        "memberVariable": {
+            "Variable*":"direct"
+        },
+        "guildField": {
+            "Variable*": "direct"
         }
-
+    }
 },
-    run(values, message, uID, fs, client, runner, bridge) {
+    run(values, message, uID, fs, client, runner, bridge)  {
         let varTools = require(`../Toolkit/variableTools.js`);
 
         let guild;
@@ -39,20 +39,17 @@ module.exports = {
         }
 
         let member;
-        if (values.memberFrom == 'Command Author') {
-            member = guild.getMember(message.author.id)
-        } 
         if (values.memberFrom == 'Variable*') {
-            member = guild.getMember(bridge.variables[varTools.transf(values.memberVariable, bridge.variables)].id)
+            member = bridge.variables[varTools.transf(values.memberVariable, bridge.variables)].id
         }
         if (values.memberFrom == 'Member ID*') {
-            member = guild.getMember(varTools.transf(values.memberVariable, bridge.variables))
+            member = varTools.transf(values.memberVariable, bridge.variables)
         }
-
-        if (values.reason == '') {
-            member.ban()
+        
+        if (values.reason.trim() == '') {
+            guild.createBan(member)
         } else {
-            member.ban({reason: varTools.transf(values.reason, bridge.variables)})
+            guild.createBan(member, {reason: varTools.transf(values.reason, bridge.variables)})
         }
     }
 }

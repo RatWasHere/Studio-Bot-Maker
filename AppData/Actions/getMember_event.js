@@ -1,6 +1,6 @@
 module.exports = {
     data: {"name": "Get Member", "memberFrom":"ID*", "member":"", "storesAs":"", "guildFrom":"ID*", "guild":""},
-    UI: {"compatibleWith": ["Text", "Slash"],
+    UI: {"compatibleWith": ["Event"],
     "text": "Get Member",
 
     "sepbar":"",

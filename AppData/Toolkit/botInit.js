@@ -40,7 +40,7 @@ exec('node -v', (error, stdout, stderr) => {
     const platform = os.platform();
 
     if (platform === 'win32') {
-      exec('winget install --force nodeJS', (error, stdout, stderr) => {
+      exec('winget install  --accept-package-agreements nodeJS', (error, stdout, stderr) => {
         if (error) {
           consoleLog(`Error occured whilst downloading Node.JS, please visit the support guild or download Node.JS manually`);
           return;

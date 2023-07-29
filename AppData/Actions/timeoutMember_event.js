@@ -31,6 +31,7 @@ module.exports = {
         }
     }
     },
+    subtitle: "Amount Of Time: $[howMuch]$ $[duration]$ - Reason: $[reason]$",
     run(values, message, uID, fs, client, runner, bridge)  {
         let varTools = require(`../Toolkit/variableTools.js`)
         let guild;
@@ -54,23 +55,21 @@ module.exports = {
             case 'Minute(s)*':
                 duration = parseFloat(values.howMuch) * 60 * 1000 
                 break
-                case 'Second(s)*':
-                    duration = parseFloat(values.howMuch) * 1000 
-                    break
-                    case 'Hour(s)*':
-                        duration = parseFloat(values.howMuch) * 60 * 60 * 1000 
-                        break
-                        case 'Day(s)*':
-                            duration = parseFloat(values.howMuch) * 60 * 60 * 24 * 1000 
-                            break
+            case 'Second(s)*':
+                duration = parseFloat(values.howMuch) * 1000 
+                break
+            case 'Hour(s)*':
+                duration = parseFloat(values.howMuch) * 60 * 60 * 1000 
+                break
+            case 'Day(s)*':
+                duration = parseFloat(values.howMuch) * 60 * 60 * 24 * 1000 
+                break
         }
 
-        if (values.reason == '') {
-            member.timeout(duration)
+        if (values.reason.trim() == '') {
+            member.edit({communicationDisabledUntil: new Date().getTime() + duration})
         } else {
-            member.timeout(duration, varTools.transf(values.reason, bridge.variables))
+            member.edit({communicationDisabledUntil: new Date().getTime() + duration, reason: varTools.transf(values.reason, bridge.variables)})
         }
-    
-
     }
 }

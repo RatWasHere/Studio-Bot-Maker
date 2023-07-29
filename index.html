@@ -32,16 +32,20 @@
             <div class="sidebartext">Bot Setup</div>
         </div>
         <div class="sepbars"></div>
+        <div class="sidebarbutton flexbox outlined" onclick="initSetup()" >
+            <div class="image botsetup noanims;"style="width: 2vw; height: 2vw; margin-left: 1vw;"></div>
+            <div class="sidebartext">Settings</div>
+        </div>
+        <div class="sepbars"></div>
         <div class="sidebarbutton flexbox outlined" onclick="require('electron').shell.openExternal('https:/\/discord.gg/wjXz7jGgCw')">
             <div class="image editAction noanims;"style="width: 2vw; height: 2vw; margin-left: 1vw;"></div>
             <div class="sidebartext">Support Server</div>
         </div>
 
     </div>
-
-    <div style="justify-content: center; width: 100%; align-content: center; margin-left: auto; margin-right: auto; align-items: center; justify-items: center;">
+    <div style="justify-content: center; width: 100%; align-content: center; margin-left: auto; margin-right: auto; align-items: center; justify-items: center; overflow-y: none !important;">
 <div class="flexbox fbh">
-    <div style="flex: none; overflow-x: auto; width: 48.3vw;">
+    <div style="flex: none; width: 48.3vw;">
         <div id="animationArea">
     <div class="actBarHalf actbartop" id="commandbar" style="z-index: 2;">
     </div>
@@ -54,9 +58,9 @@
                 <div class="image add"></div>
             </div>
         </div>       </div>
-    <div class="actBarHalf actbartop" id="actionbar">
+    <div class="actBarHalf actbartop" id="actionbar" style="width: 96.6vw !important;">
     </div>
-    <div class="actbartoolbar flexbox actbarbottom" style="align-items: center; justify-content: center;">
+    <div class="actbartoolbar flexbox actbarbottom" style="align-items: center; justify-content: center; width: calc(96.6vw - 8px) !important;">
         <div style="margin-right: auto; margin-left: 1vw;">
         <div class="barbuttontexta" id="actionsOf">Actions of </div>
         </div> 
@@ -73,8 +77,13 @@
 </div>
 
 </div>
-    <div id="edutor" class="fullsize">
-        <div id="animationEditor" style="height: 100%;">
+    <div id="edutor" class="fullsize" style="height: 40vh !important;">
+        <div id="animationEditor">
+            <div class="flexbox tile dimension noanims" style="margin-bottom: 0.5vh; height: calc(5vh - 10px) !important; padding: 0px !important; padding-top: 5px !important; padding-bottom: 5px !important; width: 100%; border-radius: 12px;">
+                <div class="barbuttonshift borderright"  id="highlightedGroup1" style="width: calc(35.5% - 24px); padding: 0px; height: 100%;" onclick="setHighlightedGroup(1)"><div class="barbuttontexta">Text Commands</div></div>
+                <div class="barbuttonshift bordercenter" id="highlightedGroup2" style="width: calc(35.5% - 24px); padding: 0px; height: 100%;" onclick="setHighlightedGroup(2)"><div class="barbuttontexta">Slash Commands</div></div>
+                <div class="barbuttonshift borderleft" id="highlightedGroup3" style="width: calc(35.5% - 24px); padding: 0px; height: 100%;" onclick="setHighlightedGroup(3)"><div class="barbuttontexta">Events</div></div>
+            </div>
         <div class="tile borderbottomz" style="background: linear-gradient(0deg, #FFFFFF10, #FFFFFF15)">
         <div class="text clsr" style="margin-top: 0px;">Group Name</div>
         <div class="inputBar" style="width: 96%; border-radius: 9px; margin: auto;" contenteditable="true" id="Command_Name" oninput="validateInputSpaces(this); updateName(this)"></div>
@@ -82,7 +91,7 @@
 
     <div class="tile bordercentere" style="background: linear-gradient(0deg, #FFFFFF15, #FFFFFF10); margin-top: 0px;">
     <div id="botData.commands[lastObj].actions" class="baction noanims" style="width: 90%; padding: 5px; margin-top: 0px; margin-bottom: 10px;">Using 0 Actions</div>
-    <div class="flexbox" style="height: 33px; overflow: auto; margin-bottom: 1vh;">
+    <div class="flexbox" style="height: 33px; margin-bottom: 1vh;">
     <div class="baction noanims hoverable optionleft flexbox" style="align-items: center; justify-content: center;" id="commandParameters" onclick="openParameters()"><div style="margin-right: auto; margin-left: 1vw;">Parameters</div><div class="image openExternally"></div></div>
     <div class="baction noanims hoverable optionright flexbox" style="overflow: auto; align-items: center; justify-content: center;" id="groupEvents" onclick="openEvent()"><div style="margin-right: auto; margin-left: 1vw;">Event: </div><div class="image openExternally"></div></div>
     <div class="baction noanims hoverable optionright flexbox" style="align-items: center; justify-content: center;"id="commandOptions" onclick="openPermissionEditor()"><div style="margin-right: auto; margin-left: 1vw;">Permissions</div><div class="image openExternally"></div></div>
@@ -113,12 +122,7 @@
         </div>
     </div>
 </div>
-    <div class="flexbox tile dimension">
-        <div class="barbuttonshift borderright"  id="highlightedGroup1" style="width: calc(33.3% - 24px);" onclick="setHighlightedGroup(1)"><div class="barbuttontexta">Text Commands</div></div>
-        <div class="barbuttonshift bordercenter" id="highlightedGroup2" style="width: calc(33.3% - 24px);" onclick="setHighlightedGroup(2)"><div class="barbuttontexta">Slash Commands</div></div>
-        <div class="barbuttonshift borderleft"   id="highlightedGroup3" style="width: calc(33.3% - 24px);" onclick="setHighlightedGroup(3)"><div class="barbuttontexta">Events</div></div>
 
-    </div>
 </div>
 
 </div>
@@ -126,11 +130,10 @@
     </div>
 
 
-<div class="bottombar" onclick="modifyBar()" id="bottombar">•••</div>
-</div>
     <script>
         document.body.style.background =  'linear-gradient(45deg, #000814 0%,#1d1d1d 160%)'
     </script>
+    <script src="./AppData/Kits/settings.js"></script>
     <script src="./AppData/Kits/EditorBones.js"></script>
     <script src="./AppData/Kits/MiscScripts.js"></script>
     <script src="./AppData/Kits/ActionModules.js"></script>

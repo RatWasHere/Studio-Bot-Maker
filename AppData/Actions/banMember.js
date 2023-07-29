@@ -1,44 +1,43 @@
 module.exports = {
-    data: {"messageContent": "", "memberFrom": "Variable*", "name": "Ban Member", "memberVariable": "", "reason":""},
+    data: {"memberFrom": "Variable*", "name": "Ban Member", "memberVariable": "", "reason":""},
     UI: {"compatibleWith": ["Text", "Slash"],
 
-     "text": "Ban Member", "sepbar":"",
+    "text": "Ban Member",
 
-      "btext":"Get Member Via",
-       "menuBar": {"choices": ["Command Author", "Variable*", "Member ID*"], storeAs: "memberFrom", extraField: "memberVariable"}, 
+    "sepbar":"",
 
-       "sepbar1":"sepbar",
-
-        "btext2":"Reason", 
-        "input":"reason", 
-        
-        preview: "memberFrom", previewName: "Ban",
-        "variableSettings": {
-            "memberVariable": {
-                "Variable*":"direct"
-            }
+    "btext":"Get Member Via",
+    "menuBar": {"choices": ["Command Author", "Variable*", "Member ID*"], storeAs: "memberFrom", extraField: "memberVariable"}, 
+    
+    "sepbar2":"", "btext2":"Reason", 
+    "input":"reason", 
+    preview: "memberFrom", previewName: "Ban",
+    "variableSettings": {
+        "memberVariable": {
+            "Variable*":"direct"
         }
+    }
 
 },
-    run(values, message, uID, fs, client, bridge) {
+    run(values, message, uID, fs, client, runner, bridge) {
         let varTools = require(`../Toolkit/variableTools.js`);
 
         let guild = bridge.guild;
+        
         let member;
         if (values.memberFrom == 'Command Author') {
-            member = guild.getMember(message.author.id)
+            member = message.author.id
         } 
         if (values.memberFrom == 'Variable*') {
-            member = guild.getMember(bridge.variables[varTools.transf(values.memberVariable, bridge.variables)].id)
+            member = bridge.variables[varTools.transf(values.memberVariable, bridge.variables)].id
         }
         if (values.memberFrom == 'Member ID*') {
-            member = guild.getMember(varTools.transf(values.memberVariable, bridge.variables))
+            member = varTools.transf(values.memberVariable, bridge.variables)
         }
-
-        if (values.reason == '') {
-            member.guild.createBan(member.user.id)
+        if (values.reason.trim() == '') {
+            guild.createBan(member)
         } else {
-            member.guild.createBan(member.user.id, {reason: varTools.transf(reason, bridge.variables)})
+            guild.createBan(member, {reason: varTools.transf(values.reason, bridge.variables)})
         }
     }
 }

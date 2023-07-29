@@ -25,6 +25,7 @@ module.exports = {
     "variableSettings": { "activityName":{} },
 
     preview: "activity", previewName: "Activity"},
+    subtitle: "Activity: $[activity]$ $[activityName]$ - Type: $[type]$",
     run(values, message, uID, fs, client, runner, bridge)  {
         let varTools = require(`../Toolkit/variableTools.js`)
         let guild;

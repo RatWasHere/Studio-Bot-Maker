@@ -51,7 +51,6 @@ try {
 
         registerCommands()
     });
-
     /* Used For Running Action Arrays - Universal Action Array Runner */ 
     const runActionArray = async (at, interaction, client, actionBridge, tf) => {
         new Promise( async (resolve) => {
@@ -86,6 +85,7 @@ try {
                 } catch(err) {
                     /* Alert The User Of The Error */
                     console.log(`${colors.BgRed}${colors.FgBlack}${cmdName} ${colors.FgBlack + colors.BgWhite}(@#${cmdAt})${colors.Reset + colors.BgRed + colors.FgBlack} >>> ${require(`./AppData/Actions/${cmdActions[action].file}`).data.name} ${colors.FgBlack + colors.BgWhite}(@#${action})${colors.Reset + colors.BgRed + colors.FgBlack} >>> Error: ${err}${colors.Reset}`)
+                    console.log(err)
                 }
             } else {
                 resolve()
@@ -128,7 +128,6 @@ try {
         }
 
        } else {
-
         if (command.trigger == 'messageContent') {
             let messageContent = `${msg.content}`;
             if (messageContent.toLowerCase().split(' ').includes(command.name.toLowerCase()) && `${msg.content}`.toLowerCase().startsWith(data.prefix) == false) {

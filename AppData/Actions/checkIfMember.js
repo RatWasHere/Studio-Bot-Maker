@@ -50,16 +50,20 @@ module.exports = {
 
     async run(values, message, uID, fs, client, actionRunner, bridge) {
         let varTools = require(`../Toolkit/variableTools.js`);
+        let transferVariables = require(`../Toolkit/variableTools.js`).transf
+      
+        const transf = (value) => {
+          return transferVariables(value, bridge.variables)
+        }
         
         let guild = bridge.guild;
         var member = message.member
         if (values.memberChoice == 'Variable*') {
-            member = guild.getMember(varTools.transf(bridge.variables[values.memberVariable].id, bridge.variables));
+            member = guild.getMember(bridge.variables[transf(values.memberVariable)].id);
         }
         if (values.memberChoice == 'Member ID*') {
             member = guild.getMember(varTools.transf(values.memberVariable, bridge.variables));
         }
-        
         let hasPermission = false;
 
         switch(values.permission) {

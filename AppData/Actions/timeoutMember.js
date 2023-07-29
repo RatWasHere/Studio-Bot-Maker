@@ -36,6 +36,7 @@ module.exports = {
     }
 
     },
+    subtitle: "Amount Of Time: $[howMuch]$ $[duration]$ - Reason: $[reason]$",
     run(values, message, uID, fs, client, actionContextBridge) {
         let varTools = require(`../Toolkit/variableTools.js`);
         let guild = actionContextBridge.guild;
@@ -70,10 +71,10 @@ module.exports = {
             break
         }
 
-        if (values.reason == '') {
-            member.timeout(duration)
+        if (values.reason.trim() == '') {
+            member.timeout({communicationDisabledUntil: new Date().getTime() + duration})
         } else {
-            member.edit()
+            member.edit({communicationDisabledUntil: new Date().getTime() + duration, reason: varTools.transf(values.reason, bridge.variables)})
         }
 
     }

@@ -40,6 +40,7 @@ function getUIelements(UIdata) {
             action.data[UIdata[element]] = Object.values(action.data[UIdata[element]])
         }
         endHTML = `${endHTML}
+        <div style="margin-top: -3vh;"></div>
         <div onclick="createAction('${UIdata[element]}', '${element}')" style="transition: all 0.2s ease;" id="${UIdata[element]}AddButton" class="flexbox addButton">
         <div class="image add"></div>
         </div>
@@ -176,6 +177,9 @@ function getUIelements(UIdata) {
             }
         }, 50)
 
+        if (UIdata.script) {
+            UIdata.script(actionAPI)
+        }
     }
 }
 

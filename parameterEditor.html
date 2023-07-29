@@ -40,11 +40,13 @@
     </div>
 </div>
     <script src="./AppData/Kits/Loader.js"></script>
+    <script src="./AppData/Kits/settings.js"></script>
+
 <script>
 
     var datjson = JSON.parse(fs.readFileSync('./AppData/data.json'))
     let themeColor = datjson.color
-    document.getElementById('everything_container').style.background = `linear-gradient(45deg, ${themeColor} 0%, #121212 170%)`
+    document.getElementById('everything_container').style.background = `linear-gradient(45deg, ${themeColor} 0%, #121212 ${editorSettings.smoothness})`
     document.body.style.transition = 'all 0.2s ease'
     document.body.style.backgroundColor = '#FFFFFF00'
     const {ipcRenderer} = require('electron')
@@ -62,6 +64,8 @@
     }
 
     ipcRenderer.on('data', (event, _data) => {
+        document.getElementById('everything_container').style.transition = `all 0.${editorSettings.commonAnimation}s ease`
+
         document.getElementById('everything_container').style.scale = '1'
         document.getElementById('everything_container').style.filter = 'blur(0px)'
         data = _data.parameters;
@@ -91,6 +95,30 @@
             document.getElementById('parameterWindow').innerHTML = ``
         }
     }
+    
+    let draggedPos;
+    let draggedOver;
+    function startDrag(at) {
+        draggedPos = at
+    }
+    function dragOver(at) {
+        draggedOver = at;
+    }
+    function dragend() {
+        if (!draggedOver) return
+        data = moveArrayElement(data, draggedPos, draggedOver)
+        draggedOver = undefined;
+
+        refreshParameters()
+    }
+    
+        function moveArrayElement(arr, old_index, new_index) {
+            const element = arr[old_index];
+            arr.splice(old_index, 1);
+            arr.splice(new_index, 0, element);
+        
+            return arr;
+        }
     function refreshParameters() {
         let endHTML = ``
         for (let parameter in data) {
@@ -99,7 +127,7 @@
                 parameterName = parameterName.split('').splice(0, 10).join('') + '..'
             }
             endHTML += `
-            <div class="action textToLeft" id="${parameter}" onclick="openParameter(${parameter})" style="height:24px; border-radius: 6px !important;">
+            <div class="action textToLeft" ondragstart="startDrag(${parameter})" ondragover="${parameter}" ondragend="dragend()" id="${parameter}" onclick="openParameter(${parameter})" style="height:24px; border-radius: 6px !important;">
                 ${parameterName}
             <div class="deleteActionButton" onclick="deleteParameter(${parameter})">✕</div>
             </div>
