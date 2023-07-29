@@ -183,7 +183,7 @@ app.on("ready", () => {
   }
 });
 
-const { autoUpdater } = require("electron");
+const { autoUpdater } = require("electron-updater");
 
 autoUpdater.setFeedURL({
   url: "https://github.com/RatWasHere/Studio-Bot-Maker",
