@@ -1,38 +1,40 @@
 module.exports = {
-    data: {"name":"Add Reaction", 
-    "message":"",
-    "emoji":"",
-    "messageFrom":""
-},
+  data: { name: "Add Reaction", message: "", emoji: "", messageFrom: "" },
 
-    UI: {"compatibleWith":["Text", "DM"], 
-    "text":"Add Reaction", 
-    
-    "sepbar":"",
+  UI: {
+    compatibleWith: ["Text", "DM"],
+    text: "Add Reaction",
 
-    "btext":"Get Message To Add Reaction On Via",
-    "menuBar": {choices: ["Command Message", "Variable*"], storeAs: "messageFrom", extraField: "message"},
+    sepbar: "",
 
-    "sepbar0":"",
+    btext: "Get Message To Add Reaction On Via",
+    menuBar: {
+      choices: ["Command Message", "Variable*"],
+      storeAs: "messageFrom",
+      extraField: "message",
+    },
 
-    "btext0":"Reaction Emoji",
+    sepbar0: "",
+
+    btext0: "Reaction Emoji",
 
     "input*": "emoji",
 
-    "preview":"emoji",
-    "previewName":"Emoji"
-    },
+    preview: "emoji",
+    previewName: "Emoji",
+  },
 
-    async run(values, inter, uID, fs, client, bridge) { 
-        const varTools = require(`../Toolkit/variableTools.js`)
+  async run(values, inter, uID, fs, client, bridge) {
+    const varTools = require(`../Toolkit/variableTools.js`);
 
-        let message;
-        if (values.messageFrom == 'Command Message') {
-            message = inter
-        }
-        if (values.messageFrom == 'Variable*') {
-            message = bridge.variables[varTools.transf(values.message, bridge.variables)]
-        }
-        message.createReaction(varTools.transf(values.emoji, bridge.variables))
+    let message;
+    if (values.messageFrom == "Command Message") {
+      message = inter;
     }
-}
+    if (values.messageFrom == "Variable*") {
+      message =
+        bridge.variables[varTools.transf(values.message, bridge.variables)];
+    }
+    message.createReaction(varTools.transf(values.emoji, bridge.variables));
+  },
+};

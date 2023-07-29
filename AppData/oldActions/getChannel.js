@@ -1,21 +1,31 @@
 module.exports = {
-    data: {"name": "Get Channel","desc": "", "storeAs": "", "channelID":"",  "ExtraData":""},
-    UI: {"compatibleWith": ["Any"],
-    "text":"Get Channel", 
-    
-    "sepbar":"", 
+  data: {
+    name: "Get Channel",
+    desc: "",
+    storeAs: "",
+    channelID: "",
+    ExtraData: "",
+  },
+  UI: {
+    compatibleWith: ["Any"],
+    text: "Get Channel",
 
-    "btext":"Channel ID",
-    "input*":"channelID",
+    sepbar: "",
 
-    "sepbar0":"",
+    btext: "Channel ID",
+    "input*": "channelID",
 
-    "btext1": "Store As", 
-    "input!*":"storeAs",
+    sepbar0: "",
 
-    previewName: "ID", preview: "channelID"},
-    run(values, message, uID, fs, client, runner, bridge)  {
-        let varTools = require(`../Toolkit/variableTools.js`)        
-        bridge.variables[varTools.transf(values.storeAs, bridge.variables)] = client.getChannel(varTools.transf(values.channelID, bridge.variables))
-    }
-}
+    btext1: "Store As",
+    "input!*": "storeAs",
+
+    previewName: "ID",
+    preview: "channelID",
+  },
+  run(values, message, uID, fs, client, runner, bridge) {
+    let varTools = require(`../Toolkit/variableTools.js`);
+    bridge.variables[varTools.transf(values.storeAs, bridge.variables)] =
+      client.getChannel(varTools.transf(values.channelID, bridge.variables));
+  },
+};

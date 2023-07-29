@@ -1,118 +1,219 @@
 <html>
-    <link rel="stylesheet" href="main.css">
-    <meta charset="utf8">
-    <div style="width: 100vw; overflow: auto; height: 100vh; margin-top: -8px; margin-left: -8px; filter: blur(22px); border-radius: 14px; transition: scale 0.3s ease, filter 0.5s ease; scale: 0.1;" id="everything_container">
-    <div id="editorContent" style="height: 90vh; width: 100vw; background-color: #FFFFFF10; overflow: auto; transition: all 0.3s ease;">
-        <div class="sepbars" style="width: 98%"></div>
-        <div class="barbuttontexta" style="text-align: center; margin: auto;">Action Not Found</div>
-        <div class="barbuttonshift" style="margin: auto; margin-top: 75vh; width: 70vw; transition: all 0.25s ease;" onclick="startSearch(); this.style.opacity = '0%'; this.style.marginTop = '1vh'; this.onclick = () => {}; setTimeout(() => {
+  <link rel="stylesheet" href="main.css" />
+  <meta charset="utf8" />
+  <div
+    style="
+      width: 100vw;
+      overflow: auto;
+      height: 100vh;
+      margin-top: -8px;
+      margin-left: -8px;
+      filter: blur(22px);
+      border-radius: 14px;
+      transition:
+        scale 0.3s ease,
+        filter 0.5s ease;
+      scale: 0.1;
+    "
+    id="everything_container"
+  >
+    <div
+      id="editorContent"
+      style="
+        height: 90vh;
+        width: 100vw;
+        background-color: #ffffff10;
+        overflow: auto;
+        transition: all 0.3s ease;
+      "
+    >
+      <div class="sepbars" style="width: 98%"></div>
+      <div class="barbuttontexta" style="text-align: center; margin: auto">
+        Action Not Found
+      </div>
+      <div
+        class="barbuttonshift"
+        style="
+          margin: auto;
+          margin-top: 75vh;
+          width: 70vw;
+          transition: all 0.25s ease;
+        "
+        onclick="startSearch(); this.style.opacity = '0%'; this.style.marginTop = '1vh'; this.onclick = () => {}; setTimeout(() => {
                 this.remove()
-        }, 250);"><btext class="flash">Search For A New Action</btext></div>        
+        }, 250);"
+      >
+        <btext class="flash">Search For A New Action</btext>
+      </div>
     </div>
-    <div id="selectorMenu"  style="height: 10vh; justify-content: left; width: 100vw; background-color: #FFFFFF08;">
-    <div class="flexbox" style="width: 100vw; height: 10vh; transition: scale 5.3s ease;" id="buttonsContainer">
-        <div class="barbuttonshift flexbox" style="margin-left: 1vw; width: 14vw;" onclick="save()">
-        <div class="image save" id="actionSave" style="width: 30% !important; height: 30px !important; margin: auto !important;"></div>
-        <div style="margin: auto;">
-        <div class="barbuttontexta">Save</div>
-        <div class="smalltext" style="opacity: 50%; font-size: 8px;">CTRL+S</div>
+    <div
+      id="selectorMenu"
+      style="
+        height: 10vh;
+        justify-content: left;
+        width: 100vw;
+        background-color: #ffffff08;
+      "
+    >
+      <div
+        class="flexbox"
+        style="width: 100vw; height: 10vh; transition: scale 5.3s ease"
+        id="buttonsContainer"
+      >
+        <div
+          class="barbuttonshift flexbox"
+          style="margin-left: 1vw; width: 14vw"
+          onclick="save()"
+        >
+          <div
+            class="image save"
+            id="actionSave"
+            style="
+              width: 30% !important;
+              height: 30px !important;
+              margin: auto !important;
+            "
+          ></div>
+          <div style="margin: auto">
+            <div class="barbuttontexta">Save</div>
+            <div class="smalltext" style="opacity: 50%; font-size: 8px">
+              CTRL+S
+            </div>
+          </div>
         </div>
-    </div>
-    <div class="barbuttonshift flexbox" id="actionSearchButton" onclick="startSearch()" style="margin-left: 1vw; width: 21vw; margin-right: auto;">
-        <div class="image switchObjs" style="width: 30% !important; height: 30px !important; margin: auto !important;"></div>
-        <div style="margin: auto;">
+        <div
+          class="barbuttonshift flexbox"
+          id="actionSearchButton"
+          onclick="startSearch()"
+          style="margin-left: 1vw; width: 21vw; margin-right: auto"
+        >
+          <div
+            class="image switchObjs"
+            style="
+              width: 30% !important;
+              height: 30px !important;
+              margin: auto !important;
+            "
+          ></div>
+          <div style="margin: auto">
             <div class="barbuttontexta">Change Action</div>
-            <div class="smalltext" style="opacity: 50%; font-size: 8px;">CTRL+K</div>
+            <div class="smalltext" style="opacity: 50%; font-size: 8px">
+              CTRL+K
             </div>
-    </div>
-
-    <div class="barbuttontexta" id="action-name"></div>
-    <div class="barbuttonshift flexbox" style="margin-right: 1vw; width: 13vw; margin-left: auto;" onclick="closeWindow()">
-        <div class="image checkmark" style="width: 30% !important; height: 30px !important; margin: auto !important;"></div>
-        <div style="margin: auto;">
-            <div class="barbuttontexta">Close</div>
-            <div class="smalltext" style="opacity: 50%; font-size: 8px;">CTRL+TAB</div>
-            </div>
+          </div>
         </div>
+
+        <div class="barbuttontexta" id="action-name"></div>
+        <div
+          class="barbuttonshift flexbox"
+          style="margin-right: 1vw; width: 13vw; margin-left: auto"
+          onclick="closeWindow()"
+        >
+          <div
+            class="image checkmark"
+            style="
+              width: 30% !important;
+              height: 30px !important;
+              margin: auto !important;
+            "
+          ></div>
+          <div style="margin: auto">
+            <div class="barbuttontexta">Close</div>
+            <div class="smalltext" style="opacity: 50%; font-size: 8px">
+              CTRL+TAB
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-</div>
-</div>
-    <script src="./AppData/Kits/Loader.js"></script>
-    <script src="./AppData/Kits/settings.js"></script>
+  </div>
+  <script src="./AppData/Kits/Loader.js"></script>
+  <script src="./AppData/Kits/settings.js"></script>
 
-<script>
-    var datjson = JSON.parse(fs.readFileSync('./AppData/data.json'))
-    let themeColor = datjson.color
-    document.getElementById('everything_container').style.background = `linear-gradient(45deg, ${themeColor} 0%, #121212 ${editorSettings.smoothness})`
-    document.body.style.padding = '0px !important';
-    document.body.style.paddingTop = '0px !important';
-    document.body.style.paddingBottom = '0px !important';
-    document.body.style.paddingLeft = '0px !important';
-    document.body.style.paddingRight = '0px !important';
-    document.body.style.borderRadius = '12px'
-    document.onkeydown=function(event) {
-        if (event.key.toLowerCase() == 's' && event.ctrlKey == true) {
-            save()
-            document.getElementById('editorContent').style.scale = '0.5'
-            document.getElementById('editorContent').style.marginTop = '5vh'
-            document.getElementById('editorContent').style.marginBottom = '-90vh'
-            document.getElementById('editorContent').style.borderRadius = '22px'
-            document.getElementById('editorContent').classList.add('goofyhovereffect')
-            document.getElementById('selectorMenu').style.marginTop = '0vh'
-            document.getElementById('selectorMenu').style.transition = 'all 0.3s ease'
-            document.getElementById('selectorMenu').style.marginTop = '100vh'
-            setTimeout(() => {
-                setTimeout(() => {
-                document.getElementById('selectorMenu').style.marginTop = ''
-                document.getElementById('editorContent').style.marginBottom = '0vh'
-                document.getElementById('editorContent').classList.remove('goofyhovereffect')
-                document.getElementById('editorContent').style.borderRadius = ''
-                document.getElementById('editorContent').style.marginTop = ''
-                document.getElementById('editorContent').style.scale = '1'
-                document.getElementById('selectorMenu').style.marginTop = '0vh'
-                document.getElementById('selectorMenu').style.transition = 'all 0.3s ease'
-                document.getElementById('selectorMenu').style.marginTop = '0vh'
-                }, 300)
+  <script>
+    var datjson = JSON.parse(fs.readFileSync("./AppData/data.json"));
+    let themeColor = datjson.color;
+    document.getElementById(
+      "everything_container",
+    ).style.background = `linear-gradient(45deg, ${themeColor} 0%, #121212 ${editorSettings.smoothness})`;
+    document.body.style.padding = "0px !important";
+    document.body.style.paddingTop = "0px !important";
+    document.body.style.paddingBottom = "0px !important";
+    document.body.style.paddingLeft = "0px !important";
+    document.body.style.paddingRight = "0px !important";
+    document.body.style.borderRadius = "12px";
+    document.onkeydown = function (event) {
+      if (event.key.toLowerCase() == "s" && event.ctrlKey == true) {
+        save();
+        document.getElementById("editorContent").style.scale = "0.5";
+        document.getElementById("editorContent").style.marginTop = "5vh";
+        document.getElementById("editorContent").style.marginBottom = "-90vh";
+        document.getElementById("editorContent").style.borderRadius = "22px";
+        document
+          .getElementById("editorContent")
+          .classList.add("goofyhovereffect");
+        document.getElementById("selectorMenu").style.marginTop = "0vh";
+        document.getElementById("selectorMenu").style.transition =
+          "all 0.3s ease";
+        document.getElementById("selectorMenu").style.marginTop = "100vh";
+        setTimeout(() => {
+          setTimeout(() => {
+            document.getElementById("selectorMenu").style.marginTop = "";
+            document.getElementById("editorContent").style.marginBottom = "0vh";
+            document
+              .getElementById("editorContent")
+              .classList.remove("goofyhovereffect");
+            document.getElementById("editorContent").style.borderRadius = "";
+            document.getElementById("editorContent").style.marginTop = "";
+            document.getElementById("editorContent").style.scale = "1";
+            document.getElementById("selectorMenu").style.marginTop = "0vh";
+            document.getElementById("selectorMenu").style.transition =
+              "all 0.3s ease";
+            document.getElementById("selectorMenu").style.marginTop = "0vh";
+          }, 300);
+        }, 200);
+      }
+      if (event.key == "Tab" && event.ctrlKey == true) {
+        closeWindow();
+      }
+      if (event.key.toLowerCase() == "q" && event.ctrlKey == true) {
+        save();
+        closeWindow();
+      }
+      if (event.key.toLowerCase() == "k" && event.ctrlKey == true) {
+        if (document.getElementById("actionSearchCloseButton")) {
+          closeSearch();
+        } else {
+          startSearch();
+        }
+      }
+      if (event.key.toLowerCase() == "v" && event.ctrlKey == true) {
+        if (lastActionContainer && copiedAction) {
+          let targetField = document.getElementById(
+            actionUI[lastActionContainer],
+          );
+          if (targetField.style.height == "10vh") return;
+          event.preventDefault();
+          document.activeElement.blur();
+          action.data[actionUI[lastActionContainer]].push(copiedAction);
+          refreshActions(actionUI[lastActionContainer]);
+        } else if (copiedAction) {
+          event.preventDefault();
+          document.activeElement.blur();
+          for (let UIelement in actionUI) {
+            if (UIelement.startsWith("actions")) {
+              let targetField = document.getElementById(actionUI[UIelement]);
+              if (targetField.style.height != "40vh") return;
+              let targetAdd = document.getElementById(
+                actionUI[UIelement] + "AddButton",
+              );
+              targetAdd.style.scale = "0";
 
-            }, 200)
-        }
-        if (event.key == 'Tab' && event.ctrlKey == true) {
-            closeWindow()
-        }
-        if (event.key.toLowerCase() == 'q' && event.ctrlKey == true) {
-            save()
-            closeWindow()
-        }
-        if (event.key.toLowerCase() == 'k' && event.ctrlKey == true) {
-            if (document.getElementById('actionSearchCloseButton')) {
-                closeSearch()
-            } else {
-                startSearch()
-            }
-        }
-        if (event.key.toLowerCase() == 'v' && event.ctrlKey == true) {
-            if (lastActionContainer && copiedAction) {
-                let targetField = document.getElementById(actionUI[lastActionContainer])
-                if (targetField.style.height == '10vh') return;
-                event.preventDefault()
-                document.activeElement.blur()
-                action.data[actionUI[lastActionContainer]].push(copiedAction)
-                refreshActions(actionUI[lastActionContainer])
-            } else if (copiedAction) {
-                event.preventDefault()
-                document.activeElement.blur()
-                for (let UIelement in actionUI) {
-                    if (UIelement.startsWith('actions')) {
-                        let targetField = document.getElementById(actionUI[UIelement])
-                        if (targetField.style.height != '40vh') return;
-                        let targetAdd = document.getElementById(actionUI[UIelement] + 'AddButton')
-                        targetAdd.style.scale = '0';
+              targetField.style.filter = "blur(22px)";
+              targetField.style.height = "10vh";
 
-                        targetField.style.filter = 'blur(22px)'
-                        targetField.style.height = '10vh'
-
-                        setTimeout(() => {
-                        targetField.innerHTML = `
+              setTimeout(() => {
+                targetField.innerHTML = `
                         <div class="flexbox" style="width: 100%; height: 100%;">
                             <div class="barbuttontexta" style="width: 100%;">Pasting <span style="opacity: 50%;">${copiedAction.name}</span></div>
                         <div class="barbuttonshift borderright" onclick="action.data[actionUI[lastActionContainer]].push(copiedAction); restoreActions()" style="margin: auto; margin-right: 0.3vw;">
@@ -122,18 +223,18 @@
                             <div class="barbuttontexta">Nevermind</div>    
                         </div>
                         </div>
-                        `
-                        }, 150)
-                        
-                        setTimeout(() => {
-                            targetField.style.filter = ''
-                        }, 200)
-                    }
-                }
+                        `;
+              }, 150);
+
+              setTimeout(() => {
+                targetField.style.filter = "";
+              }, 200);
             }
+          }
         }
-    }
-    const { ipcRenderer } = require('electron');
+      }
+    };
+    const { ipcRenderer } = require("electron");
     let action;
     let time;
     let actions;
@@ -145,78 +246,102 @@
     let isActionMenu = false;
     let actionType;
     function closeWindow() {
-    document.getElementById('everything_container').style.scale = '0'
-    document.body.style.transition = 'all 0.2s ease'
-    document.body.style.backgroundColor = '#FFFFFF00'
-    document.getElementById('everything_container').style.filter = 'blur(40px)'
-        setTimeout(() => {
-            ipcRenderer.send(`${time}`, {
-            event: 'close'
+      document.getElementById("everything_container").style.scale = "0";
+      document.body.style.transition = "all 0.2s ease";
+      document.body.style.backgroundColor = "#FFFFFF00";
+      document.getElementById("everything_container").style.filter =
+        "blur(40px)";
+      setTimeout(() => {
+        ipcRenderer.send(`${time}`, {
+          event: "close",
         });
-        }, 500)
+      }, 500);
     }
-    ipcRenderer.on('data', (event, data, windowTime) => {
-        actionNumber = data.action
-        variables = data.variables;
-        copiedAction = data.copiedAction;
-        time = windowTime;
-        actionType = data.actionType
-        // document.body.style.backgroundColor = '#00000040'
-        document.getElementById('everything_container').style.transition = `all 0.${editorSettings.commonAnimation}s ease`
+    ipcRenderer.on("data", (event, data, windowTime) => {
+      actionNumber = data.action;
+      variables = data.variables;
+      copiedAction = data.copiedAction;
+      time = windowTime;
+      actionType = data.actionType;
+      // document.body.style.backgroundColor = '#00000040'
+      document.getElementById(
+        "everything_container",
+      ).style.transition = `all 0.${editorSettings.commonAnimation}s ease`;
 
-        document.getElementById('everything_container').style.scale = '1'
-        document.getElementById('everything_container').style.filter = 'blur(0px)'
+      document.getElementById("everything_container").style.scale = "1";
+      document.getElementById("everything_container").style.filter =
+        "blur(0px)";
 
-        actions = data.actions
-        action = actions[data.action]
-        actionFile = require('./AppData/Actions/' + action.file)
-        for (let dataElement in actionFile.data) {
-            if (action.data[dataElement] == undefined) {
-                action.data[dataElement] = actionFile.data[dataElement]
-            }
+      actions = data.actions;
+      action = actions[data.action];
+      actionFile = require("./AppData/Actions/" + action.file);
+      for (let dataElement in actionFile.data) {
+        if (action.data[dataElement] == undefined) {
+          action.data[dataElement] = actionFile.data[dataElement];
         }
-        actionUI = actionFile.UI;
-        document.getElementById('action-name').innerHTML = 'Editing <span style="opacity: 50%;">'+ action.name + '</div>'
-        document.getElementById('editorContent').innerHTML = `<br>` + getUIelements(actionUI, action)
-    })
+      }
+      actionUI = actionFile.UI;
+      document.getElementById("action-name").innerHTML =
+        'Editing <span style="opacity: 50%;">' + action.name + "</div>";
+      document.getElementById("editorContent").innerHTML =
+        `<br>` + getUIelements(actionUI, action);
+    });
 
     function save() {
-    for (let i in actionUI) {
-       let element = actionUI[i]
-       if (element != 'preview' || element != 'previewName' || !element.StartsWith('invisible')) {
-        if (i == 'ButtonBar') {
-            if (action.data.button.endsWith('*')) {
-                action.data.ExtraData = document.getElementById('ExtraData').innerText
+      for (let i in actionUI) {
+        let element = actionUI[i];
+        if (
+          element != "preview" ||
+          element != "previewName" ||
+          !element.StartsWith("invisible")
+        ) {
+          if (i == "ButtonBar") {
+            if (action.data.button.endsWith("*")) {
+              action.data.ExtraData =
+                document.getElementById("ExtraData").innerText;
             }
-        } else {
-            if (i.startsWith('text') || i == 'script' || i.startsWith('toggle') || i.startsWith('menuBar') || i.startsWith('actions') || i == 'preview' || i.startsWith('customMenu') ||i == 'previewName' || i.startsWith('sepbar') || i.startsWith('btext') || i.startsWith('invisible')) {} else {
-                try {
-                    if (i.split(' ').includes('custom')) {
-                        action.data[element] = document.getElementById(element).value;
-                    } else {
-                        action.data[element] = document.getElementById(element).innerText;
-                    }
-                } catch(err) {}
+          } else {
+            if (
+              i.startsWith("text") ||
+              i == "script" ||
+              i.startsWith("toggle") ||
+              i.startsWith("menuBar") ||
+              i.startsWith("actions") ||
+              i == "preview" ||
+              i.startsWith("customMenu") ||
+              i == "previewName" ||
+              i.startsWith("sepbar") ||
+              i.startsWith("btext") ||
+              i.startsWith("invisible")
+            ) {
+            } else {
+              try {
+                if (i.split(" ").includes("custom")) {
+                  action.data[element] = document.getElementById(element).value;
+                } else {
+                  action.data[element] =
+                    document.getElementById(element).innerText;
+                }
+              } catch (err) {}
             }
+          }
         }
-       }
-    }
-    let saveIcon = document.getElementById('actionSave')
-        saveIcon.style.backgroundImage = 'url(./AppData/save.gif)'
-        setTimeout(() => {
-            saveIcon.style.backgroundImage = 'url(./AppData/save.png)'
-        }, 700)
+      }
+      let saveIcon = document.getElementById("actionSave");
+      saveIcon.style.backgroundImage = "url(./AppData/save.gif)";
+      setTimeout(() => {
+        saveIcon.style.backgroundImage = "url(./AppData/save.png)";
+      }, 700);
 
-    ipcRenderer.send(`${time}`, {
-        event: 'save',
+      ipcRenderer.send(`${time}`, {
+        event: "save",
         action: action,
-        copiedAction: copiedAction
-    });
+        copiedAction: copiedAction,
+      });
     }
-
-</script>
-<script src="./AppData/Kits/EditorScripts.js"></script>
-<script src="./AppData/Kits/EditorComponents.js"></script>
-<script src="./AppData/Kits/SmartUI.js"></script>
-<script src="./AppData/Kits/variableInsertion.js"></script>
+  </script>
+  <script src="./AppData/Kits/EditorScripts.js"></script>
+  <script src="./AppData/Kits/EditorComponents.js"></script>
+  <script src="./AppData/Kits/SmartUI.js"></script>
+  <script src="./AppData/Kits/variableInsertion.js"></script>
 </html>

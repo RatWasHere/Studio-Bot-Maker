@@ -1,76 +1,89 @@
 module.exports = {
-    data: {"name": "Compare", "comparator":"=", "firstInput":"", "secondInput":"", "runIfTrue": [], "runIfFalse": []},
-    UI: {"compatibleWith": ["Any"],
+  data: {
+    name: "Compare",
+    comparator: "=",
+    firstInput: "",
+    secondInput: "",
+    runIfTrue: [],
+    runIfFalse: [],
+  },
+  UI: {
+    compatibleWith: ["Any"],
 
-    text:"Compare", "sepbar":"", 
+    text: "Compare",
+    sepbar: "",
 
-    "btext":"Compare",
-    "input*":"firstInput",
+    btext: "Compare",
+    "input*": "firstInput",
 
-    "sepbar0":"",
-    "menuBar": {choices: ["!=", "=", ">", "<"], storeAs: "comparator"},
-    "sepbar*":"",
+    sepbar0: "",
+    menuBar: { choices: ["!=", "=", ">", "<"], storeAs: "comparator" },
+    "sepbar*": "",
 
-    "btext0":"Compare To", 
-    "input0*":"secondInput",
+    btext0: "Compare To",
+    "input0*": "secondInput",
 
-    "sepbar1":"",
-    "btext1":"If True",
-    "actions": "runIfTrue",
-    
-    "sepbar2":"",
+    sepbar1: "",
+    btext1: "If True",
+    actions: "runIfTrue",
 
-    "btext2":"If False",
-    "actions0": "runIfFalse",
+    sepbar2: "",
 
-    "preview":"firstInput", "previewName":"Compare"
-},
-    async run(values, message, uID, fs, client, actionRunner, bridge) {
-        let varTools = require(`../Toolkit/variableTools.js`)
+    btext2: "If False",
+    actions0: "runIfFalse",
 
-        let matchesCriteria = false;
+    preview: "firstInput",
+    previewName: "Compare",
+  },
+  async run(values, message, uID, fs, client, actionRunner, bridge) {
+    let varTools = require(`../Toolkit/variableTools.js`);
 
-        let firstValue = `${varTools.transf(values.firstinput, bridge.variables)}`
-        let secondValue = `${varTools.transf(values.secondInput, bridge.variables)}`
+    let matchesCriteria = false;
 
-        switch (values.comparator) {
-            case '!=':
-                if (firstValue != secondValue) {
-                    matchesCriteria = true
-                } else {
-                    matchesCriteria = false
-                }
-            break
+    let firstValue = `${varTools.transf(values.firstinput, bridge.variables)}`;
+    let secondValue = `${varTools.transf(
+      values.secondInput,
+      bridge.variables,
+    )}`;
 
-            case '=':
-                if (firstValue == secondValue) {
-                    matchesCriteria = true
-                } else {
-                    matchesCriteria = false
-                }
-            break
-
-            case '>':
-                if (firstValue > secondValue) {
-                    matchesCriteria = true
-                } else {
-                    matchesCriteria = false
-                }
-            break
-
-            case '<':
-                if (firstValue < secondValue) {
-                    matchesCriteria = true
-                } else {
-                    matchesCriteria = false
-                }
-            break
-        }
-
-        if (matchesCriteria == true) {
-            actionRunner(values.runIfTrue, message, client, bridge.variables, true);
+    switch (values.comparator) {
+      case "!=":
+        if (firstValue != secondValue) {
+          matchesCriteria = true;
         } else {
-            actionRunner(values.runIfFalse, message, client, bridge.variables, true);
+          matchesCriteria = false;
         }
+        break;
+
+      case "=":
+        if (firstValue == secondValue) {
+          matchesCriteria = true;
+        } else {
+          matchesCriteria = false;
+        }
+        break;
+
+      case ">":
+        if (firstValue > secondValue) {
+          matchesCriteria = true;
+        } else {
+          matchesCriteria = false;
+        }
+        break;
+
+      case "<":
+        if (firstValue < secondValue) {
+          matchesCriteria = true;
+        } else {
+          matchesCriteria = false;
+        }
+        break;
     }
-}
+
+    if (matchesCriteria == true) {
+      actionRunner(values.runIfTrue, message, client, bridge.variables, true);
+    } else {
+      actionRunner(values.runIfFalse, message, client, bridge.variables, true);
+    }
+  },
+};

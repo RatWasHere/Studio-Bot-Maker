@@ -1,21 +1,32 @@
 module.exports = {
-    data: {"name": "Delete Message", "message": "", "channelFrom": "Command Channel", "channel":""},
-    UI: {"compatibleWith": ["Event", "Slash", "DM"], "text":"Delete Message", "sepbar":"",
-    
-    "btext":"Message Variable",
-    "input_direct*":"message",
-    
-    "variableSettings": {
-        "message": {
-            "Variable*": "direct"
-        }
-    },                          
-     previewName: "Message Via", preview: "messageFrom"},
+  data: {
+    name: "Delete Message",
+    message: "",
+    channelFrom: "Command Channel",
+    channel: "",
+  },
+  UI: {
+    compatibleWith: ["Event", "Slash", "DM"],
+    text: "Delete Message",
+    sepbar: "",
 
-    run(values, message, uID, fs, client, runner, bridge)  {
-        let varTools = require(`../Toolkit/variableTools.js`)
-        var msg = bridge.variables[varTools.transf(values.message, bridge.variables)]
+    btext: "Message Variable",
+    "input_direct*": "message",
 
-        msg.delete()
-    }
-}
+    variableSettings: {
+      message: {
+        "Variable*": "direct",
+      },
+    },
+    previewName: "Message Via",
+    preview: "messageFrom",
+  },
+
+  run(values, message, uID, fs, client, runner, bridge) {
+    let varTools = require(`../Toolkit/variableTools.js`);
+    var msg =
+      bridge.variables[varTools.transf(values.message, bridge.variables)];
+
+    msg.delete();
+  },
+};

@@ -1,63 +1,90 @@
 <html>
-    <link rel="stylesheet" href="main.css">
-    <meta charset="utf8">
-    <div style="width: 100vw; overflow: auto; height: 100vh; margin-top: -8px; margin-left: -8px;" id="everything_container">
-    <div style="width: 100vw; height: 100vw; background-color: #000000; color: #FFFFFF; overflow: auto;">
-    <div style="font-family:'Courier New', Courier, monospace; font-size: 12px; margin: auto; text-align: center; margin-top: 2vh;">Bot Log
-    - Close Window To Stop Your Bot!</div>
-    <div class="sepbar"></div>
-    <div id="console" style="width: 90vw; margin: auto;"></div>
+  <link rel="stylesheet" href="main.css" />
+  <meta charset="utf8" />
+  <div
+    style="
+      width: 100vw;
+      overflow: auto;
+      height: 100vh;
+      margin-top: -8px;
+      margin-left: -8px;
+    "
+    id="everything_container"
+  >
+    <div
+      style="
+        width: 100vw;
+        height: 100vw;
+        background-color: #000000;
+        color: #ffffff;
+        overflow: auto;
+      "
+    >
+      <div
+        style="
+          font-family: &quot;Courier New&quot;, Courier, monospace;
+          font-size: 12px;
+          margin: auto;
+          text-align: center;
+          margin-top: 2vh;
+        "
+      >
+        Bot Log - Close Window To Stop Your Bot!
+      </div>
+      <div class="sepbar"></div>
+      <div id="console" style="width: 90vw; margin: auto"></div>
     </div>
-</div>
-<script>
-function ansiToHtml(text) {
-  const escapeCodeRegex = /\u001b\[([\d;]+)m/g; // Regex pattern to match ANSI escape codes
-  const ansiToHtmlCodes = {
-    0: '', // Reset / Normal
-    1: 'font-weight: bold', // Bold
-    3: 'font-style: italic', // Italic
-    4: 'text-decoration: underline', // Underline
-    30: 'color: black', // Black
-    31: 'color: red', // Red
-    32: 'color: #13a10e', // Green
-    33: 'color: yellow', // Yellow
-    34: 'color: blue', // Blue
-    35: 'color: magenta', // Magenta
-    36: 'color: #113f45', // Cyan
-    37: 'color: #ffffff90', // White
-    90: 'color: #cccccc', // Gray
-    40: 'padding: 6px; border-radius: 9px; background-color: #242424', // Background: Black
-    41: 'padding: 6px; border-radius: 9px; background-color: #c50f1f', // Background: Red
-    42: 'padding: 6px; border-radius: 9px; background-color: #227a4a', // Background: Green
-    43: 'padding: 6px; border-radius: 9px; background-color: #b87b1a', // Background: Yellow
-    44: 'padding: 6px; border-radius: 9px; background-color: #1a42b8', // Background: Blue
-    45: 'padding: 6px; border-radius: 9px; background-color: #881798', // Background: Magenta
-    46: 'padding: 6px; border-radius: 9px; background-color: #113f45', // Background: Cyan
-    47: 'padding: 6px; border-radius: 9px; background-color: #FFFFFF80', // Background: White
-    100: 'padding: 6px; border-radius: 9px; background-color: #cccccc' // Background: Gray
-    // You can add more ANSI codes and corresponding CSS styles here if needed
-  };
+  </div>
+  <script>
+    function ansiToHtml(text) {
+      const escapeCodeRegex = /\u001b\[([\d;]+)m/g; // Regex pattern to match ANSI escape codes
+      const ansiToHtmlCodes = {
+        0: "", // Reset / Normal
+        1: "font-weight: bold", // Bold
+        3: "font-style: italic", // Italic
+        4: "text-decoration: underline", // Underline
+        30: "color: black", // Black
+        31: "color: red", // Red
+        32: "color: #13a10e", // Green
+        33: "color: yellow", // Yellow
+        34: "color: blue", // Blue
+        35: "color: magenta", // Magenta
+        36: "color: #113f45", // Cyan
+        37: "color: #ffffff90", // White
+        90: "color: #cccccc", // Gray
+        40: "padding: 6px; border-radius: 9px; background-color: #242424", // Background: Black
+        41: "padding: 6px; border-radius: 9px; background-color: #c50f1f", // Background: Red
+        42: "padding: 6px; border-radius: 9px; background-color: #227a4a", // Background: Green
+        43: "padding: 6px; border-radius: 9px; background-color: #b87b1a", // Background: Yellow
+        44: "padding: 6px; border-radius: 9px; background-color: #1a42b8", // Background: Blue
+        45: "padding: 6px; border-radius: 9px; background-color: #881798", // Background: Magenta
+        46: "padding: 6px; border-radius: 9px; background-color: #113f45", // Background: Cyan
+        47: "padding: 6px; border-radius: 9px; background-color: #FFFFFF80", // Background: White
+        100: "padding: 6px; border-radius: 9px; background-color: #cccccc", // Background: Gray
+        // You can add more ANSI codes and corresponding CSS styles here if needed
+      };
 
-  return text.replace(escapeCodeRegex, (match, codes) => {
-    const styles = codes.split(';').map(code => ansiToHtmlCodes[code]);
-    const style = styles.join(';');
+      return text.replace(escapeCodeRegex, (match, codes) => {
+        const styles = codes.split(";").map((code) => ansiToHtmlCodes[code]);
+        const style = styles.join(";");
 
-    return style ? `<div style="${style};">` : '</div>';
-  });
-  
-}
-    console.log = (log) => {
-        document.getElementById('console').innerHTML += `<div class="fade" style="margin: auto; margin-top: 6px;">${ansiToHtml(log)}</div>`
+        return style ? `<div style="${style};">` : "</div>";
+      });
     }
+    console.log = (log) => {
+      document.getElementById(
+        "console",
+      ).innerHTML += `<div class="fade" style="margin: auto; margin-top: 6px;">${ansiToHtml(
+        log,
+      )}</div>`;
+    };
 
-
-    document.body.style.padding = '0px !important';
-    document.body.style.paddingTop = '0px !important';
-    document.body.style.paddingBottom = '0px !important';
-    document.body.style.paddingLeft = '0px !important';
-    document.body.style.paddingRight = '0px !important';
-    document.body.style.borderRadius = '12px'
-</script>
-<script src="./AppData/Toolkit/botInit.js"></script>
-
+    document.body.style.padding = "0px !important";
+    document.body.style.paddingTop = "0px !important";
+    document.body.style.paddingBottom = "0px !important";
+    document.body.style.paddingLeft = "0px !important";
+    document.body.style.paddingRight = "0px !important";
+    document.body.style.borderRadius = "12px";
+  </script>
+  <script src="./AppData/Toolkit/botInit.js"></script>
 </html>

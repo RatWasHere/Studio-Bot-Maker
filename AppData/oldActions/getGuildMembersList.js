@@ -1,43 +1,43 @@
 module.exports = {
-    data: {"name":"Get Guild Members List",
-    "storeAs":"",
-    "get": "IDs"
-},
-     
-    UI: {"compatibleWith":["Text", "Slash"], 
-    "text":"Get Guild Members List", 
+  data: { name: "Get Guild Members List", storeAs: "", get: "IDs" },
 
-    "sepbar":"",
+  UI: {
+    compatibleWith: ["Text", "Slash"],
+    text: "Get Guild Members List",
 
-    "btext": "Get List Of Members':",
-    "menuBar": {
-        choices: ["IDs", "Variables", "Usernames"],
-        storeAs: "get"
+    sepbar: "",
+
+    btext: "Get List Of Members':",
+    menuBar: {
+      choices: ["IDs", "Variables", "Usernames"],
+      storeAs: "get",
     },
 
-    "sepbar0":"",
+    sepbar0: "",
 
-    "btext0":"Store List As",
-    "input!":"storeAs",
+    btext0: "Store List As",
+    "input!": "storeAs",
 
-    "preview":"storeAs", 
-    "previewName":"Store As"},
+    preview: "storeAs",
+    previewName: "Store As",
+  },
 
-   async run(values, message, uID, fs, client, runner, bridge)  { 
-        let varTools = require(`../Toolkit/variableTools.js`)
+  async run(values, message, uID, fs, client, runner, bridge) {
+    let varTools = require(`../Toolkit/variableTools.js`);
 
-        let output = [];
+    let output = [];
 
-        for (let [id, member] of bridge.guild.members) {
-            if (values.get == 'IDs') {
-                output.push(id)
-            } else if (values.get == 'Variables') {
-                output.push(member)
-            } else {
-                output.push(member.globalName)
-            }
-        }
-
-        bridge.variables[varTools.transf(values.storeAs, bridge.variables)] = output;
+    for (let [id, member] of bridge.guild.members) {
+      if (values.get == "IDs") {
+        output.push(id);
+      } else if (values.get == "Variables") {
+        output.push(member);
+      } else {
+        output.push(member.globalName);
+      }
     }
-}
+
+    bridge.variables[varTools.transf(values.storeAs, bridge.variables)] =
+      output;
+  },
+};
