@@ -197,6 +197,11 @@ function mbSelect(storeAs, menu, extraField, UIreference) {
   }, 50);
 
   setTimeout(() => {
+    if (actionUI.script) {
+      try {
+        actionUI.script(actionAPI)
+      } catch (err) {}
+    }
     lastmenu.style.animationName = "";
     lastmenu.style.animationDuration = "";
     if (document.getElementById(extraField + "Selector")) {
@@ -490,8 +495,11 @@ function addObjectToCustomMenu(element) {
   if (actionUI[element].max > action.data[actionUI[element].storeAs].length) {
     let targetField = document.getElementById(actionUI[element].storeAs);
     if (Object.keys(actionUI[element].types).length > 1) {
+      document.getElementById(`${element}AddButton`).style.transition = `all 0.${editorSettings.commonAnimation}s ease`
+
       document.getElementById(`${element}AddButton`).style.transform =
         "rotate(135deg)";
+        targetField.style.transition = `all 0.${editorSettings.fastAnimation}s ease`
       document.getElementById(`${element}AddButton`).onclick = () => {
         refreshMenuItems(`${element}`);
       };
@@ -514,7 +522,7 @@ function addObjectToCustomMenu(element) {
       }
       setTimeout(() => {
         targetField.style.filter = "";
-      }, 200);
+      }, editorSettings.fastAnimation * 200);
       setTimeout(() => {
         targetField.style.filter = "blur(0px)";
         targetField.innerHTML = `
@@ -523,7 +531,7 @@ function addObjectToCustomMenu(element) {
             ${endHTML}
             </div>
             `;
-      }, 150);
+      }, editorSettings.fastAnimation * 100);
     } else {
       addObjectToMenu(`${element}`, Object.keys(actionUI[element].types)[0]);
     }
@@ -535,7 +543,7 @@ function addObjectToCustomMenu(element) {
       document
         .getElementById(`${element}AddButton`)
         .classList.remove("goofyhovereffect");
-    }, 600);
+    }, editorSettings.fastAnimation * 50);
   }
 }
 
@@ -619,16 +627,16 @@ function startSearch() {
   let searchContainer = document.getElementById("selectorMenu");
   let actionView = document.getElementById("editorContent");
 
-  searchContainer.style.transition = "all 0.3s ease";
-  actionView.style.transition = "all 0.3s ease";
+  searchContainer.style.transition = `all 0.${editorSettings.commonAnimation}s ease`;
+  actionView.style.transition = `all 0.${editorSettings.commonAnimation}s ease`;
 
   setTimeout(() => {
     let buttonsContainer = document.getElementById("buttonsContainer");
-    buttonsContainer.style.transition = "all 0.3s ease";
+    buttonsContainer.style.transition = `all 0.${editorSettings.fastAnimation}s ease`;
     buttonsContainer.style.height = "0vh";
     buttonsContainer.style.overflow = "auto";
     pendingSearchStart = false;
-  }, 200);
+  }, editorSettings.fastAnimation * 100);
 
   searchContainer.style.height = "85vh";
 
@@ -684,9 +692,8 @@ function actionSearch(query) {
 
 function closeSearch() {
   let closeButton = document.getElementById("actionSearchCloseButton");
-  closeButton.nextElementSibling.style.transition = "all 0.4s ease";
-  closeButton.nextElementSibling.nextElementSibling.style.transition =
-    "all 0.4s ease";
+  closeButton.nextElementSibling.style.transition = `all 0.${editorSettings.commonAnimation}s ease`;
+  closeButton.nextElementSibling.nextElementSibling.style.transition = `all 0.${editorSettings.commonAnimation}s ease`;;
   closeButton.nextElementSibling.style.height = "0vh";
   closeButton.nextElementSibling.nextElementSibling.style.height = "0vh";
   document.getElementById("actionSearchButton").onclick = () => {
@@ -696,8 +703,8 @@ function closeSearch() {
   let searchContainer = document.getElementById("selectorMenu");
   let actionView = document.getElementById("editorContent");
 
-  searchContainer.style.transition = "all 0.3s ease";
-  actionView.style.transition = "all 0.3s ease";
+  searchContainer.style.transition = `all 0.${editorSettings.commonAnimation}s ease`;
+  actionView.style.transition =  `all 0.${editorSettings.commonAnimation}s ease`;
 
   closeButton.nextElementSibling.onclick = (event) => {
     event.preventDefault();
@@ -705,7 +712,7 @@ function closeSearch() {
 
   setTimeout(() => {
     let buttonsContainer = document.getElementById("buttonsContainer");
-    buttonsContainer.style.transition = "all 0.3s ease";
+    buttonsContainer.style.transition = `all 0.${editorSettings.fastAnimation}s ease`;
     buttonsContainer.style.height = "10vh";
     buttonsContainer.style.overflow = "auto";
 
@@ -713,8 +720,8 @@ function closeSearch() {
       closeButton.nextElementSibling.remove();
       closeButton.nextElementSibling.remove();
       closeButton.remove();
-    }, 300);
-  }, 300);
+    }, editorSettings.commonAnimation * 100);
+  }, editorSettings.commonAnimation * 100);
 
   searchContainer.style.height = "10vh";
 
@@ -857,6 +864,8 @@ function pasteCopiedIn(at, index) {
 
 function toggleSwitch(storedAs) {
   let toggle = document.getElementById(storedAs);
+  toggle.style.transition = `all 0.${editorSettings.commonAnimation / 2}s ease`;
+
   toggle.style.height = "3vh";
   toggle.style.marginTop = "0vh";
   if (action.data[storedAs] == false) {
@@ -866,7 +875,7 @@ function toggleSwitch(storedAs) {
     setTimeout(() => {
       toggle.style.marginLeft = "5vh";
       toggle.style.width = "5vh";
-    }, 150);
+    }, editorSettings.commonAnimation * 50);
   } else {
     action.data[storedAs] = false;
     toggle.style.width = "10vh";
@@ -874,10 +883,12 @@ function toggleSwitch(storedAs) {
 
     setTimeout(() => {
       toggle.style.width = "5vh";
-    }, 150);
+      toggle.style.marginLeft = ''
+      toggle.style.marginRight = ''
+    }, editorSettings.commonAnimation * 50);
   }
   setTimeout(() => {
     toggle.style.height = "5vh";
     toggle.style.marginTop = "-1vh";
-  }, 150);
+  }, editorSettings.commonAnimation * 50);
 }

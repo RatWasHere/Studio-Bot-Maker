@@ -80,18 +80,23 @@ switch (ownSettings.actionPreviews) {
 switch (ownSettings.animations) {
   case "Slow":
     editorSettings.commonAnimation = 6;
+    editorSettings.fastAnimation = 4;
     break;
   case "Relaxed":
     editorSettings.commonAnimation = 4;
+    editorSettings.fastAnimation = 3;
     break;
   case "Fast":
     editorSettings.commonAnimation = 2;
+    editorSettings.fastAnimation = 1;
     break;
   case "Off":
     editorSettings.commonAnimation = 0;
+    editorSettings.fastAnimation = 0;
     break;
   default:
     editorSettings.commonAnimation = 3;
+    editorSettings.fastAnimation = 2;
     break;
 }
 

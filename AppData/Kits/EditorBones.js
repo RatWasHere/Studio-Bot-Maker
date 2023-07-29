@@ -204,7 +204,7 @@ function refreshActions() {
         if (previewCharacters.length > 70) {
           for (let character of previewCharacters) {
             if (characterCount !== 70) {
-              const opacity = 100 - (characterCount - 70) * 10;
+              const opacity = 100 - (characterCount - 60) * 10;
               previewText += `<span style="opacity: ${opacity}%;">${character}</span>`;
               characterCount++;
             }
@@ -253,11 +253,7 @@ function refreshActions() {
         leftSeparatorDisplay = "none";
         rightSeparatorDisplay = "none";
       }
-      console.log(
-        leftSeparatorDisplay,
-        rightSeparatorDisplay,
-        subtitlePosition,
-      );
+      
       endHTML += `
             <div id="Action${action}" onmouseenter="lastHovered = this" draggable="true" ondragleave="handleActionDragEnd(this)" ondragend="handleActionDrop()" ondragover="actionDragOverHandle(event, this)" ondragstart="handleActionDrag(this)" onmouseleave="lastHovered = null;" class="action textToLeft ${borderType}" style="animation-delay: ${
               delay * 3
@@ -267,13 +263,13 @@ function refreshActions() {
             }</text>
             ${botData.commands[lastObj].actions[action].name}
             <div style="flex-grow: 1; display: ${leftSeparatorDisplay}; height: 3px; border-radius: 10px; background-color: #ffffff15; margin: auto; margin-right: 1vw; margin-left: 1vw;"></div>
-            <div style="opacity: 50%; margin-left: 7px;">${`${previewName}`} ${quickie}</div>
+            <div style="opacity: 50%; margin-left: 7px; ${subtitlePosition}">${previewName} ${quickie}</div>
             <div style="flex-grow: 1; display: ${rightSeparatorDisplay}; height: 3px; border-radius: 10px; background-color: #ffffff15; margin: auto; margin-right: 1vw; margin-left: 1vw;"></div>
             <div class="${
               editorSettings.widthChanges == true
                 ? "deleteActionButton"
                 : "noWidthDelete"
-            }"  style="" onclick="deleteObject(this)"><span style="font-size: ${
+            }" onclick="deleteObject(this)"><span style="font-size: ${
               editorSettings.widthChanges == true
                 ? "inherit"
                 : "12px !important;"

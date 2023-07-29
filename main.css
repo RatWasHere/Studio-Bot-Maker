@@ -2173,6 +2173,8 @@ btext {
   backdrop-filter: blur(12px);
   margin-bottom: -4vh;
   height: 7vh;
+  z-index: 2041;
+  position: relative;
   width: 7vh;
 }
 .addButton:hover {
@@ -2820,7 +2822,7 @@ input:active {
 @keyframes snaptoscale {
   0% {
     opacity: 0%;
-    transform: scale(0.5);
+    transform: scale(0);
   }
   50% {
     opacity: 100%;
@@ -2840,11 +2842,12 @@ input:active {
   justify-self: center;
   background-color: #ffffff09;
   margin-top: -95vh;
+  margin-left: 0.5vw;
   border-radius: 12px;
   overflow: auto;
   border-top-left-radius: 0px;
   position: absolute;
-  z-index: 2147483627;
+  z-index: 20;
 }
 .pad {
   padding: 12px;

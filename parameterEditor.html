@@ -210,11 +210,12 @@
     function startDrag(at) {
       draggedPos = at;
     }
-    function dragOver(at) {
+    function dragOver(event, at) {
+        event.preventDefault()
       draggedOver = at;
     }
     function dragend() {
-      if (!draggedOver) return;
+        if (draggedOver != 0 && !draggedOver) return
       data = moveArrayElement(data, draggedPos, draggedOver);
       draggedOver = undefined;
 
@@ -236,11 +237,17 @@
           parameterName = parameterName.split("").splice(0, 10).join("") + "..";
         }
         endHTML += `
-            <div class="action textToLeft" ondragstart="startDrag(${parameter})" ondragover="${parameter}" ondragend="dragend()" id="${parameter}" onclick="openParameter(${parameter})" style="height:24px; border-radius: 6px !important;">
+            <div class="action textToLeft" draggable="true" ondragstart="startDrag(${parameter})" ondragover="dragOver(event, ${parameter})" ondragend="dragend()" id="${parameter}" onclick="openParameter(${parameter})" style="height:24px; border-radius: 6px !important;">
                 ${parameterName}
-            <div class="deleteActionButton" onclick="deleteParameter(${parameter})">✕</div>
-            </div>
-            `;
+            <div class="${
+              editorSettings.widthChanges == true
+                ? "deleteActionButton"
+                : "noWidthDelete"
+            }"  style="" onclick="deleteParameter(${parameter})"><span style="font-size: ${
+              editorSettings.widthChanges == true
+                ? "inherit"
+                : "12px !important;"
+            }">✕</span></div></div>`;
       }
       document.getElementById("parameters").innerHTML = endHTML;
     }

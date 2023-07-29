@@ -393,7 +393,14 @@ function initSetup() {
 
   document.body.innerHTML += `
             <div class="settingspane">
+
+            <div class="barbuttonshift" onclick="location.reload()" style="margin-left: 1vw; margin-top: 2vh; width: 10vw;">
+            <btext>Exit</btext>
+            </div>
+
+
             <div  class="flexbox" style="padding: 12px; margin: auto;">
+
             <div class="barbuttontext" style="margin-bottom: 2vh; width: 100%;">Settings</div><br>
             <btext style="width: 100%;">Editor</btext>
             <div id="actionPreviews"></div>
@@ -412,8 +419,22 @@ function initSetup() {
             <btext style="width: 100%;">Behaviour</btext>
             <div id="changingWidth"></div>
             <div id="animationsSpeed"></div>
-    
-    
+
+            <br>
+            <div class="sepbarz"></div>
+            <div style="margin-bottom: 0.5vh; background-color: #FFFFFF09; width: 70vw; border-radius: 12px; display: block;">
+            <br>
+            <div class="barbuttontext" style="font-size: 20px; width: 95%;">Bot Data</div>
+            <div class="sepbars"></div>
+
+            <div class="barbuttontexta textToLeft" style="margin-left: 3vw; margin-top: 1.5vh;">Bot Prefix</div>
+            <input class="input" oninput="botData.prefix = this.value; wast()" value="${botData.prefix}">
+            <div class="barbuttontexta textToLeft" style="margin-left: 3vw; margin-top: 1.5vh;">Bot Token</div>
+            <input class="input" type="password" style="overflow-y: auto; overflow-x: hidden;" oninput="botData.btk = this.value; wast()" value="${botData.btk}">
+            <div class="barbuttontexta textToLeft" style="margin-left: 3vw; margin-top: 1.5vh;">Client ID</div>
+            <input class="input" type="number" oninput="botData.clientID = this.value; wast()" value="${botData.clientID}">
+    <br>
+            </div>
             </div>
             </div>
     
@@ -425,7 +446,7 @@ function initSetup() {
   });
   createSettingSelector("actionPreviewSeparator", {
     stored: "separatorPos",
-    choices: ["Left", "Right", "Both", "None"],
+    choices: ["Right", "Left", "Both", "None"],
     name: "Action Separator Position",
   });
 

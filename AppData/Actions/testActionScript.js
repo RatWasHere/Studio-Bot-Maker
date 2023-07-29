@@ -1,12 +1,22 @@
 module.exports = {
-  data: { name: "Any" },
+  data: { name: "Any", somedata:"Yeah", rando:""},
 
   UI: {
     compatibleWith: ["None"],
 
     text: "Any",
     sepbar: "",
-
+    "menuBar": {choices: ["Yeah", "Noah"], storeAs: "somedata"},
+    "input":"rando",
+    script: (API) => {
+      console.log(API)
+      if (API.getData().somedata == 'Yeah') {
+        API.hideElement('rando')
+      } else {
+        API.showElement('rando')
+      }
+      console.log('script')
+    },
     preview: "preview",
     previewName: "preview",
   },

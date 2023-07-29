@@ -6,8 +6,8 @@ function addObjectToMenu(element, option) {
     });
   }
   refreshMenuItems(element);
-  document.getElementById(`${element}AddButton`).style.transform =
-    "rotate(360deg)";
+  document.getElementById(`${element}AddButton`).style.transition = `all 0.${editorSettings.commonAnimation}s ease`
+  document.getElementById(`${element}AddButton`).style.transform = "rotate(360deg)";
   document.getElementById(
     `${element}AddButton`,
   ).onclick = `refreshMenuItems('${element}')`;
@@ -97,7 +97,6 @@ function refreshMenuItems(menu) {
   let endOptions = ``;
   menuElement.style.height = "44vh";
   menuElement.style.filter = "blur(22px)";
-  let menuMax = actionUI[menu].max;
 
   for (let object in action.data[menuObject.storeAs]) {
     let option = action.data[menuObject.storeAs][object];
@@ -146,53 +145,152 @@ function createAction(at) {
   });
   refreshActions(at);
 }
+
 let lastHovered;
+
 function refreshActions(at) {
   let delay = 0;
-  let endActions = ``;
+  let endActions = ''
   for (let actionNumber in action.data[at]) {
-    let extrf;
-
-    if (action.data[at][parseFloat(actionNumber) - 1] == undefined) {
-      extrf = "borderbottom";
-    } else if (action.data[at][parseFloat(actionNumber) + 1] == undefined) {
-      extrf = "bordertop";
-    } else {
-      extrf = "bordercentere";
-    }
     let innerAction = action.data[at][actionNumber];
-    let count = 0;
+
     let quickie = "";
     delay++;
-    let quickdata;
-    let actionPreviewCharacters;
+    let actionUI;
+    let previewCharacters;
+    let extrf;
+    let borderType;
+    if (
+      action.data[at][parseFloat(actionNumber) - 1] == undefined
+    ) {
+      borderType = "borderbottom";
+    } else if (
+      action.data[at][parseFloat(actionNumber) + 1] == undefined
+    ) {
+      borderType = "bordertop";
+    } else {
+      borderType = "bordercentere";
+    }
     try {
       let actionFile = require(`./AppData/Actions/${innerAction.file}`);
-      try {
-        quickdata = actionFile.UI;
-        actionPreviewCharacters = innerAction.data[quickdata.preview].split("");
-        // Not taking PRs on this one. Period.
-        for (let character in actionPreviewCharacters) {
-          if (count != 23) {
-            const opacity = 100 - (count - 15) * 10;
-            quickie = `${quickie}<span style="opacity: ${opacity}%;">${actionPreviewCharacters[character]}</span>`;
-            count++;
+      let previewName = "";
+      if (!actionFile.subtitle) {
+        previewName = actionFile.UI.previewName + ":";
+        try {
+          let characterCount = 0;
+          actionUI = actionFile.UI;
+          previewCharacters =
+            innerAction.data[actionUI.preview].split("");
+          if (previewCharacters.length > 50) {
+            for (let character in previewCharacters) {
+              if (characterCount != 50) {
+                const opacity = 100 - (characterCount - 40) * 10;
+                quickie = `${quickie}<span style="opacity: ${opacity}%;">${previewCharacters[character]}</span>`;
+                characterCount++;
+              }
+            }
+          } else {
+            quickie =
+              innerAction.data[actionUI.preview];
           }
+        } catch (err) {
+          quickie = `Error`;
         }
-      } catch (err) {
-        quickie = `Error`;
+      } else {
+        quickie = ``;
+        let subtitleActionData;
+        let actionSubtitle = actionFile.subtitle;
+        const subtitleRegex = /(\$\[.*?\]\$)/g;
+        const replacedSubtitle = actionSubtitle.replace(
+          subtitleRegex,
+          (match, key) => {
+            let dataName = key
+              .split("$[")[1]
+              .split("]$")[0]
+              .replaceAll("*", "");
+            console.log(innerAction);
+            return innerAction.data[dataName];
+          },
+        );
+        let previewCharacters = replacedSubtitle.replaceAll("*", "s").split("");
+        let previewText = "";
+        let characterCount = 0;
+
+        if (previewCharacters.length > 70) {
+          for (let character of previewCharacters) {
+            if (characterCount !== 70) {
+              const opacity = 100 - (characterCount - 60) * 10;
+              previewText += `<span style="opacity: ${opacity}%;">${character}</span>`;
+              characterCount++;
+            }
+          }
+        } else {
+          previewText = replacedSubtitle;
+        }
+
+        previewName = previewText.replaceAll("*", ""); // Add this line to assign the updated value
+      }
+      let leftSeparatorDisplay, rightSeparatorDisplay, subtitlePosition;
+
+      switch (editorSettings.separatorPosition) {
+        case "left":
+          leftSeparatorDisplay = "none";
+          rightSeparatorDisplay = "inherit";
+          break;
+        case "right":
+          rightSeparatorDisplay = "none";
+          leftSeparatorDisplay = "inherit";
+          break;
+        case "both":
+          rightSeparatorDisplay = "inherit";
+          leftSeparatorDisplay = "inherit";
+          break;
       }
 
-      endActions = `${endActions}
-        <div onmouseenter="lastHovered = ${actionNumber}" draggable="true" ondragleave="handleActionDragEnd('${at}', '${actionNumber}')" ondragend="handleActionDrop('${at}', '${actionNumber}')" ondragover="actionDragOverHandle(event, '${at}', '${actionNumber}')" ondragstart="handleActionDrag('${at}', '${actionNumber}')" onmouseleave="lastHovered = null;" class="action textToLeft ${extrf}" style="animation-delay: ${
-          delay * 3
-        }0ms; width: 97% !important;" ondblclick="editAction('${at}', '${actionNumber}')">
-        ${innerAction.name}
-            <div style="opacity: 50%; margin-left: 7px;">
-            ${quickdata.previewName}: ${quickie}</div>
-            <div class="deleteActionButton" onclick="deleteAction('${at}', '${actionNumber}')">✕</div>
-        </div>`;
+      switch (editorSettings.subtitlePosition) {
+        case "left":
+          leftSeparatorDisplay = "none";
+          rightSeparatorDisplay = "inherit";
+          subtitlePosition = "margin-left: 1vw; margin-right: 0vw;";
+          break;
+        case "right":
+          rightSeparatorDisplay = "none";
+          leftSeparatorDisplay = "inherit";
+          subtitlePosition = "margin-right: 1vw; margin-left: 0vw;";
+          break;
+        case "center":
+          rightSeparatorDisplay = "inherit";
+          leftSeparatorDisplay = "inherit";
+          subtitlePosition = "margin-right: 1vw; margin-left: 1vw;";
+          break;
+      }
+      if (editorSettings.separatorPosition == "none") {
+        leftSeparatorDisplay = "none";
+        rightSeparatorDisplay = "none";
+      }
+      
+      endActions += `
+      <div onmouseenter="lastHovered = ${actionNumber}" draggable="true" ondragleave="handleActionDragEnd('${at}', '${actionNumber}')" ondragend="handleActionDrop('${at}', '${actionNumber}')" ondragover="actionDragOverHandle(event, '${at}', '${actionNumber}')" ondragstart="handleActionDrag('${at}', '${actionNumber}')" onmouseleave="lastHovered = null;" class="action textToLeft ${borderType}" style="animation-delay: ${
+        delay * 3
+          }0ms; width: 97.5% !important;" ondblclick="editAction('${at}', '${actionNumber}')">
+          <text style="background-color: #00000040; padding: 2px; padding-left: 4px; padding-right: 4px; margin-top: auto; margin-bottom: auto; border-radius: 6px; margin-right: 1vw; margin-left: 0vw;">#${
+            parseFloat(actionNumber) + 1
+          }</text>
+          ${innerAction.name}
+          <div style="flex-grow: 1; display: ${leftSeparatorDisplay}; height: 3px; border-radius: 10px; background-color: #ffffff15; margin: auto; margin-right: 1vw; margin-left: 1vw;"></div>
+          <div style="opacity: 50%; margin-left: 7px; ${subtitlePosition}">${previewName} ${quickie}</div>
+          <div style="flex-grow: 1; display: ${rightSeparatorDisplay}; height: 3px; border-radius: 10px; background-color: #ffffff15; margin: auto; margin-right: 1vw; margin-left: 1vw;"></div>
+          <div class="${
+            editorSettings.widthChanges == true
+              ? "deleteActionButton"
+              : "noWidthDelete"
+          }" onclick="onclick="deleteAction('${at}', '${actionNumber}')""><span style="font-size: ${
+            editorSettings.widthChanges == true
+              ? "inherit"
+              : "12px !important;"
+          }">✕</span></div></div>`;
     } catch (err) {
+      console.error(err)
       endActions = `${endActions}
         <div id="Action${actionNumber}" onmouseenter="lastHovered = this" draggable="true" ondragleave="handleActionDragEnd(this)" ondragend="handleActionDrop()" ondragover="actionDragOverHandle(event, this)" ondragstart="handleActionDrag(this)" onmouseleave="lastHovered = null;" class="action textToLeft ${extrf}" style="animation-delay: ${
           delay * 3
@@ -256,12 +354,12 @@ var actionAPI = {
   showElement: (eID) => {
     let element = document.getElementById(eID);
     let elementHeight = element.clientHeight;
-    document.getElementById(appendUnder).appendAfter(element);
-
     element.style.setProperty("--inner-height", elementHeight + "px");
-    element.style.animationName = "expand";
+    element.style.animationName = "shrink";
     element.style.animationDuration = "300ms";
-    element.style.display = "";
+    setTimeout(() => {
+    element.style.display = "none";
+    }, 300);
   },
   hideElement: (eID) => {
     let element = document.getElementById(eID);
@@ -270,9 +368,11 @@ var actionAPI = {
     element.style.setProperty("--inner-height", elementHeight + "px");
     element.style.animationName = "shrink";
     element.style.animationDuration = "300ms";
+    setTimeout(() => {
     element.style.display = "none";
+    }, 300);
   },
-  getActionData: () => {
+  getData: () => {
     return action.data;
   },
   getDocument: () => {

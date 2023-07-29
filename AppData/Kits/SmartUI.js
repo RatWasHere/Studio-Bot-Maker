@@ -35,7 +35,7 @@ function getUIelements(UIdata) {
         <div id="${element}AddButton" onclick="addObjectToCustomMenu('${element}')" class="addButton flexbox">
         <div class="image add"></div>
         </div>
-        <div id="${UIdata[element].storeAs}" style="background-color: #FFFFFF10; transition: all 0.23s ease; margin: auto; border-radius: 9px; padding: 12px; height: 40vh; overflow: auto; width: calc(95% - 24px);" class="dimension">
+        <div id="${UIdata[element].storeAs}" style="background-color: #FFFFFF10; all 0.${editorSettings.commonAnimation}s ease; margin: auto; border-radius: 9px; padding: 12px; height: 40vh; overflow: auto; width: calc(95% - 24px);" class="dimension">
             
         </div>`;
     }
@@ -161,7 +161,7 @@ function getUIelements(UIdata) {
             if (UIdata[element].extraField) {
               MenuConditionalInput = UIdata[element].extraField;
             }
-            endHTML = `${endHTML}<div class="dropdown" onclick="openChoices('${UIdata[element].storeAs}', this, '${MenuConditionalInput}', '${element}')">${UIdata[element].choices[option]}</div>`;
+            endHTML = `${endHTML}<div class="dropdown" id="${UIdata[element].storeAs}" onclick="openChoices('${UIdata[element].storeAs}', this, '${MenuConditionalInput}', '${element}')">${UIdata[element].choices[option]}</div>`;
             if (UIdata[element].choices[option].endsWith("*")) {
               if (
                 UIdata.variableSettings[UIdata[element].extraField][
@@ -218,7 +218,7 @@ function getUIelements(UIdata) {
       endHTML = `${endHTML} <div class="text">${UIdata[element]}</div>`;
     }
     if (element.startsWith("btext")) {
-      endHTML = `${endHTML} <div class="textse">${UIdata[element]}</div>`;
+      endHTML = `${endHTML} <div class="textse" id="_text${UIdata[element]}">${UIdata[element]}</div>`;
     }
     if (element.startsWith("invisible")) {
       endHTML = `${endHTML} <div class="none"></div>`;
@@ -234,11 +234,13 @@ function getUIelements(UIdata) {
       for (let action in actions) {
         refreshActions(actions[action]);
       }
-    }, 50);
-
+      
     if (UIdata.script) {
-      UIdata.script(actionAPI);
+      try {
+        UIdata.script(actionAPI);
+      } catch (err) {}
     }
+    }, 50);
   }
 }
 
