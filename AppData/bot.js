@@ -357,11 +357,9 @@ try {
                   defaultIntegerReturn;
                 break;
             }
-
             commandParametersStorage[data.commands[i].parameters[e].storeAs] = option;
           }
         }
-        console.log(commandParametersStorage)
         runActionArray(i, interaction, client, commandParametersStorage, true);
       }
     }

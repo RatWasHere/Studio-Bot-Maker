@@ -14,7 +14,7 @@ function showCustomMenu(x, y) {
     menu.style.position = "fixed";
     menu.className = "dimension";
     menu.id = "customMenu";
-    menu.style.transition = "all 0.2s ease";
+    menu.style.transition = "all 0.2s ease, top 0.30s cubic-bezier(0.175, 0.885, 0.32, 1.275), left 0.30s cubic-bezier(0.175, 0.885, 0.32, 1.275)";
     menu.style.overflowY = "auto";
     menu.style.scale = "0";
   }

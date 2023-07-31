@@ -58,9 +58,10 @@ module.exports = {
     "Starting At: $[firstArgument]$ to $[ArgumentFrom]$ $[argumentParameter]$ - Store As: $[storesAs]$",
   run(values, msg, uID, fs, client, runner, bridge) {
     // i left comments so i dont completely shit myself next time i update this
+    let transferVariables = require(`../Toolkit/variableTools.js`).transf;
 
     const transf = (value) => {
-      return variableTools.transf(value, bridge.variables);
+      return transferVariables(value, bridge.variables);
     };
 
     var output = "";
@@ -94,14 +95,8 @@ module.exports = {
       }
     }
     if (values.ArgumentFrom == "End") {
-      let specificIndex = parseFloat(transf(values.firstArgument));
-      let words = message.content.substring(specificIndex).split(" ").join(" ");
-
-      // Get all words after the specific index
-      output = message.content
-        .split(" ")
-        .slice(transf(specificIndex))
-        .join(" ");
+      let firstIndex = parseFloat(transf(values.firstArgument))
+      output = message.content.split(" ").splice(firstIndex).join(" ");
     }
     bridge.variables[transf(values.storesAs)] = output;
   },

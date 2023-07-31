@@ -73,8 +73,7 @@ exec("node -v", (error, stdout, stderr) => {
     }
   } else {
     consoleLog(`Node.JS is already installed, jumping directly to Startup.`);
-    if (require("./package.json").dependencies["oceanic.js"] != "^1.7.1") {
-      consoleLog(`Checking NPM modules..`);
+      consoleLog(`Checking NPM modules.. This might take a bit`);
 
       exec("npm i", (error, stdout, stderr) => {
         if (error) {
@@ -89,7 +88,6 @@ exec("node -v", (error, stdout, stderr) => {
         consoleLog(`Successfully Updated NPM packages!`);
         runBot();
       });
-    }
   }
 });
 

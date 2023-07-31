@@ -20,7 +20,6 @@ switch (ownSettings.preffered) {
     editorSettings.groupPaneHeight = "calc(44.5vh - 12px)";
     break;
   case "Action Pane":
-    console.log("kys");
     editorSettings.groupPaneHeight = "calc(35vh - 12px)";
     editorSettings.actionPaneHeight = "calc(45vh - 12px)";
     break;
@@ -99,5 +98,3 @@ switch (ownSettings.animations) {
     editorSettings.fastAnimation = 2;
     break;
 }
-
-console.log(ownSettings, editorSettings);

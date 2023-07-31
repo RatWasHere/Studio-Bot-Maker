@@ -121,15 +121,16 @@ function handleActionDrag(action) {
   draggedAction = action.id.split("Action")[1];
 }
 function actionDragOverHandle(event, action) {
-  action.classList.add("goofyhovereffectlite");
+  action.classList.add("flash");
   action.style.animationName = "";
   action.style.animationDuration = "";
+  action.style.animationDuration = '0.6s';
   action.style.animationDelay = "";
   event.preventDefault();
   draggedOverAction = action.id.split("Action")[1];
 }
 function handleActionDragEnd(action) {
-  action.classList.remove("goofyhovereffectlite");
+  action.classList.remove("flash");
 }
 function moveArrayElement(arr, old_index, new_index) {
   const element = arr[old_index];
@@ -222,14 +223,17 @@ function setHighlightedGroup(type) {
   if (type == 1) {
     selectedGroupType = "text";
     prioritizeCommandOptions();
+    document.getElementById('groupTypes').innerText = `Commands`
   }
   if (type == 2) {
     selectedGroupType = "slash";
     resetElements();
+    document.getElementById('groupTypes').innerText = `Slash Commands`
   }
   if (type == 3) {
     prioritizeEvents();
     selectedGroupType = "event";
+    document.getElementById('groupTypes').innerText = `Events`
   }
 
   setTimeout(() => {

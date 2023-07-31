@@ -8,69 +8,12 @@ function array_move(arr, old_index, new_index) {
   arr.splice(new_index, 0, arr.splice(old_index, 1)[0]);
   return arr; // for testing
 }
-function showMenuOptions(ifNew) {
-  let view = document.getElementById("actionRowEditor");
-  for (let option in botData.commands[lastObj].actions[lastAct].data.actionRows[
-    lastRow
-  ].options) {
-    let opts =
-      botData.commands[lastObj].actions[lastAct].data.actionRows[lastRow]
-        .options[option];
 
-    if (!ifNew) {
-      view.innerHTML += `
-                    <div onclick="editMenuOption(${option})" style="border-left: 7px #FFFFFF20 solid; background-color: #ffffff10; width: 95%; margin-right: auto; margin-left: auto; padding: 4px; margin-top: 0.7vh; border-radius: 6px;">
-                    <div id="${option}MenuOption" class="barbuttontexta">${opts.label}</div>
-                    </div>
-                    `;
-    } else {
-      if (
-        botData.commands[lastObj].actions[lastAct].data.actionRows[lastRow]
-          .options[parseFloat(option) + 1] == undefined
-      ) {
-        view.innerHTML += `  
-                        <div class="animatednewactionanim" onclick="editMenuOption(${option})" style="border-left: 7px #FFFFFF20 solid; background-color: #ffffff10; width: 95%; margin-right: auto; margin-left: auto; padding: 4px; margin-top: 0.7vh; border-radius: 6px;">
-                        <div id="${option}MenuOption" class="barbuttontexta">${opts.label}</div>
-                        </div>
-                        `;
-      } else {
-        view.innerHTML += `
-                        <div onclick="editMenuOption(${option})" style="border-left: 7px #FFFFFF20 solid; background-color: #ffffff10; width: 95%; margin-right: auto; margin-left: auto; padding: 4px; margin-top: 0.7vh; border-radius: 6px;">
-                        <div id="${option}MenuOption" class="barbuttontexta">${opts.label}</div>
-                        </div>
-                        `;
-      }
-    }
-  }
-}
 function wast() {
   fs.writeFileSync(
     processPath + "\\AppData\\data.json",
     JSON.stringify(botData, null, 2),
   );
-}
-function deleteRowBar(row) {
-  botData.commands[lastObj].actions[lastAct].data.actionRows.splice(row, 1);
-  fs.writeFileSync(
-    processPath + "\\AppData\\data.json",
-    JSON.stringify(botData, null, 2),
-  );
-  showActionRows();
-}
-function deleteRowOption(row, option) {
-  document.getElementById(option + "MenuOption");
-  botData.commands[lastObj].actions[lastAct].data.actionRows[
-    row
-  ].options.splice(option, 1);
-  fs.writeFileSync(
-    processPath + "\\AppData\\data.json",
-    JSON.stringify(botData, null, 2),
-  );
-  document.getElementById("actionMenuOption").innerHTML = `
-        <div class="barbuttontexta">Select or create a custom row to start the fun!</div>
-        `;
-  document.getElementById("actionRowEditor").innerHTML = "";
-  showMenuOptions();
 }
 
 setInterval(async () => {
@@ -92,98 +35,6 @@ setInterval(async () => {
 }, 5000);
 let lastRow;
 let lastDraggedComponent;
-function buttonDragOver(event, button) {
-  event.preventDefault();
-  lastDraggedComponent = button;
-}
-function buttonDragStart(event, button) {
-  lastDraggedComponent = null;
-}
-function ButtonDrop(button, row) {
-  let datajson1 = JSON.parse(
-    fs.readFileSync(processPath + "\\AppData\\data.json"),
-  );
-  let datajson0 = datajson1;
-  // index, 0, item
-
-  botData.commands[lastObj].actions[lastAct].data.actionRows[row].components =
-    array_move(
-      botData.commands[lastObj].actions[lastAct].data.actionRows[row]
-        .components,
-      button,
-      lastDraggedComponent,
-    );
-
-  wast();
-  lastDraggedRow = null;
-  document.getElementById("buttonsDisplay").innerHTML = " ";
-
-  let ba = botData.commands[lastObj].actions[lastAct].data.actionRows[row];
-
-  for (let button in ba.components) {
-    let endProduct = "bordercenter";
-    if (ba.components[parseFloat(button) - 1] == undefined) {
-      endProduct = "borderright";
-    }
-    if (ba.components[parseFloat(button) + 1] == undefined) {
-      endProduct = "borderleft";
-    }
-    document.getElementById("buttonsDisplay").innerHTML += `
-            <div class="barbuttond ${endProduct}" onclick="buttonIfy(${button}, ${row}, this)" draggable="true" ondragover="buttonDragOver(event, ${button})" ondragstart="buttonDragStart(event, ${button})" ondragend="ButtonDrop(${button}, ${row})" style="width: 17%;">
-            <div class="barbuttontexta" id="${row}${button}BUT">${ba.components[button].name}</div>
-            </div> 
-            `;
-  }
-  let buttonEditor = document.getElementById("buttonsEditor");
-  buttonEditor.innerHTML = `
-        <div class="barbuttontexta center">Select A Button!</div>
-        `;
-}
-function findMentionsOfGroup() {
-  let group = botData.commands[lastObj].customId;
-  let mentions = [];
-  for (let cmd in botData.commands) {
-    let command = botData.commands[cmd];
-    for (let act in command.actions) {
-      for (let UIelement in require(`./AppData/Actions/${command.actions[act].file}`)
-        .UI) {
-        let actionUI =
-          require(`./AppData/Actions/${command.actions[act].file}`).UI;
-        if (UIelement.startsWith("menuBar")) {
-          try {
-            if (actionUI[UIelement].extraField) {
-              if (
-                actionUI.variableSettings[actionUI[UIelement].extraField][
-                  command.actions[act].data[actionUI[UIelement].storeAs]
-                ] == "actionGroup"
-              ) {
-                if (
-                  command.actions[act].data[actionUI[UIelement].extraField] ==
-                  group
-                ) {
-                  mentions.push(command.customId);
-                }
-              }
-            }
-          } catch (err) {}
-        }
-        if (UIelement.startsWith("input")) {
-          if (
-            UIelement.endsWith("_actionGroup*") ||
-            UIelement.endsWith("_actionGroup") ||
-            UIelement.endsWith("_actionGroup!*") ||
-            UIelement.endsWith("_actionGroup!")
-          ) {
-            if (command.actions[act].data[actionUI[UIelement]] == group) {
-              mentions.push(command.customId);
-            }
-          }
-        }
-      }
-    }
-  }
-  return mentions;
-}
 
 window.oncontextmenu = function (event) {
   showCustomMenu(event.clientX, event.clientY);
@@ -207,7 +58,7 @@ function showCustomMenu(x, y) {
     menu.style.position = "fixed";
     menu.className = "dimension";
     menu.id = "customMenu";
-    menu.style.transition = "all 0.2s ease";
+    menu.style.transition = "all 0.2s ease, top 0.30s cubic-bezier(0.175, 0.885, 0.32, 1.275), left 0.30s cubic-bezier(0.175, 0.885, 0.32, 1.275)";
     menu.style.overflowY = "auto";
     menu.style.scale = "0";
   }

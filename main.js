@@ -409,7 +409,7 @@ let isBotRunning = false;
 ipcMain.on("runBot", () => {
   const botWindow = new BrowserWindow({
     width: 800,
-    height: 600,
+    height: 670,
     icon: "icon.png",
     webPreferences: {
       nodeIntegration: true,
@@ -428,8 +428,8 @@ ipcMain.on("editEvent", (event, data) => {
   let eventData = data.data;
   let time = new Date().getTime();
   const EventEditorWindow = new BrowserWindow({
-    width: 800,
-    height: 650,
+    width: 870,
+    height: 600,
     fullscreenable: false,
     icon: "icon.png",
     title: `Studio Bot Maker | Editing Menu`,

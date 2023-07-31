@@ -151,7 +151,6 @@ function mbSelect(storeAs, menu, extraField, UIreference) {
       };
 
       pending.addEventListener('blur', (event) => {
-        console.log('dkadadjfdkfjm')
         setTimeout(() => {
           validateInput(event);
         }, 10);

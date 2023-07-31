@@ -85,15 +85,22 @@ var botData = JSON.parse(fs.readFileSync(processPath + "/AppData/data.json"));
 let lastType = 0; // 0 = Command; 1 = Actions;
 let lastObj = "1";
 let lastAct = "1";
-let lastParam;
 let lastHighlighted;
 let themeColor = botData.color;
+if (require('process').platform == 'win32') {
+  
+}
+let AppDataFolder;
 document.body.style.background = `linear-gradient(45deg, ${themeColor} 0%, #121212 170%)`;
 document.onkeydown = function (event) {
   handleKeybind(event);
 };
 document.documentElement.style.setProperty("--highlight-color", botData.color);
 
+let homeFolder = require('path').join(require('os').homedir());
+if (!fs.existsSync(homeFolder)) {
+
+}
 if (botData.reset == true) {
   try {
     if (fs.readFileSync("C:\\ProgramData\\studiodata.json")) {
