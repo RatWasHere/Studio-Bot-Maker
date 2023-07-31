@@ -19,7 +19,7 @@ module.exports = {
 
   run(values, message, uID, fs, client, runner, bridge) {
     let varTools = require(`../Toolkit/variableTools.js`);
-    bridge.variables[values.storeAs] = client.guild.roles.get(
+    bridge.variables[values.storeAs] = bridge.guild.roles.get(
       varTools.transf(values.roleID, bridge.variables),
     );
   },

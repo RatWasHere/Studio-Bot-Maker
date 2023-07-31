@@ -4,15 +4,17 @@ module.exports = {
       if (typeof variables[variable] == 'string' || variables[variable] == undefined) {
         return variables[variable];
       } else {
-        if (variables[variable].user && variables[variable].user.id) {
+        try {
+        if (variables[variable].userID) {
           return `<@${variables[variable].user.id}>`
-        } else if (variables[variable].type && variables[variable].guildID && variables[variables].parentID) {
+        } else if (variables[variable].topic && variables[variable].guildID) {
           return `<#${variables[variable].id}>`
-        } else if (variables[variable].discriminator && variables[variable].mention) {
+        } else if (variables[variable].publicFlags) {
           return `<@${variables[variable].id}>`
         } else if (typeof variables[variable].hoist == "boolean") {
           return `<@&${variables[variable].id}>`
         }
+      } catch (err) {return variables[variable]}
       }
     };
 

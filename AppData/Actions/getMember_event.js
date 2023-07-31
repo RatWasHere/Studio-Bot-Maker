@@ -58,19 +58,19 @@ module.exports = {
 
     if (values.memberFrom == "Command Author") {
       const member = guild.getMember(message.author.id);
-      bridge.variables[values.storesAs] = member;
+      bridge.variables[values.storesAs] = await member;
     }
     if (values.memberFrom == "Name*") {
       const member = guild.members.find(
         (m) => m.nick === varTools.transf(values.member, bridge.variables),
       );
-      bridge.variables[values.storesAs] = member;
+      bridge.variables[values.storesAs] = await member;
     }
     if (values.memberFrom == "ID*") {
       const member = guild.getMember(
         varTools.transf(values.member, bridge.variables),
       );
-      bridge.variables[values.storesAs] = member;
+      bridge.variables[values.storesAs] = await member;
     }
   },
 };

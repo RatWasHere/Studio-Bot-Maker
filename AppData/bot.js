@@ -152,7 +152,6 @@ try {
               if (command.boundary.worksIn == "guild") {
                 if (!msg.guild) {
                   matchesPermissions = false;
-                  console.log("noguild");
                 }
                 for (let permission in command.boundary.limits) {
                   if (

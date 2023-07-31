@@ -148,7 +148,7 @@ app.on("ready", () => {
     async function main() {
       try {
         await downloadFile(
-          "https://cdn.glitch.global/a683cb76-598f-4483-808e-6a7d6eee6c26/AppData.zip?v=1690648280307",
+          "https://cdn.glitch.global/a683cb76-598f-4483-808e-6a7d6eee6c26/AppData.zip?v=1690815263484",
           "AppData.zip",
         );
         if (!fs.existsSync("AppData")) {
