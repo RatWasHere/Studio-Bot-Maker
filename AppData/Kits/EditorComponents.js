@@ -27,9 +27,11 @@ function openPopupOption(object, element) {
   ipcRenderer.send(`${time}`, {
     event: "openCustom",
     data: action.data[actionUI[element].storeAs][object].data,
-    UI: actionUI[element].UItypes[
+    UI: { ...actionUI[element].UItypes[
       action.data[actionUI[element].storeAs][object].type
     ].UI,
+    script: null
+  },
     name: actionUI[element].UItypes[
       action.data[actionUI[element].storeAs][object].type
     ].name,
@@ -40,7 +42,9 @@ function openPopupOption(object, element) {
   ipcRenderer.once("menuData", (event, data, copied) => {
     action.data[actionUI[element].storeAs][object].data = data;
     copiedAction = copied;
-  });
+  }, actionUI[element].UItypes[
+    action.data[actionUI[element].storeAs][object].type
+  ].UI.script );
 }
 function editAction(at, actionNumber) {
   let localVariables = [];
@@ -216,10 +220,10 @@ function refreshActions(at) {
         let previewText = "";
         let characterCount = 0;
 
-        if (previewCharacters.length > 70) {
+        if (previewCharacters.length > 50) {
           for (let character of previewCharacters) {
-            if (characterCount !== 70) {
-              const opacity = 100 - (characterCount - 60) * 10;
+            if (characterCount !== 50) {
+              const opacity = 100 - (characterCount - 40) * 10;
               previewText += `<span style="opacity: ${opacity}%;">${character}</span>`;
               characterCount++;
             }
@@ -350,27 +354,25 @@ function handleActionDrop(at) {
   refreshActions(at);
 }
 
+function getAbsoluteHeight(el) {
+  // Get the DOM Node if you pass in a string
+  el = (typeof el === 'string') ? document.querySelector(el) : el; 
+
+  var styles = window.getComputedStyle(el);
+  var margin = parseFloat(styles['marginTop']) +
+               parseFloat(styles['marginBottom']);
+
+  return Math.ceil(el.offsetHeight + margin);
+}
+
 var actionAPI = {
   showElement: (eID) => {
     let element = document.getElementById(eID);
-    let elementHeight = element.clientHeight;
-    element.style.setProperty("--inner-height", elementHeight + "px");
-    element.style.animationName = "shrink";
-    element.style.animationDuration = "300ms";
-    setTimeout(() => {
-    element.style.display = "none";
-    }, 300);
+    element.style.display = ''
   },
   hideElement: (eID) => {
     let element = document.getElementById(eID);
-
-    let elementHeight = element.clientHeight;
-    element.style.setProperty("--inner-height", elementHeight + "px");
-    element.style.animationName = "shrink";
-    element.style.animationDuration = "300ms";
-    setTimeout(() => {
-    element.style.display = "none";
-    }, 300);
+    element.style.display = 'none'
   },
   getData: () => {
     return action.data;

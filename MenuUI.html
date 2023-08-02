@@ -94,7 +94,7 @@
     let variables;
     let copiedAction;
     let isActionMenu = true;
-    ipcRenderer.on('data', (event, data, windowTime) => {
+    ipcRenderer.on('data', (event, data, windowTime, script) => {
         document.getElementById('everything_container').style.transition = `all 0.${editorSettings.commonAnimation}s ease`
 
         actionType = data.actionType;
@@ -113,6 +113,7 @@
             }
         }
         actionUI = actionFile.UI;
+        actionUI.script = script;
         document.getElementById('action-name').innerHTML = 'Editing <span style="opacity:50%">' + data.name + '</span>';
         document.getElementById('editorContent').innerHTML = `<br>` + getUIelements(actionUI, action)
     })

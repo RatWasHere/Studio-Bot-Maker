@@ -66,7 +66,7 @@ function searchFor(query) {
         actionFile.UI.compatibleWith.includes("Any")
       ) {
         let acten = actons[acte];
-        let afile = require(`./AppData/Actions/${acten}`);
+        let afile = require(`${require('process').cwd()}/AppData/Actions/${acten}`);;
 
         actionButton.innerHTML += `<div style="width: 45%;" class="action fade flexbox" style="z-index: 3; background-color: #FFFFFF10 !important;" onclick="openAction('${acten}');" id="${acten}">${afile.data.name}</div>`;
       }
@@ -329,7 +329,7 @@ function searchFor(elemnt) {
 
     for (var actionFile in actionFiles) {
       let acten = actionFiles[actionFile];
-      let afile = require(`./AppData/Actions/${acten}`);
+      let afile = require(`${require('process').cwd()}/AppData/Actions/${acten}`);;
       actionButton.innerHTML += `<div class="action fade" style="width: 45%; z-index: 3; background-color: #FFFFFF10 !important;" onclick="openAction('${acten}');" id="${acten}">${afile.data.name}</div>`;
       lastType = 1;
     }
@@ -338,8 +338,8 @@ function searchFor(elemnt) {
   actionButton.innerHTML = "";
   actionButton.innerHTML += `<div class="action" id="misss"></div>`;
 
-  for (let actionFile in actionFiles) {
-    let actionFile = require(`./AppData/Actions/${actionFiles[actionFile]}`);
+  for (let actNumber in actionFiles) {
+    let actionFile = require(`${require('process').cwd()}/AppData/Actions/${actionFiles[actNumber]}`);;
     let name = actionFile.data.name.toLowerCase();
     let name2 = elemnt.innerText.toLowerCase();
     let included = true;
@@ -357,7 +357,7 @@ function searchFor(elemnt) {
         actionFile.UI.compatibleWith.includes("Any")
       ) {
         let acten = actionFiles[actionFile];
-        let afile = require(`./AppData/Actions/${acten}`);
+        let afile = require(`${require('process').cwd()}/AppData/Actions/${acten}`);;
 
         actionButton.innerHTML += `<div style="width: 45%;" class="action fade flexbox" style="z-index: 3; background-color: #FFFFFF10 !important;" onclick="openAction('${acten}');" id="${acten}">${afile.data.name}</div>`;
       } else {
@@ -597,7 +597,8 @@ function viewAllActions() {
     let actionFiles = fs.readdirSync("./AppData/Actions");
 
     for (let actionFile in actionFiles) {
-      let action = require("./AppData/Actions/" + actionFiles[actionFile]);
+      
+      let action = require(process.cwd() + "/AppData/Actions/" + actionFiles[actionFile]);
       if (
         action.UI.compatibleWith.includes("Any") ||
         action.UI.compatibleWith.includes(type)
@@ -743,7 +744,7 @@ function closeSearch() {
 }
 
 function switchOutAction(actionFile) {
-  let newAction = require(`./AppData/Actions/${actionFile}`);
+  let newAction = require(`${require('process').cwd()}/AppData/Actions/${actionFile}`);
   action.data = newAction.data;
   action.name = newAction.data.name;
   action.file = actionFile;
@@ -839,7 +840,7 @@ function validateLargeInput(event) {
     offset = 1;
   }
   const div = event.target;
-  const text = div.innerHTML;
+  const text = div.innerText;
 
   // Remove image tags
   const sanitizedText = text.replace(/<img\b[^>]*>/gi, "");

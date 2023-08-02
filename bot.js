@@ -102,15 +102,7 @@ try {
         if (actionContextBridge.stopActionRun == false) {
           try {
             /* Run The Action, Make It Happen! */
-            await require(`./AppData/Actions/${cmdActions[action].file}`).run(
-              cmdActions[action].data,
-              interaction,
-              action,
-              fs,
-              client,
-              runActionArray,
-              actionContextBridge,
-            );
+            await require(`./AppData/Actions/${cmdActions[action].file}`).run(cmdActions[action].data, interaction, action, fs, client,runActionArray, actionContextBridge);
           } catch (err) {
             /* Alert The User Of The Error */
             console.log(
@@ -369,6 +361,10 @@ try {
                 option;
             }
           }
+        }
+        interaction = {
+          ...interaction,
+          author: interaction.user
         }
         runActionArray(i, interaction, client, commandParametersStorage, true);
       }

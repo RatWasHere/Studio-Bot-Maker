@@ -8,6 +8,7 @@ module.exports = {
     sepbar: "",
     "menuBar": {choices: ["Yeah", "Noah"], storeAs: "somedata"},
     "input":"rando",
+    "btext":"yeah",
     script: (API) => {
       console.log(API)
       if (API.getData().somedata == 'Yeah') {

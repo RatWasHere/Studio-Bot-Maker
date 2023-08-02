@@ -25,7 +25,12 @@
         border-radius: 12px;
       "
     >
-      <div id="projects"></div>
+    <div id="spinnyImage" class="image spinning-shaking-element" style="background-image: url(./icon.png); height: 40vh; width: 40vh; background-size: cover; border-radius: 50% !important; margin-top: 10vh;"></div>
+    <div class="barbuttontexta" id="btext" style="transition: all 0.3s ease; margin-top: 1vh; margin-left: auto; margin-right: auto; font-size: 40px; align-self: center;">Loading Essentials</div>
+    <div class="barbuttontexta" id="sbm" style="transition: all 0.3s ease; margin-left: auto; margin-right: auto; font-size: 0px; align-self: center;">Studio Bot Maker</div>
+
+      <div id="projects" style="height: 0vh; overflow: auto; transition: all 0.5s ease; border-radius: 50%;">
+      </div>
     </div>
   </div>
   <script src="./AppData/Kits/Loader.js"></script>
@@ -36,6 +41,8 @@
       if (typeof obj1 !== "object" || typeof obj2 !== "object") {
         return false;
       }
+
+      let data;
 
       // Check if the number of properties is the same
       const obj1Keys = Object.keys(obj1);
@@ -62,48 +69,27 @@
     document.body.style.backgroundColor = "#FFFFFF00";
     document.body.style.transition = "all 0.2s ease";
     document.body.style.background = "unset !important";
-    try {
-      settings = JSON.parse(fs.readFileSync("C:/ProgramData/settings.json"));
-      data = JSON.parse(fs.readFileSync("./AppData/data.json"));
-      projectContainer = document.getElementById("projects");
-    } catch (err) {
-      document.getElementById("projects").innerHTML = `
-        <div class="image flash" style="background-image: url(./icon.png)"></div>
-        `;
+
+    const finishLoading = () => {
       document.getElementById(
         "everything_container",
-      ).style.transform = `scale(0.7)`;
+      ).style.transform = `scale(1)`;
       document.body.style.background = "unset !important";
       document.getElementById(
         "everything_container",
       ).style.background = `linear-gradient(45deg, rgb(0, 0,0) 0%, rgb(18, 18, 18) 170%)`;
+      document.getElementById('btext').style.fontSize = '0px'
       setTimeout(() => {
-        ipcRenderer.send("restart");
-        document.body.innerHTML = "";
-        location.reload();
-      }, 5500);
-      document.getElementById("projects").innerHTML = `
-        <div class="flexbox" style="width: 100vw; height: 100vh">
-        <div class="ring" style="margin: auto; height: 100px; width: 100px;"></div>
-        <div class="barbuttontexta">Loading Enviroment</div>
-        </div>
+      document.getElementById('projects').style.height = '100vh'
+      document.getElementById('projects').style.borderRadius = ''
 
-        `;
-      document.getElementById(
-        "everything_container",
-      ).style.transform = `scale(0.9)`;
-      document.body.style.background = "unset !important";
-      document.getElementById(
-        "everything_container",
-      ).style.background = `linear-gradient(45deg, ${data.color} 0%, rgb(18, 18, 18) 170%)`;
-      setTimeout(() => {
-        ipcRenderer.send("restart");
-        document.body.innerHTML = "";
-        location.reload();
-      }, 10500);
-    }
+      document.getElementById('spinnyImage').style.height = '10vh'
+      document.getElementById('spinnyImage').style.marginTop = '2vh'
+      document.getElementById('spinnyImage').style.width = '10vh'
+      document.getElementById('sbm').style.fontSize = '30px'
 
-    document.getElementById(
+      }, 300);
+      document.getElementById(
       "everything_container",
     ).style.transform = `scale(1)`;
     document.getElementById(
@@ -178,6 +164,7 @@
         });
       } catch (err) {}
     }
+  }
     function sendProject(dir) {
       ipcRenderer.send("selectedProject", dir);
       document.body.style.scale = "0";
@@ -188,6 +175,31 @@
                 <div class="barbuttontexta" style="padding: 12px; backdrop-filter: blur(12px); background-color: #FFFFFF10;">Loading...</div>
                 `;
       }, 200);
+    }
+
+    let interval;
+
+    try {
+      settings = JSON.parse(fs.readFileSync("C:/ProgramData/settings.json"));
+      data = JSON.parse(fs.readFileSync("./AppData/data.json"));
+      projectContainer = document.getElementById("projects");
+      finishLoading()
+    } catch (err) {
+      interval = setInterval(() => {
+        try {
+          data = JSON.parse(fs.readFileSync("./AppData/data.json"));
+          clearInterval(interval)
+          location.reload()
+        } catch (err) {}
+      }, 5000);
+      console.log(err)
+      document.getElementById(
+        "everything_container",
+      ).style.transform = `scale(0.7)`;
+      document.body.style.background = "unset !important";
+      document.getElementById(
+        "everything_container",
+      ).style.background = `linear-gradient(45deg, rgb(0, 0,0) 0%, rgb(18, 18, 18) 170%)`;
     }
   </script>
 </html>

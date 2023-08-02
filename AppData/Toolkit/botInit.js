@@ -49,7 +49,7 @@ exec("node -v", (error, stdout, stderr) => {
 
     if (platform === "win32") {
       exec(
-        "winget install  --accept-package-agreements nodeJS",
+        "winget install --accept-source-agreements --accept-package-agreements nodeJS",
         (error, stdout, stderr) => {
           if (error) {
             consoleLog(

@@ -61,7 +61,7 @@ function getUIelements(UIdata) {
       if (action.data[UIdata[element]] == undefined) {
         action.data[UIdata[element]] = "";
       }
-      endHTML = `${endHTML} <div class="largeInput" oninput="setTimeout(() => {validateLargeInput(event);}, 30)" contentEditable="true" id="${
+      endHTML = `${endHTML} <div class="largeInput" oninput="setTimeout(() => {validateLargeInput(event);}, 10)" contentEditable="true" id="${
         UIdata[element]
       }">${action.data[UIdata[element]]}</div>`;
     }
@@ -96,7 +96,7 @@ function getUIelements(UIdata) {
         }
       }
       if (noModifiers == false) {
-        endHTML = `${endHTML} <div class="input" oninput="setTimeout(() => {validateInput(event);}, 30)" contentEditable="true" id="${
+        endHTML = `${endHTML} <div class="input" oninput="setTimeout(() => {validateInput(event);}, 10)" contentEditable="true" id="${
           UIdata[element]
         }">${action.data[UIdata[element]]}</div>`;
       }
@@ -186,7 +186,7 @@ function getUIelements(UIdata) {
                   }
                 }
                 endHTML = `${endHTML}
-                            <div class="actionGroupSelectorB bordertopz" id="${MenuConditionalInput}Selector" onclick="document.getElementById('${MenuConditionalInput}').focus(); setTimeout( () => {showCustomMenu(getOffset(document.getElementById('${MenuConditionalInput}')).left + 10, getOffset(document.getElementById('${MenuConditionalInput}')).top + 50)}, 300)">
+                            <div class="actionGroupSelectorB bordertopz" id="${MenuConditionalInput}Selector" onclick="document.getElementById('${MenuConditionalInput}').focus(); setTimeout( () => {showCustomMenu(getOffset(document.getElementById('${MenuConditionalInput}')).left + 10, getOffset(document.getElementById('${MenuConditionalInput}')).top + 50)}, 100)">
                                 <div class="barbuttontexta">Selected: ${selectedActionGroup}</div>
                             </div>
                             `;
@@ -221,7 +221,7 @@ function getUIelements(UIdata) {
       endHTML = `${endHTML} <div class="textse" id="_text${UIdata[element]}">${UIdata[element]}</div>`;
     }
     if (element.startsWith("invisible")) {
-      endHTML = `${endHTML} <div class="none"></div>`;
+      endHTML = `${endHTML} <div style="width: 100%;">${typeof UIdata[element] == "string" ? UIdata[element] : ""}</div>`;
     }
   }
   try {

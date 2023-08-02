@@ -1,7 +1,7 @@
 module.exports = {
   transf(text, variables) {
     const tempVars = (variable) => {
-      if (typeof variables[variable] == 'string' || variables[variable] == undefined) {
+      if (typeof variables[variable] == 'string' || variables[variable] == undefined || typeof variables[variable] == 'number') {
         return variables[variable];
       } else {
         try {

@@ -1934,6 +1934,24 @@
   padding-bottom: 0px;
 }
 
+/* Add any desired styles for the spinning-shaking element here */
+.spinning-shaking-element {
+  animation: spinShake 2s linear infinite;
+}
+
+@keyframes spinShake {
+  0% {
+    transform: rotate(0deg)
+  }
+  99.9% {
+    transform: rotate(360deg)
+  }
+  100% {
+    transform: rotate(0deg)
+  }
+}
+
+
 .coloredAction:hover .deleteActionButton {
   width: 50px;
   animation-name: biggerXbutton;
@@ -2623,6 +2641,7 @@ btext {
   height: 10vh;
   margin: auto;
 }
+@import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
 body {
   font-family:
     "Arial",

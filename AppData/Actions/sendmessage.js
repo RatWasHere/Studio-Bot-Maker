@@ -63,6 +63,7 @@ module.exports = {
                     input: "label",
                     sepbar0: "",
                     btext0: "Button Style",
+                    invisible: "<div class='dimension' id='buttonColorPreview' style='height: 1vh; width: 95%; border-radius: 9px; transition: all 0.2s ease;'></div>",
                     menuBar: {
                       choices: ["Default", "Success", "Danger", "Neutral"],
                       storeAs: "color",
@@ -71,7 +72,7 @@ module.exports = {
                     toggle: { name: "Disabled", storeAs: "disabled" },
                     sepbar2: "",
                     btext2: "Once Clicked, Run",
-                    actions: "actions",
+                    actions: "actions"
                   },
                 },
                 link: {

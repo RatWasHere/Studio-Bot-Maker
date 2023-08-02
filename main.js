@@ -44,6 +44,7 @@ function createWindow() {
           name: "Studio Bot!",
           prjSrc: "",
           reset: false,
+          prefix: "!"
         }),
       );
     } else if (typeof projectData == "string") {
@@ -184,14 +185,6 @@ app.on("ready", () => {
 });
 
 const { autoUpdater } = require("electron-updater");
-
-autoUpdater.setFeedURL({
-  url: "https://github.com/RatWasHere/Studio-Bot-Maker",
-  provider: "github",
-  repo: "Studio-Bot-Maker",
-  owner: "RatWasHere",
-});
-
 autoUpdater.checkForUpdates();
 
 autoUpdater.on("update-available", (_event, releaseName, releaseNotes) => {
@@ -220,7 +213,7 @@ autoUpdater.on("update-downloaded", (_event, releaseNotes, releaseName) => {
   };
   dialog.showMessageBox(dialogOpts).then((returnValue) => {
     if (returnValue.response == 0) {
-      autoUpdater.quitAndInstall({ isSilent: false });
+      autoUpdater.quitAndInstall();
     }
   });
 });
@@ -348,14 +341,14 @@ function newActionEditorWindow(data) {
     }
   });
 }
-function newMenuEditorWindow(startData) {
+function newMenuEditorWindow(startData, script) {
   var data = {
     data: startData.data,
     UI: startData.UI,
     name: startData.name,
     variables: startData.variables,
     actionType: startData.actionType,
-    copiedAction: startData.copiedAction,
+    copiedAction: startData.copiedAction
   };
   let windowTime = new Date().getTime();
   const actionEditorWindow = new BrowserWindow({
@@ -382,7 +375,7 @@ function newMenuEditorWindow(startData) {
   actionEditorWindow.loadFile("./MenuUI.html");
   actionEditorWindow.setMenuBarVisibility(false);
   actionEditorWindow.on("ready-to-show", () => {
-    actionEditorWindow.webContents.send("data", data, windowTime);
+    actionEditorWindow.webContents.send("data", data, windowTime, script);
   });
   actionEditorWindow.on("close", () => {
     lastWindow = actionEditorWindow.getParentWindow();

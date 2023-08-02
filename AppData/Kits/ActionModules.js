@@ -1,16 +1,21 @@
 function newObject() {
   if (lastType == 1) {
+    let name = "Send Message"
     let actionFile = "sendmessage.js";
 
     if (selectedGroupType == "event") {
       actionFile = "sendmessage_event.js";
     }
+    if (selectedGroupType == "slash") {
+      name = "Reply To Interaction"
+      actionFile = "interactionReply.js"
+    }
     let newAct = {
-      name: "Send Message",
+      name: name,
       file: actionFile,
       data: {
-        name: "Send Message",
-        messageContent: "Hello World!",
+        name: name,
+        messageContent: "Hello World!"
       },
     };
     botData.commands[lastObj].actions.push(newAct);
@@ -48,7 +53,7 @@ function newObject() {
       trigger: trigger,
       actions: [],
       customId: new Date().getTime(),
-      ...extra,
+      ...extra
     };
 
     botData.commands.push(newGroup);

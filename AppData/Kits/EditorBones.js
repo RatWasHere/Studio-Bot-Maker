@@ -208,10 +208,10 @@ function refreshActions() {
         let previewText = "";
         let characterCount = 0;
 
-        if (previewCharacters.length > 70) {
+        if (previewCharacters.length > 75) {
           for (let character of previewCharacters) {
-            if (characterCount !== 70) {
-              const opacity = 100 - (characterCount - 60) * 10;
+            if (characterCount !== 75) {
+              const opacity = 100 - (characterCount - 65) * 10;
               previewText += `<span style="opacity: ${opacity}%;">${character}</span>`;
               characterCount++;
             }
@@ -223,6 +223,7 @@ function refreshActions() {
         previewName = previewText.replaceAll("*", ""); // Add this line to assign the updated value
       }
       let leftSeparatorDisplay, rightSeparatorDisplay, subtitlePosition;
+      let deleteButtonStyling = ''
 
       switch (editorSettings.separatorPosition) {
         case "left":
@@ -243,17 +244,18 @@ function refreshActions() {
         case "left":
           leftSeparatorDisplay = "none";
           rightSeparatorDisplay = "inherit";
-          subtitlePosition = "margin-left: 1vw; margin-right: 0vw;";
+          subtitlePosition = "margin-left: 0.7vw; margin-right: auto;";
           break;
         case "right":
           rightSeparatorDisplay = "none";
           leftSeparatorDisplay = "inherit";
-          subtitlePosition = "margin-right: 1vw; margin-left: 0vw;";
+          subtitlePosition = "margin-right: 0vw; margin-left: auto;";
+          deleteButtonStyling = 'margin-left: 0.7vw;'
           break;
         case "center":
           rightSeparatorDisplay = "inherit";
           leftSeparatorDisplay = "inherit";
-          subtitlePosition = "margin-right: 1vw; margin-left: 1vw;";
+          subtitlePosition = "margin-right: 0.5vw; margin-left: 0.5vw;";
           break;
       }
       if (editorSettings.separatorPosition == "none") {
@@ -276,7 +278,7 @@ function refreshActions() {
               editorSettings.widthChanges == true
                 ? "deleteActionButton"
                 : "noWidthDelete"
-            }" onclick="deleteObject(this)"><span style="font-size: ${
+            }" onclick="deleteObject(this)" style="${deleteButtonStyling}"><span style="font-size: ${
               editorSettings.widthChanges == true
                 ? "inherit"
                 : "12px !important;"

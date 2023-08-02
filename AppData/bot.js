@@ -48,6 +48,7 @@ try {
     },
   });
   client.connect();
+  let eventStorage = {}
 
   /* Project Startup */ console.log(
     `${colors.BgWhite}${colors.FgBlack}${data.name}${colors.Reset}${colors.FgCyan} is starting up...${colors.Reset}`,
@@ -95,8 +96,8 @@ try {
           allActions: cmdActions,
         },
       };
-
       for (let action in cmdActions) {
+        if (cmdActions[action] != undefined) {
         /* See If The Thing Is Meant To Keep Going! */
         if (actionContextBridge.stopActionRun == false) {
           try {
@@ -131,6 +132,7 @@ try {
           return;
         }
       }
+    }
       resolve();
     });
   };
@@ -261,15 +263,14 @@ try {
         }
 
         /* Create & Push The Parameter */
-        let newCmd = {
+        let parameter = {
           name: parameter.name.toLowerCase(),
           type: parameterType,
           required: parameter.required,
           description: parameter.description,
         };
-        commandParameters.push(newCmd);
+        commandParameters.push(parameter);
       }
-
       /* Moving On To The Command In Itself */
       if (commandParameters != [] && commandParameters[0]) {
         let commandName = data.commands[i].name.trim().toLowerCase();
@@ -291,7 +292,13 @@ try {
     if (data.commands[i].type == "event") {
       let event = require(`./AppData/Events/${data.commands[i].eventFile}`);
       /* Initialize The Event */
-      event.run(data.commands[i].eventData, client, fs, runActionArray, i);
+      // eventData: Array made of 2 elements; Based on the event, only one or two of them will be used.
+      // client: client
+      // fs: bot.js file system
+      // runActionArray: action runner
+      // i: where the command's at
+      // eventStorage: shared event storage
+      event.run(data.commands[i].eventData, client, fs, runActionArray, i, eventStorage);
     }
   }
   client.on("interactionCreate", async (interaction) => {
@@ -323,7 +330,6 @@ try {
             let values = data.commands[i].parameters[e].name;
             let option;
 
-            console.log(parameterType)
             switch (parameterType) {
               case "string":
                 option =
@@ -359,6 +365,7 @@ try {
             commandParametersStorage[data.commands[i].parameters[e].storeAs] = option;
           }
         }
+        interaction.author = interaction.user
         runActionArray(i, interaction, client, commandParametersStorage, true);
       }
     }

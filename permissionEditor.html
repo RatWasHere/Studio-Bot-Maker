@@ -1,112 +1,56 @@
 <html>
-  <link rel="stylesheet" href="main.css" />
-  <meta charset="utf8" />
-  <div
-    style="
-      width: 100vw;
-      overflow: auto;
-      height: 100vh;
-      margin-top: -8px;
-      margin-left: -8px;
-      filter: blur(22px);
-      border-radius: 14px;
-      transition:
-        scale 0.3s ease,
-        filter 0.5s ease;
-      scale: 0.1;
-    "
-    id="everything_container"
-  >
-    <div
-      id="editorContent"
-      style="
-        height: 90vh;
-        width: 100vw;
-        background-color: #ffffff10;
-        overflow: auto;
-      "
-    >
-      <div class="ring"></div>
+    <link rel="stylesheet" href="main.css">
+    <meta charset="utf8">
+    <div style="width: 100vw; overflow: auto; height: 100vh; margin-top: -8px; margin-left: -8px; filter: blur(22px); border-radius: 14px; transition: scale 0.3s ease, filter 0.5s ease; scale: 0.1;" id="everything_container">
+    <div id="editorContent" style="height: 90vh; width: 100vw; background-color: #FFFFFF10; overflow: auto;">
+        <div class="ring"></div>
     </div>
-    <div
-      id="selectorMenu"
-      class="flexbox"
-      style="
-        height: auto;
-        justify-content: left;
-        width: 100vw;
-        background-color: #ffffff08;
-      "
-    >
-      <div
-        id="buttonsContainer"
-        class="flexbox"
-        style="width: 100vw; height: 10vh; transition: scale 5.3s ease"
-      >
+    <div id="selectorMenu" class="flexbox" style="height: auto; justify-content: left; width: 100vw; background-color: #FFFFFF08;">
+        <div id="buttonsContainer" class="flexbox" style="width: 100vw; height: 10vh; transition: scale 5.3s ease;">
         <div class="barbuttontexta" id="permissions-name"></div>
-        <div class="betaIndicator">BETA</div>
-        <div
-          class="barbuttonshift flexbox"
-          style="margin-right: 1vw; width: 13vw; margin-left: auto"
-          onclick="closepermissions()"
-        >
-          <div
-            class="image checkmark"
-            style="
-              width: 30% !important;
-              height: 30px !important;
-              margin: auto !important;
-            "
-          ></div>
-          <div style="margin: auto">
-            <div class="barbuttontexta">Close</div>
-            <div class="smalltext" style="opacity: 50%; font-size: 8px">
-              CTRL+TAB
-            </div>
-          </div>
+    <div class="barbuttonshift flexbox" style="margin-right: 1vw; width: 13vw; margin-left: auto;" onclick="closepermissions()">
+        <div class="image checkmark" style="width: 30% !important; height: 30px !important; margin: auto !important;"></div>
+        <div style="margin: auto;">
+        <div class="barbuttontexta">Close</div>
+        <div class="smalltext" style="opacity: 50%; font-size: 8px;">CTRL+TAB</div>
         </div>
-      </div>
+        </div>
     </div>
-  </div>
-  <script src="./AppData/Kits/settings.js"></script>
-  <script src="./AppData/Kits/Loader.js"></script>
-  <script>
-    var datjson = JSON.parse(fs.readFileSync("./AppData/data.json"));
-    let themeColor = datjson.color;
-    document.getElementById(
-      "everything_container",
-    ).style.background = `linear-gradient(45deg, ${themeColor} 0%, #121212 ${editorSettings.smoothness})`;
-    document.body.style.transition = "all 0.2s ease";
-    document.body.style.backgroundColor = "#FFFFFF00";
-    const { ipcRenderer } = require("electron");
+    </div>
+    </div>
+    <script src="./AppData/Kits/settings.js"></script>
+    <script src="./AppData/Kits/Loader.js"></script>
+<script>
+
+    var datjson = JSON.parse(fs.readFileSync('./AppData/data.json'))
+    let themeColor = datjson.color
+    document.getElementById('everything_container').style.background = `linear-gradient(45deg, ${themeColor} 0%, #121212 ${editorSettings.smoothness})`
+    document.body.style.transition = 'all 0.2s ease'
+    document.body.style.backgroundColor = '#FFFFFF00'
+    const {ipcRenderer} = require('electron')
     let data;
-    document.onkeydown = function (permissions) {
-      if (permissions.key == "Tab" && permissions.ctrlKey == true) {
-        closepermissions();
-      }
-      if (permissions.key.toLowerCase() == "q" && permissions.ctrlKey == true) {
-        closepermissions();
-      }
-    };
+    document.onkeydown=function(permissions) {
+        if (permissions.key == 'Tab' && permissions.ctrlKey == true) {
+            closepermissions()
+        }
+        if (permissions.key.toLowerCase() == 'q' && permissions.ctrlKey == true) {
+            closepermissions()
+        }
+    }
 
-    ipcRenderer.on("data", (event, _data) => {
-      document.getElementById(
-        "everything_container",
-      ).style.transition = `all 0.${editorSettings.commonAnimation}s ease`;
+    ipcRenderer.on('data', (event, _data) => {
+        document.getElementById('everything_container').style.transition = `all 0.${editorSettings.commonAnimation}s ease`
 
-      document.getElementById("everything_container").style.scale = "1";
-      document.getElementById("everything_container").style.filter =
-        "blur(0px)";
-      data = _data;
-      console.log(data);
-      refreshBoundaries();
-      document.getElementById(
-        "permissions-name",
-      ).innerHTML = `<span style="opacity: 50%">Editing Boundaries Of</span> ${data.name}`;
-    });
+        document.getElementById('everything_container').style.scale = '1'
+        document.getElementById('everything_container').style.filter = 'blur(0px)'
+        data = _data;
+        console.log(data)
+        refreshBoundaries();
+        document.getElementById('permissions-name').innerHTML = `<span style="opacity: 50%">Editing Boundaries Of</span> ${data.name}`
+    })
 
     function refreshBoundaries() {
-      document.getElementById("editorContent").innerHTML = `
+        document.getElementById('editorContent').innerHTML = `
         <br>
         <div class="barbuttontexta noanims" style="margin-left: 2vw; margin-right: 0%; text-align: left; font-size: 23px;">Boundaries</div>
         <div class="sepbars noanims"></div>
@@ -117,135 +61,131 @@
             <div class="barbuttonshift borderright" onclick="toggleLimit(this)" style="padding-top: 2vh; padding-bottom: 2vh;" id="any"><div class="barbuttontexta">Any</div></div>
             <div class="barbuttonshift bordercenter" onclick="toggleLimit(this)" style="padding-top: 2vh; padding-bottom: 2vh;" id="dm"><div class="barbuttontexta">DM Only</div></div>
             <div class="barbuttonshift borderleft" onclick="toggleLimit(this)" style="padding-top: 2vh; padding-bottom: 2vh;" id="guild"><div class="barbuttontexta">Guild Only</div></div>
-        </div>
-        `;
-      completeBoundaryList();
+        </div>`
+        completeBoundaryList()
     }
     let boundaries = {
-      ADMINISTRATOR: "Administrator",
-      MODERATE_MEMBERS: "Timeout Members",
-      KICK_MEMBERS: "Kick Members",
-      BAN_MEMBERS: "Ban Members",
-      MANAGE_ROLES: "Manage Roles",
-      MANAGE_MESSAGES: "Manage Messages",
-      ATTACH_FILES: "Attach Files",
-      MANAGE_CHANNELS: "Manage Channels",
-      MANAGE_WEBHOOKS: "Manage Webhooks",
-      CHANGE_NICKNAME: "Change Nickname",
-      MANAGE_NICKNAMES: "Manage Nicknames",
-      CREATE_PUBLIC_THREADS: "Create Threads",
-      MANAGE_THREADS: "Manage Threads",
-      CREATE_EVENTS: "Create Events",
-      MANAGE_EVENTS: "Manage Events",
-      MENTION_EVERYONE: "Mention @everyone, @here & All Roles",
-      VIEW_AUDIT_LOG: "View Audit Logs",
-      MANAGE_GUILD: "Manage Server",
-    };
+        'ADMINISTRATOR': "Administrator",
+        'MODERATE_MEMBERS': "Timeout Members",
+        'KICK_MEMBERS': "Kick Members",
+        'BAN_MEMBERS': "Ban Members",
+        'MANAGE_ROLES': "Manage Roles",
+        'MANAGE_MESSAGES': "Manage Messages",
+        'ATTACH_FILES': "Attach Files",
+        'MANAGE_CHANNELS': "Manage Channels",
+        'MANAGE_WEBHOOKS': "Manage Webhooks",
+        'CHANGE_NICKNAME': "Change Nickname",
+        'MANAGE_NICKNAMES': "Manage Nicknames",
+        'CREATE_PUBLIC_THREADS': "Create Threads",
+        'MANAGE_THREADS': "Manage Threads",
+        'CREATE_EVENTS': "Create Events",
+        'MANAGE_EVENTS': "Manage Events",
+        'MENTION_EVERYONE': "Mention @everyone, @here & All Roles",
+        'VIEW_AUDIT_LOG': "View Audit Logs",
+        'MANAGE_GUILD': "Manage Server"
+    }
     function completeBoundaryList() {
-      if (!data.boundary) {
-        data.boundary = {
-          limits: [],
-          worksIn: "guild",
-        };
-      }
-      document.getElementById(data.boundary.worksIn).style.backgroundColor =
-        "#FFFFFF20";
-      let endHTML = ``;
-      for (let permission in boundaries) {
-        let selected = false;
-        if (data.boundary.limits.includes(permission)) {
-          selected = true;
+        if (!data.boundary) {
+            data.boundary = {
+                limits: [],
+                worksIn: 'guild'
+            }
         }
-        endHTML += `
-            <div id="${permission}" onclick="toggleBoundary('${permission}')" class="hoverablez dimension flexbox" style="background-color: ${
-              selected == true ? "#FFFFFF15" : "FFFFFF10"
-            }; width: 95%; margin-top: 1vh; padding: 9px; border-radius: 9px; transition: all 0.20s ease;">
-                <div class="barbuttontexta" style="margin-left: 1vw; text-align: left;">${
-                  boundaries[permission]
-                }</div>
-                <div class="barbuttontexta" style="margin-right: 2vw; opacity: 50%;" id="${permission}selected">${
-                  selected == true ? "Required" : "Not Required"
-                }</div>
-                <div class="dimension" id="${permission}color" style="transition: all 0.5s ease; background-color: ${
-                  selected == true ? "#32a85080" : "#a8323280"
-                }; width: 2.5vw; height: 2.5vw; margin-top: auto; margin-bottom: auto; margin-right: 1vw; border-radius: 0.5vw;"></div>
+        document.getElementById(data.boundary.worksIn).style.backgroundColor = '#FFFFFF20'
+        if (data.boundary.worksIn == 'any') {
+          document.getElementById('selectorMenu').style.height = '0vh'
+        } else {
+          document.getElementById('selectorMenu').style.height = ''
+        }
+        let endHTML = ``
+        for (let permission in boundaries) {
+            let selected = false;
+            if (data.boundary.limits.includes(permission)) {
+                selected = true;
+            }
+            endHTML += `
+            <div id="${permission}" onclick="toggleBoundary('${permission}')" class="hoverablez dimension flexbox" style="background-color: ${selected == true ? '#FFFFFF15' : 'FFFFFF10'}; width: 95%; margin-top: 1vh; padding: 9px; border-radius: 9px; transition: all 0.20s ease;">
+                <div class="barbuttontexta" style="margin-left: 1vw; text-align: left;">${boundaries[permission]}</div>
+                <div class="barbuttontexta" style="margin-right: 2vw; opacity: 50%;" id="${permission}selected">${selected == true ? 'Required' : 'Not Required'}</div>
+                <div class="dimension" id="${permission}color" style="transition: all 0.5s ease; background-color: ${selected == true ? '#32a85080' : '#a8323280' }; width: 2.5vw; height: 2.5vw; margin-top: auto; margin-bottom: auto; margin-right: 1vw; border-radius: 0.5vw;"></div>
             </div>
-            `;
-      }
-      document.getElementById("permissionsRequired").innerHTML = endHTML;
+            `
+        }
+        document.getElementById('permissionsRequired').innerHTML = endHTML
     }
     function toggleLimit(what) {
-      document.getElementById(data.boundary.worksIn).style.backgroundColor = "";
-      data.boundary.worksIn = what.id;
-      what.style.backgroundColor = "#FFFFFF20";
+        document.getElementById(data.boundary.worksIn).style.backgroundColor = ''
+        data.boundary.worksIn = what.id;
+        what.style.backgroundColor = '#FFFFFF20'
+        if (data.boundary.worksIn == 'any') {
+          document.getElementById('selectorMenu').style.height = '0vh'
+        }
     }
     function toggleBoundary(permission) {
-      let parent = document.getElementById(permission);
-      let colorTile = document.getElementById(`${permission}color`);
-      let selectionIndicator = document.getElementById(`${permission}selected`);
-      parent.style.filter = "blur(12px)";
-      parent.style.scale = "0.3";
+        let parent = document.getElementById(permission)
+        let colorTile = document.getElementById(`${permission}color`)
+        let selectionIndicator = document.getElementById(`${permission}selected`)
+        parent.style.filter = 'blur(12px)'
+        parent.style.scale = '0.3'
 
-      setTimeout(() => {
+        setTimeout(() => {
         if (data.boundary.limits.includes(permission)) {
-          for (let _permission in data.boundary.limits) {
-            console.log(
-              _permission,
-              data.boundary.limits[_permission],
-              permission,
-            );
-            if (data.boundary.limits[_permission] == permission) {
-              data.boundary.limits.splice(_permission, 1);
-              selectionIndicator.innerHTML = `Not Required`;
-              colorTile.style.backgroundColor = "#a8323280";
-              parent.style.backgroundColor = "#FFFFFF10";
-              parent.style.filter = "";
-              parent.style.scale = "1";
+            for (let _permission in data.boundary.limits) {
+                console.log(_permission, data.boundary.limits[_permission], permission)
+                if (data.boundary.limits[_permission] == permission) {
+                    data.boundary.limits.splice(_permission, 1);
+                    selectionIndicator.innerHTML = `Not Required`
+                    colorTile.style.backgroundColor = '#a8323280'
+                    parent.style.backgroundColor = '#FFFFFF10'
+                    parent.style.filter = ''
+                    parent.style.scale = '1'
+                }
             }
-          }
         } else {
-          data.boundary.limits.push(permission);
-          selectionIndicator.innerHTML = `Required`;
-          colorTile.style.backgroundColor = "#32a85080";
-          parent.style.backgroundColor = "#FFFFFF15";
-          parent.style.filter = "";
-          parent.style.scale = "1";
+            data.boundary.limits.push(permission)
+            selectionIndicator.innerHTML = `Required`
+            colorTile.style.backgroundColor = '#32a85080'
+            parent.style.backgroundColor = '#FFFFFF15'
+            parent.style.filter = ''
+            parent.style.scale = '1'
         }
-      }, 200);
+        }, 200)
+
     }
 
-    function validateInput(event) {
-      const div = event.target;
-      const text = div.textContent;
+function validateInput(event) {
+    const div = event.target;
+    const text = div.textContent;
+    
+    // Save the current cursor position
+    const selection = window.getSelection();
+    const range = selection.getRangeAt(0);
+    const offset = range.startOffset;
+  
+    // Remove image tags
+    const sanitizedText = text.replace(/<img\b[^>]*>/gi, '');
+  
+    // Update the content of the div with sanitized text
+    div.innerHTML = sanitizedText;
+    
+    // Restore the cursor position
+    const updatedRange = document.createRange();
+    updatedRange.setStart(div.firstChild, offset);
+    updatedRange.collapse(true);
+    selection.removeAllRanges();
+    selection.addRange(updatedRange);
+}
 
-      // Save the current cursor position
-      const selection = window.getSelection();
-      const range = selection.getRangeAt(0);
-      const offset = range.startOffset;
 
-      // Remove image tags
-      const sanitizedText = text.replace(/<img\b[^>]*>/gi, "");
+function closepermissions() {
+    document.getElementById('everything_container').style.scale = '0'
+    document.body.style.transition = 'all 0.2s ease'
+    document.body.style.backgroundColor = '#FFFFFF00'
+    document.getElementById('everything_container').style.filter = 'blur(40px)'
+    setTimeout(() => {
+        ipcRenderer.send('permissionsClosed', data.boundary)
+    }, 500)
+}
 
-      // Update the content of the div with sanitized text
-      div.innerHTML = sanitizedText;
-
-      // Restore the cursor position
-      const updatedRange = document.createRange();
-      updatedRange.setStart(div.firstChild, offset);
-      updatedRange.collapse(true);
-      selection.removeAllRanges();
-      selection.addRange(updatedRange);
-    }
-
-    function closepermissions() {
-      document.getElementById("everything_container").style.scale = "0";
-      document.body.style.transition = "all 0.2s ease";
-      document.body.style.backgroundColor = "#FFFFFF00";
-      document.getElementById("everything_container").style.filter =
-        "blur(40px)";
-      setTimeout(() => {
-        ipcRenderer.send("permissionsClosed", data.boundary);
-      }, 500);
-    }
-  </script>
+</script>
 </html>
