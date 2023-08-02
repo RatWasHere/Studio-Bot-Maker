@@ -165,7 +165,7 @@ function refreshActions() {
       actionFile = require(`./AppData/Actions/${botData.commands[lastObj].actions[action].file}`);
       let previewName = "";
       if (!actionFile.subtitle) {
-        previewName = actionFile.UI.previewName + ":";
+        previewName = actionFile.UI.previewName ? actionFile.UI.previewName + ":" : '';
         try {
           let characterCount = 0;
           actionUI = actionFile.UI;
