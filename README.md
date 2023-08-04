@@ -14,7 +14,7 @@ Well, first off - it's a free app that creates Discord Bots without you needing 
 
 It has plenty of actions and features making your Bot's development fast and easier than ever - with a bold mindset that aims for a polished and smooth application - every neat thing there is out there!
 
-### -> 🤖What does it have to offer, why would I pick this over a random Discord Bot?
+### What does it have to offer, why would I pick this over a random Discord Bot?
 
 🙃 Say less, here's a few reasons:
 
@@ -28,7 +28,7 @@ To continue that, it's not anything special - it's just a simple webapp, but tru
 
 ## 🖼️ Highlights & Features!
 
-###  -> 🎨Customizable Colors 
+###  -> 🎨 Customizable Colors 
 
 ![Studio_Bot_Maker_JhmqOPBwGS](https://github.com/RatWasHere/Studio-Bot-Maker/assets/100881234/efb25ed7-3e89-4420-9d36-1781b435f02e)
 
@@ -36,13 +36,8 @@ To continue that, it's not anything special - it's just a simple webapp, but tru
 
 ![image](https://github.com/RatWasHere/Studio-Bot-Maker/assets/100881234/3bb28b7c-2244-45db-9b92-f0e9bbde1d60)
 
-###  -> ⚙️Quickly Fix Errors!
 
-![Studio_Bot_Maker_SXysIwNT8v](https://github.com/RatWasHere/Studio-Bot-Maker/assets/100881234/20dd5fe0-35fe-4a19-a1ee-21d049f26479)
-
-
-
-## -> 🔗Our links
+## -> 🔗 Our links
 [Join Our Support Guild](https://discord.gg/2Ss44CZdvv)
 
 [Report A Bug](https://github.com/RatWasHere/Studio-Bot-Maker/issues/new?assignees=RatWasHere&labels=&projects=&template=bug-report.md&title=Bug%21)
