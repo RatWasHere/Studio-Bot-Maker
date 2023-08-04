@@ -38,11 +38,10 @@ To continue that, it's not anything special - it's just a simple webapp, but tru
 
 
 ## -> 🔗 Our links
-[Join Our Support Guild](https://discord.gg/2Ss44CZdvv)
+- [Join Our Support Guild](https://discord.gg/2Ss44CZdvv)
+- [Itch.io page](https://ratwashere.itch.io/studio-bot-maker)
+- [Report A Bug](https://github.com/RatWasHere/Studio-Bot-Maker/issues/new?assignees=RatWasHere&labels=&projects=&template=bug-report.md&title=Bug%21)
 
-[Report A Bug](https://github.com/RatWasHere/Studio-Bot-Maker/issues/new?assignees=RatWasHere&labels=&projects=&template=bug-report.md&title=Bug%21)
-
-[Itch.io page](https://ratwashere.itch.io/studio-bot-maker)
 
 <a href="https://www.producthunt.com/posts/studio-bot-maker?utm_source=badge-featured&utm_medium=badge&utm_souce=badge-studio&#0045;bot&#0045;maker" target="_blank"><img src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=396865&theme=dark" alt="Studio&#0032;Bot&#0032;Maker - A&#0032;no&#0032;code&#0032;Discord&#0032;bot&#0032;maker | Product Hunt" style="width: 250px; height: 54px;" width="250" height="54"/></a>
 
