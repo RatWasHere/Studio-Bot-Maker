@@ -1007,7 +1007,7 @@
 }
 .hoverable {
   cursor: pointer;
-  transition: background-color ease 0.14s;
+  transition: background-color ease 0.09s;
 }
 .hoverablez {
   cursor: pointer;
@@ -1015,10 +1015,10 @@
   transition: background-color ease 0.09s;
 }
 .hoverablez:hover {
-  background-color: #ffffff15;
+  background-color: #ffffff18;
 }
 .hoverablez:active {
-  background-color: #ffffff25;
+  background-color: #ffffff15;
 }
 .hoverablex {
   cursor: pointer;
@@ -1029,13 +1029,13 @@
   background-color: #ffffff20;
 }
 .hoverablex:active {
-  background-color: #ffffff25;
+  background-color: #ffffff15;
 }
 .hoverable:hover {
   background-color: #ffffff20;
 }
 .hoverable:active {
-  background-color: #ffffff25;
+  background-color: #ffffff15;
 }
 .baction {
   width: 95%;
@@ -1816,7 +1816,7 @@
   margin-left: 3px;
   margin-right: 3px;
   border-radius: 12px;
-  transition: background-color 0.12s ease;
+  transition: background-color 0.05s ease;
   border: #000000 hidden 5px;
   background-color: #ffffff10;
   display: flex;
@@ -1827,13 +1827,13 @@
   background-color: #ffffff20;
 }
 .barbuttonshift:active {
-  background-color: #ffffff25;
+  background-color: #ffffff15;
 }
 .barbuttond:hover {
   background-color: #ffffff20;
 }
 .barbuttond:active {
-  background-color: #ffffff25;
+  background-color: #ffffff15;
 }
 .blurbb {
   backdrop-filter: blur(65px) !important;
@@ -1856,7 +1856,7 @@
   margin-bottom: auto;
   border-radius: 5px;
   cursor: pointer;
-  transition: background-color 0.2s ease;
+  transition: background-color 0.1s ease;
   border: #000000 hidden 5px;
   background-color: #ffffff10;
   display: flex;
@@ -1869,13 +1869,13 @@
   border-left: solid 0.3vh solid;
   margin-top: 0.4vh !important;
   margin-bottom: 0.4vh !important;
-  transition: background-color 0.2s ease;
+  transition: background-color 0.1s ease;
 }
 .barbuttone:hover {
-  background-color: #ffffff15;
+  background-color: #ffffff20;
 }
 .barbuttone:active {
-  background-color: #ffffff25;
+  background-color: #ffffff15;
 }
 .barbuttontexta:active .barbuttone {
   margin-left: 0vw !important;

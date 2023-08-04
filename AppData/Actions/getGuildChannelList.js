@@ -26,7 +26,6 @@ module.exports = {
     let varTools = require(`../Toolkit/variableTools.js`);
 
     let output = [];
-
     for (let [id, channel] of bridge.guild.channels) {
       if (channel.parent) {
         if (values.get == "IDs") {

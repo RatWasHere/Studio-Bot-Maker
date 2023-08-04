@@ -259,8 +259,9 @@ function setHighlightedGroup(type) {
       animationArea.parentElement.style.overflowX = "none";
     }, 400);
     setTimeout(() => {
-    let _groupType = botData.commands[lastObj].type;
-    let groupTrigger = botData.commands[lastObj].trigger;
+      let cmd = botData.commands[lastObj] || {type: "", trigger: ""}
+    let _groupType = cmd.type;
+    let groupTrigger = cmd.trigger;
     let groupContainer = document.getElementById("groupActionsContainer")
     let endType;
     if (_groupType == "action") {

@@ -47,10 +47,10 @@ module.exports = {
     let list = bridge.variables[transf(values.list)];
 
     for (let element in list) {
-      bridge.variable[transf(values.storeIterationAs)] = element;
-      bridge.variable[transf(values.storeValueAs)] = list[element];
+      bridge.variables[transf(values.storeIterationAs)] = element;
+      bridge.variables[transf(values.storeValueAs)] = list[element];
 
-      await runner(values.actions, interaction, client, bridge.variables, true);
+      await bridge.runner(values.actions, message, client, bridge.variables);
     }
   },
 };
