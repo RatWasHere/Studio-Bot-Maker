@@ -304,7 +304,7 @@ function transferProject() {
     wast();
     for (let action of botData.commands[command].actions) {
       try {
-        let actionBase = require(`./AppData/Actions/${action.file}`);
+        let actionBase = require(`${processPath}/AppData/Actions/${action.file}`);
         for (let UIelement in actionBase.UI) {
           if (UIelement.startsWith("actions")) {
             action.data[actionBase.UI[UIelement]] = Object.values(

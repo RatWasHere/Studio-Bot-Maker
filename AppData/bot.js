@@ -372,9 +372,6 @@ try {
 
   function registerCommands() {
     for (let command of commands) {
-      console.log(
-        `${colors.Blink}(Slash Commands)${colors.Reset} - ${colors.BgYellow}${command.name}${colors.Reset} Is getting registered..`,
-      );
       if (!command.options) {
         client.application.createGlobalCommand({
           type: ApplicationCommandTypes.CHAT_INPUT,

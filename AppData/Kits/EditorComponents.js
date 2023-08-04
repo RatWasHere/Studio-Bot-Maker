@@ -59,13 +59,13 @@ function editAction(at, actionNumber) {
   }
 
   for (let Action in action.data[at]) {
-    for (let UIelement in require(`./AppData/Actions/${action.data[at][Action].file}`)
+    for (let UIelement in require(`${require('process').cwd()}/AppData/Actions/${action.data[at][Action].file}`)
       .UI) {
       if (UIelement.startsWith("input")) {
         if (UIelement.endsWith(`!*`) || UIelement.endsWith("!")) {
           localVariables.push(
             action.data[at][Action].data[
-              require(`./AppData/Actions/${action.data[at][Action].file}`).UI[
+              require(`${require('process').cwd()}/AppData/Actions/${action.data[at][Action].file}`).UI[
                 UIelement
               ]
             ],
@@ -176,7 +176,7 @@ function refreshActions(at) {
       borderType = "bordercentere";
     }
     try {
-      let actionFile = require(`./AppData/Actions/${innerAction.file}`);
+      let actionFile = require(`${require('process').cwd()}/AppData/Actions/${innerAction.file}`);
       let previewName = "";
       if (!actionFile.subtitle) {
         previewName = actionFile.UI.previewName + ":";

@@ -401,7 +401,7 @@ document.getElementById('everything_container').style.filter = 'blur(0px)'
         "blur(40px)";
       setTimeout(() => {
         ipcRenderer.send(
-          "close",
+          "closeExport",
           data
         );
       }, 500);

@@ -570,4 +570,7 @@ ipcMain.on('export', (data) => {
   ExportWindow.on("ready-to-show", () => {
     ExportWindow.webContents.send("data", data);
   });
+  ipcMain.once('closeExport', () => {
+    ExportWindow.close()
+  })
 })

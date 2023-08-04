@@ -1,5 +1,6 @@
 let kindOf;
 let lastActionContainer;
+var processPath = require('process').cwd()
 function changeAction() {
   if (action.type == "action") {
     if (
@@ -38,7 +39,7 @@ function searchFor(query) {
 
     for (var acte in actons) {
       let acten = actons[acte];
-      let afile = require(`./AppData/Actions/${acten}`);
+      let afile = require(`${require('process').cwd()}/AppData/Actions/${acten}`);
       actionButton.innerHTML += `<div class="action fade" style="width: 45%; z-index: 3; background-color: #FFFFFF10 !important;" onclick="openAction('${acten}');" id="${acten}">${afile.data.name}</div>`;
       lastType = 1;
     }
@@ -48,7 +49,7 @@ function searchFor(query) {
   actionButton.innerHTML += `<div class="action" id="misss"></div>`;
 
   for (let acte in actons) {
-    let actionFile = require(`./AppData/Actions/${actons[acte]}`);
+    let actionFile = require(`${require('process').cwd()}/AppData/Actions/${actons[acte]}`);
     let name = actionFile.data.name.toLowerCase();
     let name2 = elemnt.innerText.toLowerCase();
     let included = true;

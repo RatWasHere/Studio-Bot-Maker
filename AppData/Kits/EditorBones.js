@@ -10,7 +10,7 @@ function editAction() {
     actionType = "event";
     try {
       if (
-        require("./AppData/Events/" + botData.commands[lastObj].eventFile)
+        require(processPath +"/AppData/Events/" + botData.commands[lastObj].eventFile)
           .inputSchemes == 2
       ) {
         variables.push(botData.commands[lastObj].eventData[0]);
@@ -35,7 +35,7 @@ function editAction() {
   for (let action in botData.commands[lastObj].actions) {
     try {
       let actionUI =
-        require(`./AppData/Actions/${botData.commands[lastObj].actions[action].file}`).UI;
+        require(`${processPath}/AppData/Actions/${botData.commands[lastObj].actions[action].file}`).UI;
       for (let UIelement in actionUI) {
         if (UIelement.startsWith("input")) {
           if (UIelement.endsWith(`!*`) || UIelement.endsWith("!")) {
@@ -162,7 +162,7 @@ function refreshActions() {
     }
     let actionFile;
     try {
-      actionFile = require(`./AppData/Actions/${botData.commands[lastObj].actions[action].file}`);
+      actionFile = require(`${processPath}/AppData/Actions/${botData.commands[lastObj].actions[action].file}`);
       let previewName = "";
       if (!actionFile.subtitle) {
         previewName = actionFile.UI.previewName + ":";
@@ -461,7 +461,7 @@ function prioritizeEvents() {
   groupEvents.style.opacity = "";
   try {
     groupEvents.innerHTML = `<div style="margin: auto; margin-left: 1vw;">Triggered By: ${
-      require("./AppData/Events/" + botData.commands[lastObj].eventFile).name
+      require(processPath + "/AppData/Events/" + botData.commands[lastObj].eventFile).name
     }</div><div class="image openExternally"></div>`;
   } catch (err) {
     groupEvents.innerHTML = `<div style="margin: auto; margin-left: 1vw;">Triggered By: Nothing</div><div class="image openExternally"></div>`;
@@ -1818,11 +1818,12 @@ function saveSelection() {
 }
 
 const { spawn } = require("child_process");
+const { profileEnd } = require("console");
 
 function openEvent() {
   try {
     ipcRenderer.send("editEvent", {
-      name: require("./AppData/Events/" + botData.commands[lastObj].eventFile)
+      name: require(processPath + "/AppData/Events/" + botData.commands[lastObj].eventFile)
         .name,
       event: botData.commands[lastObj].eventFile,
       data: botData.commands[lastObj].eventData,

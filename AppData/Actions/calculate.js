@@ -36,14 +36,11 @@ module.exports = {
 
   async run(values, message, client, bridge) {
     let varTools = require(`../Toolkit/variableTools.js`);
-    var storedData = JSON.parse(
-      fs.readFileSync("./AppData/Toolkit/storedData.json", "utf8"),
-    );
     let firstNumber = parseFloat(
-      varTools.transf(values.firstNumber, message, bridge.variables),
+      varTools.transf(values.firstNumber, bridge.variables),
     );
     let secondNumber = parseFloat(
-      varTools.transf(values.secondNumber, message, bridge.variables),
+      varTools.transf(values.secondNumber, bridge.variables),
     );
 
     let result = 0;
@@ -61,5 +58,7 @@ module.exports = {
         result = firstNumber / secondNumber;
         break;
     }
+    
+    bridge.variables[varTools.transf(values.storeAs, bridge.variables)] = result
   },
 };
