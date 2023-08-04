@@ -71,10 +71,19 @@ function deleteObject(obj) {
     refreshActions();
   } else {
     let position = obj.parentNode.id.split("Group")[1];
+    try {
+      botData.commands.splice(position, 1);
+      wast();
+      refreshGroups();
+    } catch (err) {}
 
-    botData.commands.splice(position, 1);
-    wast();
-    refreshGroups();
+    if (selectedGroupType == 'slash') {
+      setHighlightedGroup(2)
+    } else if (selectedGroupType == 'text') {
+      setHighlightedGroup(1)
+    } else if (selectedGroupType == 'event') {
+      setHighlightedGroup(3)
+    }
   }
 }
 
@@ -249,6 +258,33 @@ function setHighlightedGroup(type) {
     setTimeout(() => {
       animationArea.parentElement.style.overflowX = "none";
     }, 400);
+    setTimeout(() => {
+    let _groupType = botData.commands[lastObj].type;
+    let groupTrigger = botData.commands[lastObj].trigger;
+    let groupContainer = document.getElementById("groupActionsContainer")
+    let endType;
+    if (_groupType == "action") {
+      if (groupTrigger == "textCommand" || groupTrigger == "messageContent") {
+        endType = "text";
+      }
+      if (groupTrigger == "slashCommand") {
+        endType = "slash";
+      }
+    } else {
+      endType = "event";
+    }
+    if (!botData.commands[lastObj] || endType != selectedGroupType) {
+      console.log(selectedGroupType, endType)
+      document.getElementById('Command_Name').contentEditable = "false"
+      document.getElementById('Command_Name').innerText = '-'
+      document.getElementById('botData.commands[lastObj].actions').innerHTML = 'No Limits • No Events • Just Free'
+      groupContainer.style.height = '0px'
+      groupContainer.style.overflow = 'auto'
+    } else {
+      document.getElementById('Command_Name').contentEditable = "true"
+      groupContainer.style.height = '33px'
+    }
+  }, 200);
   }, 300);
 }
 

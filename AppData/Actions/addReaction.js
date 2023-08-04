@@ -22,9 +22,14 @@ module.exports = {
 
     preview: "emoji",
     previewName: "Emoji",
+    variableSettings: {
+      "message": {
+        "Variable*": "direct"
+      }
+    }
   },
 
-  async run(values, inter, uID, fs, client, bridge) {
+  async run(values, inter, client, bridge) {
     const varTools = require(`../Toolkit/variableTools.js`);
 
     let message;
@@ -32,9 +37,9 @@ module.exports = {
       message = inter;
     }
     if (values.messageFrom == "Variable*") {
-      message =
-        bridge.variables[varTools.transf(values.message, bridge.variables)];
+      message = bridge.variables[varTools.transf(values.message, bridge.variables)];
     }
+
     message.createReaction(varTools.transf(values.emoji, bridge.variables));
   },
 };

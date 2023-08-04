@@ -143,14 +143,8 @@ function mbSelect(storeAs, menu, extraField, UIreference) {
       pending.id = extraField;
       pending.contentEditable = "true";
       pending.innerHTML = action.data[extraField];
-      pending.oninput = (event) => {
-        setTimeout(() => {
-          validateInput(event);
-        }, 10);
-        saveField(extraField, menu);
-      };
 
-      pending.addEventListener('blur', (event) => {
+      pending.addEventListener('input', (event) => {
         setTimeout(() => {
           validateInput(event);
         }, 10);
@@ -175,12 +169,11 @@ function mbSelect(storeAs, menu, extraField, UIreference) {
     storeAs.parentNode.innerHTML = storeAs.innerText;
     if (pending != "" && cachedParentNode.nextSibling.className !== "selectBar") {
       pending.appendAfter(cachedParentNode);
-      pending.onblur = (event) => {
-        console.log('dkadadjfdkfjm')
+      pending.oninput = (event) => {
         setTimeout(() => {
+        saveField(extraField, menu);
           validateInput(event);
         }, 10);
-        saveField(extraField, menu);
       }
     }
     if (document.getElementById(extraField)) {
@@ -756,14 +749,6 @@ function switchOutAction(actionFile) {
 
   closeSearch();
 }
-function replaceDivInnerHTML(divId, newHTML) {
-  var div = document.getElementById(divId);
-  var caretPosition = getCaretPosition(div);
-
-  div.innerHTML = newHTML;
-
-  setCaretPosition(div, caretPosition);
-}
 
 function getCaretPosition(element) {
   var caretPos = 0;
@@ -792,14 +777,31 @@ function getCaretPosition(element) {
 }
 
 function setCaretPosition(element, caretPos) {
-  var range;
+  let range;
+  let offset = caretPos;
+  let found = false;
 
   if (document.createRange) {
     range = document.createRange();
-    range.setStart(element.childNodes[0], caretPos);
+    for (const node of element.childNodes) {
+      if (node.nodeType === Node.TEXT_NODE) {
+        if (offset <= node.textContent.length) {
+          range.setStart(node, offset);
+          found = true;
+          break;
+        } else {
+          offset -= node.textContent.length;
+        }
+      }
+    }
+
+    if (!found) {
+      range.setStart(element, element.childNodes.length);
+    }
+
     range.collapse(true);
 
-    var sel = window.getSelection();
+    const sel = window.getSelection();
     sel.removeAllRanges();
     sel.addRange(range);
   } else if (document.selection) {
@@ -810,7 +812,6 @@ function setCaretPosition(element, caretPos) {
     range.select();
   }
 }
-
 function validateInput(event) {
   const div = event.target;
   const text = div.innerText;
@@ -832,20 +833,6 @@ function validateInput(event) {
   updatedRange.collapse(true);
   selection.removeAllRanges();
   selection.addRange(updatedRange);
-}
-
-function validateLargeInput(event) {
-  let offset = 0;
-  if (event.key == "Enter") {
-    offset = 1;
-  }
-  const div = event.target;
-  const text = div.innerText;
-
-  // Remove image tags
-  const sanitizedText = text.replace(/<img\b[^>]*>/gi, "");
-  if (div.innerHTML == sanitizedText) return;
-  replaceDivInnerHTML(div.id, div.innerText);
 }
 
 function saveField(fieldId) {
@@ -903,4 +890,18 @@ function toggleSwitch(storedAs) {
     toggle.style.height = "5vh";
     toggle.style.marginTop = "-1vh";
   }, editorSettings.commonAnimation * 50);
+}
+
+
+function validateLargeInput(event) {
+  // make this accept newlines and not remove them
+  const div = event.target;
+  var text = div.innerText;
+
+  let caretPos = getCaretPosition(div);
+
+  text = text.replaceAll('\n', '<br>')
+
+  div.innerHTML = text;
+  setCaretPosition(div, caretPos + 1)
 }

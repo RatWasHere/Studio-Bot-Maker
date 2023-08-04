@@ -2,7 +2,7 @@ module.exports = {
   data: {
     name: "Create Text Channel",
     channelName: "",
-    button: "✕",
+    private: true,
     guild: "Message Guild",
     guildVariable: "",
     storeChannelAs: "",
@@ -18,17 +18,7 @@ module.exports = {
 
     sepbar0: "",
 
-    btext0: "Private?",
-    ButtonBar: { buttons: ["✓", "✕"] },
-
-    sepbar1: "",
-
-    btext1: "Get Guild Via",
-    menuBar: {
-      choices: ["Message Guild", "Variable*", "Guild ID*"],
-      storeAs: "guild",
-      extraField: "guildVariable",
-    },
+    toggle: {name: "Private", storeAs: "private"},
 
     sepbar2: "",
 
@@ -45,33 +35,26 @@ module.exports = {
     previewName: "Name",
   },
 
-  async run(values, message, uID, fs, client, actionRunner, bridge) {
+  async run(values, message, client, bridge) {
     let varTools = require(`../Toolkit/variableTools.js`);
 
     const { ChannelTypes, Permissions } = require("oceanic.js");
 
-    let guild = message.guild;
-    if (values.guild == "Guild ID*") {
-      guild = client.guilds.get(varTools.transf());
-    }
-    if (values.guild == "Variable*") {
-      guild = client.guilds.get(
-        bridge.variables[varTools.transf(values.ExtraData, bridge.variables)],
-      );
-    }
+    let guild = bridge.guild;
 
-    const channel = guild.createChannel({
+    await guild.createChannel(ChannelTypes.GUILD_TEXT, {
       name: varTools.transf(values.channelName, bridge.variables),
-      type: ChannelTypes.GUILD_TEXT,
+      reason: "-",
       nsfw: false,
+    }).then((channel) => {
+      if (values.private == true) {
+        client.channels.editPermissions(channel.id, {
+          id: null,
+          allow: [""],
+          deny: [Permissions.VIEW_CHANNELS],
+        });
+      }
+      bridge.variables[varTools.transf(values.storeAs, bridge.variables)] = channel;
     });
-
-    if (values.button == "✓") {
-      client.channels.editPermissions(channel.id, {
-        id: null,
-        allow: [""],
-        deny: [Permissions.VIEW_CHANNELS],
-      });
-    }
   },
 };

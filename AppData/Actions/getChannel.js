@@ -1,10 +1,8 @@
 module.exports = {
   data: {
     name: "Get Channel",
-    desc: "",
     storeAs: "",
     channelID: "",
-    ExtraData: "",
   },
   UI: {
     compatibleWith: ["Any"],
@@ -23,7 +21,7 @@ module.exports = {
     previewName: "ID",
     preview: "channelID",
   },
-  run(values, message, uID, fs, client, runner, bridge) {
+  async run(values, interaction, client, bridge) {
     let varTools = require(`../Toolkit/variableTools.js`);
     bridge.variables[varTools.transf(values.storeAs, bridge.variables)] =
       client.getChannel(varTools.transf(values.channelID, bridge.variables));

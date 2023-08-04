@@ -14,7 +14,7 @@ module.exports = {
     previewName: "Position",
   },
 
-  async run(values, interaction, uID, fs, actionRunner, bridge) {
+  async run(values, interaction, client, bridge) {
     let varTools = require(`../Toolkit/variableTools.js`);
     let list = bridge.variables[varTools.transf(values.list)];
 

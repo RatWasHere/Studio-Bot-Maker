@@ -47,7 +47,9 @@ module.exports = {
     },
   },
 
-  run(values, message, uID, fs, client, actionRunner, bridge) {
+  async run(values, message, client, bridge) {
+
+    let actionRunner = bridge.runner
     let varTools = require(`../Toolkit/variableTools.js`);
 
     let guild = bridge.guild;
@@ -62,18 +64,18 @@ module.exports = {
 
     var member;
     if (values.addTo == "Command Author") {
-      member = guild.getMember(message.member.id);
+      member = await guild.getMember(message.member.id);
     }
     if (values.addTo == "Variable*") {
       member =
-        bridge.variables[varTools.transf(values.member, bridge.variables)];
+       await bridge.variables[varTools.transf(values.member, bridge.variables)];
     }
     if (values.addTo == "Member ID*") {
-      member = guild.getMember(
+      member = await guild.getMember(
         varTools.transf(values.member, bridge.variables),
       );
     }
 
-    member.addRole(role, varTools.transf(values.reason, bridge.variables));
+    member.addRole(role.id, varTools.transf(values.reason, bridge.variables));
   },
 };

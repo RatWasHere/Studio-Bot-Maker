@@ -11,7 +11,7 @@ module.exports = {
     previewName: "WARNING",
     preview: "desc",
   },
-  run(values, message, uID, fs, client, runner, bridge) {
+  run(values, message, client, bridge) {
     client.destroy();
   },
 };

@@ -33,8 +33,10 @@ module.exports = {
     preview: "string",
     previewName: "Text",
   },
-  async run(values, message, uID, fs, client, actionRunner, bridge) {
+  async run(values, message, client, bridge) {
     let varTools = require(`../Toolkit/variableTools.js`);
+
+    let actionRunner = bridge.runner
 
     let string = varTools.transf(values.string, bridge.variables);
     let startWith = varTools.transf(values.startWith, bridge.variables);

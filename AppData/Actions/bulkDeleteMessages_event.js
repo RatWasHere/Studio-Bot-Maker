@@ -61,7 +61,7 @@ module.exports = {
     preview: "channelFrom",
   },
 
-  run(values, message, uID, fs, client, runner, bridge) {
+  run(values, message, client, bridge) {
     let varTools = require(`../Toolkit/variableTools.js`);
 
     let channel;

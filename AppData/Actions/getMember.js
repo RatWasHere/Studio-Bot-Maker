@@ -29,7 +29,7 @@ module.exports = {
     preview: "memberFrom",
     previewName: "Via",
   },
-  async run(values, message, uID, fs, client, runner, bridge) {
+  async run(values, message, client, bridge) {
     let varTools = require(`../Toolkit/variableTools.js`);
 
     let guild = bridge.guild;

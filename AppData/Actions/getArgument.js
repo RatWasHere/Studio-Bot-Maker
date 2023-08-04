@@ -56,8 +56,8 @@ module.exports = {
   },
   subtitle:
     "Starting At: $[firstArgument]$ to $[ArgumentFrom]$ $[argumentParameter]$ - Store As: $[storesAs]$",
-  run(values, msg, uID, fs, client, runner, bridge) {
-    // i left comments so i dont completely shit myself next time i update this
+    async run(values, msg, client, bridge) {
+      // i left comments so i dont completely shit myself next time i update this
     let transferVariables = require(`../Toolkit/variableTools.js`).transf;
 
     const transf = (value) => {

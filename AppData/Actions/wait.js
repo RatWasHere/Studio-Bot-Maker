@@ -16,7 +16,7 @@ module.exports = {
     "input custom number <min>1</min><max>99999999999999</max>": "time",
   },
   subtitle: "Amount Of Time: $[time]$ $[amountOfTime]$",
-  async run(values, message, uID, fs, client, runner, bridge) {
+  async run(values, message, client, bridge) {
     function wait(seconds) {
       return new Promise((resolve) => {
         setTimeout(resolve, seconds * 1000);

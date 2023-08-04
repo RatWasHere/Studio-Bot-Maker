@@ -1012,7 +1012,7 @@
 .hoverablez {
   cursor: pointer;
   background-color: #ffffff10;
-  transition: background-color ease 0.11s;
+  transition: background-color ease 0.09s;
 }
 .hoverablez:hover {
   background-color: #ffffff15;
@@ -1473,7 +1473,7 @@
   height: 40%;
   margin-left: auto;
   border-radius: 9px;
-  white-space: pre-line;
+  white-space: pre-wrap;
   overflow: auto;
   margin-right: auto;
   margin-top: 4px;
@@ -1816,7 +1816,7 @@
   margin-left: 3px;
   margin-right: 3px;
   border-radius: 12px;
-  transition: background-color 0.2s ease;
+  transition: background-color 0.12s ease;
   border: #000000 hidden 5px;
   background-color: #ffffff10;
   display: flex;

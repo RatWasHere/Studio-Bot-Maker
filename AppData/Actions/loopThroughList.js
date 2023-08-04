@@ -37,7 +37,7 @@ module.exports = {
   subtitle:
     "List Name: $[list]$ - Store Iteration As: $[storeIterationAs]$ - Store Iteration Value As: $[storeValueAs]$",
 
-  async run(values, message, uID, fs, client, runner, bridge) {
+  async run(values, message, client, bridge) {
     let transferVariables = require(`../Toolkit/variableTools.js`).transf;
 
     const transf = (value) => {

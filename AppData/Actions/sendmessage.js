@@ -271,7 +271,8 @@ module.exports = {
     previewName: "Content",
   },
   subtitle: "Content: $[messageContent]$ - Get Channel Via: $[sendTo]$",
-  async run(values, message, uID, fs, client, actionRunner, bridge) {
+  async run(values, message, client, bridge) {
+    let actionRunner = bridge.runner
     const {
       InteractionTypes,
       ComponentTypes,
@@ -514,13 +515,13 @@ module.exports = {
         .createDM();
       channel = DMchannel;
     }
-    channel
+    await channel
       .createMessage({
         content: varTools.transf(values.messageContent, bridge.variables),
         embeds: embeds,
         components: endComponents,
       })
-      .then((msg) => {
+      .then(async (msg) => {
         if (values.storeAs != "") {
           bridge.variables[values.storeAs] = msg;
         }

@@ -42,14 +42,19 @@ module.exports = {
       memberVariable: {
         "Variable*": "direct",
       },
+      role: {
+        "Variable*": "direct",
+      },
     },
 
     previewName: "Role Variable",
     preview: "role",
   },
 
-  async run(values, message, uID, fs, client, actionRunner, bridge) {
+  async run(values, message, client, bridge) {
     let varTools = require(`../Toolkit/variableTools.js`);
+
+    let actionRunner = bridge.runner
 
     let guild = bridge.guild;
     var user = message.member;
@@ -74,8 +79,7 @@ module.exports = {
       role =
         bridge.variables[varTools.transf(values.role, bridge.variables)].id;
     }
-
-    let hasRole = member.roles.has(role);
+    let hasRole = user.roles.includes(role);
 
     if (hasRole == true) {
       actionRunner(values.runIfTrue, message, client, bridge.variables, true);

@@ -1,0 +1,410 @@
+<html>
+  <link rel="stylesheet" href="main.css" />
+  <meta charset="utf8" />
+  <div
+    style="
+      width: 100vw;
+      overflow: auto;
+      height: 100vh;
+      margin-top: -8px;
+      margin-left: -8px;
+      filter: blur(22px);
+      border-radius: 14px;
+      transition:
+        scale 0.3s ease,
+        filter 0.5s ease;
+      scale: 0.1;
+    "
+    id="everything_container"
+  >
+    <div
+      id="editorContent"
+      style="
+        height: 90vh;
+        width: 100vw;
+        background-color: #ffffff10;
+        overflow: auto;
+      "
+    >
+      <div
+        class="dimension flexbox"
+        style="
+          background-color: #ffffff03;
+          width: 100vw;
+          padding-top: 1vh;
+          padding-bottom: 1vh;
+          margin-bottom: 0.5vh;
+          justify-content: left;
+        "
+      >
+        <div id="data"
+          class="barbuttontexta"
+          style="margin-left: 2vw; margin-top: 0px; margin-bottom: 0px; text-align: left"
+        >
+          Export Your Bot
+        </div>
+      </div>
+      <div class="flexbox" style="height: 84vh; width: 100vw">
+        <div
+          class="dimension"
+          id="parameters"
+          style="
+            width: 5vw;
+            height: calc(95% + 18px);
+            overflow: auto;
+            margin-top: auto;
+            margin-bottom: auto;
+            background-color: #ffffff08;
+            border-radius: 9px;
+          "
+        >
+        <div id="flash" class="flash" style="height: 10vh; width: 100%; background-color: #FFFFFF10; transition: all 0.2s ease;">
+        </div>
+      </div>
+        <div
+          class="dimension"
+          id="parameterWindow"
+          style="
+            height: 95%;
+            width: 90vw;
+            margin-left: 1vw;
+            margin-top: auto;
+            margin-bottom: auto;
+            padding: 9px;
+            border-radius: 9px;
+            background-color: #ffffff08;
+          "
+        >
+      
+        <btext>Select Your Directory</btext>
+        <div class="action hoverablez" style="height: auto;" id="pathTo" onclick="selectFolder(this)">None Selected</div>
+      <div class="sepbars"></div>
+        <div class="flexbox" style="width: 95%; padding: 9px; margin: auto;border-radius: 8px; background-color: #FFFFFF10;">
+          <btext style="margin-left: 0.5vw;">Create A Sub-Folder?</btext>
+          <div class="barbuttonshift borderright" onclick="addDir(true)" id="addDir"><btext>Yes</btext></div>
+          <div class="barbuttonshift borderleft outlined" onclick="addDir(false)" id="noDir"><btext>Nope</btext></div>
+        </div>
+        <br>
+        <br>
+          <btext>Next, Does This Look Right To You?</btext>
+        <div class="sepbars" style="opacity: 0% !important; margin-bottom: 0px !important;"></div>
+          <text class="textToLeft" style="margin-left: 1vw; text-align: center;">Your Bot's Token</text>
+        <div class="flexbox">
+         <input class="input" style="width: 92%; height: 100%; padding: 1vh; margin-top: auto; margin-bottom: auto;" id="btk" type="password">
+         <div class="barbuttonshift"
+         onclick="if (this.previousElementSibling.type == 'password') {this.previousElementSibling.type = 'text'} else {this.previousElementSibling.type = 'password'}"
+         style="height: 37.68px; width: 37.68px; padding: 0px !important; margin-top: auto; margin-bottom: auto; aspect-ratio: 1/1;">
+          <div class="image editaction"></div>
+         </div>
+        </div>
+        <br>
+
+         <text class="textToLeft" style="margin-left: 1vw; text-align: center;">Your Bot's Name</text>
+         <input class="input" style="width: calc(789px - 3vh); margin: auto; padding: 2.5vh; padding-top: 2.5vh; padding-bottom: 2.5vh;" id="btn" type="text">
+        
+         <br>
+         <br>
+         <div onclick="exportProject(this)" class="barbuttonshift" style="margin: auto;">
+          <btext>Export!</btext>
+         </div>
+         <div class="barbuttontexta" id="exportstatus"></div>
+      
+        </div>
+      </div>
+    </div>
+
+    <div
+      id="selectorMenu"
+      class="flexbox"
+      style="
+        height: auto;
+        justify-content: left;
+        width: 100vw;
+        background-color: #ffffff08;
+      "
+    >
+      <div
+        id="buttonsContainer"
+        class="flexbox"
+        style="width: 100vw; height: 10vh; transition: scale 5.3s ease"
+      >
+
+        <div class="barbuttontexta" id="project-name-preview"></div>
+        <div
+          class="barbuttonshift flexbox"
+          style="margin-right: 1vw; width: 13vw; margin-left: auto"
+          onclick="closeExporting()"
+        >
+          <div
+            class="image checkmark"
+            style="
+              width: 30% !important;
+              height: 30px !important;
+              margin: auto !important;
+            "
+          ></div>
+          <div style="margin: auto">
+            <div class="barbuttontexta">Done</div>
+            <div class="smalltext" style="opacity: 50%; font-size: 8px">
+              CTRL+TAB
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="./AppData/Kits/Loader.js"></script>
+  <script src="./AppData/Kits/settings.js"></script>
+
+  <script>
+    var datjson = JSON.parse(fs.readFileSync("./AppData/data.json"));
+    let themeColor = datjson.color;
+    let data = require('./AppData/data.json');
+    let exportFolder;
+    let onTimeout = false;
+    let addDirectory = false;
+    const processPath = require("process").cwd();
+    document.getElementById(
+      "everything_container"
+    ).style.background = `linear-gradient(45deg, ${themeColor} 0%, #121212 ${editorSettings.smoothness})`;
+    document.body.style.transition = "all 0.2s ease";
+    document.body.style.backgroundColor = "#FFFFFF00";
+    document.getElementById('everything_container').style.transition = `all 0.${editorSettings.commonAnimation}s ease`
+    document.getElementById('btk').value = data.btk
+    document.getElementById('btn').value = data.name
+  
+
+document.getElementById('everything_container').style.scale = '1'
+document.getElementById('everything_container').style.filter = 'blur(0px)'
+    const { ipcRenderer } = require("electron");
+    document.onkeydown = function (event) {
+      if (event.key == "Tab" && event.ctrlKey == true) {
+        closeExporting();
+      }
+      if (event.key.toLowerCase() == "q" && event.ctrlKey == true) {
+        closeExporting();
+      }
+    };
+    function validateInput(event) {
+      const div = event.target;
+      const text = div.textContent;
+
+      // Save the current cursor position
+      const selection = window.getSelection();
+      const range = selection.getRangeAt(0);
+      const offset = range.startOffset;
+
+      // Remove image tags
+      const sanitizedText = text.replace(/<img\b[^>]*>/gi, "");
+
+      // Update the content of the div with sanitized text
+      div.innerHTML = sanitizedText;
+
+      // Restore the cursor position
+      const updatedRange = document.createRange();
+      updatedRange.setStart(div.firstChild, offset);
+      updatedRange.collapse(true);
+      selection.removeAllRanges();
+      selection.addRange(updatedRange);
+    }
+
+    const exportProject = (elm) => {
+      if (onTimeout) {return}
+      elm.style.animationName = "";
+      elm.style.animationDuration = "0s";
+      if (exportFolder) {
+        if (addDirectory) {
+          try {
+          fs.mkdirSync(exportFolder + `\\Studio-Bot-Maker`);
+          } catch (err) {}
+          exportFolder = `${exportFolder}\\Studio-Bot-Maker`
+          document.getElementById('flash').style.height = "20%"
+        }
+        let globalSettings = JSON.parse(
+          fs.readFileSync("C:/ProgramData/settings.json"),
+        );
+        globalSettings.projects.push(exportFolder);
+        fs.writeFileSync(
+          "C:/ProgramData/settings.json",
+          JSON.stringify(globalSettings, null, 2),
+        );
+        data.name = document.getElementById("btn").value;
+        data.btk = document.getElementById("btk").value;
+        data.prjSrc = exportFolder;
+        fs.writeFileSync(
+          processPath + "\\AppData\\data.json",
+          JSON.stringify(data, null, 2),
+        );
+
+        fs.writeFileSync(
+          exportFolder + "\\bot.js",
+          fs.readFileSync(processPath + "\\AppData\\bot.js"),
+        );
+        try {
+          fs.mkdirSync(exportFolder + "\\AppData");
+        } catch (err) {
+          null;
+        }
+        fs.writeFileSync(
+          exportFolder + "\\AppData\\data.json",
+          JSON.stringify(data),
+        );
+        document.getElementById('flash').style.height = "40%"
+
+        fs.writeFileSync(
+          exportFolder + "\\package.json",
+          `
+                    {
+                        "name": "Studio-Bot-Maker",
+                        "main": "bot.js",
+                        "author": "Studio Bot Maker, Rat#1111",
+                        "description": "A discord bot created via Studio Bot Maker!",
+                        "dependencies": {
+                            "discord-api-types": "^0.37.34",
+                            "@oceanicjs/builders": "^1.1.9",
+                            "oceanic.js": "^1.7.1",
+                            "fs": "^0.0.1-security",
+                            "fs-extra": "^11.1.1",
+                            "fse": "^4.0.1",
+                            "oceanic-collectors": "^1.0.7",
+                            "node-fetch": "^3.3.1",
+                            "request": "^2.88.2"
+                        },
+                        "version": "69420"
+                    }
+                    `,
+        );
+        try {
+          fs.mkdirSync(exportFolder + "\\AppData\\Actions");
+        } catch (err) {
+          null;
+        }
+        try {
+          fs.mkdirSync(exportFolder + "\\AppData\\Toolkit");
+        } catch (err) {
+          null;
+        }
+
+        try {
+          fs.mkdirSync(exportFolder + "\\AppData\\Events");
+        } catch (err) {
+          null;
+        }
+        let events = fs.readdirSync(processPath + "\\AppData\\Events");
+        document.getElementById('flash').style.height = "40%"
+
+        for (let event in events) {
+          setTimeout(() => {
+            fs.writeFileSync(
+              exportFolder + "\\AppData\\Events\\" + events[event],
+              fs.readFileSync(processPath + "\\AppData\\Events\\" + events[event]),
+            );
+          }, 1400);
+        }
+        fs.writeFileSync(
+          exportFolder + "\\AppData\\Toolkit\\variableTools.js",
+          fs.readFileSync(processPath + "\\AppData\\Toolkit\\variableTools.js"),
+        );
+        fs.writeFileSync(
+          exportFolder + "\\AppData\\Toolkit\\interactionTools.js",
+          fs.readFileSync(processPath + "\\AppData\\Toolkit\\interactionTools.js"),
+        );
+        try {
+          fs.readFileSync(exportFolder + `\\AppData\\Toolkit\\storedData.json`);
+        } catch (err) {
+          fs.writeFileSync(
+            exportFolder + `\\AppData\\Toolkit\\storedData.json`,
+            `
+                            {
+                                "users": {},
+                                "guilds": {},
+                                "members" : {},
+                                "channels": {},
+                                "lists": {}
+                            }`,
+          );
+        }
+        try {
+          fs.mkdirSync(exportFolder + "\\AppData\\Project");
+        } catch (err) {
+          null;
+        }
+        document.getElementById('flash').style.height = "50%"
+
+        fs.writeFileSync(
+          exportFolder + "\\AppData\\Project\\data.json",
+          fs.readFileSync(processPath + "\\AppData\\Project\\data.json"),
+        );
+        let actions = fs.readdirSync(processPath + "\\AppData\\Actions");
+
+        let acrnum = 0;
+
+        for (let action in actions) {
+          fs.writeFileSync(
+            exportFolder + "\\AppData\\Actions\\" + actions[action],
+            fs.readFileSync(processPath + "\\AppData\\Actions\\" + actions[action]),
+          );
+        }
+        onTimeout = true;
+        document.getElementById('flash').style.height = "100%"
+        setTimeout(() => {
+          onTimeout = false;
+        document.getElementById('flash').style.height = "10vh"
+        }, 5000);
+      } else {
+        elm.style.animationName = "glowTwice";
+        elm.style.animationDuration = "1s";
+
+        setTimeout(() => {
+          elm.style.animationName = "";
+          elm.style.animationDuration = "";
+        }, 1000);
+      }
+    }
+
+
+    function selectFolder(elm) {
+      const ipcRenderer = require("electron").ipcRenderer;
+
+      ipcRenderer.send("selectDirectory");
+
+      ipcRenderer.on("selectedDirectory", function (event, dir) {
+        if (!dir || dir == null || dir == undefined || dir == 'undefined') {
+          return
+        } else {
+          elm.innerHTML = `${dir[0]}`;
+          if (elm.innerHTML == 'undefined') {
+            elm.innerHTML = 'None Selected'
+            exportFolder = undefined;
+            return;
+          }
+          exportFolder = dir[0];
+        }
+      });
+    }
+    function addDir(bool) {
+      if (bool) {
+        addDirectory = true;
+          document.getElementById('noDir').classList.remove('outlined')
+          document.getElementById('addDir').classList.add('outlined')
+      } else {
+        addDirectory = false;
+        document.getElementById('addDir').classList.remove('outlined')
+        document.getElementById('noDir').classList.add('outlined')
+      }
+    }
+    function closeExporting() {
+      document.getElementById("everything_container").style.scale = "0";
+      document.body.style.transition = "all 0.2s ease";
+      document.body.style.backgroundColor = "#FFFFFF00";
+      document.getElementById("everything_container").style.filter =
+        "blur(40px)";
+      setTimeout(() => {
+        ipcRenderer.send(
+          "close",
+          data
+        );
+      }, 500);
+    }
+  </script>
+</html>

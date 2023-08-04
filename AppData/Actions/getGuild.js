@@ -18,7 +18,7 @@ module.exports = {
     previewName: "Content",
     preview: "desc",
   },
-  run(values, message, uID, fs, client, runner, bridge) {
+  async run(values, interaction, client, bridge) {
     let varTools = require(`../Toolkit/variableTools.js`);
     bridge.variables = {
       ...bridge.variables,

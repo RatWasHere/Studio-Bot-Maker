@@ -97,8 +97,10 @@ module.exports = {
     },
   },
 
-  async run(values, inter, uID, fs, client, actionRunner, bridge) {
+  async run(values, inter, client, bridge) {
     const varTools = require(`../Toolkit/variableTools.js`);
+    
+    let actionRunner = bridge.runner
 
     const handleReaction = (message, reactor, reaction) => {
       let matchesEmoji = false;
@@ -181,14 +183,14 @@ module.exports = {
       }
     };
 
-    client.on("messageReactionAdd", handleReaction(message, reactor, reaction));
+    client.on("messageReactionAdd", handleReaction);
 
     if (values.stopAwaitingAfter != "") {
       setTimeout(
         () => {
           client.off(
             "messageReactionAdd",
-            handleReaction(message, reactor, reaction),
+            handleReaction,
           );
         },
         parseFloat(values.stopAwaitingAfter) * 1000,

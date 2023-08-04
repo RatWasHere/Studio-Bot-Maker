@@ -10,7 +10,7 @@ module.exports = {
     preview: "variableName",
   },
 
-  run(values, interaction, uID, fs, client, runner, bridge) {
+  async run(values, interaction, client, bridge) {
     let varTools = require(`../Toolkit/variableTools.js`);
 
     delete bridge.variables[

@@ -17,7 +17,7 @@ module.exports = {
 
   subtitle: "ID: $[roleID]$ - Store As: $[storeAs]$",
 
-  run(values, message, uID, fs, client, runner, bridge) {
+  run(values, message, client, bridge) {
     let varTools = require(`../Toolkit/variableTools.js`);
     bridge.variables[values.storeAs] = bridge.guild.roles.get(
       varTools.transf(values.roleID, bridge.variables),

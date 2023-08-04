@@ -59,7 +59,7 @@ module.exports = {
     },
   },
   subtitle: "Amount Of Time: $[howMuch]$ $[duration]$ - Reason: $[reason]$",
-  run(values, message, uID, fs, client, runner, bridge) {
+  run(values, message, client, bridge) {
     let varTools = require(`../Toolkit/variableTools.js`);
     let guild;
     if (values.guildFrom == "Variable*") {

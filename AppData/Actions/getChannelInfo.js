@@ -45,7 +45,7 @@ module.exports = {
     previewName: "Get",
     preview: "get",
   },
-  async run(values, message, uID, fs, client, runner, bridge) {
+  async run(values, interaction, client, bridge) {
     let varTools = require(`../Toolkit/variableTools.js`);
     let channel;
     if (values.channelVia == "Message Channel") {

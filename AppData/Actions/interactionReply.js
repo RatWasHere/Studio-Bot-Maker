@@ -262,7 +262,9 @@ module.exports = {
     preview: "messageContent",
     previewName: "Content",
   },
-  async run(values, message, uID, fs, client, actionRunner, bridge) {
+  async run(values, message, client, bridge) {
+
+    let actionRunner = bridge.runner
     const {
       InteractionTypes,
       ComponentTypes,
@@ -489,7 +491,7 @@ module.exports = {
       interactionPendingReply = message;
     }
 
-    interactionPendingReply
+    await interactionPendingReply
       .createMessage({
         content: varTools.transf(values.messageContent, bridge.variables),
         embeds: embeds,

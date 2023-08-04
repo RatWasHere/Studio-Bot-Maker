@@ -41,7 +41,7 @@ module.exports = {
     preview: "get",
     previewName: "Get",
   },
-  run(values, interaction, uID, fs, client, runner, bridge) {
+  async run(values, interaction, client, bridge) {
     let varTools = require(`../Toolkit/variableTools.js`);
 
     let _interaction =

@@ -52,7 +52,7 @@ module.exports = {
     },
   },
   subtitle: "Amount Of Time: $[howMuch]$ $[duration]$ - Reason: $[reason]$",
-  run(values, message, uID, fs, client, actionContextBridge) {
+  run(values, message, client, actionContextBridge) {
     let varTools = require(`../Toolkit/variableTools.js`);
     let guild = actionContextBridge.guild;
 

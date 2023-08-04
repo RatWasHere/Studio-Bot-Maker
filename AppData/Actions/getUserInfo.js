@@ -49,7 +49,7 @@ module.exports = {
     preview: "get",
   },
   subtitle: "Get $[get]$ From: $[userFrom]$ - Store As $[storeAs]$",
-  async run(values, message, uID, fs, client, runner, bridge) {
+  async run(values, message, client, bridge) {
     let varTools = require(`../Toolkit/variableTools.js`);
     let user;
     if (values.userFrom == "Command Author") {

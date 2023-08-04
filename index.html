@@ -19,7 +19,7 @@
       <div class="sidebartext">Save</div>
     </div>
     <div class="sepbars"></div>
-    <div class="sidebarbutton flexbox outlined" onclick="exportProject()">
+    <div class="sidebarbutton flexbox outlined" onclick="ipcRenderer.send('export', botData)">
       <div
         class="image export noanims;"
         style="width: 2vw; height: 2vw; margin-left: 1vw"
@@ -231,7 +231,7 @@
             >
               Using 0 Actions
             </div>
-            <div class="flexbox" style="height: 33px; margin-bottom: 2vh">
+            <div class="flexbox" id="groupActionsContainer" style="height: 33px; transition: all 0.2s ease;">
               <div
                 class="baction noanims hoverable optionleft flexbox"
                 style="align-items: center; justify-content: center"

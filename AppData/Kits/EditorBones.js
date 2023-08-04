@@ -475,6 +475,29 @@ function returnToNormal() {
 function highlight(element) {
   try {
     if (element.id.startsWith("Group") == true) {
+      let groupContainer = document.getElementById('groupActionsContainer')
+      let _groupType = botData.commands[element.id.split("Group")[1]].type;
+      let groupTrigger = botData.commands[element.id.split("Group")[1]].trigger;
+      let endType;
+      if (_groupType == "action") {
+        if (groupTrigger == "textCommand" || groupTrigger == "messageContent") {
+          endType = "text";
+        }
+        if (groupTrigger == "slashCommand") {
+          endType = "slash";
+        }
+      } else {
+        endType = "event";
+      }
+      if (!botData.commands[element.id.split("Group")[1]] || endType != selectedGroupType) {
+        console.log(selectedGroupType, endType)
+        document.getElementById('Command_Name').contentEditable = "false"
+        groupContainer.style.height = '0px'
+        groupContainer.style.overflow = 'auto'
+      } else {
+        document.getElementById('Command_Name').contentEditable = "true"
+        groupContainer.style.height = '33px'
+      }
       try {
         if (botData.commands[lastObj].color != undefined) {
           document.getElementById(`Group${lastObj}`).style.backgroundColor =
@@ -586,7 +609,7 @@ function highlight(element) {
       element.style.backgroundColor = "#FFFFFF25";
       lastAct = element.id.split("Action")[1];
     }
-  } catch (err) {}
+  } catch (err) {console.log(err)}
 }
 
 function openBar(iftr) {

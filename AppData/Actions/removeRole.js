@@ -47,7 +47,7 @@ module.exports = {
     },
   },
 
-  run(values, message, uID, fs, client, bridge) {
+  run(values, message, client, bridge) {
     let varTools = require(`../Toolkit/variableTools.js`);
 
     let guild = bridge.guild;

@@ -20,10 +20,10 @@ module.exports = {
     preview: "storeAs",
     previewName: "Store As",
   },
-  run(values, message, uID, fs, client, runner, bridge) {
+  async run(values, command, client, bridge) {
     let varTools = require(`../Toolkit/variableTools.js`);
     let result = () => {
-      return eval(varTools.transf(values.toEval, bridge.variables));
+      return eval(values.toEval);
     };
     let endResult = result();
     bridge.variables[values.storeAs] = endResult;

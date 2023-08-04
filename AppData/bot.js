@@ -73,7 +73,7 @@ try {
     registerCommands();
   });
   /* Used For Running Action Arrays - Universal Action Array Runner */
-  const runActionArray = async (at, interaction, client, actionBridge, tf) => {
+  const runActionArray = async (at, interaction, client, actionBridge) => {
     new Promise(async (resolve) => {
       let cmdActions;
       let cmdName = "Inbuilt";
@@ -95,6 +95,8 @@ try {
           nodeName: cmdName,
           allActions: cmdActions,
         },
+        runner: runActionArray,
+        fs: fs
       };
       for (let action in cmdActions) {
         if (cmdActions[action] != undefined) {
@@ -105,10 +107,7 @@ try {
             await require(`./AppData/Actions/${cmdActions[action].file}`).run(
               cmdActions[action].data,
               interaction,
-              action,
-              fs,
               client,
-              runActionArray,
               actionContextBridge,
             );
           } catch (err) {
@@ -263,13 +262,13 @@ try {
         }
 
         /* Create & Push The Parameter */
-        let parameter = {
+        let endParameter = {
           name: parameter.name.toLowerCase(),
           type: parameterType,
           required: parameter.required,
           description: parameter.description,
         };
-        commandParameters.push(parameter);
+        commandParameters.push(endParameter);
       }
       /* Moving On To The Command In Itself */
       if (commandParameters != [] && commandParameters[0]) {
@@ -380,14 +379,14 @@ try {
         client.application.createGlobalCommand({
           type: ApplicationCommandTypes.CHAT_INPUT,
           name: command.name,
-          description: command.description,
+          description: command.description || 'No Description',
           dmPermission: false,
         });
       } else {
         client.application.createGlobalCommand({
           type: ApplicationCommandTypes.CHAT_INPUT,
           name: command.name,
-          description: command.description,
+          description: command.description || 'No Description',
           options: command.options,
           dmPermission: false,
         });

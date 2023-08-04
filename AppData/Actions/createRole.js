@@ -7,8 +7,8 @@ module.exports = {
     guildFrom: "Command Guild",
     storeAs: "",
     guildVariable: "",
-    isRoleMentionable: "Yes",
-    displayRoleSeparately: "Yes",
+    isRoleMentionable: false,
+    displayRoleSeparately: false,
   },
   UI: {
     compatibleWith: ["Slash", "Text"],
@@ -27,11 +27,9 @@ module.exports = {
 
     sepbar2: "",
 
-    btext1: "Display Role Separately?",
-    menuBar: { choices: ["Yes", "No"], storeAs: "displayRoleSeparately" },
-
-    btext2: "Make Role Mentionable?",
-    menuBar0: { choices: ["Yes", "No"], storeAs: "isRoleMentionable" },
+    toggle: { name: "Display Role Separately", storeAs: "displayRoleSeparately" },
+    sepbar0: "",
+    toggle0: { name: "Make Role Mentionable", storeAs: "isRoleMentionable" },
 
     sepbar3: "",
 
@@ -52,7 +50,7 @@ module.exports = {
     preview: "roleName",
     previewName: "Name",
   },
-  run(values, message, uID, fs, client, runner, bridge) {
+  async run(values, message, client, bridge) {
     let varTools = require(`../Toolkit/variableTools.js`);
 
     let guild = bridge.guild;
@@ -71,7 +69,7 @@ module.exports = {
       mentionable: values.isRoleMentionable == "Yes",
     };
 
-    guild.createRole(roleParameters).then((role) => {
+    await guild.createRole(roleParameters).then((role) => {
       bridge[varTools.transf(values.storeAs, bridge)] = role;
     });
   },

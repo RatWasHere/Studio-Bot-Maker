@@ -7,7 +7,7 @@ module.exports = {
     storeReactorAs: "",
     storeReactionIdAs: "",
     actions: {},
-    messageFrom: "Variable*",
+    messageFrom: "Any Message In Command Channel",
     fromWho: "",
     targetUser: "Anybody",
     stopAwaitingAfter: "60",
@@ -32,7 +32,10 @@ module.exports = {
 
     btext0: "Get Message To Await The Reaction On Via:",
     menuBar0: {
-      choices: ["Variable*", "Any Message In Command Channel"],
+      choices: [
+        "Variable*",
+        "Any Message In Command Channel",
+      ],
       storeAs: "messageFrom",
       extraField: "message",
     },
@@ -93,8 +96,10 @@ module.exports = {
     },
   },
 
-  async run(values, inter, uID, fs, client, actionRunner, bridge) {
+  async run(values, inter, client, bridge) {
     const varTools = require(`../Toolkit/variableTools.js`);
+    
+    let actionRunner = bridge.runner
 
     const handleReaction = (message, reactor, reaction) => {
       let matchesEmoji = false;
@@ -102,9 +107,6 @@ module.exports = {
       let matchesMessage = false;
 
       switch (values.messageFrom) {
-        case "Command Message":
-          matchesMessage = message.id == inter.id;
-          break;
         case "Variable*":
           matchesMessage =
             message.id ==
@@ -177,14 +179,14 @@ module.exports = {
       }
     };
 
-    client.on("messageReactionAdd", handleReaction(message, reactor, reaction));
+    client.on("messageReactionAdd", handleReaction);
 
     if (values.stopAwaitingAfter != "") {
       setTimeout(
         () => {
           client.off(
             "messageReactionAdd",
-            handleReaction(message, reactor, reaction),
+            handleReaction,
           );
         },
         parseFloat(values.stopAwaitingAfter) * 1000,

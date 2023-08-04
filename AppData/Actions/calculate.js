@@ -34,7 +34,7 @@ module.exports = {
     previewName: "Operation",
   },
 
-  async run(values, message, uID, fs, client, runner, bridge) {
+  async run(values, message, client, bridge) {
     let varTools = require(`../Toolkit/variableTools.js`);
     var storedData = JSON.parse(
       fs.readFileSync("./AppData/Toolkit/storedData.json", "utf8"),

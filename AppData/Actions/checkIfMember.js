@@ -74,9 +74,11 @@ module.exports = {
     preview: "permission",
   },
 
-  async run(values, message, uID, fs, client, actionRunner, bridge) {
+  async run(values, message, client, bridge) {
     let varTools = require(`../Toolkit/variableTools.js`);
     let transferVariables = require(`../Toolkit/variableTools.js`).transf;
+    
+    let actionRunner = bridge.runner
 
     const transf = (value) => {
       return transferVariables(value, bridge.variables);

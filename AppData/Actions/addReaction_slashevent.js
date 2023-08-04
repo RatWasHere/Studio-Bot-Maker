@@ -20,11 +20,10 @@ module.exports = {
     previewName: "Emoji",
   },
 
-  async run(values, inter, uID, fs, client, bridge) {
+  async run(values, inter, client, bridge) {
     const varTools = require(`../Toolkit/variableTools.js`);
 
-    let message =
-      bridge.variables[varTools.transf(values.message, bridge.variables)];
+    let message = bridge.variables[varTools.transf(values.message, bridge.variables)];
 
     message.createReaction(varTools.transf(values.emoji, bridge.variables));
   },

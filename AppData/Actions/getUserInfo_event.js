@@ -47,7 +47,7 @@ module.exports = {
     previewName: "Get",
     preview: "get",
   },
-  async run(values, message, uID, fs, client, runner, bridge) {
+  async run(values, message, client, bridge) {
     let varTools = require(`../Toolkit/variableTools.js`);
     let user;
     if (values.userFrom == "Variable*") {

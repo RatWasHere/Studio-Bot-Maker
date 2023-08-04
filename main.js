@@ -540,3 +540,34 @@ ipcMain.on("restart", (event, confirm) => {
   if (confirm != true) return;
   app.exit();
 });
+
+
+ipcMain.on('export', (data) => {
+  const ExportWindow = new BrowserWindow({
+    width: 800,
+    height: 600,
+    minHeight: 600,
+    minWidth: 800,
+    maxHeight: 600,
+    maxWidth: 800,
+    icon: "icon.png",
+    fullscreenable: false,
+    title: `Studio Bot Maker | Exporting`,
+    center: true,
+    resizable: false,
+    parent: lastWindow || win,
+    transparent: true,
+    titleBarStyle: "hidden",
+    modal: true,
+    webPreferences: {
+      nodeIntegration: true,
+      contextIsolation: false,
+      enableRemoteModule: true,
+      spellcheck: false,
+    },
+  });
+  ExportWindow.loadFile("exportEditor.html");
+  ExportWindow.on("ready-to-show", () => {
+    ExportWindow.webContents.send("data", data);
+  });
+})

@@ -35,8 +35,10 @@ module.exports = {
     preview: "firstInput",
     previewName: "Compare",
   },
-  async run(values, message, uID, fs, client, actionRunner, bridge) {
+  async run(values, message, client, bridge) {
     let varTools = require(`../Toolkit/variableTools.js`);
+    
+    let actionRunner = bridge.runner
 
     let matchesCriteria = false;
 

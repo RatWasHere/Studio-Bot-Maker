@@ -45,11 +45,11 @@ module.exports = {
       },
     },
   },
-  run(values, message, uID, fs, client, runner, bridge) {
+  async run(values, interaction, client, bridge) {
     let varTools = require(`../Toolkit/variableTools.js`);
     var guild;
     if (values.guildFrom == "Command Guild") {
-      guild = message.guild;
+      guild = bridge.guild;
     }
     if (values.guildFrom == "Guild Variable*") {
       guild = client.guilds.get(
