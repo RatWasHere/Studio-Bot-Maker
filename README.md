@@ -8,13 +8,13 @@ Time to ditch Discord Bot Maker and Bot Studio For Discord - and whatever other 
 
 Skip the hassle of coding!
 
-## Sooo... what is Studio Bot Maker?
+## ⁉️ Sooo... what is Studio Bot Maker?
 
 Well, first off - it's a free app that creates Discord Bots without you needing to write a single line of code!
 
 It has plenty of actions and features making your bot's development fast and easier than ever - with a bold mindset that aims for a polished and smooth application - every neat thing there is out there!
 
-### What does it have to offer, why would I pick this over a random Discord Bot?
+### -> 🤖What does it have to offer, why would I pick this over a random Discord Bot?
 
 🙃 Say less, here's a few reasons:
 
@@ -26,19 +26,29 @@ It has plenty of actions and features making your bot's development fast and eas
 Well, what is it not? First off, it's not a _completed_ application (yet) - but it's got plenty to offer - everything for free!
 To continue that, it's not anything special - it's just a simple webapp, but trust me when I say it's performance is superior!
 
-## Highlights & Features!
+## 🖼️ Highlights & Features!
 
-### Customizable Colors 🎨
+###  -> 🎨Customizable Colors 
 
 ![Studio_Bot_Maker_JhmqOPBwGS](https://github.com/RatWasHere/Studio-Bot-Maker/assets/100881234/efb25ed7-3e89-4420-9d36-1781b435f02e)
 
-### Discord Message Components Integration 💪
+###  -> 💪Discord Message Components Integration 
 
 ![image](https://github.com/RatWasHere/Studio-Bot-Maker/assets/100881234/3bb28b7c-2244-45db-9b92-f0e9bbde1d60)
 
-### Quickly Fix Errors!
+###  -> ⚙️Quickly Fix Errors!
 
 ![Studio_Bot_Maker_SXysIwNT8v](https://github.com/RatWasHere/Studio-Bot-Maker/assets/100881234/20dd5fe0-35fe-4a19-a1ee-21d049f26479)
+
+
+
+## -> 🔗Our links
+[Join Our Support Guild](https://discord.gg/2Ss44CZdvv)
+
+[Report A Bug](https://github.com/RatWasHere/Studio-Bot-Maker/issues/new?assignees=RatWasHere&labels=&projects=&template=bug-report.md&title=Bug%21)
+
+[Itch.io page](https://ratwashere.itch.io/studio-bot-maker)
+
 <a href="https://www.producthunt.com/posts/studio-bot-maker?utm_source=badge-featured&utm_medium=badge&utm_souce=badge-studio&#0045;bot&#0045;maker" target="_blank"><img src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=396865&theme=dark" alt="Studio&#0032;Bot&#0032;Maker - A&#0032;no&#0032;code&#0032;Discord&#0032;bot&#0032;maker | Product Hunt" style="width: 250px; height: 54px;" width="250" height="54"/></a>
 
-<div style="font-size: 4px; opacity: 0.25">Studio Bot Maker collects anonymous usage data.</div>
+<div style="font-size: 4px; opacity: 0.25">_Studio Bot Maker collects anonymous usage data_</div>
