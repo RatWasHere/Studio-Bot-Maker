@@ -74,5 +74,5 @@
     "cert": "electron-builder create-self-signed-cert -p StudioCertificate",
     "pretty": "prettier . --write"
   },
-  "version": "3.7.0"
+  "version": "3.7.1"
 }

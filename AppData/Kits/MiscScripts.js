@@ -166,12 +166,6 @@ function handleKeybind(keyEvent) {
     }
   }
   if (keyEvent.key.toLowerCase() == "s" && keyEvent.ctrlKey == true) {
-    if (
-      document.getElementById("bottombar") == undefined ||
-      document.getElementById("bottombar") == null
-    ) {
-      save_changes(lastAct);
-    } else {
       var saveIcon = document.createElement("div");
       saveIcon.className = "image savenm goofyhovereffect";
       saveIcon.style.backgroundImage = "url(./AppData/save.gif)";
@@ -201,7 +195,6 @@ function handleKeybind(keyEvent) {
         }, 200);
       }, 300);
     }
-  }
 }
 function closeMenu() {
   let bottombar = document.getElementById("bottombar");
