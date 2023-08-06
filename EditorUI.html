@@ -17,10 +17,14 @@
     "
     id="everything_container"
   >
+  <div class="flexbox" style="height: 5.5vh; width: 100vw; background-color: #FFFFFF07; margin: 0px; -webkit-user-drag: none; webkit-app-region: none;">
+    <btext id="partOf" style="margin-left: 1vw;"></btext>
+  <div onclick="closeWindow()" class="hoverablez option flexbox" style="width: 4vh; height: 4vh; margin: auto; margin-right: 0.2vw; padding: 3px; border-radius: 12px;"><div class="image add noanims" style="transform: rotate(45deg); width: 3.5vh; height: 3.5vh; margin: auto;"></div></div>
+  </div>
     <div
       id="editorContent"
       style="
-        height: 90vh;
+        height: 84.5vh;
         width: 100vw;
         background-color: #ffffff10;
         overflow: auto;
@@ -106,8 +110,8 @@
         <div class="barbuttontexta" id="action-name"></div>
         <div
           class="barbuttonshift flexbox"
-          style="margin-right: 1vw; width: 13vw; margin-left: auto"
-          onclick="closeWindow()"
+          style="margin-right: 1vw; width: 17vw; margin-left: auto"
+          onclick="save(); closeWindow()"
         >
           <div
             class="image checkmark"
@@ -118,9 +122,9 @@
             "
           ></div>
           <div style="margin: auto">
-            <div class="barbuttontexta">Close</div>
+            <div class="barbuttontexta">Save & Exit</div>
             <div class="smalltext" style="opacity: 50%; font-size: 8px">
-              CTRL+TAB
+              CTRL+Q
             </div>
           </div>
         </div>
@@ -285,10 +289,10 @@
       actionUI = actionFile.UI;
       document.getElementById("action-name").innerHTML =
         'Editing <span style="opacity: 50%;">' + action.name + "</div>";
+    document.getElementById('partOf').innerHTML = action.name;
       document.getElementById("editorContent").innerHTML =
         `<br>` + getUIelements(actionUI, action);
     });
-
     function save() {
       for (let i in actionUI) {
         let element = actionUI[i];

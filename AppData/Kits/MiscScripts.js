@@ -256,9 +256,30 @@ function initSetup() {
             <div class="sepbarz"></div>
             <btext style="width: 100%;">Visuals</btext>
             <div id="prefferedActionPane"></div>
+            <div id="anag"></div>
             <div id="coloringsmoothness"></div>
     
-    
+            <div class="colorTile" onclick="setColor(this)" style="background-color: #000000;"><div class="colorTileText">Lights Off</div></div>
+            <div class="colorTile" onclick="setColor(this)" style="background-color: #0b0014;"><div class="colorTileText">Ultraviolet</div></div>
+            <div class="colorTile" onclick="setColor(this)" style="background-color: #170011;"><div class="colorTileText">Soothing Cherry</div></div>
+            <div class="colorTile" onclick="setColor(this)" style="background-color: #170006;"><div class="colorTileText">Strawberry</div></div>
+            <div class="colorTile" onclick="setColor(this)" style="background-color: #170000;"><div class="colorTileText">Bloodshot Pink</div></div>
+            <div class="colorTile" onclick="setColor(this)" style="background-color: #170701;"><div class="colorTileText">Wood</div></div>
+            <div class="colorTile" onclick="setColor(this)" style="background-color: #170f00;"><div class="colorTileText">Golden Apple</div></div>
+            <div class="colorTile" onclick="setColor(this)" style="background-color: #241212;"><div class="colorTileText">Anger</div></div>
+            <div class="colorTile" onclick="setColor(this)" style="background-color: #361d1d;"><div class="colorTileText">Salmon</div></div>
+            <div class="colorTile" onclick="setColor(this)" style="background-color: #24121d;"><div class="colorTileText">Lilac</div></div>
+            <div class="colorTile" onclick="setColor(this)" style="background-color: #262626;"><div class="colorTileText">Smoke</div></div>
+            <div class="colorTile" onclick="setColor(this)" style="background-color: #141414;"><div class="colorTileText">Gray</div></div>
+            <div class="colorTile" onclick="setColor(this)" style="background-color: #261300;"><div class="colorTileText">Garfield</div></div>
+
+
+            <div class="colorTile" onclick="setColor(this)" style="background-color: #122324;"><div class="colorTileText">Shiny Forest</div></div>
+            <div class="colorTile" onclick="setColor(this)" style="background-color: #000814;"><div class="colorTileText">Navy Blue</div></div>
+            <div class="colorTile" onclick="setColor(this)" style="background-color: #071314;"><div class="colorTileText">Forest Green</div></div>
+            <div class="colorTile" onclick="setColor(this)" style="background-color: #001417;"><div class="colorTileText">Aquamarine</div></div>
+            <div class="colorTile" onclick="setColor(this)" style="background-color: #000f17;"><div class="colorTileText">Moody Blue</div></div>
+            <div class="colorTile" onclick="setColor(this)" style="background-color: #12241e;"><div class="colorTileText">Mint</div></div>
             <div class="sepbarz"></div>
             <btext style="width: 100%;">Behaviour</btext>
             <div id="changingWidth"></div>

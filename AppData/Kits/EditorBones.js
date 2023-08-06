@@ -3,6 +3,35 @@ const { app, ipcRenderer } = require("electron");
 let selectedGroupType = "text";
 let copiedAction;
 
+const { Worker } = require('worker_threads');
+
+function runInWorker(method) {
+  return new Promise((resolve, reject) => {
+    const worker = new Worker(`
+      const { parentPort } = require('worker_threads');
+      parentPort.on('message', (method) => {
+        try {
+          method();
+          parentPort.postMessage('Code execution completed.');
+        } catch (error) {
+          parentPort.postMessage({ error: error.message });
+        }
+      });
+    `);
+
+    worker.on('message', (message) => {
+      if (typeof message === 'string') {
+        resolve(message);
+      } else {
+        reject(new Error(message.error));
+      }
+      worker.terminate();
+    });
+
+    worker.postMessage(method.toString());
+  });
+}
+
 function editAction() {
   let variables = [];
   let actionType = "text";
@@ -82,6 +111,7 @@ const fs = require("fs");
 const processPath = require("process").cwd();
 const path = require("path");
 var botData = JSON.parse(fs.readFileSync(processPath + "/AppData/data.json"));
+document.getElementById('titlebar').innerText = `Studio Bot Maker - Editing ${botData.name}`
 let lastType = 0; // 0 = Command; 1 = Actions;
 let lastObj = "1";
 let lastAct = "1";
@@ -739,27 +769,7 @@ function modcolor() {
     sidebar.style.width = "40vw";
     sidebar.innerHTML = `
             <br>
-            <div class="sidebartext" style="font-size: 20px;">Editor Theme & Colors</div>
-            <div class="colorTile" onclick="setColor(this)" style="background-color: #000000;"><div class="colorTileText">Lights Off</div></div>
-            <div class="colorTile" onclick="setColor(this)" style="background-color: #0b0014;"><div class="colorTileText">Ultraviolet</div></div>
-            <div class="colorTile" onclick="setColor(this)" style="background-color: #170011;"><div class="colorTileText">Soothing Cherry</div></div>
-            <div class="colorTile" onclick="setColor(this)" style="background-color: #170006;"><div class="colorTileText">Strawberry</div></div>
-            <div class="colorTile" onclick="setColor(this)" style="background-color: #170000;"><div class="colorTileText">Bloodshot Pink</div></div>
 
-            <div class="colorTile" onclick="setColor(this)" style="background-color: #170701;"><div class="colorTileText">Wood</div></div>
-            <div class="colorTile" onclick="setColor(this)" style="background-color: #361d1d;"><div class="colorTileText">Salmon</div></div>
-            <div class="colorTile" onclick="setColor(this)" style="background-color: #170f00;"><div class="colorTileText">Golden Apple</div></div>
-            <div class="colorTile" onclick="setColor(this)" style="background-color: #262626;"><div class="colorTileText">Smoke</div></div>
-            <div class="colorTile" onclick="setColor(this)" style="background-color: #24121d;"><div class="colorTileText">Lilac</div></div>
-            <div class="colorTile" onclick="setColor(this)" style="background-color: #122324;"><div class="colorTileText">Shiny Forest</div></div>
-            <div class="colorTile" onclick="setColor(this)" style="background-color: #000814;"><div class="colorTileText">Navy Blue</div></div>
-            <div class="colorTile" onclick="setColor(this)" style="background-color: #071314;"><div class="colorTileText">Forest Green</div></div>
-            <div class="colorTile" onclick="setColor(this)" style="background-color: #001417;"><div class="colorTileText">Aquamarine</div></div>
-            <div class="colorTile" onclick="setColor(this)" style="background-color: #000f17;"><div class="colorTileText">Moody Blue</div></div>
-            <div class="colorTile" onclick="setColor(this)" style="background-color: #141414;"><div class="colorTileText">Gray</div></div>
-            <div class="colorTile" onclick="setColor(this)" style="background-color: #12241e;"><div class="colorTileText">Mint</div></div>
-            <div class="colorTile" onclick="setColor(this)" style="background-color: #241212;"><div class="colorTileText">Anger</div></div>
-            </div>
             `;
     sidebar.onmouseleave = () => {
       sidebar.style.width = "0vw";

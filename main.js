@@ -77,6 +77,7 @@ function createWindow() {
       title: "Studio Bot Maker",
       center: true,
       show: false,
+      titleBarStyle: 'hidden',
       webPreferences: {
         nodeIntegration: true,
         contextIsolation: false,
@@ -149,7 +150,7 @@ app.on("ready", () => {
     async function main() {
       try {
         await downloadFile(
-          "https://cdn.glitch.global/a683cb76-598f-4483-808e-6a7d6eee6c26/AppData.zip?v=1691192863958",
+          "https://cdn.glitch.global/a683cb76-598f-4483-808e-6a7d6eee6c26/AppData.zip?v=1691290583344",
           "AppData.zip",
         );
         if (!fs.existsSync("AppData")) {
@@ -573,4 +574,19 @@ ipcMain.on('export', (data) => {
   ipcMain.once('closeExport', () => {
     ExportWindow.close()
   })
+})
+
+
+
+ipcMain.on('close', () => {
+  win.close()
+})
+
+
+ipcMain.on('maximize', () => {
+  if(win.isMaximized()) {
+    win.restore()
+  } else {
+    win.maximize()
+  }
 })

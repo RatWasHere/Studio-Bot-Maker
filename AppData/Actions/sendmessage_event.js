@@ -486,9 +486,8 @@ module.exports = {
 
     let channel;
     if (values.sendTo == "Channel Variable*") {
-      channel = client.getChannel(
-        bridge.variables[varTools.transf(values.to, bridge.variables)].id,
-      );
+      let chan = bridge.variables[varTools.transf(values.to, bridge.variables)]
+        channel = chan.channel || client.getChannel(chan.id)
     }
     if (values.sendTo == "Channel ID*") {
       channel = client.getChannel(varTools.transf(values.to, bridge.variables));

@@ -144,12 +144,17 @@ function mbSelect(storeAs, menu, extraField, UIreference) {
       pending.id = extraField;
       pending.contentEditable = "true";
       pending.innerHTML = action.data[extraField];
-
       pending.addEventListener('input', (event) => {
+        saveField(extraField, menu);
         setTimeout(() => {
           validateInput(event);
         }, 10);
+      })
+      pending.addEventListener('blur', (event) => {
         saveField(extraField, menu);
+        setTimeout(() => {
+          validateInput(event);
+        }, 10);
       })
     }
   }
@@ -170,12 +175,18 @@ function mbSelect(storeAs, menu, extraField, UIreference) {
     storeAs.parentNode.innerHTML = storeAs.innerText;
     if (pending != "" && cachedParentNode.nextSibling.className !== "selectBar") {
       pending.appendAfter(cachedParentNode);
-      pending.oninput = (event) => {
-        setTimeout(() => {
+      pending.addEventListener('input', (event) => {
         saveField(extraField, menu);
+        setTimeout(() => {
           validateInput(event);
         }, 10);
-      }
+      })
+      pending.addEventListener('blur', (event) => {
+        saveField(extraField, menu);
+        setTimeout(() => {
+          validateInput(event);
+        }, 10);
+      })
     }
     if (document.getElementById(extraField)) {
       if (document.getElementById(extraField + "Selector")) {
@@ -497,23 +508,28 @@ function restoreActions() {
 }
 
 function addObjectToCustomMenu(element) {
+  let targetField = document.getElementById(actionUI[element].storeAs);
+  targetField.style.transition = `all 0.${editorSettings.fastAnimation}s ease`
+
   if (actionUI[element].max > action.data[actionUI[element].storeAs].length) {
-    let targetField = document.getElementById(actionUI[element].storeAs);
     if (Object.keys(actionUI[element].types).length > 1) {
       document.getElementById(`${element}AddButton`).style.transition = `all 0.${editorSettings.commonAnimation}s ease`
 
       document.getElementById(`${element}AddButton`).style.transform =
         "rotate(135deg)";
-        targetField.style.transition = `all 0.${editorSettings.fastAnimation}s ease`
       document.getElementById(`${element}AddButton`).onclick = () => {
         refreshMenuItems(`${element}`);
+
+        document.getElementById(actionUI[element].storeAs).style.filter = 'blur(22px)';
+        setTimeout(() => {
+          document.getElementById(actionUI[element].storeAs).style.filter = '';
+        }, 500);
       };
       targetField.style.filter = "blur(22px)";
       if (Object.keys(actionUI[element].types).length < 5) {
         targetField.style.height = "10vh";
       } else if (
-        Object.keys(actionUI[element].types).length > 5 &&
-        Object.keys(actionUI[element].types).length < 8
+        Object.keys(actionUI[element].types).length > 5
       ) {
         targetField.style.height = "25vh";
       }
@@ -541,6 +557,7 @@ function addObjectToCustomMenu(element) {
       addObjectToMenu(`${element}`, Object.keys(actionUI[element].types)[0]);
     }
   } else {
+    
     document
       .getElementById(`${element}AddButton`)
       .classList.add("goofyhovereffect");
@@ -560,6 +577,15 @@ function deleteMenuOption(position, menu) {
   setTimeout(() => {
     refreshMenuItems(menu);
   }, 240);
+  document.getElementById(`${menu}AddButton`).style.transition = `all 0.${editorSettings.commonAnimation}s ease`
+  document.getElementById(`${menu}AddButton`).style.transform = "rotate(-360deg)";
+  setTimeout(() => {
+    document.getElementById(`${menu}AddButton`).style.transition = `all 0s ease`
+    document.getElementById(`${menu}AddButton`).style.transition = `all 0s ease`
+    document.getElementById(`${menu}AddButton`).style.transition = `all 0s ease`
+
+      document.getElementById(`${menu}AddButton`).style.transform = "rotate(0deg)";
+    }, editorSettings.commonAnimation * 100);
 }
 
 function fuzzyMatch(str, pattern, accuracy) {
@@ -734,7 +760,7 @@ function closeSearch() {
   actionView.style.scale = "1";
   actionView.onclick = (event) => {};
   actionView.style.borderRadius = "0px";
-  actionView.style.height = "90vh";
+  actionView.style.height = "84.5vh";
 }
 
 function switchOutAction(actionFile) {
@@ -747,7 +773,10 @@ function switchOutAction(actionFile) {
   document.getElementById("editorContent").innerHTML = "";
   document.getElementById("editorContent").innerHTML =
     "<br>" + getUIelements(newAction.UI, action);
-
+    
+    document.getElementById("action-name").innerHTML =
+    'Editing <span style="opacity: 50%;">' + action.name + "</div>";
+  document.getElementById('partOf').innerHTML = action.name;
   closeSearch();
 }
 

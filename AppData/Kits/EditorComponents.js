@@ -4,10 +4,18 @@ function addObjectToMenu(element, option) {
       type: option,
       data: actionUI[element].UItypes[option].data,
     });
+    document.getElementById(actionUI[element].storeAs).style.filter = 'blur(22px)';
+    setTimeout(() => {
+      document.getElementById(actionUI[element].storeAs).style.filter = '';
+    }, 500);
   }
   refreshMenuItems(element);
   document.getElementById(`${element}AddButton`).style.transition = `all 0.${editorSettings.commonAnimation}s ease`
   document.getElementById(`${element}AddButton`).style.transform = "rotate(360deg)";
+  setTimeout(() => {
+  document.getElementById(`${element}AddButton`).style.transform = "rotate(0deg)";
+  document.getElementById(`${element}AddButton`).style.transition = `all 0.${editorSettings.commonAnimation}s ease`
+  }, editorSettings.commonAnimation * 200);
   document.getElementById(
     `${element}AddButton`,
   ).onclick = `refreshMenuItems('${element}')`;
@@ -94,21 +102,37 @@ function editAction(at, actionNumber) {
   }
   storeActionData();
 }
+let draggedOverMenu, draggedPosition, draggedOverPosition;
+
+function handleOptionDrag(position, menu) {
+  draggedPosition = position;
+  draggedOverMenu = menu;
+}
+
+function dragPositionOver(position, menu, event) {
+  if (draggedOverMenu == menu) event.preventDefault()
+
+  draggedOverPosition = position;
+}
+
+function handleDragOptionEnd() {
+  console.log(actionUI[draggedOverMenu], draggedOverMenu)
+  action.data[actionUI[draggedOverMenu].storeAs] = moveArrayElement(action.data[actionUI[draggedOverMenu].storeAs], draggedPosition, draggedOverPosition);
+  refreshMenuItems(draggedOverMenu)
+  draggedOverMenu = undefined;
+}
 
 function refreshMenuItems(menu) {
   let menuObject = actionUI[menu];
   let menuElement = document.getElementById(menuObject.storeAs);
   let endOptions = ``;
   menuElement.style.height = "44vh";
-  menuElement.style.filter = "blur(22px)";
 
   for (let object in action.data[menuObject.storeAs]) {
     let option = action.data[menuObject.storeAs][object];
-    console.log(option, actionUI[menu]);
     let typeName = actionUI[menu].UItypes[option.type].name;
-    console.log(typeName);
     endOptions = `${endOptions}
-            <div class="dimension flexbox" style="background-color: #00000060; border-radius: 9px; width: 99%; margin: auto; margin-left: auto; margin-right: auto; margin-bottom: 1vh; padding: 3px; padding-top: 6px; padding-bottom: 6px;">
+            <div class="dimension flexbox" draggable="true" ondragend="handleDragOptionEnd()" ondragover="dragPositionOver(${object}, '${menu}', event)" ondragstart="handleOptionDrag(${object}, '${menu}')" style="background-color: #00000060; border-radius: 9px; width: 99%; margin: auto; margin-left: auto; margin-right: auto; margin-bottom: 1vh; padding: 3px; padding-top: 6px; padding-bottom: 6px;">
             <div class="barbuttontexta dimension" style="padding: 9px; min-width: 7vw; background-color: #FFFFFF15; border-radius: 8px; margin-left: 0.7vw; margin-right: 0.5vw;">#${object}</div>
             <div class="barbuttontexta" style="margin-left: 1vw;">${typeName}</div>
             <div class="barbuttonshift" onclick="openPopupOption('${object}', '${menu}')" style="margin-left: auto; border-radius: 9px; padding: 9px;">

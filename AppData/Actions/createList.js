@@ -18,7 +18,7 @@ module.exports = {
     let transferVariables = require(`../Toolkit/variableTools.js`).transf;
 
     const transf = (value) => {
-      transferVariables(value, bridge.variables);
+      return transferVariables(value, bridge.variables);
     };
 
     bridge.variables[transf(values.listName)] = [];
