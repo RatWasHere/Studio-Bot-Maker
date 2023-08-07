@@ -6,7 +6,7 @@ module.exports = {
     reason: "",
   },
   UI: {
-    compatibleWith: ["Text", "Slash"],
+    compatibleWith: ["Any"],
 
     text: "Ban Member",
 
@@ -14,7 +14,7 @@ module.exports = {
 
     btext: "Get Member Via",
     menuBar: {
-      choices: ["Command Author", "Variable*", "Member ID*"],
+      choices: ["Variable*", "Member ID*"],
       storeAs: "memberFrom",
       extraField: "memberVariable",
     },
@@ -36,9 +36,6 @@ module.exports = {
     let guild = bridge.guild;
 
     let member;
-    if (values.memberFrom == "Command Author") {
-      member = message.author.id;
-    }
     if (values.memberFrom == "Variable*") {
       member =
         bridge.variables[

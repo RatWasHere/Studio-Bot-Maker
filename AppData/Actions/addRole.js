@@ -9,7 +9,7 @@ module.exports = {
     role: "",
   },
   UI: {
-    compatibleWith: ["Text", "Slash"],
+    compatibleWith: ["Slash", "Text"],
     text: "Add Role",
     sepbar: "",
     btext: "Get Role Via",

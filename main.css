@@ -2668,23 +2668,48 @@ body {
   transition: all ease 0.5s;
 }
 .colorTile {
-  width: 65%;
+  width: 45%;
+  height: 5vh;
   margin-left: auto;
+  cursor: pointer;
   margin-right: auto;
   margin-bottom: 1.3vh;
+  transition: all 0.15s ease;
   border-radius: 12px;
 }
 .colorTileText {
-  font-size: 18px;
+  font-size: 0px;
   color: #949494;
   text-align: center;
   background: #ffffff14;
-  backdrop-filter: blur(12px);
   margin-top: auto;
   border-radius: 12px;
+  transition: all 0.17s ease;
   padding: 12px;
   margin-bottom: auto;
+  height: calc(5vh - 24px);
   width: calc(100% - 24px);
+  margin: auto;
+  font-size: 18px;
+}
+@keyframes breatheWidth {
+  0% {
+    width: 50%;
+  }
+  50% {
+    width: 55%;
+  }
+  100% {
+    width: 50%;
+  }
+}
+.colorTile:hover > .colorTileText {
+  width: 50%;
+}
+.breatheWidth {
+  animation-name: breatheWidth;
+  animation-duration: 0.5s;
+  animation-iteration-count: infinite;
 }
 
 ::-webkit-scrollbar {

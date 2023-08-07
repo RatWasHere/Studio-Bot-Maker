@@ -7,7 +7,7 @@ module.exports = {
     roleFrom: "Role ID*",
   },
   UI: {
-    compatibleWith: ["Text", "Slash"],
+    compatibleWith: ["Any"],
     text: "Get Role Info",
 
     sepbar: "",

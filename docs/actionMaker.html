@@ -1,0 +1,158 @@
+<html>
+    <link rel="stylesheet" href="./main.css">
+    <title>Studio Bot Maker - Action Creation Documentation</title>
+    <link rel="icon" type="image/x-icon" href="./icon.png">
+    <meta name="title" content="Studio Bot Maker - Action Creation Documentation">
+    <meta name="description" content="Learn how to create actions for Studio Bot Maker!">
+    <meta name="keywords" content="discord, discord bot, discord-bot, bot maker, discord bot maker, discord bots, bot maker free, free discord bot maker, free bot maker, discord bot make, discord bot no code maker, no code discord bot, discord bot free maker, free discord bot, free bot maker, studio bot maker, documentation, discord bot maker documentation, studio bot maker tutorial, tutorial">
+    <meta name="robots" content="index, follow">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="language" content="English">
+    <html lang = "en">
+    <meta name="language" content="English">
+    <meta name="revisit-after" content="5 days">
+    <meta name="author" content="RatWasHere">
+    <button onclick="makeInput()">Create Input</button>
+    <button onclick="makemenubar()">Create MenuBar</button>
+    <button onclick="makebtext()">Create Btext</button>
+    <button onclick="makesepbar()">Create Sepbar</button>
+    <button onclick="maketoggle()">Create Toggle</button>
+    <button onclick="ex()">Export</button>
+
+
+    <div id="editor"></div>
+    <script>
+        document.body.style.background =  'linear-gradient(45deg, #000000 0%,#1d1d1d 160%)'
+    </script>
+<link rel="stylesheet" href="./styles/default.min.css">
+<script src="./highlight.min.js"></script>
+
+    <script>
+        let elements = {}
+            
+        let editor = document.getElementById('editor')
+
+        let inputCount = 0;
+        let btextCount = 0;
+        let sepbarCount = 0;
+        let mbCount = 0;
+        let toggleCount = 0;
+        let menuBars = [];
+
+
+        function makeInput() {
+            elements['input' + inputCount] = ''
+            editor.innerHTML += `
+            <btext style="color: #FFFFFF;margin-top: 12px;">input</btext>
+              <input style=" border: #FFFFFF20 4px solid;" id="input${inputCount}">
+            `
+            inputCount++
+        }
+
+        function makebtext() {
+            elements['btext' + btextCount] = ''
+
+            editor.innerHTML += `
+            <div style="background-color: #FFFFFF10;">
+                <btext style="color: #FFFFFF;">btext</btext>
+
+                <input id="btext${btextCount}">
+            </div>
+            `
+        }
+        function makesepbar() {
+            elements['sepbar' + sepbarCount] = ''
+            editor.innerHTML += `
+            <div class="sepbars"></div>
+            `
+        }
+        function maketoggle() {
+            elements['btext' + btextCount] = ''
+
+            editor.innerHTML += `
+            <div style="background-color: #FFFFFF10;">
+                <btext style="color: #FFFFFF;">toggle</btext>
+                <text style="color: #FFFFFF;">toggle name</text>
+                <input id="toggleName${btextCount}">
+                <text style="color: #FFFFFF;">toggle storeas</text>
+                <input id="toggleStore${btextCount}">
+            </div>
+            `
+        }
+
+        function makemenubar() {
+            elements['btext' + btextCount] = ''
+
+            editor.innerHTML += `
+            <div style="background-color: #FFFFFF10;">
+                <btext style="color: #FFFFFF;">menubar</btext>
+                <text style="color: #FFFFFF;">menubar store</text>
+                <input id="mbe${mbCount}">
+                <text style="color: #FFFFFF;">menubar extrafield</text>
+                <input id="mbef${mbCount}">
+                <text style="color: #FFFFFF;">menubar options</text>
+                <div id="mbthing${mbCount}"></div>
+                <button onclick="makeoption(${mbCount})">make option</button>
+            </div>
+            `
+            menuBars.push({store: `mbe${mbCount}`, ef: `mbef${mbCount}`, options: []})
+
+            mbCount++
+        }
+        function makeoption(cm) {
+            document.getElementById('mbthing' + cm).innerHTML += `
+                <input id="cm${cm}${menuBars[cm].options.length}"></div>
+            `
+            menuBars[cm].options.push('')
+        }
+        
+        function ex() {
+            let endUI = {}
+            const initialInputCount = parseFloat(inputCount)
+            let Inputoffset = 0;
+            while (inputCount >= 1) {
+                let ic = initialInputCount - (inputCount + Inputoffset) 
+                let id = initialInputCount - (inputCount)
+                if (ic == 0) {
+                    ic = '';
+                    Inputoffset = 1
+                }
+
+                endUI['input' + ic] = document.getElementById(`input${id}`).value
+
+                inputCount--
+                
+            }
+            alert(JSON.stringify(endUI))
+        }
+    </script>
+
+    <style>
+        body {
+            user-select: auto !important;
+            cursor: auto !important;
+        }
+        ::-webkit-scrollbar {
+       width: 1vw;
+       background: #000000;
+       }
+       ::-webkit-scrollbar-track {   
+       border-radius: 100px;
+       }
+       ::-webkit-scrollbar-thumb {  
+        border: #000000 5px solid;
+       border-radius: 100px;
+       transition: all 0.3s ease;
+       background-color: #FFFFFF30;
+       }
+       ::-webkit-scrollbar-thumb:hover {
+        border: #000000 3px solid;
+       background-color: #FFFFFF40;
+       }
+       ::-webkit-scrollbar:hover body {
+        filter: blur(12px)
+       }
+    </style>
+    </html>

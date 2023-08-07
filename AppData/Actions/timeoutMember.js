@@ -5,11 +5,11 @@ module.exports = {
     member: "",
     reason: "",
     duration: "Minute(s)*",
-    howMuch: "",
+    howLong: "",
   },
 
   UI: {
-    compatibleWith: ["Text", "Slash"],
+    compatibleWith: ["Any"],
     text: "Timeout Member",
 
     sepbar: "",
@@ -27,7 +27,7 @@ module.exports = {
     menuBar0: {
       choices: ["Day(s)*", "Hour(s)*", "Minute(s)*", "Second(s)*"],
       storeAs: "duration",
-      extraField: "howMuch",
+      extraField: "howLong",
     },
 
     sepbar1: "",
@@ -38,7 +38,7 @@ module.exports = {
     previewName: "Member",
 
     variableSettings: {
-      howMuch: {
+      howLong: {
         "Day(s)*": "novars",
         "Hour(s)*": "novars",
         "Minute(s)*": "novars",
@@ -51,15 +51,12 @@ module.exports = {
       },
     },
   },
-  subtitle: "Amount Of Time: $[howMuch]$ $[duration]$ - Reason: $[reason]$",
-  run(values, message, client, actionContextBridge) {
+  subtitle: "Amount Of Time: $[howLong]$ $[duration]$ - Reason: $[reason]$",
+  run(values, message, client,  bridge) {
     let varTools = require(`../Toolkit/variableTools.js`);
-    let guild = actionContextBridge.guild;
+    let guild =  bridge.guild;
 
     let member;
-    if (values.memberFrom == "Command Author") {
-      member = guild.getMember(message.author.id);
-    }
     if (values.memberFrom == "Variable*") {
       member = guild.getMember(
         bridge.variables[varTools.transf(values.member, bridge.variables)].id,
@@ -70,21 +67,22 @@ module.exports = {
     }
 
     let duration;
+    let timeoutDuration = varTools.transf(values.howLong, bridge.variables)
     switch (values.duration) {
       case "Second(s)*":
-        duration = parseFloat(values.howMuch) * 1000;
+        duration = parseFloat() * 1000;
         break;
 
       case "Minute(s)*":
-        duration = parseFloat(values.howMuch) * 60 * 1000;
+        duration = parseFloat(timeoutDuration) * 60 * 1000;
         break;
 
       case "Hour(s)*":
-        duration = parseFloat(values.howMuch) * 60 * 60 * 1000;
+        duration = parseFloat(timeoutDuration) * 60 * 60 * 1000;
         break;
 
       case "Day(s)*":
-        duration = parseFloat(values.howMuch) * 60 * 60 * 24 * 1000;
+        duration = parseFloat(timeoutDuration) * 60 * 60 * 24 * 1000;
         break;
     }
 

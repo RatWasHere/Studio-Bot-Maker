@@ -17,14 +17,13 @@
     "
     id="everything_container"
   >
-  <div class="flexbox" style="height: 5.5vh; width: 100vw; background-color: #FFFFFF07; margin: 0px; -webkit-user-drag: none; webkit-app-region: none;">
-    <btext id="partOf" style="margin-left: 1vw;"></btext>
-  <div onclick="closeWindow()" class="hoverablez option flexbox" style="width: 4vh; height: 4vh; margin: auto; margin-right: 0.2vw; padding: 3px; border-radius: 12px;"><div class="image add noanims" style="transform: rotate(45deg); width: 3.5vh; height: 3.5vh; margin: auto;"></div></div>
+  <div onclick="closeWindow()" class="hoverablez flexbox" style="height: 4vh; width: 4vh; margin-bottom: -4vh; transform: translateY(50%) translateX(-50%); margin-left: calc(100vw - 4vh); backdrop-filter: blur(12px); border-radius: 4vh; position: relative; z-index: 40000;">
+    <div class="image add noanims" style="margin: auto; width: 80%; height: 80%; transform: rotate(45deg)"></div>
   </div>
     <div
       id="editorContent"
       style="
-        height: 84.5vh;
+        height: 90vh;
         width: 100vw;
         background-color: #ffffff10;
         overflow: auto;
@@ -289,7 +288,6 @@
       actionUI = actionFile.UI;
       document.getElementById("action-name").innerHTML =
         'Editing <span style="opacity: 50%;">' + action.name + "</div>";
-    document.getElementById('partOf').innerHTML = action.name;
       document.getElementById("editorContent").innerHTML =
         `<br>` + getUIelements(actionUI, action);
     });

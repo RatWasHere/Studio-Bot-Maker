@@ -107,6 +107,8 @@ module.exports = {
             storeInteractionAs: "",
             placeholder: "",
             disabled: false,
+            storeOptionsListAs: "",
+            onSubmit: [],
           },
           UI: {
             text: "Select Menu",
@@ -132,13 +134,16 @@ module.exports = {
               UItypes: {
                 selectMenu: {
                   name: "Select Menu Option",
-                  data: { actions: {}, label: "" },
+                  data: { actions: {}, label: "", pushAs:"" },
                   UI: {
                     text: "Select Menu Option",
                     sepbar: "",
                     btext: "Label",
                     input: "label",
                     sepbar0: "",
+                    btext1: "Push To Selection List As:",
+                    input0: "pushAs",
+                    sepbar1:"",
                     btext0: "If selected, Run:",
                     actions: "actions",
                   },
@@ -148,7 +153,7 @@ module.exports = {
             },
             sepbar3: "",
             toggle: { name: "Disabled", storeAs: "disabled" },
-            sepbar5: "",
+            "sepbar_": "",
             btext6: "Placeholder",
             input1: "placeholder",
             btext4: "<div style='margin-top: 2vh;'></div>",
@@ -157,6 +162,9 @@ module.exports = {
                 "User Variable*": "direct",
               },
             },
+            sepbar4:"",
+            btext3: "Once Submit, Run:",
+            actions: "onSubmit"
           },
         },
       },
@@ -268,6 +276,10 @@ module.exports = {
     let highestTimeDenominator = 0;
     var componentConnections = {};
     let messageStorage;
+    let selectMenuSubmitActions = {};
+    let selectMenusNamePushStorage = {};
+    let selectMenuStorageNames = {};
+  
     var componentStorage = {};
     if (typeof values.actionRows == "object" && values.actionRows != []) {
       for (let components of values.actionRows) {
@@ -326,6 +338,10 @@ module.exports = {
           let menuOptions = [];
           for (let option of components.data.options) {
             lastOptionNo++;
+
+            selectMenuSubmitActions[`${lastOptionNo}`] = components.data.onSubmit
+            selectMenuStorageNames[`${lastOptionNo}`] = components.data.storeOptionsListAs
+            selectMenusNamePushStorage[`${lastOptionNo}`] = option.data.pushAs
             componentConnections[`${lastOptionNo}`] = option.data.actions;
             menuOptions.push({
               label:
@@ -364,9 +380,7 @@ module.exports = {
           bridge.variables,
         );
       } else {
-        console.log(
-          "Reply To Interaction >> Embed >> Unset Title, Error Will Occur",
-        );
+        console.log("Reply To Interaction >> Embed >> Unset Title, Error Will Occur");
       }
       if (embed.data.authorName != "") {
         endEmbed.author.name = varTools.transf(
@@ -434,14 +448,16 @@ module.exports = {
       }
       embeds.push(endEmbed);
     }
-    const handleInteraction = (interaction) => {
+    const handleInteraction = async (interaction) => {
       if (
         interaction.type == InteractionTypes.MESSAGE_COMPONENT &&
         interaction.message.id == messageStorage.id
       ) {
         if (interaction.data.values) {
+          let listOf = [];
           interaction.data.values.raw.forEach(async (value) => {
-            actionRunner(
+            listOf.push(selectMenusNamePushStorage[`${value}`]);
+            await actionRunner(
               componentConnections[value],
               message,
               client,
@@ -453,6 +469,18 @@ module.exports = {
               true,
             );
           });
+          await actionRunner(
+            selectMenuSubmitActions[interaction.data.values.raw[0]],
+            message,
+            client,
+            {
+              ...bridge.variables,
+              [varTools.transf(componentStorage[interaction.data.values.raw[0]], bridge.variables)]:
+              interaction,
+              [selectMenuStorageNames[interaction.data.values.raw[0]]]: listOf
+            }
+          )
+          
         } else {
           actionRunner(
             componentConnections[interaction.data.customID],
@@ -479,7 +507,7 @@ module.exports = {
         content: varTools.transf(values.messageContent, bridge.variables),
         embeds: embeds,
         components: endComponents,
-        flags: values.ephemeral == true ? 64 : null,
+        flags: values.ephemeral == true ? 64 : null
       })
       .then(async (inter) => {
         let msg = await interactionPendingReply.getOriginal();

@@ -3,15 +3,13 @@ module.exports = {
     name: "Remove Role",
     storeAs: "",
     removeFrom: "Command Author",
-    guildFrom: "Guild ID*",
-    guild: "",
     reason: "",
     member: "",
     roleFrom: "Variable*",
     role: "",
   },
   UI: {
-    compatibleWith: ["Event", "DM"],
+    compatibleWith: ["Event"],
     text: "Remove Role",
     sepbar: "",
     btext: "Get Role Via",
@@ -32,16 +30,7 @@ module.exports = {
 
     sepbar1: "",
 
-    btext1: "Get Role Guild Via",
-    menuBar1: {
-      choices: ["Guild ID*", "Variable*"],
-      storeAs: "guildFrom",
-      extraField: "guild",
-    },
-
-    sepbar2: "",
-
-    btext2: "Reason",
+    btext1: "Reason",
     input: "reason",
 
     preview: "roleFrom",
@@ -55,27 +44,13 @@ module.exports = {
         "Variable*": "direct",
         "Role ID*": "indirect",
       },
-      guild: {
-        "Variable*": "direct",
-        "Guild ID*": "indirect",
-      },
     },
   },
 
   run(values, message, client, bridge) {
     let varTools = require(`../Toolkit/variableTools.js`);
 
-    let guild;
-    if (values.guildFrom == "Variable*") {
-      guild = client.guilds.get(
-        bridge.variables[varTools.transf(values.guild, bridge.variables)].id,
-      );
-    }
-    if (values.guildFrom == "Guild ID*") {
-      guild = client.guilds.get(
-        varTools.transf(values.guild, bridge.variables),
-      );
-    }
+    let guild = bridge.guild;
 
     let role;
     if (values.roleFrom == "Variable*") {

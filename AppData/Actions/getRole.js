@@ -1,7 +1,7 @@
 module.exports = {
   data: { name: "Get Role", roleID: "", storeAs: "" },
   UI: {
-    compatibleWith: ["Text", "Slash"],
+    compatibleWith: ["Any"],
     text: "Get Role",
 
     sepbar: "",

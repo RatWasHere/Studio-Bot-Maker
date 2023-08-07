@@ -2,33 +2,25 @@ module.exports = {
   data: {
     name: "Get Member Info",
     storeAs: "",
-    guildFrom: "Guild ID*",
-    guild: "",
     get: "Member Nickname",
     member: "",
-    memberFrom: "Member ID*",
+    memberFrom: "Command Author",
   },
   UI: {
-    compatibleWith: ["Event", "DM"],
+    compatibleWith: ["Text", "Slash"],
     text: "Get Member Info",
 
     sepbar: "",
-    btext: "Get Member Guild Via",
+
+    btext: "Get Member Via",
     menuBar: {
-      choices: ["Variable*", "Guild ID*"],
-      storeAs: "guildFrom",
-      extraField: "guild",
-    },
-    sepbar0: "",
-    btext0: "Get Member Via",
-    menuBar0: {
       choices: ["Variable*", "Member ID*"],
       storeAs: "memberFrom",
       extraField: "member",
     },
-    sepbar1: "",
-    btext1: "Get",
-    menuBar1: {
+    sepbar0: "",
+    btext0: "Get",
+    menuBar0: {
       choices: [
         "Member Nickname",
         "Member Guild",
@@ -39,16 +31,13 @@ module.exports = {
       ],
       storeAs: "get",
     },
-    sepbar2: "",
-    btext2: "Store As",
+    sepbar1: "",
+    btext1: "Store As",
     "input!*": "storeAs",
 
     variableSettings: {
       member: {
         "Command Author": "novars",
-        "Variable*": "direct",
-      },
-      guild: {
         "Variable*": "direct",
       },
     },
@@ -58,17 +47,7 @@ module.exports = {
   },
   run(values, message, client, bridge) {
     let varTools = require(`../Toolkit/variableTools.js`);
-    let guild;
-    if (values.guildFrom == "Variable*") {
-      guild = client.guilds.get(
-        bridge.variables[varTools.transf(values.guild, bridge.variables)].id,
-      );
-    }
-    if (values.guildFrom == "Guild ID*") {
-      guild = client.guilds.get(
-        varTools.transf(values.guild, bridge.variables),
-      );
-    }
+    let guild = bridge.guild;
 
     var member;
     if (values.memberFrom == "Command Author") {
@@ -83,6 +62,7 @@ module.exports = {
         varTools.transf(values.member, bridge.variables),
       );
     }
+
     switch (values.get) {
       case "Member Nickname":
         bridge.variables[values.storeAs] = member.nickname || member.username;

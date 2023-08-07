@@ -6,7 +6,7 @@ module.exports = {
     newNickname: "",
   },
   UI: {
-    compatibleWith: ["Text", "Slash"],
+    compatibleWith: ["Text", "Slash", "Event"],
     text: "Set Member Nickname",
 
     sepbar: "",

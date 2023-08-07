@@ -760,7 +760,7 @@ function closeSearch() {
   actionView.style.scale = "1";
   actionView.onclick = (event) => {};
   actionView.style.borderRadius = "0px";
-  actionView.style.height = "84.5vh";
+  actionView.style.height = "90vh";
 }
 
 function switchOutAction(actionFile) {
@@ -776,7 +776,6 @@ function switchOutAction(actionFile) {
     
     document.getElementById("action-name").innerHTML =
     'Editing <span style="opacity: 50%;">' + action.name + "</div>";
-  document.getElementById('partOf').innerHTML = action.name;
   closeSearch();
 }
 
