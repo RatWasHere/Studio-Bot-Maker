@@ -2668,7 +2668,7 @@ body {
   transition: all ease 0.5s;
 }
 .colorTile {
-  width: 45%;
+  width: 49%;
   height: 5vh;
   margin-left: auto;
   cursor: pointer;
@@ -2697,7 +2697,7 @@ body {
     width: 50%;
   }
   50% {
-    width: 55%;
+    width: 57%;
   }
   100% {
     width: 50%;
@@ -2708,8 +2708,9 @@ body {
 }
 .breatheWidth {
   animation-name: breatheWidth;
-  animation-duration: 0.5s;
+  animation-duration: 1.5s;
   animation-iteration-count: infinite;
+  animation-timing-function: linear;
 }
 
 ::-webkit-scrollbar {
@@ -3023,4 +3024,34 @@ text {
 
 .optionPopup > .hoverablez:last-child {
   margin-bottom: 0px;
+}
+
+textarea {
+  font-family: inherit;
+  width: calc(95%) !important;
+  min-width: calc(95%) !important;
+  max-width: calc(95%) !important;
+
+  height: 40%;
+  margin-left: auto;
+  border-radius: 9px;
+  white-space: pre-wrap;
+  overflow: auto;
+  margin-right: auto;
+  margin-top: 4px;
+  text-align: left;
+  background-color: #ffffff10;
+  cursor: text;
+  color: #b2b2b2;
+  margin-bottom: 6px;
+  font-size: 17px;
+  padding: 10px;
+  box-shadow: inset 0 0 2px #ffffff10;
+  transition: box-shadow ease 0.7s;
+  animation-name: kinputs;
+  animation-duration: 0.5s;
+  border: inherit;
+  display: block;
+  box-sizing: border-box;
+  resize: none;
 }

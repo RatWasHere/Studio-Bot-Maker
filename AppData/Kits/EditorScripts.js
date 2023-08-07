@@ -74,24 +74,35 @@ function searchFor(query) {
     }
   }
 }
-function insertTextAtCaret(text) {
-  var sel, range;
-  if (window.getSelection) {
-    sel = window.getSelection();
-    if (sel.getRangeAt && sel.rangeCount) {
-      range = sel.getRangeAt(0);
-      range.deleteContents();
-      range.insertNode(document.createTextNode(text));
+function insertTextAtCaret(text, elementId) {
+  var element = document.getElementById(elementId);
+
+  // Check if the element is an input or textarea
+  if (element && (element.tagName.toLowerCase() === 'textarea' || element.tagName.toLowerCase() === 'input')) {
+    var start = element.selectionStart;
+    var end = element.selectionEnd;
+    var newValue = element.value.substring(0, start) + text + element.value.substring(end);
+    element.value = newValue;
+  } else {
+    // For contenteditable div or other elements
+    if (window.getSelection) {
+      var sel = window.getSelection();
+      if (sel.getRangeAt && sel.rangeCount) {
+        var range = sel.getRangeAt(0);
+        range.deleteContents();
+        range.insertNode(document.createTextNode(text));
+      }
+    } else if (document.selection && document.selection.createRange) {
+      document.selection.createRange().text = text;
     }
-  } else if (document.selection && document.selection.createRange) {
-    document.selection.createRange().text = text;
   }
 }
+
 function setVariableIn(type, varName, elementId) {
   let element = document.getElementById(elementId);
   if (!element.isContentEditable) return;
   if (type == 2) {
-    insertTextAtCaret("${tempVars('" + varName + "')}");
+    insertTextAtCaret("${tempVars('" + varName + "')}", elementId);
     setTimeout(() => {
       element.focus();
     }, 150);
@@ -698,11 +709,25 @@ function actionSearch(query) {
     if (fuzzyMatch(cachedActions[action].name, query, 0.02)) {
       if (matchNo == 0) {
         document.getElementById("searchActions").innerHTML += `
-                    <div class="dimension fade" style="background-color: #FFFFFF08; padding: 7px; border-radius: 12px; width: calc(95% - 14px); margin-bottom: 2vh;">
-                    <div class="barbuttontexta" style="margin-left: 1vw !important; text-align: left;">Best Match</div>
-                    <div onclick="switchOutAction('${cachedActions[action].file}')" class="hoverablez dimension" style="border-radius: 40px; width: 95%; margin-left: auto !important; margin-right: auto !important; padding: 5px; padding-left: 5px; padding-right: 5px; margin-left: 0.5vw; margin-right: 0.5vw;"><div class="barbuttontexta">${cachedActions[action].name}</div></div>
-                    </div>
-                    `;
+        <div class="dimension fade" style="background-color: #FFFFFF08; padding: 7px; border-radius: 12px; width: calc(95% - 14px); margin-bottom: 2vh;">
+        <div class="barbuttontexta" style="margin-left: 1vw !important; text-align: left;">Best Match</div>
+        <div onclick="switchOutAction('${cachedActions[action].file}')" class="hoverablez dimension" style="border-radius: 40px; width: 95%; margin-left: auto !important; margin-right: auto !important; padding: 5px; padding-left: 5px; padding-right: 5px; margin-left: 0.5vw; margin-right: 0.5vw;"><div class="barbuttontexta">${cachedActions[action].name}</div></div>
+        </div>
+        `;
+      } else if (matchNo == 1) {
+        document.getElementById("searchActions").innerHTML += `
+        <div class="dimension fade" style="background-color: #FFFFFF08; padding: 7px; border-radius: 12px; width: calc(50% - 14px); margin-bottom: 2vh; margin-right: ${cachedActions[parseFloat(action) + 1] ? '2%' : 'inherit'}">
+        <div class="barbuttontexta" style="margin-left: 1vw !important; text-align: left;">Second Best Match</div>
+        <div onclick="switchOutAction('${cachedActions[action].file}')" class="hoverablez dimension" style="border-radius: 40px; width: 95%; margin-left: auto !important; margin-right: auto !important; padding: 5px; padding-left: 5px; padding-right: 5px; margin-left: 0.5vw; margin-right: 0.5vw; overflow: auto;"><div class="barbuttontexta">${cachedActions[action].name}</div></div>
+        </div>
+        `;
+      } else if (matchNo == 2) {
+        document.getElementById("searchActions").innerHTML += `
+        <div class="dimension fade" style="background-color: #FFFFFF08; padding: 7px; border-radius: 12px; width: calc(43% - 14px); margin-bottom: 2vh;">
+        <div class="barbuttontexta" style="margin-left: 1vw !important; text-align: left;">Third Best Match</div>
+        <div onclick="switchOutAction('${cachedActions[action].file}')" class="hoverablez dimension" style="border-radius: 40px; width: 95%; margin-left: auto !important; margin-right: auto !important; padding: 5px; padding-left: 5px; padding-right: 5px; margin-left: 0.5vw; margin-right: 0.5vw; overflow: auto;"><div class="barbuttontexta">${cachedActions[action].name}</div></div>
+        </div>
+        `;
       } else {
         document.getElementById("searchActions").innerHTML += `
                     <div onclick="switchOutAction('${cachedActions[action].file}')" class="hoverablez dimension fade" style="border-radius: 40px; width: 29%; padding: 5px; padding-left: 5px; padding-right: 5px; margin-left: 0.5vw; margin-right: 0.5vw; margin-bottom: 1vh;"><div class="barbuttontexta">${cachedActions[action].name}</div></div>
@@ -781,27 +806,21 @@ function switchOutAction(actionFile) {
 
 function getCaretPosition(element) {
   var caretPos = 0;
-  var sel;
-  var range;
-  var clonedRange;
-
   if (window.getSelection) {
-    sel = window.getSelection();
-    if (sel.rangeCount) {
-      range = sel.getRangeAt(0);
-      clonedRange = range.cloneRange();
-      clonedRange.selectNodeContents(element);
-      clonedRange.setEnd(range.endContainer, range.endOffset);
-      caretPos = clonedRange.toString().length;
-    }
-  } else if (document.selection && document.selection.type !== "Control") {
-    range = document.selection.createRange();
-    clonedRange = range.duplicate();
-    clonedRange.moveToElementText(element);
-    clonedRange.setEndPoint("EndToEnd", range);
-    caretPos = clonedRange.text.length;
-  }
+    const selection = window.getSelection();
+    if (selection.rangeCount > 0) {
+      const range = selection.getRangeAt(0);
+      const preCaretRange = range.cloneRange();
+      preCaretRange.selectNodeContents(element);
+      preCaretRange.setEnd(range.endContainer, range.endOffset);
 
+      const text = preCaretRange.toString();
+      const newlinesBeforeCaret = text.match(/\n/g);
+      const numNewlines = newlinesBeforeCaret ? newlinesBeforeCaret.length : 0;
+
+      caretPos = text.length + numNewlines;
+    }
+  }
   return caretPos;
 }
 
@@ -920,17 +939,35 @@ function toggleSwitch(storedAs) {
     toggle.style.marginTop = "-1vh";
   }, editorSettings.commonAnimation * 50);
 }
+function storeCaretPosition(element) {
+  let selection = window.getSelection();
+  if (selection.rangeCount > 0) {
+    let range = selection.getRangeAt(0);
+    let preSelectionRange = range.cloneRange();
+    preSelectionRange.selectNodeContents(element);
+    preSelectionRange.setEnd(range.startContainer, range.startOffset);
+    let caretOffset = preSelectionRange.toString().length;
+
+    element.dataset.caretOffset = caretOffset;
+  }
+}
+
+function isCaretAtEnd(divElement) {
+  const selection = window.getSelection();
+  
+  if (selection.rangeCount === 0) {
+      return false;
+  }
+  
+  const range = selection.getRangeAt(0);
+  
+  if (range.endContainer !== divElement) {
+      return false;
+  }
+  
+  return range.endOffset === divElement.childNodes.length;
+}
 
 
 function validateLargeInput(event) {
-  // make this accept newlines and not remove them
-  const div = event.target;
-  var text = div.innerText;
-
-  let caretPos = getCaretPosition(div);
-
-  text = text.replaceAll('\n', '<br>')
-
-  div.innerHTML = text;
-  setCaretPosition(div, caretPos + 1)
 }

@@ -323,8 +323,11 @@
                 if (i.split(" ").includes("custom")) {
                   action.data[element] = document.getElementById(element).value;
                 } else {
-                  action.data[element] =
-                    document.getElementById(element).innerText;
+                  if (i.startsWith('largeInput')) {
+                      action.data[element] = document.getElementById(element).value;
+                  } else {
+                      action.data[element] = document.getElementById(element).innerText;
+                  }
                 }
               } catch (err) {}
             }

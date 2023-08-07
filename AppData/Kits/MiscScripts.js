@@ -86,15 +86,13 @@ function showCustomMenu(x, y) {
   menu.style.top = adjustedY + "px";
   menu.style.left = adjustedX + "px";
   menu.style.scale = `${adjustedScale}`;
-  let variableType = 2;
   menu.innerHTML = `
             <div class="sepbars noanims"></div>
             `;
   if (lastHovered) {
     if (lastHovered.id.startsWith("Group")) {
       menu.innerHTML += `
-            <div class="dimension hoverablez" style="width: 95%; padding-top: 4px; padding-bottom: 4px; margin: auto; margin-bottom: 4px; margin-top: 4px; border-radius: 4px;"><div class="barbuttontexta textToLeft" style="margin-left: 1vw;">Edit Data</div></div>
-            <div class="dimension hoverablez" style="width: 95%; padding-top: 4px; padding-bottom: 4px; margin: auto; margin-bottom: 4px; margin-top: 4px; border-radius: 4px;"><div class="barbuttontexta textToLeft" style="margin-left: 1vw;">Edit Actions</div></div>
+            <div class="dimension hoverablez" onclick="editRawData('${lastHovered.id.split('Group')[1]}')" style="width: 95%; padding-top: 4px; padding-bottom: 4px; margin: auto; margin-bottom: 4px; margin-top: 4px; border-radius: 4px;"><div class="barbuttontexta textToLeft" style="margin-left: 1vw;">Edit Data</div></div>
             <div class="dimension hoverablez" style="width: 95%; padding-top: 4px; padding-bottom: 4px; margin: auto; margin-bottom: 4px; margin-top: 4px; border-radius: 4px;"><div class="barbuttontexta textToLeft" style="margin-left: 1vw;">Duplicate</div></div>
             `;
     }
@@ -110,6 +108,93 @@ function showCustomMenu(x, y) {
             `;
     }
   }
+}
+function getCaretPosition(element) {
+  var caretPos = 0;
+  var sel;
+  var range;
+  var clonedRange;
+
+  if (window.getSelection) {
+    sel = window.getSelection();
+    if (sel.rangeCount) {
+      range = sel.getRangeAt(0);
+      clonedRange = range.cloneRange();
+      clonedRange.selectNodeContents(element);
+      clonedRange.setEnd(range.endContainer, range.endOffset);
+      caretPos = clonedRange.toString().length;
+    }
+  } else if (document.selection && document.selection.type !== "Control") {
+    range = document.selection.createRange();
+    clonedRange = range.duplicate();
+    clonedRange.moveToElementText(element);
+    clonedRange.setEndPoint("EndToEnd", range);
+    caretPos = clonedRange.text.length;
+  }
+
+  return caretPos;
+}
+
+function setCaretPosition(element, caretPos) {
+  let range;
+  let offset = caretPos;
+  let found = false;
+
+  if (document.createRange) {
+    range = document.createRange();
+    for (const node of element.childNodes) {
+      if (node.nodeType === Node.TEXT_NODE) {
+        if (offset <= node.textContent.length) {
+          range.setStart(node, offset);
+          found = true;
+          break;
+        } else {
+          offset -= node.textContent.length;
+        }
+      }
+    }
+
+    if (!found) {
+      range.setStart(element, element.childNodes.length);
+    }
+
+    range.collapse(true);
+
+    const sel = window.getSelection();
+    sel.removeAllRanges();
+    sel.addRange(range);
+  } else if (document.selection) {
+    range = document.body.createTextRange();
+    range.moveToElementText(element);
+    range.moveStart("character", caretPos);
+    range.collapse(true);
+    range.select();
+  }
+}
+function validateLargeInput(event) {
+  // make this accept newlines and not remove them
+  const div = event.target;
+  var text = div.innerText;
+
+  let caretPos = getCaretPosition(div);
+
+  text = text.replaceAll('\n', '<br>')
+
+  div.innerHTML = text;
+  setCaretPosition(div, caretPos + 1)
+}
+function editRawData(group) {
+  menu.remove()
+  document.body.innerHTML += `
+  
+  <div class="flexbox" style="z-index: 1000; margin-left: auto; margin-right: auto; width: 98vw; height: 90vh; backdrop-filter: blur(22px); margin-top: -96vh; border-radius: 12px; background-color: #00000060">
+    <textarea contenteditable="true" id="rawdata" class="noanims" style="font-family: Consolas, 'Courier New', monospace; height: 80vh; margin: auto; margin-top: 1vh; width: 98%;">
+    ${JSON.stringify(botData.commands[group], null, 2)}
+    </textarea>
+    <div class="barbuttonshift" onclick="this.parentElement.remove()"><btext>Exit</btext></div>
+    <div class="barbuttonshift" onclick="botData.commands[${group}] = JSON.parse(document.getElementById('rawdata').value); refreshGroups()"><btext>Upload</btext></div>
+  </div>
+  `
 }
 
 function pasteActionTo(index) {

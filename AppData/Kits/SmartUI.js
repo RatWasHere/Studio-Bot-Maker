@@ -61,9 +61,9 @@ function getUIelements(UIdata) {
       if (action.data[UIdata[element]] == undefined) {
         action.data[UIdata[element]] = "";
       }
-      endHTML = `${endHTML} <div class="largeInput" oninput="setTimeout(() => {validateLargeInput(event);}, 10)" contentEditable="true" id="${
+      endHTML = `${endHTML} <textarea contentEditable="true" id="${
         UIdata[element]
-      }">${action.data[UIdata[element]]}</div>`;
+      }">${action.data[UIdata[element]]}</textarea>`;
     }
     if (element.startsWith("input")) {
       var noModifiers = false;
@@ -146,7 +146,7 @@ function getUIelements(UIdata) {
       if (action.data[UIdata[element].storeAs] == undefined) {
         action.data[UIdata[element].storeAs] = UIdata[element].choices[0];
       }
-      if (action.data[UIdata[element].extraField] == undefined) {
+      if (!action.data[UIdata[element].extraField] && !UIdata[element].extraField) {
         action.data[UIdata[element].extraField] = "";
       }
       let foundOption = false;
