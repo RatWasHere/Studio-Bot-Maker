@@ -590,3 +590,7 @@ ipcMain.on('maximize', () => {
     win.maximize()
   }
 })
+
+ipcMain.on('minimize', () => {
+  win.minimize()
+})

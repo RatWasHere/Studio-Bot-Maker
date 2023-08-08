@@ -1007,12 +1007,12 @@
 }
 .hoverable {
   cursor: pointer;
-  transition: background-color ease 0.09s;
+  transition: background-color ease 0.11s;
 }
 .hoverablez {
   cursor: pointer;
   background-color: #ffffff10;
-  transition: background-color ease 0.09s;
+  transition: background-color ease 0.11s;
 }
 .hoverablez:hover {
   background-color: #ffffff18;
@@ -3054,4 +3054,8 @@ textarea {
   display: block;
   box-sizing: border-box;
   resize: none;
+}
+
+.dropShadow {
+  box-shadow: #00000020 0px 0px 12px;
 }
