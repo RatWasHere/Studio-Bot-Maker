@@ -137,51 +137,37 @@ try {
   };
   client.on("messageCreate", async (msg) => {
     if (msg.author.bot) return;
-    let keepGoing;
     for (let i in data.commands) {
       if (data.commands[i].type == "action") {
         let command = data.commands[i];
         let commandName = data.commands[i].name;
 
         if (command.trigger == "textCommand") {
-          if (
-            `${data.prefix}${commandName}`.toLowerCase() ==
-            msg.content.split(" ")[0].toLowerCase()
-          ) {
-            let matchesPermissions = true;
+          if (`${data.prefix}${commandName}`.toLowerCase() == msg.content.split(" ")[0].toLowerCase()) {
+            let matchesPermissions = true;  
             if (command.boundary) {
               if (command.boundary.worksIn == "guild") {
                 if (!msg.guild) {
                   matchesPermissions = false;
                 }
-                for (let permission in command.boundary.limits) {
-                  if (
-                    !msg.member.permissions.has(
-                      command.boundary.limits[permission],
-                    )
-                  )
-                    matchesPermissions = false;
-                }
               }
               if (command.boundary.worksIn == "dms") {
                 if (msg.guild) matchesPermissions = false;
               }
+
+              for (let permission in command.boundary.limits) {
+                if (!msg.member.permissions.has(command.boundary.limits[permission])) {matchesPermissions = false;}
+              }
             }
             if (matchesPermissions == true) {
-              runActionArray(i, msg, client);
+              runActionArray(i, interaction, client);
             }
           }
         } else {
           if (command.trigger == "messageContent") {
             let messageContent = `${msg.content}`;
-            if (
-              messageContent
-                .toLowerCase()
-                .split(" ")
-                .includes(command.name.toLowerCase()) &&
-              `${msg.content}`.toLowerCase().startsWith(data.prefix) == false
-            ) {
-              let matchesPermissions;
+            if (messageContent.toLowerCase().split(" ").includes(command.name.toLowerCase()) &&`${msg.content}`.toLowerCase().startsWith(data.prefix) == false) {
+              let matchesPermissions = true;
               if (command.boundary) {
                 if (command.boundary.worksIn == "guild") {
                   if (!msg.guild) {
@@ -193,12 +179,7 @@ try {
                 }
 
                 for (let permission in command.boundary.limits) {
-                  if (
-                    msg.member.permissions.has(
-                      command.boundary.limits[permission],
-                    )
-                  )
-                    matchesPermissions = false;
+                  if (!msg.member.permissions.has(command.boundary.limits[permission])) {matchesPermissions = false;}
                 }
               }
               if (matchesPermissions == true) {

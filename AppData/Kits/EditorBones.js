@@ -111,7 +111,6 @@ const fs = require("fs");
 const processPath = require("process").cwd();
 const path = require("path");
 var botData = JSON.parse(fs.readFileSync(processPath + "/AppData/data.json"));
-document.getElementById('titlebar').innerText = `Studio Bot Maker - Editing ${botData.name}`
 let lastType = 0; // 0 = Command; 1 = Actions;
 let lastObj = "1";
 let lastAct = "1";
@@ -291,6 +290,9 @@ function refreshActions() {
       if (editorSettings.separatorPosition == "none") {
         leftSeparatorDisplay = "none";
         rightSeparatorDisplay = "none";
+        if (editorSettings.subtitlePosition == 'center') {
+          subtitlePosition = "margin-right: auto; margin-left: auto;"
+        }
       }
       
       endHTML += `
@@ -1230,47 +1232,13 @@ function savePrj() {
   }
 }
 setInterval(() => {
-  let elm = document.createElement("div");
-  elm.className = "issue";
-  elm.id = "saveProjectnotif";
-  elm.style.backdropFilter = "blur(10px)";
-  elm.style.zIndex = "10";
-  elm.style.width = "23vw";
-  elm.style.marginRight = "3vw";
-  elm.style.position = "relative";
-  elm.style.marginTop = "-90vh";
-  elm.style.animationName = "fadeoutspfload";
-  elm.style.animationDuration = "3.1s";
-  elm.style.height = "5.5vh";
-  elm.style.padding = "1vh";
-  elm.innerHTML = `
-            <div class="flexbox" style="margin: auto;">
-            <div class="ring" style="animation-duration: 1s; width: 3.5vw; height: 3.5vw; margin: auto;"></div>
-            <div class="barbuttontexta">Saving your project..</div>
-            </div>
-            `;
-
-  document.body.appendChild(elm);
 
   try {
     setTimeout(() => {
       elm.remove();
     }, 3000);
     savePrj();
-  } catch (err) {
-    console.log(err);
-    elm.innerHTML = `
-            <div class="flexbox" style="margin: auto; align-items: center; justify-content: center; height: auto; padding: 6px;">
-            <div class="barbuttontexta">No project output</div>
-            <div class="barbuttonshift" onclick="exportProject(); this.parentElement.parentElement.remove()" style="margin: auto;">
-            <div class="barbuttontexta">Fix</div>
-            </div>
-            </div>
-            `;
-    setTimeout(() => {
-      elm.remove();
-    }, 10000);
-  }
+  } catch (err) {}
 }, 95000);
 
 function closeCommand() {

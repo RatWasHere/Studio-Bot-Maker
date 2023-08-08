@@ -199,6 +199,7 @@ function refreshActions(at) {
     } else {
       borderType = "bordercentere";
     }
+
     try {
       let actionFile = require(`${require('process').cwd()}/AppData/Actions/${innerAction.file}`);
       let previewName = "";
@@ -209,10 +210,10 @@ function refreshActions(at) {
           actionUI = actionFile.UI;
           previewCharacters =
             innerAction.data[actionUI.preview].split("");
-          if (previewCharacters.length > 50) {
+          if (previewCharacters.length > 40) {
             for (let character in previewCharacters) {
-              if (characterCount != 50) {
-                const opacity = 100 - (characterCount - 40) * 10;
+              if (characterCount != 40) {
+                const opacity = 100 - (characterCount - 30) * 10;
                 quickie = `${quickie}<span style="opacity: ${opacity}%;">${previewCharacters[character]}</span>`;
                 characterCount++;
               }
@@ -224,6 +225,7 @@ function refreshActions(at) {
         } catch (err) {
           quickie = `Error`;
         }
+
       } else {
         quickie = ``;
         let subtitleActionData;
@@ -244,10 +246,10 @@ function refreshActions(at) {
         let previewText = "";
         let characterCount = 0;
 
-        if (previewCharacters.length > 50) {
+        if (previewCharacters.length > 40) {
           for (let character of previewCharacters) {
-            if (characterCount !== 50) {
-              const opacity = 100 - (characterCount - 40) * 10;
+            if (characterCount !== 40) {
+              const opacity = 100 - (characterCount - 30) * 10;
               previewText += `<span style="opacity: ${opacity}%;">${character}</span>`;
               characterCount++;
             }
@@ -258,6 +260,7 @@ function refreshActions(at) {
 
         previewName = previewText.replaceAll("*", ""); // Add this line to assign the updated value
       }
+
       let leftSeparatorDisplay, rightSeparatorDisplay, subtitlePosition;
 
       switch (editorSettings.separatorPosition) {
@@ -279,35 +282,39 @@ function refreshActions(at) {
         case "left":
           leftSeparatorDisplay = "none";
           rightSeparatorDisplay = "inherit";
-          subtitlePosition = "margin-left: 1vw; margin-right: 0vw;";
+          subtitlePosition = "margin-left: 0.7vw; margin-right: auto;";
           break;
         case "right":
           rightSeparatorDisplay = "none";
           leftSeparatorDisplay = "inherit";
-          subtitlePosition = "margin-right: 1vw; margin-left: 0vw;";
+          subtitlePosition = "margin-right: 0vw; margin-left: auto;";
+          deleteButtonStyling = 'margin-left: 0.7vw;'
           break;
         case "center":
           rightSeparatorDisplay = "inherit";
           leftSeparatorDisplay = "inherit";
-          subtitlePosition = "margin-right: 1vw; margin-left: 1vw;";
+          subtitlePosition = "margin-right: 0.5vw; margin-left: 0.5vw;";
           break;
       }
       if (editorSettings.separatorPosition == "none") {
         leftSeparatorDisplay = "none";
         rightSeparatorDisplay = "none";
+        if (editorSettings.subtitlePosition == 'center') {
+          subtitlePosition = "margin-right: auto; margin-left: auto;"
+        }
       }
       
       endActions += `
       <div onmouseenter="lastHovered = ${actionNumber}" draggable="true" ondragleave="handleActionDragEnd('${at}', '${actionNumber}')" ondragend="handleActionDrop('${at}', '${actionNumber}')" ondragover="actionDragOverHandle(event, '${at}', '${actionNumber}')" ondragstart="handleActionDrag('${at}', '${actionNumber}')" onmouseleave="lastHovered = null;" class="action textToLeft ${borderType}" style="animation-delay: ${
         delay * 3
-          }0ms; width: 97.5% !important;" ondblclick="editAction('${at}', '${actionNumber}')">
+          }0ms; width: 98% !important;" ondblclick="editAction('${at}', '${actionNumber}')">
           <text style="background-color: #00000040; padding: 2px; padding-left: 4px; padding-right: 4px; margin-top: auto; margin-bottom: auto; border-radius: 6px; margin-right: 1vw; margin-left: 0vw;">#${
             parseFloat(actionNumber) + 1
           }</text>
           ${innerAction.name}
-          <div style="flex-grow: 1; display: ${leftSeparatorDisplay}; height: 3px; border-radius: 10px; background-color: #ffffff15; margin: auto; margin-right: 1vw; margin-left: 1vw;"></div>
+          <div style="flex-grow: 1; display: ${leftSeparatorDisplay}; height: 3px; border-radius: 10px; background-color: #ffffff15; margin: auto; margin-right: 0.5vw; margin-left: 0.5vw;"></div>
           <div style="opacity: 50%; margin-left: 7px; ${subtitlePosition}">${previewName} ${quickie}</div>
-          <div style="flex-grow: 1; display: ${rightSeparatorDisplay}; height: 3px; border-radius: 10px; background-color: #ffffff15; margin: auto; margin-right: 1vw; margin-left: 1vw;"></div>
+          <div style="flex-grow: 1; display: ${rightSeparatorDisplay}; height: 3px; border-radius: 10px; background-color: #ffffff15; margin: auto; margin-right: 0.5vw; margin-left: 0.5vw;"></div>
           <div class="${
             editorSettings.widthChanges == true
               ? "deleteActionButton"
@@ -322,7 +329,7 @@ function refreshActions(at) {
       endActions = `${endActions}
         <div id="Action${actionNumber}" onmouseenter="lastHovered = this" draggable="true" ondragleave="handleActionDragEnd(this)" ondragend="handleActionDrop()" ondragover="actionDragOverHandle(event, this)" ondragstart="handleActionDrag(this)" onmouseleave="lastHovered = null;" class="action textToLeft ${extrf}" style="animation-delay: ${
           delay * 3
-        }0ms; width: 97% !important;" ondblclick="editAction(this)">
+        }0ms; width: 98% !important;" ondblclick="editAction(this)">
         Error
         <div style="opacity: 50%; margin-left: 7px;"> - Action Missing</div>
         <div class="deleteActionButton" onclick="deleteAction('${at}', '${actionNumber}')">✕</div>

@@ -1,8 +1,0 @@
-{
-    "editor.tabCompletion": "on",
-    "diffEditor.codeLens": true,
-    "MutableAI.upsell": false,
-    "conf.resource.useGPU": true,
-    "conf.resource.hfAPIKey": "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",
-    "conf.resource.hfModelName": "flax-community/gpt-neo-125M-code-clippy"
-}

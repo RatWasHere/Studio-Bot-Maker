@@ -54,7 +54,7 @@ function getUIelements(UIdata) {
         <div onclick="createAction('${UIdata[element]}', '${element}')" style="transition: all 0.2s ease;" id="${UIdata[element]}AddButton" class="flexbox addButton">
         <div class="image add"></div>
         </div>
-        <div id="${UIdata[element]}" onmouseenter="lastActionContainer = '${element}'" onmouseleave="lastActionContainer = undefined;" style="background-color: #FFFFFF10; transition: all 0.23s ease; margin: auto; border-radius: 9px; padding: 12px; height: 40vh; overflow: auto; width: calc(95% - 24px); transition: all 0.2s ease;" class="dimension">
+        <div id="${UIdata[element]}" onmouseenter="lastActionContainer = '${element}'" onmouseleave="lastActionContainer = undefined;" style="background-color: #FFFFFF10; transition: all 0.23s ease; margin: auto; border-radius: 9px; padding: 8px; height: 40vh; overflow: auto; width: calc(95% - 16px); transition: all 0.2s ease;" class="dimension">
         </div>`;
     }
     if (element.startsWith("largeInput")) {

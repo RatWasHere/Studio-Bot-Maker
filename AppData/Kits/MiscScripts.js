@@ -1,3 +1,4 @@
+let areSettingsOpen;
 function array_move(arr, old_index, new_index) {
   if (new_index >= arr.length) {
     var k = new_index - arr.length + 1;
@@ -310,10 +311,10 @@ function closeMenu() {
   }, 400);
 }
 
-let aresettingsopen = false;
 
 function initSetup() {
-  aresettingsopen = true;
+  if (areSettingsOpen) return;
+  areSettingsOpen = true;
   let commandDisplay = document.getElementById("animationArea");
   commandDisplay.style.marginLeft = "-200vw";
 
