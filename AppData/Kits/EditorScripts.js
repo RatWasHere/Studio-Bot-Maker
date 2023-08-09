@@ -645,10 +645,10 @@ function viewAllActions() {
     "";
   document.getElementById("searchActions").innerHTML = "";
   let timeout = 0;
-  for (let action in cachedActions) {
+  if (editorSettings.searchStyling == 'grid') {
+    for (let action in cachedActions) {
     timeout++;
-    const animationId =
-      Date.now().toString(36) + Math.random().toString(36).substr(2);
+    const animationId = cachedActions[action].file
     document.getElementById("searchActions").innerHTML += `
         <div class="hoverablez dimension" id="${animationId}" onclick="switchOutAction('${cachedActions[action].file}')" style="border-radius: 40px; width: 29%; overflow: auto; padding: 5px; padding-left: 5px; padding-right: 5px; margin-left: 0.5vw; margin-right: 0.5vw; margin-bottom: 1vh; transition: 0.1s ease; opacity: 0%; scale: 0.7;"><div class="barbuttontexta">${cachedActions[action].name}</div></div>
         `;
@@ -657,6 +657,24 @@ function viewAllActions() {
       document.getElementById(animationId).style.width = "29%";
       document.getElementById(animationId).style.scale = "1";
     }, timeout * 15);
+  }
+  } else {
+    document.getElementById("searchActions").classList.remove('flexbox');
+    document.getElementById("searchActions").style.alignItems = ''
+    document.getElementById("searchActions").innerHTML = "";
+    for (let action in cachedActions) {
+    timeout++;
+    const animationId = cachedActions[action].file
+
+    document.getElementById("searchActions").innerHTML += `
+        <div class="hoverablez dimension" id='${animationId}' onclick="switchOutAction('${cachedActions[action].file}')" class="hoverablez dimension fade" style="border-radius: 7px; scale: 0.1; opacity: 10%; width: calc(50% - 10px); padding: 5px; margin-bottom: 1vh; margin-right: auto; margin-left: auto; transition: all 0.5s cubic-bezier(.17,.67,.31,1.34), scale 0.3s ease, opacity 0.3s ease; overflow: auto;"><div class="barbuttontexta" style="margin-left: 1vw; text-align: left;">${cachedActions[action].name}</div></div>
+        `;
+    setTimeout(() => {
+      document.getElementById(animationId).style.opacity = "100%";
+      document.getElementById(animationId).style.width = "calc(95% - 10px)";
+      document.getElementById(animationId).style.scale = "1";
+    }, timeout * 15);
+  }
   }
 }
 
@@ -679,6 +697,7 @@ function startSearch() {
     buttonsContainer.style.height = "0vh";
     buttonsContainer.style.overflow = "auto";
     pendingSearchStart = false;
+    document.getElementById("actionSearchCloseButton").nextElementSibling.focus()
   }, editorSettings.fastAnimation * 100);
 
   searchContainer.style.height = "85vh";
@@ -705,8 +724,10 @@ function actionSearch(query) {
   }
   document.getElementById("searchActions").innerHTML = "";
   let matchNo = 0;
+  if (editorSettings.searchStyling == 'grid') {
   for (let action in cachedActions) {
     if (fuzzyMatch(cachedActions[action].name, query, 0.02)) {
+
       if (matchNo == 0) {
         document.getElementById("searchActions").innerHTML += `
         <div class="dimension fade" style="background-color: #FFFFFF08; padding: 7px; border-radius: 12px; width: calc(95% - 14px); margin-bottom: 2vh;">
@@ -740,10 +761,30 @@ function actionSearch(query) {
   if (matchNo == 0) {
     document.getElementById("searchActions").innerHTML += `
             <div class="dimension fade" style="background-color: #FFFFFF08; padding: 7px; border-radius: 12px; width: calc(95% - 14px); margin-bottom: 2vh;">
-            <div class="barbuttontexta" style="margin-left: 1vw !important; text-align: left;">No Actions Found</div>
+            <div class="barbuttontexta" style="margin-left: 1vw !important; text-align: left;">No Matches Found</div>
             <div onclick="viewAllActions()" class="hoverablez dimension" style="border-radius: 40px; width: 95%; margin-left: auto !important; margin-right: auto !important; padding: 5px; padding-left: 5px; padding-right: 5px; margin-left: 0.5vw; margin-right: 0.5vw;"><div class="barbuttontexta">View All Actions</div></div>
             </div>
             `;
+  }
+  } else {
+    let matchNo = 0;
+    for (let action in cachedActions) {
+      if (fuzzyMatch(cachedActions[action].name, query, 0.02)) {
+      document.getElementById("searchActions").innerHTML += `
+      <div onclick="switchOutAction('${cachedActions[action].file}')" class="hoverablez dimension fade" style="border-radius: 7px; width: calc(95% - 10px); padding: 5px; margin-bottom: 1vh; margin-right: auto; margin-left: auto;"><div class="barbuttontexta" style="margin-left: 1vw; text-align: left;">${cachedActions[action].name}</div></div>
+      `;
+
+        matchNo++;
+      }
+    }
+    if (matchNo == 0) {
+      document.getElementById("searchActions").innerHTML += `
+        <div class="dimension fade" style="background-color: #FFFFFF08; padding: 7px; border-radius: 7px; width: calc(95% - 14px); margin-bottom: 2vh; margin: auto;">
+        <div class="barbuttontexta" style="margin-left: 0.3vw !important; text-align: left;">No Matches Found</div>
+        <div onclick="viewAllActions()" class="hoverablez dimension" style="border-radius: 7px; width: calc(100% - 10px); padding: 5px; padding-left: 5px; padding-right: 5px; margin: auto;"><div class="barbuttontexta">View All Actions</div></div>
+        </div>
+        `;
+    }
   }
 }
 

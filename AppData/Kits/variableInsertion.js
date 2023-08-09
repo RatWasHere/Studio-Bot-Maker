@@ -55,7 +55,6 @@ function showCustomMenu(x, y) {
         variableType = 2;
       } else {
         for (let field in fieldOptions) {
-          console.log("fieldOptions");
           if (field == document.activeElement.id) {
             options = fieldOptions[field];
           }

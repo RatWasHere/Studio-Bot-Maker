@@ -4,11 +4,11 @@ module.exports = {
     storeMessageAuthorAs: "",
     storeMessageAs: "",
     actions: {},
-    channelFrom: "Command Channel",
+    channel: "Command Channel",
     fromWho: "",
     targetUser: "Anybody",
     stopAwaitingAfter: "60",
-    channel: "",
+    channelField: "",
   },
 
   UI: {
@@ -18,10 +18,10 @@ module.exports = {
     sepbar: "",
 
     btext: "Get Channel To Await Message From Via:",
-    menuBar: {
-      choices: ["Command Channel", "ID*", "Variable*"],
-      storeAs: "channelFrom",
-      extraField: "channel",
+    menuBar_: {
+      choices: ["Command Channel", "Variable*", "ID*"],
+      storeAs: "channel",
+      extraField: "channelField",
     },
 
     sepbar0: "",
@@ -55,18 +55,15 @@ module.exports = {
     previewName: "Await From",
 
     variableSettings: {
-      fromWho: {
+      'fromWho': {
         "User*": "direct",
-        Anybody: "novars",
+        "Anybody": "novars",
         "Command Author": "novars",
       },
-      emoji: {
-        "Custom*": "indirect",
-      },
-      message: {
-        "Variable*": "direct",
-      },
-    },
+      'channelField': {
+        "Variable*": "direct"
+      }
+    }
   },
 
   async run(values, inter, client, bridge) {
@@ -81,18 +78,18 @@ module.exports = {
       let matchesTarget = false;
       let matchesChannel = false;
 
-      switch (values.channelFrom) {
+      switch (values.channel) {
         case "Command Channel":
           matchesChannel = `${inter.channelID}` == `${message.channelID}`;
           break;
         case "ID*":
           matchesChannel =
-            varTools.transf(values.channel, bridge.variables) ==
+            varTools.transf(values.channelField, bridge.variables) ==
             message.channel.id;
           break;
         case "Variable*":
           matchesChannel =
-            bridge.variables[varTools.transf(values.channel, bridge.variables)]
+            bridge.variables[varTools.transf(values.channelField, bridge.variables)]
               .id == message.channel.id;
           break;
       }

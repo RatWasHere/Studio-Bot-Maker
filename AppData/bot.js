@@ -58,11 +58,6 @@ try {
       `${colors.FgGreen}Studio Bot Maker V3.1.1 Project, started successfully!${colors.Reset}`,
     );
 
-    console.log(
-      `${colors.BgYellow + colors.FgWhite}Purging All Slash Commands${
-        colors.Reset
-      }`,
-    );
     await client.application.bulkEditGlobalCommands([]);
     console.log(
       `${colors.BgGreen + colors.FgBlack}Purged All Slash Commands${
@@ -72,6 +67,26 @@ try {
 
     registerCommands();
   });
+
+  let IO /* In / Out */  = {
+    write: (newIO) => { 
+      try {
+        let dir = data.prjSrc;
+          fs.writeFileSync(`${dir}\\AppData\\storedData.json`, JSON.stringify(newIO))
+      } catch (err) {
+        console.log(`${colors.BgRed}${colors.FgWhite}Something Went Wrong Whilst Trying To Access The Data System, Ensure You've Exported Your Bot!${colors.Reset}`)
+      }
+    },
+    get: (newIO) => { 
+      try {
+        let dir = data.prjSrc;
+        return JSON.parse(fs.readFileSync(`${dir}\\AppData\\storedData.json`, 'utf8'));
+      } catch (err) {
+        console.log(`${colors.BgRed}${colors.FgWhite}Something Went Wrong Whilst Trying To Access The Data System, Ensure You've Exported Your Bot!${colors.Reset}`)
+      }
+    }
+  }
+
   /* Used For Running Action Arrays - Universal Action Array Runner */
   const runActionArray = async (at, interaction, client, actionBridge) => {
     new Promise(async (resolve) => {
@@ -94,6 +109,7 @@ try {
           ranAt: cmdAt,
           nodeName: cmdName,
           allActions: cmdActions,
+          IO: IO
         },
         runner: runActionArray,
         fs: fs
@@ -160,7 +176,7 @@ try {
               }
             }
             if (matchesPermissions == true) {
-              runActionArray(i, interaction, client);
+              runActionArray(i, msg, client);
             }
           }
         } else {
@@ -183,7 +199,7 @@ try {
                 }
               }
               if (matchesPermissions == true) {
-                runActionArray(i, interaction, client);
+                runActionArray(i, msg, client);
               }
             }
           }

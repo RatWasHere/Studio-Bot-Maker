@@ -310,7 +310,9 @@ document.getElementById('everything_container').style.filter = 'blur(0px)'
           fs.readFileSync(processPath + "\\AppData\\Toolkit\\interactionTools.js"),
         );
         try {
-          fs.readFileSync(exportFolder + `\\AppData\\Toolkit\\storedData.json`);
+          if (!fs.existsSync(exportFolder + `\\AppData\\Toolkit\\storedData.json`)) {
+            fs.readFileSync(exportFolder + `\\AppData\\Toolkit\\storedData.json`);
+          }
         } catch (err) {
           fs.writeFileSync(
             exportFolder + `\\AppData\\Toolkit\\storedData.json`,

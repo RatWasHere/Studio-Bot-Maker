@@ -581,7 +581,28 @@
   animation-duration: 0.5s;
   color: #ffffff99;
 }
-
+@keyframes inittl {
+  0% {
+    opacity: 0%;
+    height: 0px;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    filter: blur(50px);
+  }
+  50% {
+    filter: blur(50px);
+    height: 31px;
+    opacity: 100%;
+    margin-top: 5px;
+    margin-bottom: 5px;
+  }
+  100% {
+    opacity: 100%;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    filter: blur(0px);
+  }
+}
 .dropdown {
   animation-name: appearfadenmt;
   width: calc(95% - 16px);
@@ -2140,4 +2161,37 @@ textarea {
 
 .dropShadow {
   box-shadow: #00000020 0px 0px 12px;
+}
+
+@keyframes selectbarnmt2 {
+  0% {
+      opacity: 100%;
+      z-index: 0;
+      margin-top: -6px;
+      margin-bottom: 0px;
+      height: 21px;
+      padding-top: 4px;
+      padding-bottom: 4px;
+      overflow: auto;
+  }
+  100% {
+      z-index: 0;
+      padding-top: 0px;
+      padding-bottom: 0px;
+      height: 0px;
+      overflow: auto;
+      margin-bottom: 0px;
+  }
+}
+@keyframes selectbarnmt {
+  0% {
+      opacity: 0%;
+      z-index: 0;
+      margin-top: -21px;
+  }
+  100% {
+      opacity: 100%;
+      z-index: 0;
+      margin-top: -6px;
+  }
 }

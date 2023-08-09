@@ -76,6 +76,14 @@ switch (ownSettings.actionPreviews) {
     editorSettings.previews = "none";
     break;
 }
+switch (ownSettings.searchStyling) {
+  case "Grid":
+    editorSettings.searchStyling = "grid";
+    break;
+  case "List":
+    editorSettings.searchStyling = "list";
+    break;
+}
 switch (ownSettings.animations) {
   case "Slow":
     editorSettings.commonAnimation = 6;

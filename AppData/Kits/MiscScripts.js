@@ -325,6 +325,7 @@ function initSetup() {
             <div id="actionPreviews"></div>
             <div id="actionPreviewPosition"></div>
             <div id="actionPreviewSeparator"></div>
+            <div id="actionSearch"></div>
             <text style="width: 100%; text-align: center;">Action Preview Position can overwrite Action Separator Position</text>
     
     
@@ -389,7 +390,11 @@ function initSetup() {
     choices: ["Right", "Left", "Both", "None"],
     name: "Action Separator Position",
   });
-
+  createSettingSelector("actionSearch", {
+    stored: "searchStyling",
+    choices: ["Grid", "List"],
+    name: "Action Separator Position",
+  });
   createSettingSelector("prefferedActionPane", {
     stored: "subtitlePosition",
     choices: ["None", "Action Pane", "Group Pane"],

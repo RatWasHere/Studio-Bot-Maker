@@ -146,7 +146,7 @@ function getUIelements(UIdata) {
       if (action.data[UIdata[element].storeAs] == undefined) {
         action.data[UIdata[element].storeAs] = UIdata[element].choices[0];
       }
-      if (!action.data[UIdata[element].extraField] && !UIdata[element].extraField) {
+      if (!action.data[UIdata[element].extraField] && UIdata[element].extraField) {
         action.data[UIdata[element].extraField] = "";
       }
       let foundOption = false;
@@ -163,51 +163,22 @@ function getUIelements(UIdata) {
             }
             endHTML = `${endHTML}<div class="dropdown" id="${UIdata[element].storeAs}" onclick="openChoices('${UIdata[element].storeAs}', this, '${MenuConditionalInput}', '${element}')">${UIdata[element].choices[option]}</div>`;
             if (UIdata[element].choices[option].endsWith("*")) {
-              if (
-                UIdata.variableSettings[UIdata[element].extraField][
-                  UIdata[element].choices[option]
-                ] == "actionGroup"
-              ) {
-                endHTML = `${endHTML} <div class="selectBar" style="border-radius: 0px;" onblur="saveField('${
-                  UIdata[element].extraField
-                }', '${
-                  UIdata[element].storeAs
-                }'); updateFoundActionGroup(this)" oninput="saveField('${
-                  UIdata[element].extraField
-                }', '${
-                  UIdata[element].storeAs
-                }')" id="${MenuConditionalInput}" contenteditable="true">${
-                  action.data[UIdata[element].extraField]
-                }</div>`;
-                let selectedActionGroup = "None";
-                for (let command in datjson.commands) {
-                  if (action.data[UIdata[element].extraField]) {
-                    selectedActionGroup = datjson.commands[command].name;
-                  }
-                }
-                endHTML = `${endHTML}
-                            <div class="actionGroupSelectorB bordertopz" id="${MenuConditionalInput}Selector" onclick="document.getElementById('${MenuConditionalInput}').focus(); setTimeout( () => {showCustomMenu(getOffset(document.getElementById('${MenuConditionalInput}')).left + 10, getOffset(document.getElementById('${MenuConditionalInput}')).top + 50)}, 100)">
-                                <div class="barbuttontexta">Selected: ${selectedActionGroup}</div>
-                            </div>
-                            `;
-              } else {
-                endHTML = `${endHTML} <div class="selectBar" oninput="validateInput(event)" onblur="saveField('${
-                  UIdata[element].extraField
-                }', '${UIdata[element].storeAs}')" onkeyup="saveField('${
-                  UIdata[element].extraField
-                }', '${
-                  UIdata[element].storeAs
-                }')" id="${MenuConditionalInput}" contenteditable="true">${
-                  action.data[UIdata[element].extraField]
-                }</div>`;
-              }
+              endHTML = `${endHTML} <div class="selectBar" oninput="validateInput(event)" onblur="saveField('${
+                UIdata[element].extraField
+              }', '${UIdata[element].storeAs}')" onkeyup="saveField('${
+                UIdata[element].extraField
+              }', '${
+                UIdata[element].storeAs
+              }')" id="${MenuConditionalInput}" contenteditable="true">${
+                action.data[UIdata[element].extraField]
+              }</div>`;
             }
           }
         }
       };
       try {
         getOption();
-      } catch (err) {}
+      } catch (err) {console.log(err)}
       if (foundOption == false) {
         let newOption = UIdata[element].choices[0];
         action.data[UIdata[element].storeAs] = newOption;

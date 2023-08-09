@@ -14,7 +14,7 @@ module.exports = {
 
     btext0: "Get",
     menuBar: {
-      choices: ["Thread Member Count", "Thread Owner", "Parent Channel", "Thread Total Messages Sent", "Thread Messages List"],
+      choices: ["Member Count", "Owner", "Parent Channel", "Message Count", "Messages List"],
       storeAs: "get"
     },
     
@@ -36,25 +36,21 @@ module.exports = {
     let result;
 
     switch (values.get) {
-      case 'Thread Member Count':
+      case 'Member Count':
         result = thread.memberCount;
         break
-      case 'Thread Owner':
+      case 'Owner':
         result = thread.owner;
         break
-      case 'Thread Parent Channel':
-        result = thread.memberCount;
+      case 'Parent Channel':
+        result = thread.parent();
         break
-      case 'Thread Member Count':
-        result = thread.memberCount;
+      case 'Message Count':
+        result = thread.messageCount;
         break
-      case 'Thread Member Count':
-        result = thread.memberCount;
+      case 'Messages List':
+        result = thread.messages;
         break
-      case 'Thread Member Count':
-        result = thread.memberCount;
-        break
-  
     }
 
 
