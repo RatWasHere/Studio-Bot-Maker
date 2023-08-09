@@ -1,13 +1,13 @@
 module.exports = {
-    data: {"name":"Store User Data", 
+    data: {"name":"Get User Data", 
     "dataName":"",
-    "dataValue": "",
+    "storeAs":"",
     "userFrom":"Command Author",
     "user":""},
      
     UI: {"compatibleWith":["Text", "Slash", "DM"],
 
-    "text":"Store User Data", 
+    "text":"Get User Data", 
     
     "sepbar":"", 
 
@@ -21,8 +21,8 @@ module.exports = {
 
     "sepbar0":"",
 
-    "btext1":"Data Value", 
-    "input0*":"dataValue",
+    "btext1":"Store As", 
+    "input!":"storeAs",
 
     "variableSettings":{
         "user": {
@@ -31,8 +31,8 @@ module.exports = {
         }
     }
     },
-    subtitle: "User: $[userFrom]$ - Data Name: $[dataName]$ - Store: $[dataValue]$",
-   async run(values, message, client, bridge) { 
+    subtitle: "User: $[userFrom]$ - Data Name: $[dataName]$ - Store As: $[dataValue]$",
+   async run(values, message, uID, fs, client, runner, bridge) { 
         let varTools = require(`../Toolkit/variableTools.js`)
 
         var storedData = bridge.data.IO.get()
@@ -47,12 +47,6 @@ module.exports = {
             user = client.users.get(varTools.transf(values.user, bridge.variables))
         }
 
-        if (!storedData.users[user.id]) {
-            storedData.users[user.id] = {}
-        }
-
-        storedData.users[user.id][varTools.transf(values.dataName, bridge.variables)] = varTools.transf(values.dataValue, bridge.variables) 
-
-        bridge.data.IO.write(storedData)
+        bridge.variables[varTools.transf(values.storeAs, bridge.variables)] = storedData.users[user.id][varTools.transf(values.dataName, bridge.variables)]
     }
 }

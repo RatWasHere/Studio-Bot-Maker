@@ -312,30 +312,47 @@ function initSetup() {
 
   document.body.innerHTML += `
             <div class="settingspane">
-
-            <div class="barbuttonshift" onclick="location.reload()" style="margin-left: 1vw; margin-top: 2vh; width: 10vw;">
+            <div class="flexbox">
+            <div class="barbuttonshift flexbox" onclick="location.reload()" style="margin-left: 1vw; margin-top: 2vh; width: 10vw;">
             <btext>Exit</btext>
             </div>
+            <div class="image" style="background-image: url(./icon.png); height: 5vh; width: 5vh; margin: auto; margin-right: 1vw !important;"></div>
+            <div class="barbuttontext" style="margin: auto; margin-right: 1vw; margin-left: 0px; opacity: 50%;">Studio Bot Maker</div>
+           </div>
 
 
             <div  class="flexbox" style="padding: 12px; margin: auto;">
 
-            <div class="barbuttontext" style="margin-bottom: 2vh; width: 100%;">Settings</div><br>
+            <btext style="width: 100%;">Bot Data</btext>
+            <div style="margin-bottom: 0.5vh; background-color: #FFFFFF09; width: 70vw; border-radius: 12px; display: block;">
+            <br>
+            <div class="barbuttontexta textToLeft" style="margin-left: 3vw; margin-top: 1.5vh;">Bot Prefix</div>
+            <input class="input" oninput="botData.prefix = this.value; wast()" value="${botData.prefix}">
+            <div class="barbuttontexta textToLeft" style="margin-left: 3vw; margin-top: 1.5vh;">Bot Token</div>
+            <input class="input" type="password" style="overflow-y: auto; overflow-x: hidden;" oninput="botData.btk = this.value; wast()" value="${botData.btk}">
+            <div class="barbuttontexta textToLeft" style="margin-left: 3vw; margin-top: 1.5vh;">Client ID</div>
+            <input class="input" type="number" oninput="botData.clientID = this.value; wast()" value="${botData.clientID}">
+            <br>
+            </div>
+            <br>
+            <div class="sepbarz"></div>
+
+
             <btext style="width: 100%;">Editor</btext>
             <div id="actionPreviews"></div>
             <div id="actionPreviewPosition"></div>
             <div id="actionPreviewSeparator"></div>
             <div id="actionSearch"></div>
             <text style="width: 100%; text-align: center;">Action Preview Position can overwrite Action Separator Position</text>
-    
-    
+
             <div class="sepbarz"></div>
             <btext style="width: 100%;">Visuals</btext>
             <div id="prefferedActionPane"></div>
             <div id="anag"></div>
             <div id="coloringsmoothness"></div>
+            <br>
             <btext style="width: 100%;">Color</btext>
-            <div class="flexbox" style="width: 75%; padding: 12px; border-radius: 12px; background-color: #FFFFFF10;">
+            <div class="flexbox" style="width: calc(75% - 24px); padding: 12px; border-radius: 12px; background-color: #FFFFFF10;">
             <div class="colorTile" onmouseenter="setTimeout(() => {this.firstChild.className = 'colorTileText breatheWidth'}, 200)" onmouseleave="this.firstChild.className = 'colorTileText'; this.firstChild.style.width = '52.5%'; setTimeout(() => {this.firstChild.classList.remove('breatheWidth'); this.firstChild.style.width = '52.5%'; setTimeout(() => {this.firstChild.style.width = '';}, 150)}, 200);" onclick="setColor(this)" style="background-color: #000000;"><div class="colorTileText">Lights Off</div></div>
             <div class="colorTile" onmouseenter="setTimeout(() => {this.firstChild.className = 'colorTileText breatheWidth'}, 200)" onmouseleave="this.firstChild.className = 'colorTileText'; this.firstChild.style.width = '52.5%'; setTimeout(() => {this.firstChild.classList.remove('breatheWidth'); this.firstChild.style.width = '52.5%'; setTimeout(() => {this.firstChild.style.width = '';}, 150)}, 200);" onclick="setColor(this)" style="background-color: #0b0014;"><div class="colorTileText">Ultraviolet</div></div>
             <div class="colorTile" onmouseenter="setTimeout(() => {this.firstChild.className = 'colorTileText breatheWidth'}, 200)" onmouseleave="this.firstChild.className = 'colorTileText'; this.firstChild.style.width = '52.5%'; setTimeout(() => {this.firstChild.classList.remove('breatheWidth'); this.firstChild.style.width = '52.5%'; setTimeout(() => {this.firstChild.style.width = '';}, 150)}, 200);" onclick="setColor(this)" style="background-color: #170011;"><div class="colorTileText">Soothing Cherry</div></div>
@@ -361,21 +378,6 @@ function initSetup() {
             <div id="changingWidth"></div>
             <div id="animationsSpeed"></div>
 
-            <br>
-            <div class="sepbarz"></div>
-            <div style="margin-bottom: 0.5vh; background-color: #FFFFFF09; width: 70vw; border-radius: 12px; display: block;">
-            <br>
-            <div class="barbuttontext" style="font-size: 20px; width: 95%;">Bot Data</div>
-            <div class="sepbars"></div>
-
-            <div class="barbuttontexta textToLeft" style="margin-left: 3vw; margin-top: 1.5vh;">Bot Prefix</div>
-            <input class="input" oninput="botData.prefix = this.value; wast()" value="${botData.prefix}">
-            <div class="barbuttontexta textToLeft" style="margin-left: 3vw; margin-top: 1.5vh;">Bot Token</div>
-            <input class="input" type="password" style="overflow-y: auto; overflow-x: hidden;" oninput="botData.btk = this.value; wast()" value="${botData.btk}">
-            <div class="barbuttontexta textToLeft" style="margin-left: 3vw; margin-top: 1.5vh;">Client ID</div>
-            <input class="input" type="number" oninput="botData.clientID = this.value; wast()" value="${botData.clientID}">
-    <br>
-            </div>
             </div>
             </div>
     

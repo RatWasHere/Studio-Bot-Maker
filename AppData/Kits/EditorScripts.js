@@ -83,6 +83,7 @@ function insertTextAtCaret(text, elementId) {
     var end = element.selectionEnd;
     var newValue = element.value.substring(0, start) + text + element.value.substring(end);
     element.value = newValue;
+    element.blur()
   } else {
     // For contenteditable div or other elements
     if (window.getSelection) {
@@ -703,11 +704,13 @@ function startSearch() {
   searchContainer.style.height = "85vh";
 
   actionView.style.scale = "0.8";
+  actionView.style.borderRadius = "10px";
+  actionView.style.height = "15vh";
+
   actionView.onclick = (event) => {
     event.preventDefault();
   };
-  actionView.style.borderRadius = "10px";
-  actionView.style.height = "15vh";
+
 
   searchContainer.innerHTML += `
     <div id="actionSearchCloseButton" onclick="closeSearch()" class="barbuttonshift" style="width: 95% !important; margin: auto; margin-top: 1vh; margin-bottom: 1vh;"><div class="barbuttontexta">Close</div></div>

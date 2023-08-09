@@ -1740,11 +1740,9 @@ btext {
 }
 .backArrow {
   background-image: url(./AppData/backArrow.png);
-  width: 110%;
-  margin-top: -5%;
-  height: 110%;
+  width: 5vw;
+  height: 3vw;
   opacity: 20%;
-  margin-left: 0%;
   transition: margin-left 0.25s ease;
 }
 .backArrow:hover {
@@ -1862,7 +1860,7 @@ body {
   transition: all ease 0.5s;
 }
 .colorTile {
-  width: 49%;
+  width: 32%;
   height: 5vh;
   margin-left: auto;
   cursor: pointer;
@@ -2021,8 +2019,8 @@ input[type="number"]::-webkit-outer-spin-button {
   height: 23px;
   overflow: auto;
   transition:
-    all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275),
-    opacity 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    all 0.3s cubic-bezier(.25,.73,.39,1.19),
+    opacity 0.5s ease;
 }
 .optionleft {
   width: calc(43.5% - 10px);
@@ -2033,8 +2031,8 @@ input[type="number"]::-webkit-outer-spin-button {
   overflow: auto;
   height: 23px;
   transition:
-    all 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275),
-    opacity 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    all 0.35s cubic-bezier(.25,.73,.39,1.19),
+    opacity 0.5s ease;
 }
 .coloredTile {
   opacity: 40%;

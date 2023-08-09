@@ -14,8 +14,14 @@ function newObject() {
       name: name,
       file: actionFile,
       data: {
-        name: name,
-        messageContent: "Hello World!"
+        "name": "Send Message",
+        "messageContent": "Hello World!",
+        "storeAs": "",
+        "sendTo": "Command Channel",
+        "to": "",
+        "actionRows": [],
+        "ExtraData": "",
+        "embeds": []
       },
     };
     botData.commands[lastObj].actions.push(newAct);

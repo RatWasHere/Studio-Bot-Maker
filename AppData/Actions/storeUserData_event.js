@@ -5,14 +5,14 @@ module.exports = {
     "userFrom":"Command Author",
     "user":""},
      
-    UI: {"compatibleWith":["Text", "Slash", "DM"],
+    UI: {"compatibleWith":["Event"],
 
     "text":"Store User Data", 
     
     "sepbar":"", 
 
     "btext":"Get User Via",
-    "menuBar":{"choices":["Command Author", "ID*", "Variable*"], storeAs:"userFrom", extraField:"user"},
+    "menuBar":{"choices":["ID*", "Variable*"], storeAs:"userFrom", extraField:"user"},
 
     "sepbar":"",  
 
@@ -26,8 +26,7 @@ module.exports = {
 
     "variableSettings":{
         "user": {
-            "Variable*": "direct", 
-            "Command Author": "novars"
+            "Variable*": "direct"
         }
     }
     },
@@ -37,9 +36,6 @@ module.exports = {
 
         var storedData = bridge.data.IO.get()
 
-        if (values.userFrom == 'Command Author') {
-            user = message.author
-        } 
         if (values.userFrom == 'Variable*') {
             user = bridge.variables[varTools.transf(values.user, bridge.variables)]
         }

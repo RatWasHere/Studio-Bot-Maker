@@ -16,7 +16,7 @@ module.exports = {
 
     btext: "Get Member From",
     menuBar: {
-      choices: ["Command Author", "Variable*", "Member ID*"],
+      choices: ["Variable*", "Member ID*"],
       storeAs: "memberFrom",
       extraField: "member",
     },
@@ -87,8 +87,9 @@ module.exports = {
     }
 
     if (values.reason.trim() == "") {
-      member.timeout({
+      member.edit({
         communicationDisabledUntil: new Date().getTime() + duration,
+        reason: '-',
       });
     } else {
       member.edit({
