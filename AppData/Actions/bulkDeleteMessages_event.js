@@ -101,7 +101,7 @@ module.exports = {
 
     let checkFor = (m) =>
       m.content.toLowerCase().includes(mustInclude.toLowerCase());
-    var deletedMessages = 0;
+    var deletedMessages = -1;
     channel.getMessages({ limit: amount * 5 }).then((messages) => {
       messages.filter(checkFor).forEach((msg) => {
         if (deletedMessages > amount) return;

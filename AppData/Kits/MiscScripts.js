@@ -172,18 +172,7 @@ function setCaretPosition(element, caretPos) {
     range.select();
   }
 }
-function validateLargeInput(event) {
-  // make this accept newlines and not remove them
-  const div = event.target;
-  var text = div.innerText;
 
-  let caretPos = getCaretPosition(div);
-
-  text = text.replaceAll('\n', '<br>')
-
-  div.innerHTML = text;
-  setCaretPosition(div, caretPos + 1)
-}
 function editRawData(group) {
   menu.remove()
   document.body.innerHTML += `
