@@ -168,11 +168,13 @@ try {
                 }
               }
               if (command.boundary.worksIn == "dms") {
-                if (msg.guild) matchesPermissions = false;
+                if (msg.guild) {matchesPermissions = false}
               }
 
               for (let permission in command.boundary.limits) {
-                if (!msg.member.permissions.has(command.boundary.limits[permission])) {matchesPermissions = false;}
+                if (msg.member.permissions.has(command.boundary.limits[permission]) == false) {
+                  matchesPermissions = false;
+                }
               }
             }
             if (matchesPermissions == true) {
@@ -195,7 +197,7 @@ try {
                 }
 
                 for (let permission in command.boundary.limits) {
-                  if (!msg.member.permissions.has(command.boundary.limits[permission])) {matchesPermissions = false;}
+                  if (msg.member.permissions.has(command.boundary.limits[permission]) == false) {matchesPermissions = false;}
                 }
               }
               if (matchesPermissions == true) {
@@ -361,8 +363,26 @@ try {
             commandParametersStorage[data.commands[i].parameters[e].storeAs] = option;
           }
         }
-        interaction.author = interaction.user
-        runActionArray(i, interaction, client, commandParametersStorage, true);
+        let command = data.commands[i];
+        if (command.boundary) {
+          if (command.boundary.worksIn == "guild") {
+            if (!interaction.guild) {
+              matchesPermissions = false;
+            }
+          }
+          if (command.boundary.worksIn == "dms") {
+            if (interaction.guild) matchesPermissions = false;
+          }
+
+          for (let permission in command.boundary.limits) {
+            if (interaction.member.permissions.has(command.boundary.limits[permission]) == false) {matchesPermissions = false;}
+          }
+        }
+
+        interaction.author = interaction.user;
+        if (matchesPermissions) {
+          runActionArray(i, interaction, client, commandParametersStorage);
+        }
       }
     }
   });

@@ -14,7 +14,7 @@ module.exports = {
     "btext":"Get User Via",
     "menuBar":{"choices":["Command Author", "ID*", "Variable*"], storeAs:"userFrom", extraField:"user"},
 
-    "sepbar":"",  
+    "sepbar1":"",  
 
     "btext0":"Data Name", 
     "input*":"dataName",
@@ -31,7 +31,7 @@ module.exports = {
         }
     }
     },
-    subtitle: "User: $[userFrom]$ - Data Name: $[dataName]$ - Store As: $[dataValue]$",
+    subtitle: "User: $[userFrom]$ - Data Name: $[dataName]$ - Store As: $[storeAs]$",
    async run(values, message, uID, fs, client, runner, bridge) { 
         let varTools = require(`../Toolkit/variableTools.js`)
 
