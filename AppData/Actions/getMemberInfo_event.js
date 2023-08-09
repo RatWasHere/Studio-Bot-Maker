@@ -7,7 +7,7 @@ module.exports = {
     memberFrom: "Command Author",
   },
   UI: {
-    compatibleWith: ["Text", "Slash"],
+    compatibleWith: ["Event"],
     text: "Get Member Info",
 
     sepbar: "",
