@@ -395,7 +395,7 @@ function initSetup() {
   createSettingSelector("actionSearch", {
     stored: "searchStyling",
     choices: ["Grid", "List"],
-    name: "Action Separator Position",
+    name: "Action Search Style",
   });
   createSettingSelector("prefferedActionPane", {
     stored: "subtitlePosition",

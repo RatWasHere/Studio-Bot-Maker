@@ -651,7 +651,7 @@ function viewAllActions() {
     timeout++;
     const animationId = cachedActions[action].file
     document.getElementById("searchActions").innerHTML += `
-        <div class="hoverablez dimension" id="${animationId}" onclick="switchOutAction('${cachedActions[action].file}')" style="border-radius: 40px; width: 29%; overflow: auto; padding: 5px; padding-left: 5px; padding-right: 5px; margin-left: 0.5vw; margin-right: 0.5vw; margin-bottom: 1vh; transition: 0.1s ease; opacity: 0%; scale: 0.7;"><div class="barbuttontexta">${cachedActions[action].name}</div></div>
+        <div class="hoverablez dimension" id="${animationId}" onclick="switchOutAction('${cachedActions[action].file}')" style="border-radius: 40px; width: 29%; overflow: auto; padding: 5px; padding-left: 5px; padding-right: 5px; margin-left: 0.5vw; margin-right: 0.5vw; margin-bottom: 1vh; transition: all 0.5s cubic-bezier(.17,.67,.31,1.34), scale 0.3s cubic-bezier(.17,.67,.31,1.36), opacity 0.1s ease; opacity: 0%; scale: 0.7;"><div class="barbuttontexta">${cachedActions[action].name}</div></div>
         `;
     setTimeout(() => {
       document.getElementById(animationId).style.opacity = "100%";
@@ -692,14 +692,6 @@ function startSearch() {
   searchContainer.style.transition = `all 0.${editorSettings.commonAnimation}s ease`;
   actionView.style.transition = `all 0.${editorSettings.commonAnimation}s ease`;
 
-  setTimeout(() => {
-    let buttonsContainer = document.getElementById("buttonsContainer");
-    buttonsContainer.style.transition = `all 0.${editorSettings.fastAnimation}s ease`;
-    buttonsContainer.style.height = "0vh";
-    buttonsContainer.style.overflow = "auto";
-    pendingSearchStart = false;
-    document.getElementById("actionSearchCloseButton").nextElementSibling.focus()
-  }, editorSettings.fastAnimation * 100);
 
   searchContainer.style.height = "85vh";
 
@@ -718,6 +710,15 @@ function startSearch() {
     <div id="searchActions" style="height: 67vh; overflow: auto; margin-top: 2vh; align-items: center;" class="flexbox"></div>
     `;
   viewAllActions();
+
+  setTimeout(() => {
+    let buttonsContainer = document.getElementById("buttonsContainer");
+    buttonsContainer.style.transition = `all 0.${editorSettings.fastAnimation}s ease`;
+    buttonsContainer.style.height = "0vh";
+    buttonsContainer.style.overflow = "auto";
+    pendingSearchStart = false;
+    document.getElementById("actionSearchCloseButton").nextElementSibling.focus()
+  }, editorSettings.fastAnimation * 100);
 }
 
 function actionSearch(query) {

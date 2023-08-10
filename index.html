@@ -59,7 +59,7 @@
               <div
                 class="barbuttone"
                 onclick="lastType = 0; newObject();"
-                style="width: 2.7vw; height: 3.5vh"
+                style="width: 2.7vw; height: 3vh"
               >
                 <div class="image add"></div>
               </div>
@@ -90,7 +90,7 @@
               <div
                 class="barbuttone borderrightz"
                 onclick="lastType = 1; editAction(document.getElementById('Action' + lastAct));"
-                style="width: 2.7vw; height: 3.5vh"
+                style="width: 2.7vw; height: 3vh"
               >
                 <div class="imagefull editAction"></div>
               </div>
@@ -99,7 +99,7 @@
                 onclick="lastType = 1; newObject();"
                 style="
                   width: 2.7vw;
-                  height: 3.5vh;
+                  height: 3vh;
                   margin-left: 0.12vw;
                   margin-right: 0.12vw;
                 "
@@ -151,12 +151,12 @@
           </div>
           <div
             class="tile borderbottomz"
-            style="background: linear-gradient(0deg, #ffffff10, #ffffff15)"
+            style="background: linear-gradient(0deg, #ffffff10, #ffffff15); padding: 0px; width: 100%; padding-top: 12px; padding-bottom: 12px;"
           >
-            <div class="text clsr" style="margin-top: 0px">Group Name</div>
+            <btext style="width: 90%; margin-left: 2%;"><span id="groupType">-</span> Name</btext>
             <div
               class="inputBar"
-              style="width: 96%; border-radius: 9px; margin: auto"
+              style="width: 95%; border-radius: 9px; margin: auto"
               contenteditable="true"
               id="Command_Name"
               oninput="validateInputSpaces(this); updateName(this)"
@@ -168,24 +168,26 @@
             style="
               background: linear-gradient(0deg, #ffffff15, #ffffff10);
               margin-top: 0px;
+              padding: 0px; width: 100%; padding-top: 12px; padding-bottom: 12px;
             "
           >
             <div
               id="botData.commands[lastObj].actions"
               class="baction noanims"
               style="
-                width: 90%;
-                padding: 5px;
+                width: 95%;
+                padding: 4px;
                 margin-top: 0px;
                 margin-bottom: 10px;
+                border-radius: 9px;
               "
             >
               Using 0 Actions
             </div>
-            <div class="flexbox" id="groupActionsContainer" style="height: 33px; transition: all 0.2s ease;">
+            <div class="flexbox" id="groupActionsContainer" style="height: 33px; transition: all 0.2s ease; overflow-x: auto;">
               <div
                 class="baction noanims hoverable optionleft flexbox"
-                style="align-items: center; justify-content: center"
+                style="align-items: center; justify-content: center; padding: 0px; width: 100%; padding-top: 12px; padding-bottom: 12px;"
                 id="commandParameters"
                 onclick="openParameters()"
               >
@@ -237,7 +239,7 @@
                 style="
                   margin-right: 0.5vw;
                   aspect-ratio: 1/1;
-                  height: calc(2.3vw + 10px);
+                  height: calc(4vh + 10px);
                   border-radius: 12px;
                   cursor: pointer;
                   margin-left: auto;
@@ -252,11 +254,11 @@
                 style="
                   overflow-x: auto;
                   overflow-y: none;
-                  height: 2.3vw;
+                  height: 4vh;
                   width: 85%;
                   margin-right: auto;
                   margin-left: auto;
-                  padding: 5px;
+                  padding: 0px;
                   border-radius: 12px;
                   background-color: #ffffff10;
                   transition:
@@ -272,7 +274,7 @@
                     aspect-ratio: 1/1;
                     background-color: #ffffff;
                     opacity: 10%;
-                    height: 2.2vw;
+                    height: 4vh;
                     border-radius: 100vw;
                     transform: scale(0.7);
                     margin-left: 0.3vw;
@@ -288,7 +290,7 @@
                   style="
                     aspect-ratio: 1/1;
                     background-color: #ffffff;
-                    height: 2.2vw;
+                    height: 4vh;
                     border-radius: 12px;
                     margin: auto;
                     cursor: pointer;
@@ -300,7 +302,7 @@
                   style="
                     aspect-ratio: 1/1;
                     background-color: #f54242;
-                    height: 2.2vw;
+                    height: 4vh;
                     border-radius: 12px;
                     margin: auto;
                     cursor: pointer;
@@ -312,7 +314,7 @@
                   style="
                     aspect-ratio: 1/1;
                     background-color: #f58d42;
-                    height: 2.2vw;
+                    height: 4vh;
                     border-radius: 12px;
                     margin: auto;
                     cursor: pointer;
@@ -324,7 +326,7 @@
                   style="
                     aspect-ratio: 1/1;
                     background-color: #f5da42;
-                    height: 2.2vw;
+                    height: 4vh;
                     border-radius: 12px;
                     margin: auto;
                     cursor: pointer;
@@ -336,7 +338,7 @@
                   style="
                     aspect-ratio: 1/1;
                     background-color: #9ef542;
-                    height: 2.2vw;
+                    height: 4vh;
                     border-radius: 12px;
                     margin: auto;
                     cursor: pointer;
@@ -348,7 +350,7 @@
                   style="
                     aspect-ratio: 1/1;
                     background-color: #4bf542;
-                    height: 2.2vw;
+                    height: 4vh;
                     border-radius: 12px;
                     margin: auto;
                     cursor: pointer;
@@ -360,7 +362,7 @@
                   style="
                     aspect-ratio: 1/1;
                     background-color: #42f59e;
-                    height: 2.2vw;
+                    height: 4vh;
                     border-radius: 12px;
                     margin: auto;
                     cursor: pointer;
@@ -372,7 +374,7 @@
                   style="
                     aspect-ratio: 1/1;
                     background-color: #42f5f5;
-                    height: 2.2vw;
+                    height: 4vh;
                     border-radius: 12px;
                     margin: auto;
                     cursor: pointer;
@@ -384,7 +386,7 @@
                   style="
                     aspect-ratio: 1/1;
                     background-color: #42a4f5;
-                    height: 2.2vw;
+                    height: 4vh;
                     border-radius: 12px;
                     margin: auto;
                     cursor: pointer;
@@ -396,7 +398,7 @@
                   style="
                     aspect-ratio: 1/1;
                     background-color: #4251f5;
-                    height: 2.2vw;
+                    height: 4vh;
                     border-radius: 12px;
                     margin: auto;
                     cursor: pointer;
@@ -408,7 +410,7 @@
                   style="
                     aspect-ratio: 1/1;
                     background-color: #aa42f5;
-                    height: 2.2vw;
+                    height: 4vh;
                     border-radius: 12px;
                     margin: auto;
                     cursor: pointer;
@@ -420,7 +422,7 @@
                   style="
                     aspect-ratio: 1/1;
                     background-color: #f542ce;
-                    height: 2.2vw;
+                    height: 4vh;
                     border-radius: 12px;
                     margin: auto;
                     cursor: pointer;

@@ -1,10 +1,4 @@
-// interactionTools V0 By Rat Running on Studio API 1
-// tools to interact with UI elements originating from the editor, and converting them to valid
-// discord.js objects, with ease!
-
 module.exports = {
-  studio: { API: "1", Version: "2" },
-
   stopExecution(uID) {
     var tempVars = JSON.parse(fs.readFileSync("./tempVars.json", "utf8"));
 

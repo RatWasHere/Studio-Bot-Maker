@@ -374,11 +374,11 @@ function refreshGroups() {
         cmd,
       )}" style="animation-delay: ${
         delay * 3
-      }5ms; width: 95% !important;" onclick="highlight(this)"><div id="${cmd}Groupname">${
+      }5ms; width: 95% !important; border-radius: 9px;" onclick="highlight(this)"><div id="${cmd}Groupname">${
         botData.commands[cmd].name
       }</div> <div style="opacity: 50%; margin-left: 7px;"> | <span id="${cmd}Groupcount">${
         botData.commands[cmd].actions.length
-      }</span> Actions </div> <div class="deleteActionButton forceRounded" style="border-radius: 124px;" onclick="deleteObject(this)">✕</div> `;
+      }</span> Actions </div> <div class="deleteActionButton" onclick="deleteObject(this)">✕</div> `;
       if (botData.commands[cmd].color != undefined) {
         let groupColor = botData.commands[cmd].color.split(")")[0];
         try {
@@ -473,9 +473,9 @@ function prioritizeCommandOptions() {
   commandParameters.style.width = `0%`;
   commandParameters.style.padding = `0px`;
   commandParameters.style.opacity = `0%`;
-  commandParameters.style.marginRight = "0%";
+  commandParameters.style.marginRight = "0px";
 
-  groupOptions.style.width = "90%";
+  groupOptions.style.width = "calc(95% + 4px)";
 }
 
 function prioritizeEvents() {
@@ -489,7 +489,7 @@ function prioritizeEvents() {
   commandParameters.style.marginRight = "0%";
 
   groupEvents.style.padding = "";
-  groupEvents.style.width = "90%";
+  groupEvents.style.width = "calc(95% + 4px)";
   groupEvents.style.opacity = "";
   try {
     groupEvents.innerHTML = `<div style="margin: auto; margin-left: 1vw;">Triggered By: ${

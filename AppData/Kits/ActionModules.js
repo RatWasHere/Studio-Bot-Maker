@@ -244,16 +244,19 @@ function setHighlightedGroup(type) {
     selectedGroupType = "text";
     prioritizeCommandOptions();
     document.getElementById('groupTypes').innerText = `Commands`
+    document.getElementById('groupType').innerText = `Command`
   }
   if (type == 2) {
     selectedGroupType = "slash";
     resetElements();
     document.getElementById('groupTypes').innerText = `Slash Commands`
+    document.getElementById('groupType').innerText = `Slash Command`
   }
   if (type == 3) {
     prioritizeEvents();
     selectedGroupType = "event";
     document.getElementById('groupTypes').innerText = `Events`
+    document.getElementById('groupType').innerText = `Event`
   }
 
   setTimeout(() => {
