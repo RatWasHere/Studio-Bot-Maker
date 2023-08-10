@@ -1,8 +1,6 @@
 
 # [Official Site](https://ratwashere.github.io/Studio-Bot-Maker/)
 
-  
-
 # Studio Bot Maker
 ![electron_Wva3q7YxCm](https://github.com/RatWasHere/Studio-Bot-Maker/assets/100881234/871bf50f-fb8a-44c8-bda2-ac8523f8b87a)
   <a href="https://github.com/RatWasHere/Studio-Bot-Maker/releases/latest">
