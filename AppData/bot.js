@@ -364,6 +364,7 @@ try {
           }
         }
         let command = data.commands[i];
+        let matchesPermissions = true;
         if (command.boundary) {
           if (command.boundary.worksIn == "guild") {
             if (!interaction.guild) {
