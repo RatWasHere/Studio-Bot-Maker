@@ -2,11 +2,12 @@
 # [Official Site](https://ratwashere.github.io/Studio-Bot-Maker/)
 
   
+![image]()
 
 # Studio Bot Maker
 ![electron_Wva3q7YxCm](https://github.com/RatWasHere/Studio-Bot-Maker/assets/100881234/871bf50f-fb8a-44c8-bda2-ac8523f8b87a)
   <a href="https://github.com/RatWasHere/Studio-Bot-Maker/releases/latest">
-  <img src="https://github.com/RatWasHere/Studio-Bot-Maker/assets/100881234/ca8b704b-6061-415d-bb4d-94046fec1f60">
+  <img src="https://github.com/RatWasHere/Studio-Bot-Maker/assets/100881234/6ec1e947-b39c-4c43-b99b-a6e10c7facd4">
 </a>
 
 Time to ditch _**Discord Bot Maker**_ and _**Bot Studio For Discord**_ - and whatever other app you're using, move on to something modern, something fluid and fast! Are you ready to move on from the old and the ugly to something more lively, something with personality and great fluidity? Just hit [download](https://github.com/RatWasHere/Studio-Bot-Maker/releases/latest)!
