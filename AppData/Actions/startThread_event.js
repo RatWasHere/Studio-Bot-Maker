@@ -34,7 +34,7 @@ module.exports = {
       }
     }
   },
-  subtitle: "Message: $[messageFrom]$ - Archive After: $[autoArchive]$",
+  subtitle: "Message: $[autoArchive]$ - Archive After: $[autoArchive]$",
   async run(values, message, client, bridge) {
     let transferVariables = require(`../Toolkit/variableTools.js`).transf;
 

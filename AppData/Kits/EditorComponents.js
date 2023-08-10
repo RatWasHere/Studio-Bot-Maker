@@ -319,7 +319,7 @@ function refreshActions(at) {
             editorSettings.widthChanges == true
               ? "deleteActionButton"
               : "noWidthDelete"
-          }" onclick="onclick="deleteAction('${at}', '${actionNumber}')""><span style="font-size: ${
+          }" onclick="deleteAction('${at}', '${actionNumber}')"><span style="font-size: ${
             editorSettings.widthChanges == true
               ? "inherit"
               : "12px !important;"

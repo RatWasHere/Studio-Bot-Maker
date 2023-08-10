@@ -24,7 +24,6 @@ module.exports = {
       choices: [
         "Channel Name",
         "Channel ID",
-        "Channel Description",
         "Channel Guild",
         "Channel Topic",
         "Channel URL",
@@ -65,9 +64,6 @@ module.exports = {
     switch (values.get) {
       case "Channel Name":
         output = channel.name;
-        break;
-      case "Channel Topic":
-        output = channel.topic;
         break;
       case "Channel URL":
         if (channel.guild) {
