@@ -114,10 +114,12 @@ try {
         runner: runActionArray,
         fs: fs,
         toMember: (user, guild) => {
+          if (user.guild) return user
           return guild.getMember(user.id)
         },
         toUser: async (member) => {
-          return client.users.get(transf(values.userID)) || await client.rest.users.get(transf(values.userID))
+          if (member.createDM) return member
+          return client.users.get(transf(member.id)) || await client.rest.users.get(transf(member.id))
         }
       };
       for (let action in cmdActions) {
