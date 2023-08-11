@@ -51,7 +51,7 @@ module.exports = {
     let varTools = require(`../Toolkit/variableTools.js`);
     let user;
     if (values.userFrom == "Variable*") {
-      user = bridge.variables[varTools.transf(values.user, bridge.variables)];
+      user = bridge.toUser(bridge.variables[varTools.transf(values.user, bridge.variables)]);
     }
     if (values.userFrom == "User ID*") {
       user = client.users.get(varTools.transf(values.user, bridge.variables));

@@ -43,7 +43,7 @@ module.exports = {
     }
     if (values.memberFrom == "Variable*") {
       member =
-        bridge.variables[varTools.transf(values.member, bridge.variables)];
+        bridge.toMember(bridge.variables[varTools.transf(values.member, bridge.variables)], bridge.guild);
     }
     if (values.memberFrom == "ID*") {
       member = guild.members.get(
