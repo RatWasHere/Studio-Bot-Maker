@@ -530,7 +530,7 @@ ipcMain.on("editParameters", (event, data) => {
   });
   ipcMain.once("parametersClosed", (event, parameters, commandDescription) => {
     win.focus();
-    win.send("parameters", parameters, commandDescription);
+    win.webContents.send("parametersSave", {parameters: parameters, description: commandDescription});
     try {
       ParameterEditorWindow.close();
     } catch (err) {}

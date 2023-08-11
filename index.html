@@ -1,7 +1,11 @@
 <html>
   <link rel="stylesheet" href="main.css" />
   <meta charset="utf8" />
-  <div class="titlebar flexbox textToLeft"><div id="titlebar" style="margin-left: 1vw; margin-top: auto; margin-bottom: auto;">Studio Bot Maker</div>
+  <div class="titlebar flexbox textToLeft">
+    
+    <div style="background-size: cover; background-image: url('./icon.png'); height: 3vh; width: 3vh; margin-top: auto; margin-bottom: auto; margin-left: 1vw !important; margin-right: 1vw !important;"></div>
+
+  <div id="titlebar" style="margin-top: auto; margin-bottom: auto;">Studio Bot Maker</div>
   <div style="height: 40%; margin: auto; margin-right: 1vw; margin-left: 1vw; width: 3px; background-color: #FFFFFF40; border-radius: 12px;"></div>
 
   <div class="hoverablez option" onclick="initSetup()" style="margin-left: 0px">Settings</div>
@@ -14,10 +18,10 @@
   </div>
   <div class="hoverablez option" onclick="ipcRenderer.send('runBot')">Start Bot</div>
   
-  <div class="hoverablez option flexbox" onclick="ipcRenderer.send('minimize')" style="height: 80%; width: 40px; padding: 0px; margin-top: auto; margin-bottom: auto; margin-left: auto; border-radius: 0px; margin-right: 0px; border-top-left-radius: 4px; border-bottom-left-radius: 4px;"><div style="width: 30%; border: 5px #FFFFFF50 solid; margin: auto; border-radius: 3px;"></div></div>
-  <div class="hoverablez option flexbox" onclick="ipcRenderer.send('maximize')" style="height: 80%; width: 40px; padding: 0px; margin-top: auto; margin-bottom: auto; border-radius: 0px; margin-left: 0px; margin-right: 0px;"><div style="height: 30%; aspect-ratio: 1/1; border: 5px #FFFFFF50 solid; margin: auto; border-radius: 3px;"></div></div>
-  <div class="hoverablez option flexbox" onclick="ipcRenderer.send('close')" style="height: 80%; width: 40px; padding: 0px; margin-top: auto; margin-bottom: auto; border-radius: 0px; margin-left: 0px; margin-right: 4px;  border-top-right-radius: 4px; border-bottom-right-radius: 4px;"><div class="image add" style="margin: auto; rotate: 45deg;"></div></div>
-  
+  <div class="hoverablez option flexbox" onclick="ipcRenderer.send('minimize')" style="height: 100%; width: 50px; padding: 0px; margin-top: auto; margin-bottom: auto; margin-left: auto; border-radius: 0px; margin-right: 0px; border-top-left-radius: 8px; border-bottom-left-radius: 8px;"><div style="width: 30%; border: 4px #FFFFFF50 solid; margin: auto; border-radius: 3px;"></div></div>
+  <div class="hoverablez option flexbox" onclick="ipcRenderer.send('maximize')" style="height: 100%; width: 50px; padding: 0px; margin-top: auto; margin-bottom: auto; border-radius: 0px; margin-left: 0px; margin-right: 0px;"><div style="height: 30%; aspect-ratio: 1/1; border: 5px #FFFFFF50 solid; margin: auto; border-radius: 3px;"></div></div>
+  <div class="hoverablez option flexbox" onclick="ipcRenderer.send('close')" style="height: 100%; width: 50px; padding: 0px; margin-top: auto; margin-bottom: auto; border-radius: 0px; margin-left: 0px;"><div class="image add" style="margin: auto; rotate: 45deg;"></div></div>
+  <div style="height: 100%;"></div>
   </div>
   
   <div
@@ -156,7 +160,6 @@
             <btext style="width: 90%; margin-left: 2%;"><span id="groupType">-</span> Name</btext>
             <div
               class="inputBar"
-              style="width: 95%; border-radius: 9px; margin: auto"
               contenteditable="true"
               id="Command_Name"
               oninput="validateInputSpaces(this); updateName(this)"

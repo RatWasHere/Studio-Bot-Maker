@@ -395,7 +395,7 @@ try {
           type: ApplicationCommandTypes.CHAT_INPUT,
           name: command.name,
           description: command.description || 'No Description',
-          dmPermission: false,
+          dmPermission: false
         });
       } else {
         client.application.createGlobalCommand({
@@ -403,7 +403,7 @@ try {
           name: command.name,
           description: command.description || 'No Description',
           options: command.options,
-          dmPermission: false,
+          dmPermission: false
         });
       }
       console.log(

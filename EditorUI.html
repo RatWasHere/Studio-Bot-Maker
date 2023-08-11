@@ -279,7 +279,7 @@
 
       actions = data.actions;
       action = actions[data.action];
-      actionFile = require("./AppData/Actions/" + action.file);
+      actionFile = require(require('process').cwd() + "\\AppData\\Actions\\" + action.file);
       for (let dataElement in actionFile.data) {
         if (action.data[dataElement] == undefined) {
           action.data[dataElement] = actionFile.data[dataElement];

@@ -2,13 +2,13 @@ module.exports = {
   data: {
     name: "Check If Text Includes",
     string: "",
-    startWith: "",
+    mustInclude: "",
     runIfTrue: {},
     runIfFalse: {},
   },
   UI: {
     compatibleWith: ["Any"],
-    text: "Check If Text Starts With",
+    text: "Check If Text Starts Includes",
 
     sepbar: "",
 
@@ -17,8 +17,8 @@ module.exports = {
 
     sepbar0: "",
 
-    btext0: "Check If It Starts With",
-    input0: "startWith",
+    btext0: "Check If It Includes",
+    input0: "mustInclude",
 
     sepbar1: "",
 
@@ -39,9 +39,9 @@ module.exports = {
     let actionRunner = bridge.runner
 
     let string = varTools.transf(values.string, bridge.variables);
-    let startWith = varTools.transf(values.startWith, bridge.variables);
+    let mustInclude = varTools.transf(values.mustInclude, bridge.variables);
 
-    if (string.includes(startWith)) {
+    if (string.includes(mustInclude)) {
       actionRunner(values.runIfTrue, message, client, bridge.variables, true);
     } else {
       actionRunner(values.runIfFalse, message, client, bridge.variables, true);

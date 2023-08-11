@@ -103,47 +103,45 @@
         `;
     projectContainer.innerHTML += `
         <div class="dimension hoverablez" onclick="sendProject(undefined)" style="width: 95%; margin: auto; border-radius: 9px; padding: 9px; margin-top: 3vh; margin-bottom: 1vh;">
-                <div class="barbuttontexta textToLeft" style="font-size: 23px !important; margin-left: 1vw !important;">Local</div>
-                <div class="barbuttontexta textToLeft" style="margin-left: 1vw !important;">Project Name: ${
-                  data.name
-                }</div>
+                <div class="barbuttontexta textToLeft" style="font-size: 23px !important; margin-left: 1vw !important;">${data.name}</div>
+                <div class="barbuttontexta textToLeft" style="margin-left: 1vw !important;">Local</div>
                 <div class="barbuttontexta textToLeft" style="opacity: 50%; margin-left: 1vw !important;">${
                   Object.keys(data.commands).length
                 } Groups</div>
         </div>
         `;
     let count = 0;
+    function removeDuplicates(arr) {
+      return Array.from(new Set(arr));
+    }
     let shownProjects = [];
     for (let project of settings.projects) {
+      settings.projects = removeDuplicates(settings.projects)
+      fs.writeFileSync("C:/ProgramData/settings.json", JSON.stringify(settings))
       count++;
       let extra = "";
+      let tooltip = "";
       if (!shownProjects.includes(project)) {
         shownProjects.push(project);
         if (data.prjSrc == project) {
           console.log(
             JSON.parse(fs.readFileSync(project + "\\AppData\\data.json")),
           );
-          if (
-            areObjectsEqual(
-              Object.values(data.commands),
-              Object.values(
-                JSON.parse(fs.readFileSync(project + "\\AppData\\data.json"))
-                  .commands,
-              ),
-            ) == true
-          ) {
-            extra = ` - Latest - On Par With Local`;
-          } else {
-            extra = ` - Unsaved - Older Than Local`;
-          }
+          extra = '<span style="opacity: 50%;">Local</span>'
+          tooltip = `This is the exported version of your current project`
         }
 
         let projectName = '<span style="opacity: 50%;">Deleted</span>';
         let projectGroups = 0;
+        let projectColor = '#000000';
+
         try {
           projectName = JSON.parse(
             fs.readFileSync(project + "/AppData/data.json"),
           ).name;
+          projectColor = JSON.parse(
+            fs.readFileSync(project + "/AppData/data.json"),
+          ).color;
           projectGroups = Object.keys(
             JSON.parse(fs.readFileSync(project + "/AppData/data.json"))
               .commands,
@@ -151,10 +149,16 @@
         } catch (err) {}
         console.log(project);
         projectContainer.innerHTML += `
-            <div class="dimension hoverablez" id="${count}" style="width: 95%; margin: auto; border-radius: 9px; padding: 9px; margin-top: 1vh; margin-bottom: 1vh;">
-                <div class="barbuttontexta textToLeft" style="font-size: 23px !important; margin-left: 1vw !important; margin-bottom: 2vh !important;">Exported ${extra}</div>
-                <div class="barbuttontexta textToLeft" style="margin-left: 1vw !important;">Project Name: ${projectName}</div>
-                <div class="barbuttontexta textToLeft" style="opacity: 50%; margin-left: 1vw !important;">${projectGroups} Groups</div>
+            <div class="dimension hoverablez flexbox" id="${count}" style="width: 95%; margin: auto; border-radius: 9px; padding: 9px; margin-top: 1vh; margin-bottom: 1vh;">
+            <div class="barbuttontexta textToLeft" style="font-size: 23px !important; margin-left: 1vw !important; margin-bottom: 0px;">${projectName} ${extra}</div>
+            <div class="barbuttontexta textToLeft" style="opacity: 50%; margin-left: 1vw !important; width: 100%;">${projectGroups} Groups  • ${project.split('').slice(0, 32).join('')}${project.length > 32 ? '...' : ''}</div>
+            
+            <text style="opacity: 25%; margin: auto; margin-left: 1vw; margin-right: auto;">${tooltip}</text>
+            <div class="hoverablez flexbox" style="height: 8vh; width: 8vh; border-radius: 9px; margin-right: 0vw !important;">
+                <div class="image trash"></div>
+            </div>
+
+
             </div>
             `;
       }

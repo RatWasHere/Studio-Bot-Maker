@@ -14,7 +14,7 @@ module.exports = {
 
     btext: "Get Member Via",
     menuBar: {
-      choices: ["Variable*", "Member ID*"],
+      choices: ["Variable*", "ID*"],
       storeAs: "memberFrom",
       extraField: "memberVariable",
     },
@@ -45,7 +45,7 @@ module.exports = {
         ].id,
       );
     }
-    if (values.memberFrom == "Member ID*") {
+    if (values.memberFrom == "ID*") {
       member = guild.getMember(
         varTools.transf(values.memberVariable, bridge.variables),
       );

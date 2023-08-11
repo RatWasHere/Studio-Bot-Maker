@@ -52,7 +52,7 @@
     "fse": "^4.0.1",
     "node-run-cmd": "^1.0.1",
     "oceanic-collectors": "^1.0.7",
-    "oceanic.js": "^1.7.1",
+    "oceanic.js": "^1.8.0",
     "pacote": "^15.2.0",
     "request": "^2.88.2",
     "unzipper": "^0.10.11"

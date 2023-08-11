@@ -814,17 +814,16 @@
 }
 
 .inputBar {
-  width: 90%;
   margin-left: auto;
   margin-right: auto;
   margin-top: 4px;
-  text-align: center;
   background-color: #ffffff10;
   color: #ffffff90 !important;
-  font-size: 26px;
+  font-size: 22px;
   padding: 4px;
+  width: calc(95% - 8px); border-radius: 9px; margin: auto;
   cursor: text;
-  border-radius: 12px;
+  padding-left: 10px;
   transition: background-color ease 0.5s;
 }
 @keyframes appearInputField {
@@ -2089,10 +2088,10 @@ text {
 .titlebar {
   background-color: #FFFFFF15;
   margin-bottom: 5px;
-  font-size: 16px;
+  font-size: 2vh;
   margin-top: -8px;
   color: #FFFFFF90;
-  height: 3vh;
+  height: 3.5vh;
   -webkit-app-region: drag;
   z-index: -10;
   width: calc(100% + 16px);
@@ -2102,7 +2101,7 @@ text {
 .option {
   margin-left: 0.5vw; padding: 2px; padding-left: 5px; padding-right: 5px; position:relative; z-index: 1100; -webkit-app-region: no-drag;
   border-radius: 4px;
-  height: 18px;
+  height: 2vh;
   margin-top: auto;
   margin-bottom: auto;
 }

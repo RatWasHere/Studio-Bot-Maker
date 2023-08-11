@@ -14,7 +14,7 @@ module.exports = {
 
     btext: "Get Member Via",
     menuBar: {
-      choices: ["Variable*", "Member ID*"],
+      choices: ["Variable*", "ID*"],
       storeAs: "memberFrom",
       extraField: "memberVariable",
     },
@@ -42,7 +42,7 @@ module.exports = {
           varTools.transf(values.memberVariable, bridge.variables)
         ].id;
     }
-    if (values.memberFrom == "Member ID*") {
+    if (values.memberFrom == "ID*") {
       member = varTools.transf(values.memberVariable, bridge.variables);
     }
     if (values.reason.trim() == "") {

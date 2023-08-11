@@ -276,8 +276,6 @@ module.exports = {
         "User Variable*": "direct",
       },
     },
-    preview: "messageContent",
-    previewName: "Content",
   },
   subtitle: "Content: $[messageContent]$ - Get Channel Via: $[sendTo]$",
   async run(values, message, client, bridge) {

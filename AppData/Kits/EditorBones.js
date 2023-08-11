@@ -449,6 +449,25 @@ function refreshGroups() {
   }
 }
 
+
+function openParameters() {
+  if (!botData.commands[lastObj].description) {
+    botData.commands[lastObj].description = "No Description";
+  }
+  ipcRenderer.send("editParameters", {
+    parameters: botData.commands[lastObj].parameters || [],
+    name: botData.commands[lastObj].name,
+    description: botData.commands[lastObj].description,
+  });
+}
+
+ipcRenderer.on("parametersSave", (event, data) => {
+  console.log(data)
+  botData.commands[lastObj].parameters = data.parameters;
+  botData.commands[lastObj].description = data.description;
+  wast();
+});
+
 let commandParameters = document.getElementById("commandParameters");
 let groupOptions = document.getElementById("commandOptions");
 let groupEvents = document.getElementById("groupEvents");
@@ -991,25 +1010,6 @@ function toggleColorsVisibility(button) {
   }
   wast();
 }
-
-function openParameters() {
-  console.log("description", botData.commands[lastObj].description);
-  if (!botData.commands[lastObj].description) {
-    botData.commands[lastObj].description = "No Description";
-  }
-  ipcRenderer.send("editParameters", {
-    parameters: botData.commands[lastObj].parameters || [],
-    name: botData.commands[lastObj].name,
-    description: botData.commands[lastObj].description,
-  });
-}
-
-ipcRenderer.on("parameters", (event, parameters, description) => {
-  botData.commands[lastObj].parameters = parameters;
-  botData.commands[lastObj].description = description;
-  console.log(description, botData.commands[lastObj].description);
-  wast();
-});
 
 function wast() {
   fs.writeFileSync(
