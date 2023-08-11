@@ -3,11 +3,13 @@
 
 # Studio Bot Maker
 ![electron_Wva3q7YxCm](https://github.com/RatWasHere/Studio-Bot-Maker/assets/100881234/871bf50f-fb8a-44c8-bda2-ac8523f8b87a)
-  <a href="https://github.com/RatWasHere/Studio-Bot-Maker/releases/latest">
-  <img src="https://github.com/RatWasHere/Studio-Bot-Maker/assets/100881234/3085b1af-d065-4a64-9706-69fb25d116ab">
-</a>
+(since most people cant figure out how to download this, have this big ass download button)
 
-Time to ditch _**Discord Bot Maker**_ and _**Bot Studio For Discord**_ - and whatever other app you're using, move on to something modern, something fluid and fast! Are you ready to move on from the old and the ugly to something more lively, something with personality and great fluidity? Just hit [download](https://github.com/RatWasHere/Studio-Bot-Maker/releases/latest)!
+# [DOWNLOAD HERE](https://github.com/RatWasHere/Studio-Bot-Maker/releases/latest)
+
+Time to ditch _**Discord Bot Maker**_ and _**Bot Studio For Discord**_ - and whatever other app you're using, move on to something modern, something fluid and fast!
+
+ Are you ready to move on from the old and the ugly to something more lively, something with personality and great fluidity? Just hit [download](https://github.com/RatWasHere/Studio-Bot-Maker/releases/latest)!
 
 (If you're a BotGhost or some other Bot-making website user, this is the exactly the holy piece of gold you were searching for)
 
