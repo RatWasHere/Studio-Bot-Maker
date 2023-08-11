@@ -112,7 +112,13 @@ try {
           IO: IO
         },
         runner: runActionArray,
-        fs: fs
+        fs: fs,
+        toMember: (user, guild) => {
+          return guild.getMember(user.id)
+        },
+        toUser: async (member) => {
+          return client.users.get(transf(values.userID)) || await client.rest.users.get(transf(values.userID))
+        }
       };
       for (let action in cmdActions) {
         if (cmdActions[action] != undefined) {
