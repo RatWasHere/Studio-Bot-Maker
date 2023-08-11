@@ -57,7 +57,7 @@ module.exports = {
     let actionRunner = bridge.runner
 
     let guild = bridge.guild;
-    var user = message.member;
+    var user = bridge.guild.getMember(message.member.id);
     if (values.memberChoice == "Variable*") {
       user = guild.getMember(
         bridge.variables[

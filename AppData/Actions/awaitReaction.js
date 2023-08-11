@@ -154,9 +154,8 @@ module.exports = {
           break;
         case "User*":
           matchesTarget =
-            reactor.id ==
-            bridge.variables[varTools.transf(values.fromWho, bridge.variables)]
-              .id;
+          reactor.id ==
+          bridge.toUser(bridge.variables[varTools.transf(values.fromWho, bridge.variables)]).id;
           break;
         case "User ID*":
           matchesTarget =

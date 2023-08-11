@@ -105,8 +105,7 @@ module.exports = {
         case "User*":
           matchesTarget =
             message.author.id ==
-            bridge.variables[varTools.transf(values.fromWho, bridge.variables)]
-              .id;
+            bridge.toUser(bridge.variables[varTools.transf(values.fromWho, bridge.variables)]).id;
           break;
         case "User ID*":
           matchesTarget =
