@@ -14,7 +14,7 @@ module.exports = {
     "btext":"Get User Via",
     "menuBar":{"choices":["ID*", "Variable*"], storeAs:"userFrom", extraField:"user"},
 
-    "sepbar":"",  
+    "sepbar*":"",  
 
     "btext0":"Data Name", 
     "input*":"dataName",

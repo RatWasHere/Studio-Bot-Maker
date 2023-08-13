@@ -87,12 +87,12 @@ module.exports = {
     let guild = bridge.guild;
     var member = message.member;
     if (values.memberChoice == "Variable*") {
-      member = guild.getMember(
+      member = await guild.getMember(
         bridge.variables[transf(values.memberVariable)].id,
       );
     }
     if (values.memberChoice == "Member ID*") {
-      member = guild.getMember(
+      member = await guild.getMember(
         varTools.transf(values.memberVariable, bridge.variables),
       );
     }

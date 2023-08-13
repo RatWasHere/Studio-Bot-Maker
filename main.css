@@ -529,12 +529,12 @@
 }
 .hoverable {
   cursor: pointer;
-  transition: background-color ease 0.10s;
+  transition: background-color ease 0.12s;
 }
 .hoverablez {
   cursor: pointer;
   background-color: #ffffff10;
-  transition: background-color ease 0.10s;
+  transition: background-color ease 0.12s;
 }
 .hoverablez:hover {
   background-color: #ffffff18;

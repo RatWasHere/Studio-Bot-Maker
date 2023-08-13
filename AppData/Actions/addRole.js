@@ -68,7 +68,7 @@ module.exports = {
     }
     if (values.addTo == "Variable*") {
       member =
-       await bridge.variables[varTools.transf(values.member, bridge.variables)];
+       await bridge.toMember(bridge.variables[varTools.transf(values.member, bridge.variables)])
     }
     if (values.addTo == "Member ID*") {
       member = await guild.getMember(

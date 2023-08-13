@@ -253,21 +253,7 @@ module.exports = {
       storeAs: "embeds",
     },
     sepbar2: "",
-    btext0: "Get Channel To Send In Via:",
-    menuBar: {
-      choices: [
-        "Command Channel",
-        "Command Author",
-        "Channel Variable*",
-        "Channel ID*",
-        "User Variable*",
-        "User ID*",
-      ],
-      storeAs: "sendTo",
-      extraField: "to",
-    },
-    sepbar3: "",
-    btext1: "Message Variable",
+    btext0: "Message Variable",
     input_direct: "messageVariable"
   },
   subtitle: "Content: $[messageContent]$ - Message Variable: $[messageVariable]$",
@@ -512,7 +498,7 @@ module.exports = {
         embeds: embeds,
         components: endComponents,
       })
-      
+
       if (values.storeAs != "") {
         bridge.variables[values.storeAs] = msg;
       }

@@ -45,7 +45,7 @@ module.exports = {
     previewName: "Get",
     preview: "get",
   },
-  run(values, message, client, bridge) {
+  async run(values, message, client, bridge) {
     let varTools = require(`../Toolkit/variableTools.js`);
     let guild = bridge.guild;
 
@@ -55,10 +55,10 @@ module.exports = {
     }
     if (values.memberFrom == "Variable*") {
       member =
-        bridge.toMember(bridge.variables[varTools.transf(values.member, bridge.variables)], bridge.guild);
+       await bridge.toMember(bridge.variables[varTools.transf(values.member, bridge.variables)], bridge.guild);
     }
     if (values.memberFrom == "Member ID*") {
-      member = guild.getMember(
+      member = await guild.getMember(
         varTools.transf(values.member, bridge.variables),
       );
     }

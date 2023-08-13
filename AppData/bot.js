@@ -27,12 +27,13 @@ let colors = {
   BgWhite: "\x1b[47m",
   BgGray: "\x1b[100m",
 };
+const fs = require("fs");
+
+  /* The Data, We Need It! */ let data = JSON.parse(
+    fs.readFileSync(".\\AppData\\data.json"),
+  );
 
 try {
-  const fs = require("fs");
-  /* The Data, We Need It! */ let data = JSON.parse(
-    fs.readFileSync("./AppData/data.json"),
-  );
   const discord = require("oceanic.js");
   const {
     ApplicationCommandOptionTypes,
@@ -72,15 +73,15 @@ try {
     write: (newIO) => { 
       try {
         let dir = data.prjSrc;
-          fs.writeFileSync(`${dir}\\AppData\\storedData.json`, JSON.stringify(newIO))
+        fs.writeFileSync(`${dir}\\AppData\\Toolkit\\storedData.json`, JSON.stringify(newIO))
       } catch (err) {
-        console.log(`${colors.BgRed}${colors.FgWhite}Something Went Wrong Whilst Trying To Access The Data System, Ensure You've Exported Your Bot!${colors.Reset}`)
+        console.log(`${colors.BgRed}${colors.FgWhite}Something Went Wrong Whilst Trying To Write To The Data System, Ensure You've Exported Your Bot!${colors.Reset}`)
       }
     },
-    get: (newIO) => { 
+    get: () => { 
       try {
         let dir = data.prjSrc;
-        return JSON.parse(fs.readFileSync(`${dir}\\AppData\\storedData.json`, 'utf8'));
+        return JSON.parse(fs.readFileSync(`${dir}\\AppData\\Toolkit\\storedData.json`, 'utf8'));
       } catch (err) {
         console.log(`${colors.BgRed}${colors.FgWhite}Something Went Wrong Whilst Trying To Access The Data System, Ensure You've Exported Your Bot!${colors.Reset}`)
       }
@@ -113,9 +114,9 @@ try {
         },
         runner: runActionArray,
         fs: fs,
-        toMember: (user, guild) => {
+        toMember: async (user, guild) => {
           if (user.guild) return user
-          return guild.getMember(user.id)
+          return await guild.getMember(user.id)
         },
         toUser: async (member) => {
           if (member.createDM) return member
@@ -128,7 +129,7 @@ try {
         if (actionContextBridge.stopActionRun == false) {
           try {
             /* Run The Action, Make It Happen! */
-            await require(`./AppData/Actions/${cmdActions[action].file}`).run(
+            await require(`.\\AppData\\Actions\\${cmdActions[action].file}`).run(
               cmdActions[action].data,
               interaction,
               client,
@@ -142,7 +143,7 @@ try {
               }(@#${cmdAt})${
                 colors.Reset + colors.BgRed + colors.FgBlack
               } >>> ${
-                require(`./AppData/Actions/${cmdActions[action].file}`).data
+                require(`.\\AppData\\Actions\\${cmdActions[action].file}`).data
                   .name
               } ${colors.FgBlack + colors.BgWhite}(@#${action})${
                 colors.Reset + colors.BgRed + colors.FgBlack
@@ -296,7 +297,7 @@ try {
       }
     }
     if (data.commands[i].type == "event") {
-      let event = require(`./AppData/Events/${data.commands[i].eventFile}`);
+      let event = require(`.\\AppData\\Events\\${data.commands[i].eventFile}`);
       /* Initialize The Event */
       // eventData: Array made of 2 elements; Based on the event, only one or two of them will be used.
       // client: client

@@ -50,7 +50,7 @@ module.exports = {
         varTools.transf(values.member, bridge.variables),
       );
     }
-
+    console.log(member)
     member.edit({
       nick: varTools.transf(values.newNickname, bridge.variables),
     });

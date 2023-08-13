@@ -51,15 +51,8 @@ module.exports = {
   async run(values, message, client, bridge) {
     let varTools = require(`../Toolkit/variableTools.js`);
 
-    if (values.guildFrom == "ID*") {
-    }
-    if (values.guildFrom == "Variable*") {
-    }
-
-    if (values.memberFrom == "Command Author") {
-      const member = guild.getMember(message.author.id);
-      bridge.variables[values.storesAs] = await member;
-    }
+    let guild = bridge.guild;
+    
     if (values.memberFrom == "Name*") {
       const member = guild.members.find(
         (m) => m.nick === varTools.transf(values.member, bridge.variables),

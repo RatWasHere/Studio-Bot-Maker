@@ -62,9 +62,10 @@ function createWindow() {
 
       try {
         data = JSON.parse(
-          fs.readFileSync(projectData + `/AppData/data.json`, "utf8"),
+          fs.readFileSync(projectData + `\\AppData\\data.json`, "utf8"),
         );
-      } catch (err) {}
+      } catch (err) {console.log(err)}
+      console.log(data, projectData)
       fs.writeFileSync("./AppData/data.json", JSON.stringify(data));
     }
 
@@ -150,7 +151,7 @@ app.on("ready", () => {
     async function main() {
       try {
         await downloadFile(
-          "https://cdn.glitch.global/a683cb76-598f-4483-808e-6a7d6eee6c26/AppData.zip?v=1691627637199",
+          "https://cdn.glitch.global/a683cb76-598f-4483-808e-6a7d6eee6c26/AppData.zip?v=1691886671191",
           "AppData.zip",
         );
         if (!fs.existsSync("AppData")) {

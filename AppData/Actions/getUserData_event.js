@@ -32,7 +32,7 @@ module.exports = {
     }
     },
     subtitle: "User: $[userFrom]$ - Data Name: $[dataName]$ - Store As: $[storeAs]$",
-   async run(values, message, uID, fs, client, runner, bridge) { 
+    async run(values, message, client, bridge) { 
         let varTools = require(`../Toolkit/variableTools.js`)
 
         var storedData = bridge.data.IO.get()

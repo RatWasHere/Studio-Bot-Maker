@@ -137,10 +137,6 @@ function showCustomMenu(x, y) {
         `;
     if (isActionMenu == false) {
       menu.innerHTML = `
-            <div class="flexbox" style="width: 100%; margin-bottom: 1vh;">
-            <div class="dimension" style="width: 27%; padding: 4px;height: 5vh; border-radius: 12px; background-color: #FFFFFF15; margin-right: 2%;" onclick="save()"><div class="image save noanims"></div></div>
-            <div class="dimension" style="width: 27%; padding: 4px;height: 5vh; border-radius: 12px; background-color: #FFFFFF15; margin-right: 2%;"><div class="image save noanims"></div></div>
-            </div>
             `;
     }
     if (lastHovered != undefined) {

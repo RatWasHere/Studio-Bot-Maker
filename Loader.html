@@ -27,12 +27,16 @@
     >
     <div id="spinnyImage" class="image spinning-shaking-element" style="background-image: url(./icon.png); height: 40vh; width: 40vh; background-size: cover; border-radius: 50% !important; margin-top: 10vh;"></div>
     <div class="barbuttontexta" id="btext" style="transition: all 0.3s ease; margin-top: 1vh; margin-left: auto; margin-right: auto; font-size: 40px; align-self: center;">Loading Essentials</div>
-    <div class="barbuttontexta" id="sbm" style="transition: all 0.3s ease; margin-left: auto; margin-right: auto; font-size: 0px; align-self: center;">Studio Bot Maker</div>
+    <div class="barbuttontexta" id="sbm" style="transition: all 0.3s ease; margin-left: auto; margin-right: auto; font-size: 0px; align-self: center;">Studio Bot Maker <span style="opacity: 50%;">v3.10</span></div>
 
-      <div id="projects" style="height: 0vh; overflow: auto; transition: all 0.5s ease; border-radius: 50%;">
+      <div id="projects" style="height: 0vh; transition: all 0.5s ease, opacity 0.15s ease, scale 0.2s ease; scale: 1.5; border-radius: 50%; opacity: 0%;">
       </div>
+      <br>
     </div>
+    <br>
   </div>
+  <br>
+
   <script src="./AppData/Kits/Loader.js"></script>
   <script>
     /* Cheers, ChatGPT */
@@ -81,13 +85,15 @@
       document.getElementById('btext').style.fontSize = '0px'
       setTimeout(() => {
       document.getElementById('projects').style.height = '100vh'
+      document.getElementById('projects').style.opacity = '1'
+      document.getElementById('projects').style.scale = '1'
+
       document.getElementById('projects').style.borderRadius = ''
 
       document.getElementById('spinnyImage').style.height = '10vh'
       document.getElementById('spinnyImage').style.marginTop = '2vh'
       document.getElementById('spinnyImage').style.width = '10vh'
       document.getElementById('sbm').style.fontSize = '30px'
-
       }, 300);
       document.getElementById(
       "everything_container",
@@ -96,7 +102,7 @@
       "everything_container",
     ).style.background = `linear-gradient(45deg, ${data.color} 0%, rgb(18, 18, 18) 170%)`;
     projectContainer.innerHTML += `
-        <div class="dimension hoverablez" onclick="sendProject('_')" style="width: 95%; margin: auto; border-radius: 9px; padding: 9px; margin-top: 3vh; margin-bottom: 1vh;">
+        <div class="dimension hoverablez" onclick="newProject()" style="width: 95%; margin: auto; border-radius: 9px; padding: 9px; margin-top: 3vh; margin-bottom: 1vh;">
                 <div class="barbuttontexta textToLeft" style="font-size: 23px !important; margin-left: 1vw !important;">Create</div>
                 <div class="barbuttontexta textToLeft" style="margin-left: 1vw !important;">New Project</div>
         </div>
@@ -104,7 +110,7 @@
     projectContainer.innerHTML += `
         <div class="dimension hoverablez" onclick="sendProject(undefined)" style="width: 95%; margin: auto; border-radius: 9px; padding: 9px; margin-top: 3vh; margin-bottom: 1vh;">
                 <div class="barbuttontexta textToLeft" style="font-size: 23px !important; margin-left: 1vw !important;">${data.name}</div>
-                <div class="barbuttontexta textToLeft" style="margin-left: 1vw !important;">Local</div>
+                <div class="barbuttontexta textToLeft" style="margin-left: 1vw !important;">Local (Last Project Opened)</div>
         </div>
         `;
     let count = 0;
@@ -112,9 +118,10 @@
       return Array.from(new Set(arr));
     }
     let shownProjects = [];
-    for (let project of settings.projects) {
+    for (let projectIndex in settings.projects) {
+      let project = settings.projects[projectIndex]
       settings.projects = removeDuplicates(settings.projects)
-      fs.writeFileSync("C:/ProgramData/settings.json", JSON.stringify(settings))
+      fs.writeFileSync("C:/ProgramData/settings.json", JSON.stringify(settings, null, 2))
       count++;
       let extra = "";
       let tooltip = "";
@@ -125,7 +132,7 @@
             JSON.parse(fs.readFileSync(project + "\\AppData\\data.json")),
           );
           extra = '<span style="opacity: 50%;">Local</span>'
-          tooltip = `This is the exported version of your current project`
+          tooltip = ` • This is the exported version of your current project`
         }
 
         let projectName = '<span style="opacity: 50%;">Deleted</span>';
@@ -139,41 +146,124 @@
           projectColor = JSON.parse(
             fs.readFileSync(project + "/AppData/data.json"),
           ).color;
-          projectGroups = Object.keys(
-            JSON.parse(fs.readFileSync(project + "/AppData/data.json"))
-              .commands,
-          ).length;
+          projectGroups = JSON.parse(fs.readFileSync(project + "/AppData/data.json")).commands.length;
         } catch (err) {}
-        console.log(project);
+        if (projectName == '<span style="opacity: 50%;">Deleted</span>') {
+          tooltip = ' • This project can\'t be opened'
+        }
         projectContainer.innerHTML += `
-            <div class="dimension hoverablez flexbox" id="${count}" style="width: 95%; margin: auto; border-radius: 9px; padding: 9px; margin-top: 1vh; margin-bottom: 1vh;">
+        <div style="background-color: #FFFFFF05; width: calc(95% + 18px); border-radius: 9px; margin-left: auto; margin-right: auto; padding-bottom: 1vh;">
+            <div class="dimension hoverablez flexbox" onclick="sendProject('${project.replaceAll('\\', '\\\\')}')" style="width: calc(100% - 18px); margin: auto; border-radius: 9px; padding: 9px; margin-top: 1vh; margin-bottom: 1vh;">
             <div class="barbuttontexta textToLeft" style="font-size: 23px !important; margin-left: 1vw !important; margin-bottom: 0px;">${projectName} ${extra}</div>
-            <div class="barbuttontexta textToLeft" style="opacity: 50%; margin-left: 1vw !important; width: 100%;">${projectGroups} Groups  • ${project.split('').slice(0, 32).join('')}${project.length > 32 ? '...' : ''}</div>
+            <div class="barbuttontexta textToLeft" style="opacity: 50%; margin-left: 1vw !important; width: 100%;">${project.split('').slice(0, 64).join('')}${project.length > 64 ? '...' : ''}</div>
             
-            <text style="opacity: 25%; margin: auto; margin-left: 1vw; margin-right: auto;">${tooltip}</text>
-            <div class="hoverablez flexbox" style="height: 8vh; width: 8vh; border-radius: 9px; margin-right: 0vw !important;">
-                <div class="image trash"></div>
+            
             </div>
+            <div class="flexbox" style="width: 100%;">
+            <text style="opacity: 25%; margin: auto; margin-left: 2vw; margin-right: 0px;">${projectGroups == 0 ? 'No' : projectGroups} Groups${tooltip}</text> 
 
-
+            <div class="barbuttonshift appear" onclick="deleteProject(${projectIndex})" style="height: 7vh; border-radius: 9px; padding: 2px; width: 7vh; margin-left: auto; margin-right: 1vh;">
+              <div class="image trash"></div>
             </div>
+            </div>
+          </div>
             `;
       }
-      try {
-        document.getElementById(count).addEventListener("mouseup", () => {
-          sendProject(project);
-        });
-      } catch (err) {}
+
     }
+    projectContainer.innerHTML += '<br>'
+    setTimeout(() => {
+      document.getElementById('projects').style.height = '100vh'
+      document.getElementById('projects').style.opacity = '1'
+      document.getElementById('projects').style.scale = '1'
+
+      document.getElementById('projects').style.borderRadius = ''
+
+      document.getElementById('spinnyImage').style.height = '10vh'
+      document.getElementById('spinnyImage').style.marginTop = '2vh'
+      document.getElementById('spinnyImage').style.width = '10vh'
+      document.getElementById('sbm').style.fontSize = '30px'
+      }, 600);
+  }
+
+  const {shell} = require('electron') // deconstructing assignment
+
+
+  function deleteProject(index) {
+      document.getElementById('projects').style.opacity = '0'
+      document.getElementById('projects').style.scale = '1.5'
+    setTimeout(() => {
+      document.getElementById('projects').classList.add('flexbox')
+    document.getElementById('projects').innerHTML = `
+    <btext style="margin: auto; width: 100%;">Are You Sure You Want To Remove This Project From The List?</btext>
+
+    <div class="hoverablez flexbox" onclick="removeProject(${index})" style="height: 10vh; width: 20vw; border-radius: 9px; margin-right: 1vw;">
+      <btext>Yeah, Go On</btext>
+    </div>
+    <div onclick="nevermind()" class="hoverablez flexbox" style="height: 10vh; width: 20vw; border-radius: 9px; margin-left: 1vw;">
+      <btext>Nevermind</btext>
+    </div>
+    `
+
+    document.getElementById('projects').style.opacity = '1'
+    document.getElementById('projects').style.scale = '1'
+    }, 500);
+  }
+
+  function newProject() {
+      document.getElementById('projects').style.opacity = '0'
+      document.getElementById('projects').style.scale = '1.5'
+    setTimeout(() => {
+      document.getElementById('projects').classList.add('flexbox')
+    document.getElementById('projects').innerHTML = `
+    <btext style="margin: auto; width: 100%;"><div>Are You Sure You Want To Create A New Project?</div>
+    <text style="width: 100vw; opacity: 50%;">This will overwrite your current local project, you dont need to worry about that if you exported it though!</div>
+      </btext>
+
+    <div class="hoverablez flexbox" onclick="sendProject('_')" style="height: 10vh; padding: 0.5vw; width: 20vw; border-radius: 9px; margin-right: 1vw;">
+      <btext>Turn The Page!</btext>
+      <btext style="opacity: 50%;">(Yeah)</btext>
+    </div>
+    <div onclick="nevermind()" class="hoverablez flexbox" style="height: 10vh; padding: 0.5vw; width: 20vw; border-radius: 9px; margin-left: 1vw;">
+      <btext>Nevermind</btext>
+    </div>
+    `
+
+    document.getElementById('projects').style.opacity = '1'
+    document.getElementById('projects').style.scale = '1'
+    }, 500);
+  }
+
+  function removeProject(index) {
+    settings.projects.splice(index, 1)
+
+    nevermind()
+  }
+
+  function nevermind() {
+    let projects = document.getElementById('projects')
+    setTimeout(() => {
+      document.getElementById('projects').innerHTML = ''
+    }, 200);
+
+    document.getElementById('projects').style.opacity = '0'
+      document.getElementById('projects').style.scale = '2'
+      setTimeout(() => {
+        finishLoading()
+        document.getElementById('projects').classList.remove('flexbox')
+        document.getElementById('projects').style.opacity = '1'
+        document.getElementById('projects').style.scale = '1'
+      }, 500);
   }
     function sendProject(dir) {
+      console.log(dir)
       ipcRenderer.send("selectedProject", dir);
       document.body.style.scale = "0";
       setTimeout(() => {
         document.body.style.background = "unset !important";
         document.body.style.scale = "1";
         projectContainer.innerHTML = `
-                <div class="barbuttontexta" style="padding: 12px; backdrop-filter: blur(12px); background-color: #FFFFFF10;">Loading...</div>
+                <div class="barbuttontexta" style="padding: 12px; backdrop-filter: blur(12px); background-color: #FFFFFF10;">Loading Editor</div>
                 `;
       }, 200);
     }

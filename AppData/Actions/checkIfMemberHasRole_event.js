@@ -59,14 +59,14 @@ module.exports = {
     let guild = bridge.guild;
     var user = message.member;
     if (values.memberChoice == "Variable*") {
-      user = guild.getMember(
+      user = await guild.getMember(
         bridge.variables[
           varTools.transf(values.memberVariable, bridge.variables)
         ].id,
       );
     }
     if (values.memberChoice == "Member ID*") {
-      user = guild.getMember(
+      user = await guild.getMember(
         varTools.transf(values.memberVariable, bridge.variables),
       );
     }
