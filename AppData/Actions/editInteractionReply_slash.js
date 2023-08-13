@@ -2,16 +2,18 @@ module.exports = {
   data: {
     messageContent: "",
     storeAs: "",
-    to: "",
+    interactionFrom: "",
+    interaction: "",
     actionRows: [],
-    name: "Reply To Interaction",
-    ephemeral: false,
+    name: "Edit Interaction Reply",
+    ExtraData: "",
+    sendTo: "",
   },
   UI: {
     compatibleWith: ["Slash"],
-    text: "Reply To Interaction",
+    text: "Edit Interaction Reply",
     sepbar: "",
-    btext: "Reply Content",
+    btext: "Message Content",
     largeInput: "messageContent",
     sepbar0: "",
     customMenu: {
@@ -69,7 +71,7 @@ module.exports = {
                     toggle: { name: "Disabled", storeAs: "disabled" },
                     sepbar2: "",
                     btext2: "Once Clicked, Run",
-                    actions: "actions",
+                    actions: "actions"
                   },
                 },
                 link: {
@@ -124,6 +126,8 @@ module.exports = {
             sepbar1: "",
             btext2: "Store Interaction As",
             "input!": "storeInteractionAs",
+            "btext*": "Store Selection List As",
+            "input*!": "storeOptionsListAs",
             sepbar2: "",
             customMenu: {
               max: 25,
@@ -250,27 +254,21 @@ module.exports = {
       storeAs: "embeds",
     },
     sepbar2: "",
-    btext0: "Get Interaction To Reply To Via:",
+    btext0: "Get Interaction Via",
     menuBar: {
       choices: ["Command Interaction", "Variable*"],
-      storeAs: "sendTo",
-      extraField: "to",
+      storeAs: "interactionFrom",
+      extraField: "interaction"
     },
-    sepbar3: "",
-    toggle: { name: "Ephemeral", storeAs: "ephemeral" },
-    sepbar4: "",
-    btext1: "Store Message As",
-    "input0!": "storeAs",
-    variableSettings: {
-      to: {
-        "Variable*": "direct",
-      },
-    },
-    preview: "messageContent",
-    previewName: "Content",
-  },
-  async run(values, message, client, bridge) {
 
+    variableSettings: {
+      interaction: {
+        "Variable*": "direct"
+      }
+    }
+  },
+  subtitle: "Content: $[messageContent]$ - Interaction From: $[messageVariable]$",
+  async run(values, message, client, bridge) {
     let actionRunner = bridge.runner
     const {
       InteractionTypes,
@@ -383,14 +381,10 @@ module.exports = {
     let embeds = [];
     for (let embed of values.embeds) {
       let endEmbed = { author: {}, footer: {}, fields: [] };
-      if (embed.data.title != "") {
         endEmbed.title = varTools.transf(
           `${embed.data.title}`,
           bridge.variables,
         );
-      } else {
-        console.log("Reply To Interaction >> Embed >> Unset Title, Error Will Occur");
-      }
       if (embed.data.authorName != "") {
         endEmbed.author.name = varTools.transf(
           `${embed.data.authorName}`,
@@ -404,7 +398,7 @@ module.exports = {
         );
         if (embed.data.authorName.trim() == "") {
           console.log(
-            "Reply To Interaction >> Embed >> Author Icon Set, Author Name Unset -> Author Icon Will Not Show Up",
+            "Edit Interaction Reply >> Embed >> Author Icon Set, Author Name Unset -> Author Icon Will Not Show Up",
           );
         }
       }
@@ -426,7 +420,7 @@ module.exports = {
         );
         if (embed.data.footerContent.trim() == "") {
           console.log(
-            "Reply To Interaction >> Embed >> Footer Icon Set, Footer Text Unset -> Footer Icon Will Not Show Up",
+            "Edit Interaction Reply >> Embed >> Footer Icon Set, Footer Text Unset -> Footer Icon Will Not Show Up",
           );
         }
       }
@@ -508,33 +502,28 @@ module.exports = {
       }
     };
 
-    let interactionPendingReply;
+    let messageToEdit;
 
-    if (values.sendTo == "Variable*") {
-      interactionPendingReply =
-        bridge.variables[varTools.transf(values.to, bridge.variables)].getOriginal();
-    }
-    if (values.sendTo == "Command Interaction") {
-      interactionPendingReply = message;
+    if (values.interactionFrom == 'Command Interaction') {
+      messageToEdit = message;
+    } else {
+      messageToEdit = bridge.variables[varTools.transf(values.interaction, bridge.variables)]
     }
 
-    await interactionPendingReply
-      .createMessage({
+      let msg = await messageToEdit
+      .editOriginal({
         content: varTools.transf(values.messageContent, bridge.variables),
         embeds: embeds,
         components: endComponents,
-        flags: values.ephemeral == true ? 64 : null,
       })
-      .then(async (inter) => {
-        let msg = await interactionPendingReply.getOriginal();
-        if (values.storeAs != "") {
-          bridge.variables[values.storeAs] = msg;
-        }
-        messageStorage = msg;
-        client.on("interactionCreate", handleInteraction);
-        setTimeout(() => {
-          client.off("interactionCreate", handleInteraction);
-        }, highestTimeDenominator * 1000);
-      });
+
+      if (values.storeAs != "") {
+        bridge.variables[values.storeAs] = msg;
+      }
+      messageStorage = msg;
+      client.on("interactionCreate", handleInteraction);
+      setTimeout(() => {
+        client.off("interactionCreate", handleInteraction);
+      }, highestTimeDenominator * 1000);
   },
 };

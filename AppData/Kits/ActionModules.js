@@ -66,6 +66,10 @@ function newObject() {
     lastObj = botData.commands.length;
     wast();
     refreshGroups();
+    
+    setTimeout(() => {
+      highlight(document.getElementById(`Group${botData.commands.length - 1}`))
+    }, 200);
   }
 }
 function deleteObject(obj) {

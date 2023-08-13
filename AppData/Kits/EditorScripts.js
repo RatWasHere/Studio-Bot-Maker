@@ -377,11 +377,7 @@ function searchFor(elemnt) {
         let afile = require(`${require('process').cwd()}/AppData/Actions/${acten}`);;
 
         actionButton.innerHTML += `<div style="width: 45%;" class="action fade flexbox" style="z-index: 3; background-color: #FFFFFF10 !important;" onclick="openAction('${acten}');" id="${acten}">${afile.data.name}</div>`;
-      } else {
-        miss++;
       }
-      document.getElementById("misss").innerHTML =
-        miss + " Actions Hidden (Incompatible)";
     }
   }
 }
@@ -651,7 +647,7 @@ function viewAllActions() {
     timeout++;
     const animationId = cachedActions[action].file
     document.getElementById("searchActions").innerHTML += `
-        <div class="hoverablez dimension" id="${animationId}" onclick="switchOutAction('${cachedActions[action].file}')" style="border-radius: 40px; width: 29%; overflow: auto; padding: 5px; padding-left: 5px; padding-right: 5px; margin-left: 0.5vw; margin-right: 0.5vw; margin-bottom: 1vh; transition: all 0.5s cubic-bezier(.17,.67,.31,1.34), scale 0.3s cubic-bezier(.17,.67,.31,1.36), opacity 0.1s ease; opacity: 0%; scale: 0.7;"><div class="barbuttontexta">${cachedActions[action].name}</div></div>
+        <div class="hoverablez dimension" id="${animationId}" onclick="switchOutAction('${cachedActions[action].file}')" style="border-radius: 8px; width: 29%; overflow: auto; padding: 5px; padding-left: 5px; padding-right: 5px; margin-left: 0.5vw; margin-right: 0.5vw; margin-bottom: 1vh; transition: all 0.5s cubic-bezier(.17,.67,.31,1.34), scale 0.3s cubic-bezier(.17,.67,.31,1.36), opacity 0.1s ease; opacity: 0%; scale: 0.7;"><div class="barbuttontexta">${cachedActions[action].name}</div></div>
         `;
     setTimeout(() => {
       document.getElementById(animationId).style.opacity = "100%";
@@ -736,26 +732,26 @@ function actionSearch(query) {
         document.getElementById("searchActions").innerHTML += `
         <div class="dimension fade" style="background-color: #FFFFFF08; padding: 7px; border-radius: 12px; width: calc(95% - 14px); margin-bottom: 2vh;">
         <div class="barbuttontexta" style="margin-left: 1vw !important; text-align: left;">Best Match</div>
-        <div onclick="switchOutAction('${cachedActions[action].file}')" class="hoverablez dimension" style="border-radius: 40px; width: 95%; margin-left: auto !important; margin-right: auto !important; padding: 5px; padding-left: 5px; padding-right: 5px; margin-left: 0.5vw; margin-right: 0.5vw;"><div class="barbuttontexta">${cachedActions[action].name}</div></div>
+        <div onclick="switchOutAction('${cachedActions[action].file}')" class="hoverablez dimension" style="border-radius: 8px; width: 95%; margin-left: auto !important; margin-right: auto !important; padding: 5px; padding-left: 5px; padding-right: 5px; margin-left: 0.5vw; margin-right: 0.5vw;"><div class="barbuttontexta">${cachedActions[action].name}</div></div>
         </div>
         `;
       } else if (matchNo == 1) {
         document.getElementById("searchActions").innerHTML += `
         <div class="dimension fade" style="background-color: #FFFFFF08; padding: 7px; border-radius: 12px; width: calc(50% - 14px); margin-bottom: 2vh; margin-right: ${cachedActions[parseFloat(action) + 1] ? '2%' : 'inherit'}">
         <div class="barbuttontexta" style="margin-left: 1vw !important; text-align: left;">Second Best Match</div>
-        <div onclick="switchOutAction('${cachedActions[action].file}')" class="hoverablez dimension" style="border-radius: 40px; width: 95%; margin-left: auto !important; margin-right: auto !important; padding: 5px; padding-left: 5px; padding-right: 5px; margin-left: 0.5vw; margin-right: 0.5vw; overflow: auto;"><div class="barbuttontexta">${cachedActions[action].name}</div></div>
+        <div onclick="switchOutAction('${cachedActions[action].file}')" class="hoverablez dimension" style="border-radius: 8px; width: 95%; margin-left: auto !important; margin-right: auto !important; padding: 5px; padding-left: 5px; padding-right: 5px; margin-left: 0.5vw; margin-right: 0.5vw; overflow: auto;"><div class="barbuttontexta">${cachedActions[action].name}</div></div>
         </div>
         `;
       } else if (matchNo == 2) {
         document.getElementById("searchActions").innerHTML += `
         <div class="dimension fade" style="background-color: #FFFFFF08; padding: 7px; border-radius: 12px; width: calc(43% - 14px); margin-bottom: 2vh;">
         <div class="barbuttontexta" style="margin-left: 1vw !important; text-align: left;">Third Best Match</div>
-        <div onclick="switchOutAction('${cachedActions[action].file}')" class="hoverablez dimension" style="border-radius: 40px; width: 95%; margin-left: auto !important; margin-right: auto !important; padding: 5px; padding-left: 5px; padding-right: 5px; margin-left: 0.5vw; margin-right: 0.5vw; overflow: auto;"><div class="barbuttontexta">${cachedActions[action].name}</div></div>
+        <div onclick="switchOutAction('${cachedActions[action].file}')" class="hoverablez dimension" style="border-radius: 8px; width: 95%; margin-left: auto !important; margin-right: auto !important; padding: 5px; padding-left: 5px; padding-right: 5px; margin-left: 0.5vw; margin-right: 0.5vw; overflow: auto;"><div class="barbuttontexta">${cachedActions[action].name}</div></div>
         </div>
         `;
       } else {
         document.getElementById("searchActions").innerHTML += `
-                    <div onclick="switchOutAction('${cachedActions[action].file}')" class="hoverablez dimension fade" style="border-radius: 40px; width: 29%; padding: 5px; padding-left: 5px; padding-right: 5px; margin-left: 0.5vw; margin-right: 0.5vw; margin-bottom: 1vh;"><div class="barbuttontexta">${cachedActions[action].name}</div></div>
+                    <div onclick="switchOutAction('${cachedActions[action].file}')" class="hoverablez dimension fade" style="border-radius: 8px; width: 29%; padding: 5px; padding-left: 5px; padding-right: 5px; margin-left: 0.5vw; margin-right: 0.5vw; margin-bottom: 1vh;"><div class="barbuttontexta">${cachedActions[action].name}</div></div>
                     `;
       }
 

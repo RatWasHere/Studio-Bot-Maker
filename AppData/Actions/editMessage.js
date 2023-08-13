@@ -492,8 +492,8 @@ module.exports = {
     };
 
     let messageToEdit = bridge.variables[varTools.transf(values.messageVariable, bridge.variables)]
-    let msg = await messageToEdit
-      .edit({
+      let msg = await messageToEdit
+      msg.edit({
         content: varTools.transf(values.messageContent, bridge.variables),
         embeds: embeds,
         components: endComponents,

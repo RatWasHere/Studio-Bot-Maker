@@ -159,7 +159,7 @@
   <script>
     var datjson = JSON.parse(fs.readFileSync("./AppData/data.json"));
     let themeColor = datjson.color;
-    let data = require('./AppData/data.json');
+    let data = datjson;
     let exportFolder;
     let onTimeout = false;
     let addDirectory = false;

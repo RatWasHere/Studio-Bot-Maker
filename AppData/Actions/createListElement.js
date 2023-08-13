@@ -1,6 +1,6 @@
 module.exports = {
   data: {
-    name: "Create List Object",
+    name: "Create List Element",
     ListName: "",
     checkFor: "Text*",
     toAdd: "",
@@ -9,7 +9,7 @@ module.exports = {
 
   UI: {
     compatibleWith: ["Any"],
-    text: "Create List Object",
+    text: "Create List Element",
     sepbar: "",
     btext: "List Name",
     "input_direct*": "ListName",
