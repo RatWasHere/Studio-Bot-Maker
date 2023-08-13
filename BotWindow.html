@@ -1,82 +1,97 @@
 <html>
   <link rel="stylesheet" href="main.css" />
   <meta charset="utf8" />
-  <div
-    style="
-      width: 100vw;
-      overflow: auto;
-      height: 100vh;
-      margin-top: -8px;
-      margin-left: -8px;
-    "
-    id="everything_container"
-  >
+
     <div
       style="
         width: 100vw;
-        height: 100vw;
-        background-color: #000000;
+        height: 90vh;
+        margin-top: -8px;
         color: #ffffff;
         overflow: auto;
       "
     >
       <div
+
+      id="console"
         style="
           font-family: Courier New, Courier, monospace;
-          font-size: 12px;
+          font-size: 14px;
           margin: auto;
-          text-align: center;
+          text-align: left;
           margin-top: 2vh;
+          user-select: text;
+          margin-left: 1vw;
         "
       >
-        Bot Log - Close Window To Stop Your Bot!
       </div>
-      <div class="sepbar"></div>
-      <div id="console" style="width: 90vw; margin: auto"></div>
     </div>
+    <div id="selectorMenu" class="flexbox" style="-webkit-app-region: drag; margin-left: -8px; justify-content: left; width: 100vw; background-color: #FFFFFF08;">
+      <div id="buttonsContainer" class="flexbox" style="width: 100vw; height: 10vh; transition: scale 5.3s ease;">
+      <div class="barbuttontexta" id="permissions-name"></div>
+      <div class="barbuttonshift flexbox" style="margin-right: 1vw; -webkit-app-region: none; width: 23vw; margin-left: auto;" onclick="ipcRenderer.send('shutdownBot')">
+        <div class="image checkmark" style="width: 30% !important; height: 30px !important; margin: auto !important;"></div>
+        <div style="margin: auto;">
+        <div class="barbuttontexta">Turn Bot Off</div>
+        <div class="smalltext" style="opacity: 50%; font-size: 8px;">Closes This Window</div>
+        </div>
+    </div>
+  <div class="barbuttonshift flexbox" style="margin-right: 1vw; -webkit-app-region: none; width: 19vw;" onclick="ipcRenderer.send('hideBotWindow')">
+      <div class="image checkmark" style="width: 30% !important; height: 30px !important; margin: auto !important;"></div>
+      <div style="margin: auto;">
+      <div class="barbuttontexta">Close Log</div>
+      <div class="smalltext" style="opacity: 50%; font-size: 8px;">Hides This Window</div>
+      </div>
+  </div>
+  </div>
   </div>
   <script>
+    var datjson = JSON.parse(require('fs').readFileSync("./AppData/data.json"));
+
+    let themeColor = datjson.color;
+    document.body.style.background = `linear-gradient(45deg, ${themeColor} 0%, #121212)`;
+    const { app, ipcRenderer } = require("electron");
+
     function ansiToHtml(text) {
       const escapeCodeRegex = /\u001b\[([\d;]+)m/g; // Regex pattern to match ANSI escape codes
       const ansiToHtmlCodes = {
-        0: "", // Reset / Normal
+        0: "color: #FFFFFF60;", // Reset / Normal
         1: "font-weight: bold", // Bold
         3: "font-style: italic", // Italic
         4: "text-decoration: underline", // Underline
-        30: "color: black", // Black
+        30: "color: #ffffff80", // Black
         31: "color: red", // Red
         32: "color: #13a10e", // Green
         33: "color: yellow", // Yellow
         34: "color: blue", // Blue
         35: "color: magenta", // Magenta
         36: "color: #113f45", // Cyan
-        37: "color: #ffffff90", // White
+        37: "color: #ffffff00", // White
         90: "color: #cccccc", // Gray
-        40: "padding: 6px; border-radius: 9px; background-color: #242424", // Background: Black
-        41: "padding: 6px; border-radius: 9px; background-color: #c50f1f", // Background: Red
-        42: "padding: 6px; border-radius: 9px; background-color: #227a4a", // Background: Green
-        43: "padding: 6px; border-radius: 9px; background-color: #b87b1a", // Background: Yellow
-        44: "padding: 6px; border-radius: 9px; background-color: #1a42b8", // Background: Blue
-        45: "padding: 6px; border-radius: 9px; background-color: #881798", // Background: Magenta
-        46: "padding: 6px; border-radius: 9px; background-color: #113f45", // Background: Cyan
-        47: "padding: 6px; border-radius: 9px; background-color: #FFFFFF80", // Background: White
+        40: "color: #ffffff80", // Background: Black
+        41: "color: red", // Background: Red
+        42: "color: green", // Background: Green
+        43: "color: yellow", // Background: Yellow
+        44: "color: blue", // Background: Blue
+        45: "color: magenta", // Background: Magenta
+        46: "color: cyan", // Background: Cyan
+        47: "color: ffffff80", // Background: White
         100: "padding: 6px; border-radius: 9px; background-color: #cccccc", // Background: Gray
-        // You can add more ANSI codes and corresponding CSS styles here if needed
       };
 
       return text.replace(escapeCodeRegex, (match, codes) => {
         const styles = codes.split(";").map((code) => ansiToHtmlCodes[code]);
         const style = styles.join(";");
 
-        return style ? `<div style="${style};">` : "</div>";
+        return style ? `<span style="${style}; width: 100%;">` : "</span>";
       });
     }
     console.log = (log) => {
       document.getElementById(
         "console",
-      ).innerHTML += `<div class="fade" style="margin: auto; margin-top: 6px;">${ansiToHtml(
+      ).innerHTML += `<span class="fade" style="margin: auto; margin-top: 6px;">${ansiToHtml(
         log,
-      )}</div>`;
+      )}</span>`;
     };
 
     document.body.style.padding = "0px !important";

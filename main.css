@@ -2123,10 +2123,18 @@ text {
   padding: 4px;
 }
 
+.option:hover > .optionPopup > .hoverablez {
+  font-size: 2vh;
+}
+
 .optionPopup > .hoverablez {
   border-radius: 4px;
   margin-bottom: 5px;
   padding: 4px;
+  overflow-x: auto;
+  word-break: keep-all;
+  font-size: 0px;
+  transition: all 0.2s ease;
 }
 
 .optionPopup > .hoverablez:last-child {

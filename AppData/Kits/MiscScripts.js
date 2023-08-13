@@ -225,21 +225,6 @@ function getOffset(el) {
   };
 }
 function handleKeybind(keyEvent) {
-  if (keyEvent.key == "Escape") {
-    if (
-      document.getElementById("bottombar") == undefined ||
-      document.getElementById("bottombar") == null
-    ) {
-      null;
-    } else {
-      if (document.getElementById("bottombar").style.width == "40%") {
-        unmodify();
-      }
-      if (document.getElementById("bottombar").style.width == "100vw") {
-        closeMenu();
-      }
-    }
-  }
   if (keyEvent.key.toLowerCase() == "s" && keyEvent.ctrlKey == true) {
       var saveIcon = document.createElement("div");
       saveIcon.className = "image savenm goofyhovereffect";
@@ -270,6 +255,11 @@ function handleKeybind(keyEvent) {
         }, 200);
       }, 300);
     }
+
+
+  if (keyEvent.key.toLowerCase() == 'q' && keyEvent.ctrlKey == true) {
+    toggleBotStatus('shutdownBot')
+  }
 }
 function closeMenu() {
   let bottombar = document.getElementById("bottombar");

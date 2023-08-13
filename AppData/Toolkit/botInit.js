@@ -10,36 +10,12 @@ function consoleLog(log) {
   )}</div>`;
 }
 
-let downloadedoceanic = false;
-let downloadedapitypes = false;
 let ranbot = false;
 
 const fs = require("fs");
 const { exec } = require("child_process");
 const os = require("os");
-fs.writeFileSync(
-  "./package.json",
-  `
-{
-    "name": "Studio-Bot-Maker",
-    "main": "bot.js",
-    "author": "Studio Bot Maker, Rat#1111",
-    "description": "A discord bot created via Studio Bot Maker!",
-    "dependencies": {
-        "discord-api-types": "^0.37.34",
-        "@oceanicjs/builders": "^1.1.9",
-        "oceanic.js": "^1.7.1",
-        "fs": "^0.0.1-security",
-        "fs-extra": "^11.1.1",
-        "fse": "^4.0.1",
-        "oceanic-collectors": "^1.0.7",
-        "node-fetch": "^3.3.1",
-        "request": "^2.88.2"
-    },
-    "version": "69420"
-}
-`,
-);
+
 exec("node -v", (error, stdout, stderr) => {
   if (error) {
     consoleLog(
@@ -75,19 +51,11 @@ exec("node -v", (error, stdout, stderr) => {
     consoleLog(`Node.JS is already installed, jumping directly to Startup.`);
       consoleLog(`Checking NPM modules.. This might take a bit`);
 
-      exec("npm i", (error, stdout, stderr) => {
-        if (error) {
-          consoleLog(
-            `Error occured whilst Updating NPM packages. One moment whilst we try again. (Additionally, visit the support guild)`,
-          );
-          setTimeout(() => {
-            location.reload();
-            return;
-          }, 5050);
-        }
-        consoleLog(`Successfully Updated NPM packages!`);
-        runBot();
-      });
+      exec("npm i oceanic.js@1.8.0");
+      exec("npm i @oceanicjs/builders");
+      exec("npm i discord-api-types");
+
+      runBot();
   }
 });
 
@@ -99,8 +67,12 @@ async function runBot() {
     customFs.readFileSync("./AppData/bot.js", "utf8"),
   );
   runCmd
-    .run(`node ${filePath}`, { onData: consoleLog, onError: consoleLog })
+    .run(`node ${filePath}`, { onData: consoleLog, onError: consoleLog, oncancel: cancelWindow })
     .catch((error) => {
       consoleLog(`Error executing bot.js: ${error}`);
     });
+}
+
+let cancelWindow = () => {
+  ipcRenderer.send('')
 }

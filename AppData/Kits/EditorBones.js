@@ -2,36 +2,27 @@ let version = 3;
 const { app, ipcRenderer } = require("electron");
 let selectedGroupType = "text";
 let copiedAction;
+let isBotOn;
 
-const { Worker } = require('worker_threads');
-
-function runInWorker(method) {
-  return new Promise((resolve, reject) => {
-    const worker = new Worker(`
-      const { parentPort } = require('worker_threads');
-      parentPort.on('message', (method) => {
-        try {
-          method();
-          parentPort.postMessage('Code execution completed.');
-        } catch (error) {
-          parentPort.postMessage({ error: error.message });
-        }
-      });
-    `);
-
-    worker.on('message', (message) => {
-      if (typeof message === 'string') {
-        resolve(message);
-      } else {
-        reject(new Error(message.error));
-      }
-      worker.terminate();
-    });
-
-    worker.postMessage(method.toString());
-  });
+ipcRenderer.on('botWindowStatus', (event, botOn) => {
+  isBotOn = botOn;
+  if (botOn) {
+    document.getElementById('botStatus').innerHTML = 'Your Bot Is On'
+    document.getElementById('turnBotOn').innerHTML = 'Turn Bot Off'
+  } else {
+    document.getElementById('botStatus').innerHTML = 'Your Bot Is Off'
+    document.getElementById('turnBotOn').innerHTML = 'Turn Bot On'
+  }
+})
+function toggleBotStatus() {
+  if (!isBotOn) {
+    console.log('rundown')
+    ipcRenderer.send('runBot')
+  } else {
+    console.log('shutdown')
+    ipcRenderer.send('shutdownBot');
+  }
 }
-
 function editAction() {
   let variables = [];
   let actionType = "text";
@@ -39,7 +30,7 @@ function editAction() {
     actionType = "event";
     try {
       if (
-        require(processPath +"/AppData/Events/" + botData.commands[lastObj].eventFile)
+        require(processPath + "/AppData/Events/" + botData.commands[lastObj].eventFile)
           .inputSchemes == 2
       ) {
         variables.push(botData.commands[lastObj].eventData[0]);
@@ -100,26 +91,17 @@ ipcRenderer.on("childClose", () => {
   document.body.style.opacity = "100%";
 });
 
-let lastMenuOption;
 let lastHovered;
-let customHTMLdfs;
-let customHTMLreturn;
-let lastDraggedRow;
 let menu = null;
 let errorPending = false;
 const fs = require("fs");
 const processPath = require("process").cwd();
-const path = require("path");
 var botData = JSON.parse(fs.readFileSync(processPath + "/AppData/data.json"));
 let lastType = 0; // 0 = Command; 1 = Actions;
 let lastObj = "1";
 let lastAct = "1";
 let lastHighlighted;
 let themeColor = botData.color;
-if (require('process').platform == 'win32') {
-  
-}
-let AppDataFolder;
 document.body.style.background = `linear-gradient(45deg, ${themeColor} 0%, #121212 170%)`;
 document.onkeydown = function (event) {
   handleKeybind(event);

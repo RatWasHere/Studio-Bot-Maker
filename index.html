@@ -9,14 +9,22 @@
   <div style="height: 40%; margin: auto; margin-right: 1vw; margin-left: 1vw; width: 3px; background-color: #FFFFFF40; border-radius: 12px;"></div>
 
   <div class="hoverablez option" onclick="initSetup()" style="margin-left: 0px">Settings</div>
-  <div class="hoverablez option nmt" popovertarget="project">Project
+  <div class="hoverablez option nmt">Project
     <div class="optionPopup dimension">
       <div class="hoverablez"  onclick="ipcRenderer.send('export', botData)">Export</div>
       <div class="hoverablez"  onclick="sltPrj()">Import</div>
     </div>
     
   </div>
-  <div class="hoverablez option" onclick="ipcRenderer.send('runBot')">Start Bot</div>
+  <div class="hoverablez option">Bot
+
+    <div class="optionPopup dimension">
+      <div class="hoverablez flexbox" onclick="toggleBotStatus()"><div id="turnBotOn">Turn Bot On</div> <div style="margin-left: auto; opacity: 50%;">CTRL+Q</div></div>
+      <div class="hoverablez" onclick="if (!isBotOn) {ipcRenderer.send('runBot')}; ipcRenderer.send('openBotWindow')">Bot Log</div>
+    </div>
+  </div>
+
+  <div style="margin: auto; margin-left: 1vw; margin-right: 1vw;" id="botStatus">Your Bot Is Off</div>
   
   <div class="hoverablez option flexbox" onclick="ipcRenderer.send('minimize')" style="height: 100%; width: 50px; padding: 0px; margin-top: auto; margin-bottom: auto; margin-left: auto; border-radius: 0px; margin-right: 0px; border-top-left-radius: 8px; border-bottom-left-radius: 8px;"><div style="width: 30%; border: 4px #FFFFFF50 solid; margin: auto; border-radius: 3px;"></div></div>
   <div class="hoverablez option flexbox" onclick="ipcRenderer.send('maximize')" style="height: 100%; width: 50px; padding: 0px; margin-top: auto; margin-bottom: auto; border-radius: 0px; margin-left: 0px; margin-right: 0px;"><div style="height: 30%; aspect-ratio: 1/1; border: 5px #FFFFFF50 solid; margin: auto; border-radius: 3px;"></div></div>

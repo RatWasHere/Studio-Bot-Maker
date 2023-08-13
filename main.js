@@ -401,11 +401,18 @@ ipcMain.on("editAction", async (event, data) => {
   newActionEditorWindow(data);
 });
 let isBotRunning = false;
+
+let botWindow;
 ipcMain.on("runBot", () => {
-  const botWindow = new BrowserWindow({
+  if (botWindow?.show) return;
+  botWindow = new BrowserWindow({
     width: 800,
     height: 670,
     icon: "icon.png",
+    show: false,
+    titleBarStyle: 'hidden',
+    resizable: false,
+    fullscreenable: false,
     webPreferences: {
       nodeIntegration: true,
       contextIsolation: false,
@@ -415,7 +422,43 @@ ipcMain.on("runBot", () => {
   });
   botWindow.setMenuBarVisibility(false);
   botWindow.loadFile("./BotWindow.html");
+
+  botWindow.on('closed', (event) => {
+    botWindow = undefined
+  })
+
+  win.webContents.send('botWindowStatus', botWindow?.show ? true : false)
 });
+
+ipcMain.on('openBotWindow', () => {
+  if (botWindow == undefined) {return}
+
+  botWindow.show()
+})
+
+ipcMain.on('hideBotWindow', () => {
+  if (botWindow == undefined) {return}
+
+  botWindow.hide()
+})
+
+ipcMain.on('shutdownBot', () => {
+  console.log('closing')
+
+  try {
+    botWindow.close()
+  } catch (error) {
+    console.log(error)
+  }
+
+  botWindow = undefined;
+
+  win.webContents.send('botWindowStatus', botWindow?.show ? true : false)
+})
+
+ipcMain.on('getBotWindowStatus', (event) => {
+  win.webContents.send('botWindowStatus', botWindow?.show ? true : false)
+})
 
 ipcMain.on("editEvent", (event, data) => {
   let eventName = data.name;
