@@ -94,12 +94,11 @@ function showCustomMenu(x, y) {
     if (lastHovered.id.startsWith("Group")) {
       menu.innerHTML += `
             <div class="dimension hoverablez" onclick="editRawData('${lastHovered.id.split('Group')[1]}')" style="width: 95%; padding-top: 4px; padding-bottom: 4px; margin: auto; margin-bottom: 4px; margin-top: 4px; border-radius: 4px;"><div class="barbuttontexta textToLeft" style="margin-left: 1vw;">Edit Data</div></div>
-            <div class="dimension hoverablez" style="width: 95%; padding-top: 4px; padding-bottom: 4px; margin: auto; margin-bottom: 4px; margin-top: 4px; border-radius: 4px;"><div class="barbuttontexta textToLeft" style="margin-left: 1vw;">Duplicate</div></div>
+            <div class="dimension hoverablez" onclick="duplicateGroup('${lastHovered.id.split('Group')[1]}')" style="width: 95%; padding-top: 4px; padding-bottom: 4px; margin: auto; margin-bottom: 4px; margin-top: 4px; border-radius: 4px;"><div class="barbuttontexta textToLeft" style="margin-left: 1vw;">Duplicate</div></div>
             `;
     }
     if (lastHovered.id.startsWith("Action")) {
       menu.innerHTML += `
-            <div class="dimension hoverablez" style="width: 95%; padding-top: 4px; padding-bottom: 4px; margin: auto; margin-bottom: 4px; margin-top: 4px; border-radius: 4px;"><div class="barbuttontexta textToLeft" style="margin-left: 1vw;">Edit Data</div></div>
             <div class="dimension hoverablez" onmousedown="copyAction(${
               lastHovered.id.split("Action")[1]
             })" style="width: 95%; padding-top: 4px; padding-bottom: 4px; margin: auto; margin-bottom: 4px; margin-top: 4px; border-radius: 4px;"><div class="barbuttontexta textToLeft" style="margin-left: 1vw;">Copy</div></div>

@@ -42,13 +42,13 @@
         >
           Command Description
         </div>
-        <div
-          class="input"
+        <input
           oninput="storeCaretPosition(this); this.innerHTML = this.innerText.split('').splice(0, 32).join(''); restoreCaretPosition(this)"
-          style="width: 95%"
+          style="width: 98%"
           id="commandDescription"
+          maxlength="64"
           contenteditable="true"
-        ></div>
+        >
       </div>
       <div class="flexbox" style="height: 78vh; width: 100vw">
         <div
@@ -117,7 +117,6 @@
           </div>
         </div>
         <div class="barbuttontexta" id="parameters-name"></div>
-        <div class="betaIndicator">BETA</div>
         <div
           class="barbuttonshift flexbox"
           style="margin-right: 1vw; width: 13vw; margin-left: auto"
@@ -176,7 +175,7 @@
         "blur(0px)";
       data = _data.parameters;
       console.log(_data, _data.description);
-      document.getElementById("commandDescription").innerHTML =
+      document.getElementById("commandDescription").value =
         _data.description;
       refreshParameters();
       document.getElementById(
@@ -237,7 +236,7 @@
           parameterName = parameterName.split("").splice(0, 10).join("") + "..";
         }
         endHTML += `
-            <div class="action textToLeft" draggable="true" ondragstart="startDrag(${parameter})" ondragover="dragOver(event, ${parameter})" ondragend="dragend()" id="${parameter}" onclick="openParameter(${parameter})" style="height:24px; border-radius: 6px !important;">
+            <div class="action textToLeft noanims" draggable="true" ondragstart="startDrag(${parameter})" ondragover="dragOver(event, ${parameter})" ondragend="dragend()" id="${parameter}" onclick="openParameter(${parameter})" style="height:24px; border-radius: 9px !important;">
                 ${parameterName}
             <div class="${
               editorSettings.widthChanges == true
@@ -262,29 +261,29 @@
       highlightedParameter = parameter;
       document.getElementById("parameterWindow").innerHTML = `
             <div class="barbuttontexta" style="margin-left: 1vw; text-align: left;">Parameter Name</div>
-            <div class="input noanims" oninput="validateInputSpaces(event); data[highlightedParameter].name = this.innerText; refreshParameters();" contenteditable="true">${data[parameter].name}</div>
+            <input style="width: 99%;" oninput="data[highlightedParameter].name = this.value; refreshParameters();" contenteditable="true" maxlength="32" value="${data[parameter].name}">
             <div class="sepbars noanims"></div>
             <div class="barbuttontexta" style="margin-left: 1vw; text-align: left;">Parameter Description</div>
-            <div class="input noanims" oninput="validateInput(event); data[highlightedParameter].description = this.innerText; refreshParameters();" contenteditable="true">${data[parameter].description}</div>
+            <input style="width: 99%;" oninput="data[highlightedParameter].description = this.value; refreshParameters();" maxlength="64" contenteditable="true" value="${data[parameter].description}">
             <div class="sepbars noanims"></div>
-            <div class="flexbox dimension" style="width: 90%; background-color: #FFFFFF07; border-radius: 9px; margin-left: auto; margin-right: auto; padding-left: 16px; padding-top: 4px; padding-bottom: 4px;">
+            <div class="flexbox dimension" style="width: calc(99% - 16px); background-color: #FFFFFF07; border-radius: 9px; margin-left: auto; margin-right: auto; padding-left: 16px; padding-top: 4px; padding-bottom: 4px;">
                 <div class="barbuttontexta" style="margin-left: 1vw;">Required?</div>
-                <div class="barbuttonshift borderright" onclick="data[highlightedParameter].required = true; refreshTypes()" id="required" style="height: 100%; margin-right: 0.2vw;"><div class="barbuttontexta">Yes</div></div>
-                <div class="barbuttonshift borderleft" onclick="data[highlightedParameter].required = false; refreshTypes()" id="notRequired" style="height: 100%; margin-left: 0.2vw;"><div class="barbuttontexta">No</div></div>
+                <div class="barbuttonshift borderright hoverablez" onclick="data[highlightedParameter].required = true; refreshTypes()" id="required" style="height: 100%; margin-right: 0.2vw; transition: background-color 0.15s ease, width 0.5s cubic-bezier(1,-0.66,0,1.79);"><div class="barbuttontexta">Yes</div></div>
+                <div class="barbuttonshift borderleft hoverablez" onclick="data[highlightedParameter].required = false; refreshTypes()" id="notRequired" style="height: 100%; margin-left: 0.2vw; transition: background-color 0.15s ease, width 0.5s cubic-bezier(1,-0.66,0,1.79);"><div class="barbuttontexta">No</div></div>
             </div>
             <div class="sepbars noanims"></div>
             <div class="barbuttontexta" style="margin-left: 1vw; text-align: left;">Parameter Type</div>
-            <div class="dimension" style="width: 90%; overflow: auto; padding: 8px; height: 20vh; background-color: #FFFFFF07; margin-right: auto; margin-left: auto; border-radius: 9px;">
-                <div class="zaction textToLeft hoverablez" onclick="setParameterType('string')" id="string" style="padding-left: 12px;">Text</div>
-                <div class="zaction textToLeft hoverablez" onclick="setParameterType('integer')" id="integer" style="padding-left: 12px;">Number</div>
-                <div class="zaction textToLeft hoverablez" onclick="setParameterType('boolean')" id="boolean" style="padding-left: 12px;">Boolean</div>
-                <div class="zaction textToLeft hoverablez" onclick="setParameterType('role')" id="role" style="padding-left: 12px;">Role</div>
-                <div class="zaction textToLeft hoverablez" onclick="setParameterType('channel')" id="channel" style="padding-left: 12px;">Channel</div>
-                <div class="zaction textToLeft hoverablez" onclick="setParameterType('user')" id="user" style="padding-left: 12px;">User</div>                
+            <div class="dimension" style="width: calc(99% - 16px); overflow: auto; padding: 8px; height: 20vh; background-color: #FFFFFF07; margin-right: auto; margin-left: auto; border-radius: 9px;">
+                <div class="zaction noanims textToLeft hoverablez" onclick="setParameterType('string')" id="string" style="padding-left: 12px; width: calc(99% - 12px)">Text</div>
+                <div class="zaction noanims textToLeft hoverablez" onclick="setParameterType('integer')" id="integer" style="padding-left: 12px; width: calc(99% - 12px)">Number</div>
+                <div class="zaction noanims textToLeft hoverablez" onclick="setParameterType('boolean')" id="boolean" style="padding-left: 12px; width: calc(99% - 12px)">Boolean</div>
+                <div class="zaction noanims textToLeft hoverablez" onclick="setParameterType('role')" id="role" style="padding-left: 12px; width: calc(99% - 12px)">Role</div>
+                <div class="zaction noanims textToLeft hoverablez" onclick="setParameterType('channel')" id="channel" style="padding-left: 12px; width: calc(99% - 12px)">Channel</div>
+                <div class="zaction noanims textToLeft hoverablez" onclick="setParameterType('user')" id="user" style="padding-left: 12px; width: calc(99% - 12px)">User</div>                
             </div>
             <div class="sepbars noanims"></div>
             <div class="barbuttontexta" style="margin-left: 1vw; text-align: left;">Store Parameter As</div>
-            <div class="input noanims" oninput="validateInput(event); data[highlightedParameter].storeAs = this.innerText;" contenteditable="true">${data[parameter].storeAs}</div>
+            <input style="width: 99%;" oninput="data[highlightedParameter].storeAs = this.value;" contenteditable="true" value="${data[parameter].storeAs}">
         `;
       refreshTypes();
     }
@@ -303,10 +302,15 @@
       ).style.backgroundColor = "#FFFFFF20";
       if (data[highlightedParameter].required == true) {
         document.getElementById("required").style.backgroundColor = "#FFFFFF20";
+        document.getElementById("required").style.width = "40%"
+
+        document.getElementById("notRequired").style.width = ""
         document.getElementById("notRequired").style.backgroundColor = "";
       } else {
-        document.getElementById("notRequired").style.backgroundColor =
-          "#FFFFFF20";
+        document.getElementById("notRequired").style.backgroundColor = "#FFFFFF20";
+        document.getElementById("notRequired").style.width = "40%"
+
+        document.getElementById("required").style.width = ""
         document.getElementById("required").style.backgroundColor = "";
       }
     }
@@ -383,7 +387,7 @@
         ipcRenderer.send(
           "parametersClosed",
           data,
-          document.getElementById("commandDescription").innerText,
+          document.getElementById("commandDescription").value,
         );
       }, 500);
     }

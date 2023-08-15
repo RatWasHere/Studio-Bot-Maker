@@ -1,7 +1,7 @@
 module.exports = {
   data: {
     name: "Get Channel Info",
-    channelVia: "Variable*",
+    channelVia: "Message Channel",
     channelFrom: "",
     get: "Channel Name",
   },
@@ -27,7 +27,6 @@ module.exports = {
         "Channel Guild",
         "Channel Topic",
         "Channel URL",
-        "Channel Server",
       ],
       storeAs: "get",
     },
@@ -47,6 +46,9 @@ module.exports = {
   async run(values, message, client, bridge) {
     let varTools = require(`../Toolkit/variableTools.js`);
     let channel;
+    if (values.channelVia == "Command Channel") {
+      channel = message.channel;
+    }
     if (values.channelVia == "Variable*") {
       channel =
         bridge.variables[varTools.transf(values.channelFrom, bridge.variables)];
@@ -72,14 +74,11 @@ module.exports = {
       case "Channel Topic":
         output = channel.topic || "-";
         break;
-      case "Channel Server":
-        output = channel.server;
-        break;
       case "Channel ID":
         output = channel.id;
         break;
       case "Channel Guild":
-        output = channel.guild || "-";
+        output = channel.guild
         break;
     }
 

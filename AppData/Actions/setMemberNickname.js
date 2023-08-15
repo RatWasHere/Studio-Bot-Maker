@@ -32,7 +32,7 @@ module.exports = {
     previewName: "To",
     preview: "newNickname",
   },
-  run(values, message, client, bridge) {
+  async run(values, message, client, bridge) {
     let varTools = require(`../Toolkit/variableTools.js`);
     let guild = bridge.guild;
 
@@ -43,14 +43,13 @@ module.exports = {
     }
     if (values.memberFrom == "Variable*") {
       member =
-        bridge.toMember(bridge.variables[varTools.transf(values.member, bridge.variables)], bridge.guild);
+        await bridge.toMember(bridge.variables[varTools.transf(values.member, bridge.variables)], guild);
     }
     if (values.memberFrom == "ID*") {
-      member = guild.members.get(
+      member = await guild.members.get(
         varTools.transf(values.member, bridge.variables),
       );
     }
-    console.log(member)
     member.edit({
       nick: varTools.transf(values.newNickname, bridge.variables),
     });

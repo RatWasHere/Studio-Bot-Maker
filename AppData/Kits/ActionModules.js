@@ -72,6 +72,15 @@ function newObject() {
     }, 200);
   }
 }
+
+function duplicateGroup(index) {
+  botData.commands.splice(parseFloat(index) + 1, 0, JSON.parse(JSON.stringify(botData.commands[index])))
+
+  wast()
+
+  refreshGroups()
+}
+
 function deleteObject(obj) {
   if (obj.parentNode.id.startsWith("Action")) {
     let position = obj.parentNode.id.split("Action")[1];

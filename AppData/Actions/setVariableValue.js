@@ -16,7 +16,6 @@ module.exports = {
   run(values, interaction, client, bridge) {
     let varTools = require(`../Toolkit/variableTools.js`);
 
-    bridge.variables[varTools.transf(values.variableName, bridge.variables)] =
-      varTools.transf(values.variableValue, bridge.variables);
+    bridge.variables[varTools.transf(values.variableName, bridge.variables)] = varTools.transf(values.variableValue, bridge.variables);
   },
 };

@@ -8,7 +8,7 @@ module.exports = {
     storeAs: "",
   },
   UI: {
-    compatibleWith: ["Text", "Slash"],
+    compatibleWith: ["Event"],
     text: "Delete Channel",
     sepbar:"",
 

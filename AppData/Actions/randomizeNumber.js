@@ -16,7 +16,7 @@ module.exports = {
     btext0: "Maximum",
     "input custom number <min>-999999999</min> <max>999999999</max>":
       "secondNumber",
-    sepbar1: "noice, 69!",
+    sepbar1: "",
     btext1: "Store As",
     "input!": "storeAs",
     preview: "secondNumber",
@@ -34,7 +34,7 @@ module.exports = {
       varTools.transf(values.secondNumber, bridge.variables),
     );
 
-    let randomNumber = Math.floor(Math.random() * (second - first + 1)) + first;
+    let randomNumber = Math.floor(Math.random() * (second - first)) + first;
 
     bridge.variables[varTools.transf(values.storeAs, bridge.variables)] =
       randomNumber;

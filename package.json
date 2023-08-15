@@ -44,7 +44,7 @@
     "@oceanicjs/builders": "^1.1.9",
     "ansi-to-html": "^0.7.2",
     "axios": "^1.4.0",
-    "discord-api-types": "^0.37.52",
+    "discord-api-types": "^0.37.53",
     "discord-rpc": "^4.0.1",
     "electron-squirrel-startup": "^1.0.0",
     "electron-updater": "^5.3.0",

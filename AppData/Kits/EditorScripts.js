@@ -164,9 +164,6 @@ function mbSelect(storeAs, menu, extraField, UIreference) {
       })
       pending.addEventListener('blur', (event) => {
         saveField(extraField, menu);
-        setTimeout(() => {
-          validateInput(event);
-        }, 10);
       })
     }
   }
@@ -195,9 +192,6 @@ function mbSelect(storeAs, menu, extraField, UIreference) {
       })
       pending.addEventListener('blur', (event) => {
         saveField(extraField, menu);
-        setTimeout(() => {
-          validateInput(event);
-        }, 10);
       })
     }
     if (document.getElementById(extraField)) {
@@ -762,7 +756,7 @@ function actionSearch(query) {
     document.getElementById("searchActions").innerHTML += `
             <div class="dimension fade" style="background-color: #FFFFFF08; padding: 7px; border-radius: 12px; width: calc(95% - 14px); margin-bottom: 2vh;">
             <div class="barbuttontexta" style="margin-left: 1vw !important; text-align: left;">No Matches Found</div>
-            <div onclick="viewAllActions()" class="hoverablez dimension" style="border-radius: 40px; width: 95%; margin-left: auto !important; margin-right: auto !important; padding: 5px; padding-left: 5px; padding-right: 5px; margin-left: 0.5vw; margin-right: 0.5vw;"><div class="barbuttontexta">View All Actions</div></div>
+            <div onclick="viewAllActions()" class="hoverablez dimension" style="border-radius: 9px; width: 95%; margin-left: auto !important; margin-right: auto !important; padding: 5px; padding-left: 5px; padding-right: 5px; margin-left: 0.5vw; margin-right: 0.5vw;"><div class="barbuttontexta">View All Actions</div></div>
             </div>
             `;
   }

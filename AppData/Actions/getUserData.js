@@ -46,6 +46,16 @@ module.exports = {
             user = client.users.get(varTools.transf(values.user, bridge.variables))
         }
 
-        bridge.variables[varTools.transf(values.storeAs, bridge.variables)] = storedData.users[user.id][varTools.transf(values.dataName, bridge.variables)]
+        let userData = undefined;
+
+        try {
+            userData =  storedData.users[user.id][varTools.transf(values.dataName, bridge.variables)];
+        } catch (error) {
+            userData = ''
+            storedData.users[user.id] = {}
+            bridge.data.IO.write(storedData)
+        }
+
+        bridge.variables[varTools.transf(values.storeAs, bridge.variables)] = userData
     }
 }

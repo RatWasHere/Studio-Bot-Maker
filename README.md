@@ -7,9 +7,7 @@
 
 # [DOWNLOAD HERE](https://github.com/RatWasHere/Studio-Bot-Maker/releases/latest)
 
-Time to ditch _**Discord Bot Maker**_ and _**Bot Studio For Discord**_ - and whatever other app you're using, move on to something modern, something fluid and fast!
-
- Are you ready to move on from the old and the ugly to something more lively, something with personality and great fluidity? Just hit [download](https://github.com/RatWasHere/Studio-Bot-Maker/releases/latest)!
+ Forget code, save yourself time, just hit [download](https://github.com/RatWasHere/Studio-Bot-Maker/releases/latest)!
 
 (If you're a BotGhost or some other Bot-making website user, this is the exactly the holy piece of gold you were searching for)
 

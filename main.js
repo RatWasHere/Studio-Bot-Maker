@@ -86,6 +86,11 @@ function createWindow() {
         spellcheck: false,
       },
     });
+    win.on('closed', () => {
+      if (botWindow == undefined) return;
+    
+      botWindow.close()
+    })
     win.loadFile("./index.html");
     win.setMenuBarVisibility(false);
     setTimeout(() => {
@@ -245,7 +250,6 @@ const clientId = "1106673404976824370";
 DiscordRPC.register(clientId);
 
 const rpc = new DiscordRPC.Client({ transport: "ipc" });
-
 autoUpdater.on("before-quit-for-update", () => {});
 rpc.on("ready", () => {
   console.log("Discord Rich Presence is ready!");
@@ -638,3 +642,4 @@ ipcMain.on('maximize', () => {
 ipcMain.on('minimize', () => {
   win.minimize()
 })
+

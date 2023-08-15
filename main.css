@@ -529,7 +529,7 @@
 }
 .hoverable {
   cursor: pointer;
-  transition: background-color ease 0.12s;
+  transition: background-color ease 0.09s;
 }
 .hoverablez {
   cursor: pointer;
@@ -1195,7 +1195,7 @@ button {
   margin-left: 3px;
   margin-right: 3px;
   border-radius: 12px;
-  transition: background-color 0.05s ease;
+  transition: background-color 0.12s ease;
   border: #000000 hidden 5px;
   background-color: #ffffff10;
   display: flex;
@@ -1952,16 +1952,33 @@ input {
   margin-bottom: inherit;
   margin: inherit;
   display: block;
-  padding: inherit;
+  width: 95%;
+  background-color: #ffffff10;
+  margin-left: auto;
+  border-radius: 7px;
+  margin-right: auto;
+  margin-bottom: 4px;
+  color: #ffffff97;
+  overflow-x: auto;
+  cursor: text;
+  transition: background-color ease-in 0.2s;
+  font-size: 21px;
+  padding: 2.5px;
+  padding-left: 16px;
+  white-space: nowrap;
+  padding-right: 0px;
+  box-shadow: inset 0 0 2px #ffffff10;
+  animation-name: kinput;
+  animation-duration: 1.3s;
+  border-bottom: #ffffff25 0px solid;
 }
 input:focus {
   border: inherit;
   outline: none;
-  background-color: inherit;
+  background-color: #FFFFFF12;
 }
 input:active {
   border: inherit;
-  background-color: inherit;
   outline: none;
 }
 
@@ -2022,7 +2039,8 @@ input[type="number"]::-webkit-outer-spin-button {
   overflow: auto;
   transition:
     all 0.3s ease,
-    opacity 0.5s ease;
+    opacity 0.5s ease,
+    background-color 0.1s ease;
   border-radius: 9px !important;
 }
 .optionleft {
@@ -2036,9 +2054,10 @@ input[type="number"]::-webkit-outer-spin-button {
   overflow: auto;
   height: 23px;
   transition:
-    all 0.25s ease,
-    opacity 0.5s ease;
-    border-radius: 9px !important;
+    all 0.3s ease,
+    opacity 0.5s ease,
+    background-color 0.1s ease;
+  border-radius: 9px !important;
 }
 .coloredTile {
   opacity: 40%;

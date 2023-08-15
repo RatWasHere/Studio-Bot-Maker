@@ -12,7 +12,7 @@ module.exports = {
 
     btext: "Get Channel Via",
     menuBar: {
-      choices: ["Message Channel", "Variable*", "Channel ID*"],
+      choices: ["Command Channel", "Variable*", "Channel ID*"],
       storeAs: "channelVia",
       extraField: "channelFrom",
     },
@@ -27,7 +27,6 @@ module.exports = {
         "Channel Guild",
         "Channel Topic",
         "Channel URL",
-        "Channel Server",
       ],
       storeAs: "get",
     },
@@ -47,7 +46,7 @@ module.exports = {
   async run(values, message, client, bridge) {
     let varTools = require(`../Toolkit/variableTools.js`);
     let channel;
-    if (values.channelVia == "Message Channel") {
+    if (values.channelVia == "Command Channel") {
       channel = message.channel;
     }
     if (values.channelVia == "Variable*") {
@@ -75,14 +74,11 @@ module.exports = {
       case "Channel Topic":
         output = channel.topic || "-";
         break;
-      case "Channel Server":
-        output = channel.server;
-        break;
       case "Channel ID":
         output = channel.id;
         break;
       case "Channel Guild":
-        output = channel.guild || "-";
+        output = channel.guild
         break;
     }
 

@@ -361,9 +361,12 @@ module.exports = {
             selectMenusNamePushStorage[`${lastOptionNo}`] = option.data.pushAs
             componentConnections[`${lastOptionNo}`] = option.data.actions;
             menuOptions.push({
-              label:
-                varTools.transf(option.data.label, bridge.variables) || "-",
+              label: varTools.transf(option.data.label, bridge.variables) || "-",
               value: `${lastOptionNo}`,
+              emoji: {
+                name: "me_rncrying",
+                id: "1128225648276688948"
+              }
             });
           }
           endComponents.push({

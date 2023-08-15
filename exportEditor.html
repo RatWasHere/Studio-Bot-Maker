@@ -262,7 +262,7 @@ document.getElementById('everything_container').style.filter = 'blur(0px)'
                         "dependencies": {
                             "discord-api-types": "^0.37.34",
                             "@oceanicjs/builders": "^1.1.9",
-                            "oceanic.js": "^1.7.1",
+                            "oceanic.js": "^1.8.0",
                             "fs": "^0.0.1-security",
                             "fs-extra": "^11.1.1",
                             "fse": "^4.0.1",
@@ -333,10 +333,7 @@ document.getElementById('everything_container').style.filter = 'blur(0px)'
         }
         document.getElementById('flash').style.height = "50%"
 
-        fs.writeFileSync(
-          exportFolder + "\\AppData\\Project\\data.json",
-          fs.readFileSync(processPath + "\\AppData\\Project\\data.json"),
-        );
+        
         let actions = fs.readdirSync(processPath + "\\AppData\\Actions");
 
         let acrnum = 0;

@@ -135,13 +135,8 @@ function showCustomMenu(x, y) {
     menu.innerHTML = `
         <div class="sepbars noanims"></div>
         `;
-    if (isActionMenu == false) {
-      menu.innerHTML = `
-            `;
-    }
     if (lastHovered != undefined) {
       menu.innerHTML += `
-            <div class="dimension hoverablez" style="width: 95%; padding-top: 4px; padding-bottom: 4px; margin: auto; margin-bottom: 4px; margin-top: 4px; border-radius: 6px;"><div class="barbuttontexta textToLeft" style="margin-left: 1vw;">Edit Data</div></div>
             <div class="dimension hoverablez" onmousedown="copyAction(${lastHovered}, '${lastActionContainer}')" style="width: 95%; padding-top: 4px; padding-bottom: 4px; margin: auto; margin-bottom: 4px; margin-top: 4px; border-radius: 6px;"><div class="barbuttontexta textToLeft" style="margin-left: 1vw;">Copy</div></div>
             `;
     }

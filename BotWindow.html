@@ -15,7 +15,7 @@
 
       id="console"
         style="
-          font-family: Courier New, Courier, monospace;
+          font-family: Consolas, 'Courier New', monospace;
           font-size: 14px;
           margin: auto;
           text-align: left;
@@ -30,14 +30,14 @@
       <div id="buttonsContainer" class="flexbox" style="width: 100vw; height: 10vh; transition: scale 5.3s ease;">
       <div class="barbuttontexta" id="permissions-name"></div>
       <div class="barbuttonshift flexbox" style="margin-right: 1vw; -webkit-app-region: none; width: 23vw; margin-left: auto;" onclick="ipcRenderer.send('shutdownBot')">
-        <div class="image checkmark" style="width: 30% !important; height: 30px !important; margin: auto !important;"></div>
+        <div class="image add" style="width: 30% !important; rotate: 45deg; height: 30px !important; margin: auto !important;"></div>
         <div style="margin: auto;">
         <div class="barbuttontexta">Turn Bot Off</div>
         <div class="smalltext" style="opacity: 50%; font-size: 8px;">Closes This Window</div>
         </div>
     </div>
   <div class="barbuttonshift flexbox" style="margin-right: 1vw; -webkit-app-region: none; width: 19vw;" onclick="ipcRenderer.send('hideBotWindow')">
-      <div class="image checkmark" style="width: 30% !important; height: 30px !important; margin: auto !important;"></div>
+      <div class="image add" style="width: 30% !important; rotate: 45deg; height: 30px !important; margin: auto !important;"></div>
       <div style="margin: auto;">
       <div class="barbuttontexta">Close Log</div>
       <div class="smalltext" style="opacity: 50%; font-size: 8px;">Hides This Window</div>

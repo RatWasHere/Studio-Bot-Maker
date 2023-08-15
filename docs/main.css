@@ -2199,11 +2199,10 @@
             font-size: 5vh !important;
         }
         .adaptForMobile {
-            width: calc(100vw - 6vw) !important;
-            margin-left: none;
-            margin-right: none;
-            padding: 1vw;
-            padding-right: 5vw;
+            width: calc(100vw - 5vw) !important;
+            margin-left: auto;
+            margin-right: auto;
+            padding: 5vw;
         }
 
         .negativeMargin {
@@ -2222,11 +2221,11 @@
         .barbuttontexta { 
             font-size: 1vh !important;
         }
-        .adaptedsize {
-            font-size: 2vh !important;
+        .adaptedSize {
+            font-size: 16px !important;
         }
         .smalltext {
-            font-size: 1.2vh !important;
+            font-size: 14px !important;
             opacity: 50%;
         }
         .adaptImages {
@@ -2235,5 +2234,10 @@
             background-position: center;
             width: 100vw !important;
             transition: all 0.12s ease !important;
+        }
+        .barbuttonshift {
+            width: 95% !important;
+            border-radius: 4px !important;
+            margin: auto;
         }
       }

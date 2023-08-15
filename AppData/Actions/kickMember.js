@@ -32,25 +32,24 @@ module.exports = {
   },
   subtitle: "Kick: $[memberFrom]$ - Reason: $[reason]$",
 
-  run(values, message, client, bridge) {
+  async run(values, message, client, bridge) {
     let varTools = require(`../Toolkit/variableTools.js`);
 
     let guild = bridge.guild;
 
     let member;
     if (values.memberFrom == "Variable*") {
-      member = guild.getMember(
+      member = await guild.getMember(
         bridge.variables[
           varTools.transf(values.memberVariable, bridge.variables)
         ].id,
       );
     }
     if (values.memberFrom == "ID*") {
-      member = guild.getMember(
+      member = await guild.getMember(
         varTools.transf(values.memberVariable, bridge.variables),
       );
     }
-
     if (values.reason.trim() == "") {
       member.kick();
     } else {
