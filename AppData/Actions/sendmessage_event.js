@@ -2,7 +2,7 @@ module.exports = {
   data: {
     messageContent: "",
     storeAs: "",
-    sendTo: "Command Channel",
+    sendTo: "Channel ID*",
     to: "",
     actionRows: [],
     name: "Send Message",
@@ -55,22 +55,42 @@ module.exports = {
                     color: "Default",
                     actions: {},
                     disabled: false,
+                    emojiName: "",
+                    emojiID: "",
+                    isEmojiAnimated: false
                   },
                   UI: {
                     text: "Button",
+
                     sepbar: "",
+
                     btext: "Button Label",
                     input: "label",
+
                     sepbar0: "",
+                    
                     btext0: "Button Style",
                     menuBar: {
                       choices: ["Default", "Success", "Danger", "Neutral"],
                       storeAs: "color",
                     },
+                    
+                    toggle0: { name: "Disable This Button?", storeAs: "disabled" },
+
                     sepbar1: "",
-                    toggle: { name: "Disabled", storeAs: "disabled" },
-                    sepbar2: "",
-                    btext2: "Once Clicked, Run",
+
+                    btext1: "Emoji Name <span style='opacity: 50%;'>Optional</span>",
+                    input0: "emojiName",
+                    btext2: "Emoji ID <span style='opacity: 50%;'>Optional</span>",
+                    input1: "emojiID",
+                    toggle: {
+                      name: "Make The Emoji Animated?",
+                      storeAs: "isEmojiAnimated"
+                    },
+
+                    sepbar2:"",
+
+                    btext3: "Once Clicked, Run",
                     actions: "actions"
                   },
                 },
@@ -83,7 +103,7 @@ module.exports = {
                     btext: "Button Label",
                     input: "label",
                     sepbar0: "",
-                    btext0: "Button Link",
+                    btext0: "Button URL",
                     input0: "link",
                   },
                 },
@@ -114,21 +134,29 @@ module.exports = {
           },
           UI: {
             text: "Select Menu",
+
             sepbar: "",
+
             btext: "Stop Waiting After (Seconds)",
-            "input custom number <max>9999999999999999999</max> <min>1</min>":
-              "await",
+            "input custom number <max>9999999999999999999</max> <min>1</min>": "await",
+
             sepbar0: "",
+
             btext0: "Max Selectable",
             "input custom number <max>25</max> <min>1</min>": "maxSelectable",
+
             btext1: "Min Selectable",
             "input custom number <min>1</min> <max>25</max>": "minSelectable",
+
             sepbar1: "",
+
             btext2: "Store Interaction As",
             "input!": "storeInteractionAs",
             "btext*": "Store Selection List As",
             "input*!": "storeOptionsListAs",
+
             sepbar2: "",
+
             customMenu: {
               max: 25,
               name: "Options",
@@ -138,17 +166,42 @@ module.exports = {
               UItypes: {
                 selectMenu: {
                   name: "Select Menu Option",
-                  data: { actions: {}, label: "", pushAs:"" },
+                  data: { actions: {}, label: "", pushAs:"", emojiName:"", emojiID: "", isEmojiAnimated: false, default: false },
                   UI: {
                     text: "Select Menu Option",
+
                     sepbar: "",
+
                     btext: "Label",
                     input: "label",
+
                     sepbar0: "",
-                    btext1: "Push To Selection List As:",
-                    input0: "pushAs",
+
+                    btext0: "Emoji Name <span style='opacity: 50%;'>Optional</span>",
+                    input0: "emojiName",
+                    btext1: "Emoji ID <span style='opacity: 50%;'>Optional</span>",
+                    input1: "emojiID",
+                    toggle: {
+                      name: "Make The Emoji Animated?",
+                      storeAs: "isEmojiAnimated"
+                    },
+
                     sepbar1:"",
-                    btext0: "If selected, Run:",
+                    
+                    btext2: "Push To Selection List As:",
+                    input2: "pushAs",
+                    
+                    sepbar2:"",
+                    
+                    toggle0: {
+                      name: "Make This Option The Default One?",
+                      storeAs: "default"
+                    },
+
+                    sepbar3:"",
+
+
+                    btext3: "If selected, Run:",
                     actions: "actions",
                   },
                 },
@@ -156,7 +209,7 @@ module.exports = {
               storeAs: "options",
             },
             sepbar3: "",
-            toggle: { name: "Disabled", storeAs: "disabled" },
+            toggle: { name: "Disable This?", storeAs: "disabled" },
             "sepbar_": "",
             btext6: "Placeholder",
             input1: "placeholder",
@@ -242,7 +295,7 @@ module.exports = {
                     btext0: "Field Value",
                     largeInput: "value",
                     sepbar1: "",
-                    toggle: { name: "Make Field Inline", storeAs: "inline" },
+                    toggle: { name: "Make Field Inline?", storeAs: "inline" },
                   },
                 },
               },
@@ -257,6 +310,8 @@ module.exports = {
     btext0: "Get Channel To Send In Via:",
     menuBar: {
       choices: [
+        "Command Channel",
+        "Command Author",
         "Channel Variable*",
         "Channel ID*",
         "User Variable*",
@@ -274,8 +329,6 @@ module.exports = {
         "User Variable*": "direct",
       },
     },
-    preview: "messageContent",
-    previewName: "Content",
   },
   subtitle: "Content: $[messageContent]$ - Get Channel Via: $[sendTo]$",
   async run(values, message, client, bridge) {
@@ -308,7 +361,9 @@ module.exports = {
           let buttons = [];
           for (let button of components.data.buttons) {
             lastOptionNo++;
+
             if (button.type == "normal") {
+
               let style;
               switch (button.data.color) {
                 case "Default":
@@ -324,12 +379,31 @@ module.exports = {
                   style = ButtonStyles.SECONDARY;
                   break;
               }
+              
+              let emoji = {
+                name: null,
+                id: null
+              }
+
+              if (button.data.emojiName.trim() != '') {
+                emoji.name = varTools.transf(button.data.emojiName, bridge.variables)
+  
+                if (button.data.emojiID.trim() != '') {
+                  emoji.id = varTools.transf(button.data.emojiID, bridge.variables)
+                } else {
+                  emoji.id = null
+                }
+  
+                emoji.animated = button.data.isEmojiAnimated
+              }
+
               buttons.push({
                 type: ComponentTypes.BUTTON,
                 label: varTools.transf(button.data.label, bridge.variables),
                 style: style,
                 disabled: button.data.disabled == true,
                 customID: lastOptionNo,
+                emoji: emoji.name == null ? undefined : emoji
               });
               componentConnections[lastOptionNo] = button.data.actions;
             } else {
@@ -360,10 +434,29 @@ module.exports = {
             selectMenuStorageNames[`${lastOptionNo}`] = components.data.storeOptionsListAs
             selectMenusNamePushStorage[`${lastOptionNo}`] = option.data.pushAs
             componentConnections[`${lastOptionNo}`] = option.data.actions;
+
+            let emoji = {
+              name: null,
+              id: null
+            }
+
+            if (option.data.emojiName.trim() != '') {
+              emoji.name = varTools.transf(option.data.emojiName, bridge.variables)
+
+              if (option.data.emojiID.trim() != '') {
+                emoji.id = varTools.transf(option.data.emojiID, bridge.variables)
+              } else {
+                emoji.id = null
+              }
+
+              emoji.animated = option.data.isEmojiAnimated
+            }
+
             menuOptions.push({
-              label:
-                varTools.transf(option.data.label, bridge.variables) || "-",
+              label: varTools.transf(option.data.label, bridge.variables) || "-",
               value: `${lastOptionNo}`,
+              emoji: emoji.name == null ? undefined : emoji,
+              default: option.data.default == true
             });
           }
           endComponents.push({
@@ -517,6 +610,7 @@ module.exports = {
     };
 
     let channel;
+
     if (values.sendTo == "Channel Variable*") {
       let chan = bridge.variables[varTools.transf(values.to, bridge.variables)]
         channel = chan.channel || client.getChannel(chan.id)
@@ -536,6 +630,7 @@ module.exports = {
         .createDM();
       channel = DMchannel;
     }
+
     await channel
       .createMessage({
         content: varTools.transf(values.messageContent, bridge.variables),

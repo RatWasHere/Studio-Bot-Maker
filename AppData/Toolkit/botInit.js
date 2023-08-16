@@ -16,7 +16,7 @@ const fs = require("fs");
 const { exec } = require("child_process");
 const os = require("os");
 
-exec("node -v", (error, stdout, stderr) => {
+exec("node -v", async (error, stdout, stderr) => {
   if (error) {
     consoleLog(
       "Node.js is not installed. Downloading now... (This will take a while..)",
@@ -52,8 +52,6 @@ exec("node -v", (error, stdout, stderr) => {
       consoleLog(`Checking NPM modules.. This might take a bit`);
 
       exec("npm i oceanic.js@1.8.0");
-      exec("npm i @oceanicjs/builders");
-      exec("npm i discord-api-types");
 
       runBot();
   }
