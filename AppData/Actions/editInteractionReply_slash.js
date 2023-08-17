@@ -166,7 +166,7 @@ module.exports = {
               UItypes: {
                 selectMenu: {
                   name: "Select Menu Option",
-                  data: { actions: {}, label: "", pushAs:"", emojiName:"", emojiID: "", isEmojiAnimated: false, default: false },
+                  data: { actions: {}, label: "", description: "", pushAs:"", emojiName:"", emojiID: "", isEmojiAnimated: false, default: false },
                   UI: {
                     text: "Select Menu Option",
 
@@ -174,6 +174,9 @@ module.exports = {
 
                     btext: "Label",
                     input: "label",
+
+                    btext_: "Description",
+                    input_:"description",
 
                     sepbar0: "",
 
@@ -446,7 +449,8 @@ module.exports = {
               label: varTools.transf(option.data.label, bridge.variables) || "-",
               value: `${lastOptionNo}`,
               emoji: emoji.name == null ? undefined : emoji,
-              default: option.data.default == true
+              default: option.data.default == true,
+              description: option.data.description == undefined || '' ? null : varTools.transf(option.data.description, bridge.variables)
             });
           }
           endComponents.push({
@@ -474,10 +478,14 @@ module.exports = {
     let embeds = [];
     for (let embed of values.embeds) {
       let endEmbed = { author: {}, footer: {}, fields: [] };
+      if (embed.data.title != "") {
         endEmbed.title = varTools.transf(
           `${embed.data.title}`,
           bridge.variables,
         );
+      } else {
+        console.log("Send Message >> Embed >> Unset Title, Error Will Occur");
+      }
       if (embed.data.authorName != "") {
         endEmbed.author.name = varTools.transf(
           `${embed.data.authorName}`,

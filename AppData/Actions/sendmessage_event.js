@@ -166,7 +166,7 @@ module.exports = {
               UItypes: {
                 selectMenu: {
                   name: "Select Menu Option",
-                  data: { actions: {}, label: "", pushAs:"", emojiName:"", emojiID: "", isEmojiAnimated: false, default: false },
+                  data: { actions: {}, label: "", description: "", pushAs:"", emojiName:"", emojiID: "", isEmojiAnimated: false, default: false },
                   UI: {
                     text: "Select Menu Option",
 
@@ -174,6 +174,9 @@ module.exports = {
 
                     btext: "Label",
                     input: "label",
+
+                    btext_: "Description",
+                    input_:"description",
 
                     sepbar0: "",
 
@@ -310,8 +313,6 @@ module.exports = {
     btext0: "Get Channel To Send In Via:",
     menuBar: {
       choices: [
-        "Command Channel",
-        "Command Author",
         "Channel Variable*",
         "Channel ID*",
         "User Variable*",
@@ -456,7 +457,8 @@ module.exports = {
               label: varTools.transf(option.data.label, bridge.variables) || "-",
               value: `${lastOptionNo}`,
               emoji: emoji.name == null ? undefined : emoji,
-              default: option.data.default == true
+              default: option.data.default == true,
+              description: option.data.description == undefined || '' ? null : varTools.transf(option.data.description, bridge.variables)
             });
           }
           endComponents.push({
@@ -610,7 +612,13 @@ module.exports = {
     };
 
     let channel;
-
+    if (values.sendTo == "Command Channel") {
+      channel = message.channel;
+    }
+    if (values.sendTo == "Command Author") {
+      const DMchannel = await client.users.get(message.author.id).createDM();
+      channel = DMchannel;
+    }
     if (values.sendTo == "Channel Variable*") {
       let chan = bridge.variables[varTools.transf(values.to, bridge.variables)]
         channel = chan.channel || client.getChannel(chan.id)
