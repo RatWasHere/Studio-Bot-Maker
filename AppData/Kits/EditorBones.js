@@ -80,7 +80,6 @@ function editAction() {
   });
 }
 ipcRenderer.on("childSave", (event, data, copied) => {
-  console.log(data);
   botData.commands[lastObj].actions[lastAct] = data;
   wast();
   refreshActions();
@@ -878,10 +877,13 @@ function sltPrj() {
 
 function savePrj() {
   if (botData.prjSrc != "") {
-    fs.writeFileSync(
-      botData.prjSrc + "\\AppData\\data.json",
-      JSON.stringify(botData, null, 2),
-    );
+    try {
+      fs.writeFileSync(
+        botData.prjSrc + "\\AppData\\data.json",
+        JSON.stringify(botData, null, 2),
+      );
+    } catch (err) {}
+
     fs.writeFileSync(
       "C:\\ProgramData\\studiodata.json",
       JSON.stringify(botData, null, 2),
