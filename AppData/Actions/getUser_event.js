@@ -1,5 +1,3 @@
-const variableTools = require("../Toolkit/variableTools.js");
-
 module.exports = {
   data: { name: "Get User", userID: "", storeAs: "" },
 
