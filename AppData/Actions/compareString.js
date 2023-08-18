@@ -42,11 +42,10 @@ module.exports = {
 
     let matchesCriteria = false;
 
-    let firstValue = `${varTools.transf(values.firstInput, bridge.variables)}`;
-    let secondValue = `${varTools.transf(values.secondInput, bridge.variables)}`;
+    let firstValue = varTools.transf(values.firstInput, bridge.variables);
+    let secondValue = varTools.transf(values.secondInput, bridge.variables);
 
 
-    console.log(firstValue, secondValue, "FIRSTSECOND", secondValue == firstValue)
     switch (values.comparator) {
       case "!=":
         if (firstValue != secondValue) {
@@ -75,7 +74,6 @@ module.exports = {
         break;
     }
 
-    console.log(matchesCriteria)
 
     if (matchesCriteria == true) {
       actionRunner(values.runIfTrue, message, client, bridge.variables, true);

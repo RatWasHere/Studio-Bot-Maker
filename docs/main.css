@@ -1375,6 +1375,16 @@
         margin-top: auto;
         margin-bottom: auto;
        }
+       btext {
+        transition: color 0.4s ease;
+        font-size: 18px;
+        color: #949494;
+        text-align: center;
+        margin-left: auto;
+        margin-right: auto;
+        margin-top: auto;
+        margin-bottom: auto;
+       }
        .appearabletext {
         transition: all 0.2s ease, font-size 0.15s ease;
         font-size: 0px;
@@ -2170,6 +2180,17 @@
         border-radius: 14px !important;
       }
 
+      .container {
+        width: 80vw;
+        height: 0.5rem;
+        background: linear-gradient(12deg, #de1b96, #f5f242);
+        border-radius: 12px;
+        opacity: 30%;
+        margin: auto;
+        margin-top: 1.5rem;
+        margin-bottom: 1.5rem;
+      }
+
       .hov:hover {
         filter: blur(0px);
       }
@@ -2199,12 +2220,16 @@
             font-size: 5vh !important;
         }
         .adaptForMobile {
-            width: calc(100vw - 5vw) !important;
-            margin-left: auto;
-            margin-right: auto;
-            padding: 5vw;
+            width: calc(96vw - 10vw) !important;
+            margin-left: auto !important;
+            margin-right: auto !important;
+            padding: 5vw !important;
         }
-
+        .adaptImages {
+            width: 90vw !important;
+            border-radius: 12px;
+            margin: auto !important;
+        };
         .negativeMargin {
             margin-top: 42vh !important;
         }

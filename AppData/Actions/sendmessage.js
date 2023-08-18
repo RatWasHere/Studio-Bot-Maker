@@ -387,16 +387,14 @@ module.exports = {
                 name: null,
                 id: null
               }
-
-              if (button.data.emojiName.trim() != '') {
+ 
+              if (button.data.emojiName && button.data.emojiName.trim() != '') {
                 emoji.name = varTools.transf(button.data.emojiName, bridge.variables)
   
-                if (button.data.emojiID.trim() != '') {
+                if (button.data.emojiID == '') {
                   emoji.id = varTools.transf(button.data.emojiID, bridge.variables)
-                } else {
-                  emoji.id = null
                 }
-  
+
                 emoji.animated = button.data.isEmojiAnimated
               }
 
@@ -406,7 +404,7 @@ module.exports = {
                 style: style,
                 disabled: button.data.disabled == true,
                 customID: lastOptionNo,
-                emoji: emoji.name == null ? undefined : emoji
+                emoji: emoji.name == null || "" ? undefined : emoji
               });
               componentConnections[lastOptionNo] = button.data.actions;
             } else {

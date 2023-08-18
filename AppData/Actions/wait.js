@@ -26,20 +26,20 @@ module.exports = {
     var timeAmount = parseFloat(varTools.transf(values.time, bridge.variables));
     let time;
     switch (values.amountOfTime) {
-      case "Seconds*":
+      case "Seconds":
         time = 1000 * timeAmount;
         break;
-      case "Minutes*":
+      case "Minutes":
         time = 1000 * 60 * timeAmount;
         break;
-      case "Hours*":
+      case "Hours":
         time = 1000 * 60 * 60 * timeAmount;
         break;
     }
 
     function wait(seconds) {
       return new Promise((resolve) => {
-        setTimeout(resolve, seconds * 1000);
+        setTimeout(resolve, time);
       });
     }
 
