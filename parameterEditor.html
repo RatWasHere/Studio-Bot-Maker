@@ -261,7 +261,7 @@
       highlightedParameter = parameter;
       document.getElementById("parameterWindow").innerHTML = `
             <div class="barbuttontexta" style="margin-left: 1vw; text-align: left;">Parameter Name</div>
-            <input style="width: 99%;" oninput="data[highlightedParameter].name = this.value; refreshParameters();" contenteditable="true" maxlength="32" value="${data[parameter].name}">
+            <div class="input" style="width: calc(99% - 16px);" oninput="validateInputSpaces(event); data[highlightedParameter].name = this.innerText; refreshParameters();" contenteditable="true" maxlength="32">${data[parameter].name}</div>
             <div class="sepbars noanims"></div>
             <div class="barbuttontexta" style="margin-left: 1vw; text-align: left;">Parameter Description</div>
             <input style="width: 99%;" oninput="data[highlightedParameter].description = this.value; refreshParameters();" maxlength="64" contenteditable="true" value="${data[parameter].description}">
