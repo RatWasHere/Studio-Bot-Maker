@@ -26,7 +26,7 @@ Skip the hassle of coding! A easy to navigate code free editor to build simple o
 
 ## ❗ Important notice
 > [!IMPORTANT]
-> **Studio bot maker plus** is not the [official **Studio bot maker app**](https://github.com/RatWasHere/Studio-Bot-Maker) but rather a modified version of the app made by me and all core feature requests will not be accepted. Head over to the official SBM github page or Discord to request features and majot changes
+> **Studio bot maker plus** is not the [**official Studio bot maker app**](https://github.com/RatWasHere/Studio-Bot-Maker) but rather a modified version of the app made by me and all core feature requests will not be accepted. Head over to the official SBM github page or Discord to request features and majot changes
 
 
 ## 🖌️ Customisation
@@ -36,15 +36,51 @@ Skip the hassle of coding! A easy to navigate code free editor to build simple o
 ## 🔨 Deploy on your own
 > [!NOTE]
 > All support for self deployed projects is voided as we cannot predict changes as forks are not official supported by me or the official SBM team, so you will need to be able to debug issues yourself
-### On Vercel
+### On Windows
 
 <details open>
 <summary>🛠️ Step-by-step guide</summary>
+  <br>
+  
+  1. Enters the "studio-bot-maker-plus" folder (the one you downloaded)
+  ```
+  cd studio-bot-maker-plus
+  ```
+  
+  2. Makes a "changes" folder
+  ```
+  mkdir changes
+  ```
+
+  3. Enter changes folder
+  ```
+  cd changes
+  ```
+
+  4. Initialise a Local repo
+  ```
+  git init
+  ```
+
+  5. Pull the nessacry files from the repo
+  ```
+  git pull https://github.com/devvyyxyz/Studio-bot-maker-plus.git
+  ```
+
+  6. Download all nesscary packages
+  ```
+  npm i
+  ```
+
+  6. Start the application
+  ```
+  npm start
+  ```
 </details>
 
 ### On other platforms
 > [!WARNING]
-> This way is not officially supported and was added to cater to some particular use cases where Vercel could not be used. The support for this method, therefore, is limited.
+> This way is not officially supported and was added to cater to some particular use cases where Windows could not be used. The support for this method, therefore, is limited.
 
 <details open>
 <summary>🛠️ Step-by-step guide</summary>
