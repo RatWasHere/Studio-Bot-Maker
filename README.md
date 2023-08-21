@@ -44,7 +44,7 @@ Skip the hassle of coding! A easy to navigate code free editor to build simple o
 
 ### On other platforms
 > [!WARNING]
-> This way of using GRS is not officially supported and was added to cater to some particular use cases where Vercel could not be used. The support for this method, therefore, is limited.
+> This way is not officially supported and was added to cater to some particular use cases where Vercel could not be used. The support for this method, therefore, is limited.
 
 <details open>
 <summary>🛠️ Step-by-step guide</summary>
