@@ -14,6 +14,11 @@ ipcRenderer.on('botWindowStatus', (event, botOn) => {
     document.getElementById('turnBotOn').innerHTML = 'Turn Bot On'
   }
 })
+ipcRenderer.on("eventSave", (event, eventData) => {
+  botData.commands[lastObj].eventFile = eventData.file;
+  botData.commands[lastObj].eventData = eventData.data;
+  highlight(document.getElementById(`Group${lastObj}`))
+});
 function toggleBotStatus() {
   if (!isBotOn) {
     console.log('rundown')
@@ -644,33 +649,6 @@ function highlight(element) {
   } catch (err) {console.log(err)}
 }
 
-function openBar(iftr) {
-  let bottombar = document.getElementById("bottombar");
-  bottombar.style.animationDuration = "";
-  bottombar.style.animationName = "";
-  bottombar.style.animationDuration = "0.5s";
-  bottombar.style.animationName = "expandFrom";
-  bottombar.style.height = "30%";
-  bottombar.style.width = "40%";
-  bottombar.style.backdropFilter = "blur(22px)";
-  bottombar.style.border = "#00000030 solid 2px";
-  bottombar.style.marginTop = "-90vh";
-  bottombar.style.zIndex = "50";
-  bottombar.style.marginLeft = "30%";
-  bottombar.style.borderRadius = "22px";
-  bottombar.style.backgroundColor = "#3d3d3d40";
-  bottombar.style.boxShadow = "#00000050 0px 0px 12px";
-  if (!iftr) {
-    bottombar.onclick = () => {
-      unmodify();
-    };
-  }
-  setTimeout(() => {
-    bottombar.style.animationName = "";
-    bottombar.style.animationDuration = "";
-  }, 500);
-}
-
 function sltTxt() {
   botData.commands[lastObj].trigger = "textCommand";
   fs.writeFileSync(
@@ -947,11 +925,7 @@ function openEvent() {
   }
 }
 
-ipcRenderer.on("eventSave", (event, eventData) => {
-  console.log(eventData);
-  botData.commands[lastObj].eventFile = eventData.file;
-  botData.commands[lastObj].eventData = eventData.data;
-});
+
 
 function openPermissionEditor() {
   ipcRenderer.send("openPerms", botData.commands[lastObj]);
@@ -971,7 +945,7 @@ function setGroupColor(elm) {
   refreshGroups();
 }
 
-function toggleColorsVisibility(button) {
+function toggleColorsVisibility() {
   if (botData.colorsVisibility == undefined) {
     botData.colorsVisibility = false;
   }

@@ -504,7 +504,8 @@ ipcMain.on("editEvent", (event, data) => {
     });
   });
 
-  ipcMain.on(`eventClosed${time}`, (event, data) => {
+  ipcMain.once(`eventClosed`, (event, data) => {
+    console.log(data)
     EventEditorWindow.getParentWindow().focus();
     win.webContents.send("eventSave", data);
     try {
