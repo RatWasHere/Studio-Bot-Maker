@@ -29,19 +29,26 @@ Skip the hassle of coding! A easy to navigate code free editor to build simple o
 > **Studio bot maker plus** is not the [official **Studio bot maker app**](https://github.com/RatWasHere/Studio-Bot-Maker) but rather a modified version of the app made by me and all core feature requests will not be accepted. Head over to the official SBM github page or Discord to request features and majot changes
 
 
-### 🖌️ Customisation
+## 🖌️ Customisation
 > [!WARNING]
 > Customisation of the official SBM app or SBM+ app may break major features and functions so edit at your own risk
 
-### 🔨 Deploy on your own
+## 🔨 Deploy on your own
 > [!NOTE]
 > All support for self deployed projects is voided as we cannot predict changes as forks are not official supported by me or the official SBM team, so you will need to be able to debug issues yourself
+### On Vercel
+### On other platforms
+> [!WARNING]
+> This way of using GRS is not officially supported and was added to cater to some particular use cases where Vercel could not be used. The support for this method, therefore, is limited.
+### Keep your fork up to date
+You can keep your fork, and thus your private Vercel instance up to date with the upstream using GitHub's [Sync Fork button](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/working-with-forks/syncing-a-fork). You can also use the [pull](https://github.com/wei/pull) package created by [@wei](https://github.com/wei) to automate this process.
 
-### ⚖️ Legal Disclaimer
+
+## ⚖️ Legal Disclaimer
 > [!NOTE]
 > Please note that this project is designed for use within the SBM app and may not be used for commercial purposes. Check the Forked repository for usage terms and permissions.
 
-### ♥️ Support the project 
+## ♥️ Support the project 
 I open-source almost everything I can and try to reply to everyone needing help using these projects. Obviously, this takes time. You can use this service for free.
 
 However, if you are using this project fork and are happy with it or just want to encourage me to continue creating and modifying stuff, there are a few ways you can do it:
