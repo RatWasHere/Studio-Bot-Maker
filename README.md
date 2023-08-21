@@ -27,6 +27,7 @@ Skip the hassle of coding! A easy to navigate code free editor to build simple o
 ## ❗ Important notice
 > [!IMPORTANT]
 > **Studio bot maker plus** is not the [**official Studio bot maker app**](https://github.com/RatWasHere/Studio-Bot-Maker) but rather a modified version of the app made by me and all core feature requests will not be accepted. Head over to the official SBM github page or Discord to request features and majot changes
+![](https://user-images.githubusercontent.com/100881234/259800754-871bf50f-fb8a-44c8-bda2-ac8523f8b87a.png)
 
 
 ## 🖌️ Customisation
