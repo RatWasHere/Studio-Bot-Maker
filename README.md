@@ -30,6 +30,8 @@ Skip the hassle of coding! A easy to navigate code free editor to build simple o
 
 
 ### 🖌️ Customisation
+> [!WARNING]
+> Customisation of the official SBM app or SBM+ app may break major features and functions so edit at your own risk
 
 ### 🔨 Deploy on your own
 > [!NOTE]
