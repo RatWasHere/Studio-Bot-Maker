@@ -20,11 +20,11 @@ function wast() {
 setInterval(async () => {
   let presence = {};
   if (currentlyEditing == true) {
-    presence.firstHeader = `Modifying Action #${lastAct} - ${botData.commands[lastObj].actions[lastAct].data.name}`;
+    presence.firstHeader = `Modifying action #${lastAct} - ${botData.commands[lastObj].actions[lastAct].data.name}`;
     presence.secondHeader = `Under ${botData.commands[lastObj].name}`;
     presence.botName = botData.name;
   } else {
-    presence.firstHeader = `Viewing Commands - ${botData.commands.length} Commands in total`;
+    presence.firstHeader = `Viewing commands - ${botData.commands.length} commands in total`;
     presence.secondHeader = `Highlighted: ${botData.commands[lastObj].name} - ${botData.commands[lastObj].actions.length} actions`;
     presence.botName = botData.name;
   }
@@ -93,7 +93,7 @@ function showCustomMenu(x, y) {
   if (lastHovered) {
     if (lastHovered.id.startsWith("Group")) {
       menu.innerHTML += `
-            <div class="dimension hoverablez" onclick="editRawData('${lastHovered.id.split('Group')[1]}')" style="width: 95%; padding-top: 4px; padding-bottom: 4px; margin: auto; margin-bottom: 4px; margin-top: 4px; border-radius: 4px;"><div class="barbuttontexta textToLeft" style="margin-left: 1vw;">Edit Data</div></div>
+            <div class="dimension hoverablez" onclick="editRawData('${lastHovered.id.split('Group')[1]}')" style="width: 95%; padding-top: 4px; padding-bottom: 4px; margin: auto; margin-bottom: 4px; margin-top: 4px; border-radius: 4px;"><div class="barbuttontexta textToLeft" style="margin-left: 1vw;">Edit raw data</div></div>
             <div class="dimension hoverablez" onclick="duplicateGroup('${lastHovered.id.split('Group')[1]}')" style="width: 95%; padding-top: 4px; padding-bottom: 4px; margin: auto; margin-bottom: 4px; margin-top: 4px; border-radius: 4px;"><div class="barbuttontexta textToLeft" style="margin-left: 1vw;">Duplicate</div></div>
             `;
     }
@@ -101,10 +101,10 @@ function showCustomMenu(x, y) {
       menu.innerHTML += `
             <div class="dimension hoverablez" onmousedown="copyAction(${
               lastHovered.id.split("Action")[1]
-            })" style="width: 95%; padding-top: 4px; padding-bottom: 4px; margin: auto; margin-bottom: 4px; margin-top: 4px; border-radius: 4px;"><div class="barbuttontexta textToLeft" style="margin-left: 1vw;">Copy</div></div>
+            })" style="width: 95%; padding-top: 4px; padding-bottom: 4px; margin: auto; margin-bottom: 4px; margin-top: 4px; border-radius: 4px;"><div class="barbuttontexta textToLeft" style="margin-left: 1vw;">Copy action</div></div>
             <div class="dimension hoverablez" onmousedown="pasteActionTo(${
               lastHovered.id.split("Action")[1]
-            })" style="width: 95%; padding-top: 4px; padding-bottom: 4px; margin: auto; margin-bottom: 4px; margin-top: 4px; border-radius: 4px;"><div class="barbuttontexta textToLeft" style="margin-left: 1vw;">Paste</div></div>
+            })" style="width: 95%; padding-top: 4px; padding-bottom: 4px; margin: auto; margin-bottom: 4px; margin-top: 4px; border-radius: 4px;"><div class="barbuttontexta textToLeft" style="margin-left: 1vw;">Paste action</div></div>
             `;
     }
   }
@@ -180,8 +180,8 @@ function editRawData(group) {
     <textarea contenteditable="true" id="rawdata" class="noanims" style="font-family: Consolas, 'Courier New', monospace; height: 80vh; margin: auto; margin-top: 1vh; width: 98%;">
     ${JSON.stringify(botData.commands[group], null, 2)}
     </textarea>
-    <div class="barbuttonshift" onclick="this.parentElement.remove()"><btext>Exit</btext></div>
-    <div class="barbuttonshift" onclick="botData.commands[${group}] = JSON.parse(document.getElementById('rawdata').value); refreshGroups()"><btext>Upload</btext></div>
+    <div class="barbuttonshift" onclick="this.parentElement.remove()"><btext>Exit without saving</btext></div>
+    <div class="barbuttonshift" onclick="botData.commands[${group}] = JSON.parse(document.getElementById('rawdata').value); refreshGroups()"><btext>Save data</btext></div>
   </div>
   `
 }
@@ -306,7 +306,7 @@ function initSetup() {
             <btext>Exit</btext>
             </div>
             <div class="image" style="background-image: url(./icon.png); height: 5vh; width: 5vh; margin: auto; margin-right: 1vw !important;"></div>
-            <div class="barbuttontext" style="margin: auto; margin-right: 1vw; margin-left: 0px; opacity: 50%;">Studio Bot Maker</div>
+            <div class="barbuttontext" style="margin: auto; margin-right: 1vw; margin-left: 0px; opacity: 50%;">Studio Bot Maker +</div>
            </div>
 
 
@@ -342,31 +342,30 @@ function initSetup() {
             <br>
             <btext style="width: 100%;">Color</btext>
             <div class="flexbox" style="width: calc(75% - 24px); padding: 12px; border-radius: 12px; background-color: #FFFFFF10;">
+            <btext style="width: 100%;">Dark themes</btext>
             <div class="colorTile" onmouseenter="setTimeout(() => {this.firstChild.className = 'colorTileText breatheWidth'}, 200)" onmouseleave="this.firstChild.className = 'colorTileText'; this.firstChild.style.width = '52.5%'; setTimeout(() => {this.firstChild.classList.remove('breatheWidth'); this.firstChild.style.width = '52.5%'; setTimeout(() => {this.firstChild.style.width = '';}, 150)}, 200);" onclick="setColor(this)" style="background-color: #000000;"><div class="colorTileText">Lights Off</div></div>
-            <div class="colorTile" onmouseenter="setTimeout(() => {this.firstChild.className = 'colorTileText breatheWidth'}, 200)" onmouseleave="this.firstChild.className = 'colorTileText'; this.firstChild.style.width = '52.5%'; setTimeout(() => {this.firstChild.classList.remove('breatheWidth'); this.firstChild.style.width = '52.5%'; setTimeout(() => {this.firstChild.style.width = '';}, 150)}, 200);" onclick="setColor(this)" style="background-color: #0b0014;"><div class="colorTileText">Ultraviolet</div></div>
-            <div class="colorTile" onmouseenter="setTimeout(() => {this.firstChild.className = 'colorTileText breatheWidth'}, 200)" onmouseleave="this.firstChild.className = 'colorTileText'; this.firstChild.style.width = '52.5%'; setTimeout(() => {this.firstChild.classList.remove('breatheWidth'); this.firstChild.style.width = '52.5%'; setTimeout(() => {this.firstChild.style.width = '';}, 150)}, 200);" onclick="setColor(this)" style="background-color: #170011;"><div class="colorTileText">Soothing Cherry</div></div>
-            <div class="colorTile" onmouseenter="setTimeout(() => {this.firstChild.className = 'colorTileText breatheWidth'}, 200)" onmouseleave="this.firstChild.className = 'colorTileText'; this.firstChild.style.width = '52.5%'; setTimeout(() => {this.firstChild.classList.remove('breatheWidth'); this.firstChild.style.width = '52.5%'; setTimeout(() => {this.firstChild.style.width = '';}, 150)}, 200);" onclick="setColor(this)" style="background-color: #170006;"><div class="colorTileText">Strawberry</div></div>
-            <div class="colorTile" onmouseenter="setTimeout(() => {this.firstChild.className = 'colorTileText breatheWidth'}, 200)" onmouseleave="this.firstChild.className = 'colorTileText'; this.firstChild.style.width = '52.5%'; setTimeout(() => {this.firstChild.classList.remove('breatheWidth'); this.firstChild.style.width = '52.5%'; setTimeout(() => {this.firstChild.style.width = '';}, 150)}, 200);" onclick="setColor(this)" style="background-color: #170000;"><div class="colorTileText">Bloodshot Pink</div></div>
-            <div class="colorTile" onmouseenter="setTimeout(() => {this.firstChild.className = 'colorTileText breatheWidth'}, 200)" onmouseleave="this.firstChild.className = 'colorTileText'; this.firstChild.style.width = '52.5%'; setTimeout(() => {this.firstChild.classList.remove('breatheWidth'); this.firstChild.style.width = '52.5%'; setTimeout(() => {this.firstChild.style.width = '';}, 150)}, 200);" onclick="setColor(this)" style="background-color: #170701;"><div class="colorTileText">Wood</div></div>
-            <div class="colorTile" onmouseenter="setTimeout(() => {this.firstChild.className = 'colorTileText breatheWidth'}, 200)" onmouseleave="this.firstChild.className = 'colorTileText'; this.firstChild.style.width = '52.5%'; setTimeout(() => {this.firstChild.classList.remove('breatheWidth'); this.firstChild.style.width = '52.5%'; setTimeout(() => {this.firstChild.style.width = '';}, 150)}, 200);" onclick="setColor(this)" style="background-color: #170f00;"><div class="colorTileText">Golden Apple</div></div>
-            <div class="colorTile" onmouseenter="setTimeout(() => {this.firstChild.className = 'colorTileText breatheWidth'}, 200)" onmouseleave="this.firstChild.className = 'colorTileText'; this.firstChild.style.width = '52.5%'; setTimeout(() => {this.firstChild.classList.remove('breatheWidth'); this.firstChild.style.width = '52.5%'; setTimeout(() => {this.firstChild.style.width = '';}, 150)}, 200);" onclick="setColor(this)" style="background-color: #241212;"><div class="colorTileText">Anger</div></div>
-            <div class="colorTile" onmouseenter="setTimeout(() => {this.firstChild.className = 'colorTileText breatheWidth'}, 200)" onmouseleave="this.firstChild.className = 'colorTileText'; this.firstChild.style.width = '52.5%'; setTimeout(() => {this.firstChild.classList.remove('breatheWidth'); this.firstChild.style.width = '52.5%'; setTimeout(() => {this.firstChild.style.width = '';}, 150)}, 200);" onclick="setColor(this)" style="background-color: #361d1d;"><div class="colorTileText">Salmon</div></div>
-            <div class="colorTile" onmouseenter="setTimeout(() => {this.firstChild.className = 'colorTileText breatheWidth'}, 200)" onmouseleave="this.firstChild.className = 'colorTileText'; this.firstChild.style.width = '52.5%'; setTimeout(() => {this.firstChild.classList.remove('breatheWidth'); this.firstChild.style.width = '52.5%'; setTimeout(() => {this.firstChild.style.width = '';}, 150)}, 200);" onclick="setColor(this)" style="background-color: #24121d;"><div class="colorTileText">Lilac</div></div>
-            <div class="colorTile" onmouseenter="setTimeout(() => {this.firstChild.className = 'colorTileText breatheWidth'}, 200)" onmouseleave="this.firstChild.className = 'colorTileText'; this.firstChild.style.width = '52.5%'; setTimeout(() => {this.firstChild.classList.remove('breatheWidth'); this.firstChild.style.width = '52.5%'; setTimeout(() => {this.firstChild.style.width = '';}, 150)}, 200);" onclick="setColor(this)" style="background-color: #262626;"><div class="colorTileText">Smoke</div></div>
-            <div class="colorTile" onmouseenter="setTimeout(() => {this.firstChild.className = 'colorTileText breatheWidth'}, 200)" onmouseleave="this.firstChild.className = 'colorTileText'; this.firstChild.style.width = '52.5%'; setTimeout(() => {this.firstChild.classList.remove('breatheWidth'); this.firstChild.style.width = '52.5%'; setTimeout(() => {this.firstChild.style.width = '';}, 150)}, 200);" onclick="setColor(this)" style="background-color: #141414;"><div class="colorTileText">Gray</div></div>
-            <div class="colorTile" onmouseenter="setTimeout(() => {this.firstChild.className = 'colorTileText breatheWidth'}, 200)" onmouseleave="this.firstChild.className = 'colorTileText'; this.firstChild.style.width = '52.5%'; setTimeout(() => {this.firstChild.classList.remove('breatheWidth'); this.firstChild.style.width = '52.5%'; setTimeout(() => {this.firstChild.style.width = '';}, 150)}, 200);" onclick="setColor(this)" style="background-color: #261300;"><div class="colorTileText">Garfield</div></div>
-            <div class="colorTile" onmouseenter="setTimeout(() => {this.firstChild.className = 'colorTileText breatheWidth'}, 200)" onmouseleave="this.firstChild.className = 'colorTileText'; this.firstChild.style.width = '52.5%'; setTimeout(() => {this.firstChild.classList.remove('breatheWidth'); this.firstChild.style.width = '52.5%'; setTimeout(() => {this.firstChild.style.width = '';}, 150)}, 200);" onclick="setColor(this)" style="background-color: #122324;"><div class="colorTileText">Shiny Forest</div></div>
-            <div class="colorTile" onmouseenter="setTimeout(() => {this.firstChild.className = 'colorTileText breatheWidth'}, 200)" onmouseleave="this.firstChild.className = 'colorTileText'; this.firstChild.style.width = '52.5%'; setTimeout(() => {this.firstChild.classList.remove('breatheWidth'); this.firstChild.style.width = '52.5%'; setTimeout(() => {this.firstChild.style.width = '';}, 150)}, 200);" onclick="setColor(this)" style="background-color: #000814;"><div class="colorTileText">Navy Blue</div></div>
-            <div class="colorTile" onmouseenter="setTimeout(() => {this.firstChild.className = 'colorTileText breatheWidth'}, 200)" onmouseleave="this.firstChild.className = 'colorTileText'; this.firstChild.style.width = '52.5%'; setTimeout(() => {this.firstChild.classList.remove('breatheWidth'); this.firstChild.style.width = '52.5%'; setTimeout(() => {this.firstChild.style.width = '';}, 150)}, 200);" onclick="setColor(this)" style="background-color: #071314;"><div class="colorTileText">Forest Green</div></div>
-            <div class="colorTile" onmouseenter="setTimeout(() => {this.firstChild.className = 'colorTileText breatheWidth'}, 200)" onmouseleave="this.firstChild.className = 'colorTileText'; this.firstChild.style.width = '52.5%'; setTimeout(() => {this.firstChild.classList.remove('breatheWidth'); this.firstChild.style.width = '52.5%'; setTimeout(() => {this.firstChild.style.width = '';}, 150)}, 200);" onclick="setColor(this)" style="background-color: #001417;"><div class="colorTileText">Aquamarine</div></div>
-            <div class="colorTile" onmouseenter="setTimeout(() => {this.firstChild.className = 'colorTileText breatheWidth'}, 200)" onmouseleave="this.firstChild.className = 'colorTileText'; this.firstChild.style.width = '52.5%'; setTimeout(() => {this.firstChild.classList.remove('breatheWidth'); this.firstChild.style.width = '52.5%'; setTimeout(() => {this.firstChild.style.width = '';}, 150)}, 200);" onclick="setColor(this)" style="background-color: #000f17;"><div class="colorTileText">Moody Blue</div></div>
-            <div class="colorTile" onmouseenter="setTimeout(() => {this.firstChild.className = 'colorTileText breatheWidth'}, 200)" onmouseleave="this.firstChild.className = 'colorTileText'; this.firstChild.style.width = '52.5%'; setTimeout(() => {this.firstChild.classList.remove('breatheWidth'); this.firstChild.style.width = '52.5%'; setTimeout(() => {this.firstChild.style.width = '';}, 150)}, 200);" onclick="setColor(this)" style="background-color: #12241e;"><div class="colorTileText">Mint</div></div>
+            <div class="colorTile" onmouseenter="setTimeout(() => {this.firstChild.className = 'colorTileText breatheWidth'}, 200)" onmouseleave="this.firstChild.className = 'colorTileText'; this.firstChild.style.width = '52.5%'; setTimeout(() => {this.firstChild.classList.remove('breatheWidth'); this.firstChild.style.width = '52.5%'; setTimeout(() => {this.firstChild.style.width = '';}, 150)}, 200);" onclick="setColor(this)" style="background-color: #0f0d40;"><div class="colorTileText">Night owl</div></div>
+            <div class="colorTile" onmouseenter="setTimeout(() => {this.firstChild.className = 'colorTileText breatheWidth'}, 200)" onmouseleave="this.firstChild.className = 'colorTileText'; this.firstChild.style.width = '52.5%'; setTimeout(() => {this.firstChild.classList.remove('breatheWidth'); this.firstChild.style.width = '52.5%'; setTimeout(() => {this.firstChild.style.width = '';}, 150)}, 200);" onclick="setColor(this)" style="background-color: #05210b;"><div class="colorTileText">Rainforest</div></div>
+            <div class="colorTile" onmouseenter="setTimeout(() => {this.firstChild.className = 'colorTileText breatheWidth'}, 200)" onmouseleave="this.firstChild.className = 'colorTileText'; this.firstChild.style.width = '52.5%'; setTimeout(() => {this.firstChild.classList.remove('breatheWidth'); this.firstChild.style.width = '52.5%'; setTimeout(() => {this.firstChild.style.width = '';}, 150)}, 200);" onclick="setColor(this)" style="background-color: #212902;"><div class="colorTileText">Gold dark matter</div></div>
+            <div class="colorTile" onmouseenter="setTimeout(() => {this.firstChild.className = 'colorTileText breatheWidth'}, 200)" onmouseleave="this.firstChild.className = 'colorTileText'; this.firstChild.style.width = '52.5%'; setTimeout(() => {this.firstChild.classList.remove('breatheWidth'); this.firstChild.style.width = '52.5%'; setTimeout(() => {this.firstChild.style.width = '';}, 150)}, 200);" onclick="setColor(this)" style="background-color: #290902;"><div class="colorTileText">Hunters wood</div></div>
+            <div class="colorTile" onmouseenter="setTimeout(() => {this.firstChild.className = 'colorTileText breatheWidth'}, 200)" onmouseleave="this.firstChild.className = 'colorTileText'; this.firstChild.style.width = '52.5%'; setTimeout(() => {this.firstChild.classList.remove('breatheWidth'); this.firstChild.style.width = '52.5%'; setTimeout(() => {this.firstChild.style.width = '';}, 150)}, 200);" onclick="setColor(this)" style="background-color: #0c382f;"><div class="colorTileText">Minty</div></div>
+            <btext style="width: 100%;">Light themes</btext>
+            <div class="colorTile" onmouseenter="setTimeout(() => {this.firstChild.className = 'colorTileText breatheWidth'}, 200)" onmouseleave="this.firstChild.className = 'colorTileText'; this.firstChild.style.width = '52.5%'; setTimeout(() => {this.firstChild.classList.remove('breatheWidth'); this.firstChild.style.width = '52.5%'; setTimeout(() => {this.firstChild.style.width = '';}, 150)}, 200);" onclick="setColor(this)" style="background-color: #4b0187;"><div class="colorTileText">Super violet</div></div>
+            <div class="colorTile" onmouseenter="setTimeout(() => {this.firstChild.className = 'colorTileText breatheWidth'}, 200)" onmouseleave="this.firstChild.className = 'colorTileText'; this.firstChild.style.width = '52.5%'; setTimeout(() => {this.firstChild.classList.remove('breatheWidth'); this.firstChild.style.width = '52.5%'; setTimeout(() => {this.firstChild.style.width = '';}, 150)}, 200);" onclick="setColor(this)" style="background-color: #8c042f;"><div class="colorTileText">Cherry trees</div></div>
+            <div class="colorTile" onmouseenter="setTimeout(() => {this.firstChild.className = 'colorTileText breatheWidth'}, 200)" onmouseleave="this.firstChild.className = 'colorTileText'; this.firstChild.style.width = '52.5%'; setTimeout(() => {this.firstChild.classList.remove('breatheWidth'); this.firstChild.style.width = '52.5%'; setTimeout(() => {this.firstChild.style.width = '';}, 150)}, 200);" onclick="setColor(this)" style="background-color: #616359;"><div class="colorTileText">Silver sword</div></div>
             </div>
             <div class="sepbarz"></div>
             <btext style="width: 100%;">Behaviour</btext>
             <div id="changingWidth"></div>
             <div id="animationsSpeed"></div>
-
+            <div class="sepbarz"></div>
+            <btext style="width: 100%;">App info</btext>
+            <div style="margin-bottom: 0.5vh; background-color: #FFFFFF09; width: 70vw; border-radius: 12px; display: block;">
+            <br>
+            <div class="barbuttontexta textToLeft" style="margin-left: 3vw; margin-top: 1.5vh;">Version: 1.0.0</div>
+            <div class="barbuttontexta textToLeft" style="margin-left: 3vw; margin-top: 1.5vh;">Changes: Added new theme options, Added "App info", Changes title to only have first word capatalised</div>
+            <div class="barbuttontexta textToLeft" style="margin-left: 3vw; margin-top: 1.5vh;">Credits: RatWasHere, Devvyyxyz</div>
+            <br>
             </div>
             </div>
     

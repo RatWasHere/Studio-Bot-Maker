@@ -5,26 +5,26 @@
     
     <div style="background-size: cover; background-image: url('./icon.png'); height: 3vh; width: 3vh; margin-top: auto; margin-bottom: auto; margin-left: 1vw !important; margin-right: 1vw !important;"></div>
 
-  <div id="titlebar" style="margin-top: auto; margin-bottom: auto;">Studio Bot Maker</div>
+  <div id="titlebar" style="margin-top: auto; margin-bottom: auto;">Studio bot maker +</div>
   <div style="height: 40%; margin: auto; margin-right: 1vw; margin-left: 1vw; width: 3px; background-color: #FFFFFF40; border-radius: 12px;"></div>
 
   <div class="hoverablez option" onclick="initSetup()" style="margin-left: 0px">Settings</div>
   <div class="hoverablez option nmt">Project
     <div class="optionPopup dimension">
-      <div class="hoverablez"  onclick="ipcRenderer.send('export', botData)">Export</div>
-      <div class="hoverablez"  onclick="sltPrj()">Import</div>
+      <div class="hoverablez"  onclick="ipcRenderer.send('export', botData)">Export project</div>
+      <div class="hoverablez"  onclick="sltPrj()">Import project</div>
     </div>
     
   </div>
   <div class="hoverablez option">Bot
 
     <div class="optionPopup dimension">
-      <div class="hoverablez flexbox" onclick="toggleBotStatus()"><div id="turnBotOn">Turn Bot On</div> <div style="margin-left: auto; opacity: 50%;">CTRL+Q</div></div>
-      <div class="hoverablez" onclick="if (!isBotOn) {ipcRenderer.send('runBot')}; ipcRenderer.send('openBotWindow')">Bot Log</div>
+      <div class="hoverablez flexbox" onclick="toggleBotStatus()"><div id="turnBotOn">Turn bot online</div> <div style="margin-left: auto; opacity: 50%;">CTRL + Q</div></div>
+      <div class="hoverablez" onclick="if (!isBotOn) {ipcRenderer.send('runBot')}; ipcRenderer.send('openBotWindow')">Bot runner logs</div>
     </div>
   </div>
 
-  <div style="margin: auto; margin-left: 1vw; margin-right: 1vw;" id="botStatus">Your Bot Is Off</div>
+  <div style="margin: auto; margin-left: 1vw; margin-right: 1vw;" id="botStatus">Your bot is offline</div>
   
   <div class="hoverablez option flexbox" onclick="ipcRenderer.send('minimize')" style="height: 100%; width: 50px; padding: 0px; margin-top: auto; margin-bottom: auto; margin-left: auto; border-radius: 0px; margin-right: 0px; border-top-left-radius: 8px; border-bottom-left-radius: 8px;"><div style="width: 30%; border: 4px #FFFFFF50 solid; margin: auto; border-radius: 3px;"></div></div>
   <div class="hoverablez option flexbox" onclick="ipcRenderer.send('maximize')" style="height: 100%; width: 50px; padding: 0px; margin-top: auto; margin-bottom: auto; border-radius: 0px; margin-left: 0px; margin-right: 0px;"><div style="height: 30%; aspect-ratio: 1/1; border: 5px #FFFFFF50 solid; margin: auto; border-radius: 3px;"></div></div>
@@ -142,7 +142,7 @@
               style="width: calc(34.5% - 24px); padding: 0px; height: 100%"
               onclick="setHighlightedGroup(1)"
             >
-              <div class="barbuttontexta">Text Commands</div>
+              <div class="barbuttontexta">Text commands</div>
             </div>
             <div
               class="barbuttonshift bordercenter"
@@ -150,7 +150,7 @@
               style="width: calc(34.5% - 24px); padding: 0px; height: 100%"
               onclick="setHighlightedGroup(2)"
             >
-              <div class="barbuttontexta">Slash Commands</div>
+              <div class="barbuttontexta">Slash commands</div>
             </div>
             <div
               class="barbuttonshift borderleft"
@@ -165,7 +165,7 @@
             class="tile borderbottomz"
             style="background: linear-gradient(0deg, #ffffff10, #ffffff15); padding: 0px; width: 100%; padding-top: 12px; padding-bottom: 12px;"
           >
-            <btext style="width: 90%; margin-left: 2%;"><span id="groupType">-</span> Name</btext>
+            <btext style="width: 90%; margin-left: 2%;"><span id="groupType">-</span> name</btext>
             <div
               class="inputBar"
               contenteditable="true"
@@ -193,7 +193,7 @@
                 border-radius: 9px;
               "
             >
-              Using 0 Actions
+              Using 0 actions
             </div>
             <div class="flexbox" id="groupActionsContainer" style="height: 33px; transition: all 0.2s ease; overflow-x: auto;">
               <div
@@ -433,6 +433,18 @@
                   style="
                     aspect-ratio: 1/1;
                     background-color: #f542ce;
+                    height: 4vh;
+                    border-radius: 12px;
+                    margin: auto;
+                    cursor: pointer;
+                  "
+                ></div>
+                <div
+                  class="dimension coloredTile"
+                  onclick="setGroupColor(this)"
+                  style="
+                    aspect-ratio: 1/1;
+                    background-color: #c4c8e7;
                     height: 4vh;
                     border-radius: 12px;
                     margin: auto;
