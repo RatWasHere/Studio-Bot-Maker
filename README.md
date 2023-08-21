@@ -37,9 +37,19 @@ Skip the hassle of coding! A easy to navigate code free editor to build simple o
 > [!NOTE]
 > All support for self deployed projects is voided as we cannot predict changes as forks are not official supported by me or the official SBM team, so you will need to be able to debug issues yourself
 ### On Vercel
+
+<details open>
+<summary>🛠️ Step-by-step guide</summary>
+</details>
+
 ### On other platforms
 > [!WARNING]
 > This way of using GRS is not officially supported and was added to cater to some particular use cases where Vercel could not be used. The support for this method, therefore, is limited.
+
+<details open>
+<summary>🛠️ Step-by-step guide</summary>
+</details>
+
 ### Keep your fork up to date
 You can keep your fork, and thus your private Vercel instance up to date with the upstream using GitHub's [Sync Fork button](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/working-with-forks/syncing-a-fork). You can also use the [pull](https://github.com/wei/pull) package created by [@wei](https://github.com/wei) to automate this process.
 
