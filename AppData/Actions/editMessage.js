@@ -14,6 +14,10 @@ module.exports = {
     sepbar: "",
     btext: "Message Content",
     largeInput: "messageContent",
+    toggle: {
+      name: "Edit Message Content?",
+      storeAs: "editMessageContent"
+    },
     sepbar0: "",
     customMenu: {
       name: "Components",
@@ -229,6 +233,10 @@ module.exports = {
       },
       storeAs: "actionRows",
     },
+    toggle0: {
+      name: "Edit Message Components?",
+      storeAs: "editMessageComponents"
+    },
     sepbar1: "",
     customMenu0: {
       name: "Embeds",
@@ -307,6 +315,10 @@ module.exports = {
         },
       },
       storeAs: "embeds",
+    },
+    toggle1: {
+      name: "Edit Message Embeds?",
+      storeAs: "editMessageEmbeds"
     },
     sepbar2: "",
     btext0: "Message Variable",
@@ -594,16 +606,28 @@ module.exports = {
 
     let messageToEdit = bridge.variables[varTools.transf(values.messageVariable, bridge.variables)]
       let msg = await messageToEdit
-      msg.edit({
-        content: varTools.transf(values.messageContent, bridge.variables),
-        embeds: embeds,
-        components: endComponents,
+
+      let original = msg; /* yes im lazying out cry ab it */
+      await msg.edit({
+        content: values.editMessageContent ? varTools.transf(values.messageContent, bridge.variables) : original.content,
+        embeds: values.editMessageEmbeds ? embeds : original.embeds,
+        components: values.editMessageComponents ? endComponents : original.components,
       })
 
+      bridge.data.global[msg.id] = handleInteraction;
+
       if (values.storeAs != "") {
-        bridge.variables[values.storeAs] = msg;
+        bridge.variables[values.storeAs] = {...msg, handleInteractionMethod: handleInteraction};
       }
+
       messageStorage = msg;
+
+      if (!values.editMessageComponents) return;
+
+      client.off("interactionCreate", bridge.variables.globalActionCache[msg.id])
+  
+      bridge.variables.globalActionCache[msg.id] = handleInteraction;
+      
       client.on("interactionCreate", handleInteraction);
       setTimeout(() => {
         client.off("interactionCreate", handleInteraction);

@@ -17,7 +17,7 @@
     "
     id="everything_container"
   >
-  <div onclick="closeWindow()" class="hoverablez flexbox dropShadow" style="height: 5vh; width: 5vh; margin-bottom: -5vh; transform: translateY(50%) translateX(-50%); margin-left: calc(100vw - 5vh); backdrop-filter: blur(12px); border-radius: 2vh; position: relative; z-index: 40000;">
+  <div onclick="closeWindow()" id="windowCloseButton" class="hoverablez flexbox dropShadow" style="height: 5vh; width: 5vh; margin-bottom: -5vh; transform: translateY(50%) translateX(-50%); margin-left: calc(100vw - 5vh); backdrop-filter: blur(12px); border-radius: 2vh; position: relative; z-index: 40000;">
     <div class="image add noanims" style="margin: auto; width: 80%; height: 80%; transform: rotate(45deg)"></div>
   </div>
     <div
@@ -186,6 +186,7 @@
         closeWindow();
       }
       if (event.key.toLowerCase() == "k" && event.ctrlKey == true) {
+        if (document.getElementById('windowCloseButton').style.display == 'none') return;
         if (document.getElementById("actionSearchCloseButton")) {
           closeSearch();
         } else {
@@ -316,7 +317,8 @@
               i == "previewName" ||
               i.startsWith("sepbar") ||
               i.startsWith("btext") ||
-              i.startsWith("invisible")
+              i.startsWith("invisible") ||
+              i == 'guide'
             ) {
             } else {
               try {

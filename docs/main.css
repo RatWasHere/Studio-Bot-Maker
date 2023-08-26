@@ -1672,6 +1672,9 @@
            opacity: 50%;
            animation-duration: 0.65s;
        }
+       .compass {
+        background-image: url(./AppData/compass.png);
+        }
        .editAction {
            background-image: url(./AppData/view.png);
            animation-name: savedldk;

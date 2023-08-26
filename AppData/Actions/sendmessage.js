@@ -332,6 +332,16 @@ module.exports = {
         "User Variable*": "direct",
       },
     },
+    guide: {
+      largeInput: "Your Message's Content",
+      customMenu: "Your Message's Components - Can be either dropdowns, or buttons.",
+      customMenu0: "Your Message's Embeds - The containers that can have descriptions, authors, fields, and hyperlinks!",
+      menuBar: `
+      The place your message goes to. By default, it's "Command Channel" - Meaning your message goes to where the command was ran. \n
+      You can send messages to an user by using either their variable or ID. \n
+      An extra-field can pop up if you select any options that ask for a variable or ID. You can learn more about filling them in with variables here: [Context Menus] \n
+      `
+    }
   },
   subtitle: "Content: $[messageContent]$ - Get Channel Via: $[sendTo]$",
   async run(values, message, client, bridge) {
@@ -646,10 +656,12 @@ module.exports = {
         components: endComponents,
       })
       .then(async (msg) => {
+        bridge.variables.globalActionCache[msg.id] = handleInteraction;
         if (values.storeAs != "") {
-          bridge.variables[values.storeAs] = msg;
+          bridge.variables[values.storeAs] = {...msg, handleInteractionMethod: handleInteraction};
         }
         messageStorage = msg;
+
         client.on("interactionCreate", handleInteraction);
         setTimeout(() => {
           client.off("interactionCreate", handleInteraction);

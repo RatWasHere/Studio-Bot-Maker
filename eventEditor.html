@@ -47,14 +47,14 @@
           class="barbuttonshift flexbox"
           id="eventSearchButton"
           onclick="eventSearch()"
-          style="margin-left: 1vw; width: 23vw; margin-right: auto"
+          style="margin-left: 1vw; width: 20vw; margin-right: auto"
         >
           <div
             class="image switchObjs"
             style="
-              width: 30% !important;
+              width: 25% !important;
               height: 30px !important;
-              margin: auto !important;
+              margin: auto;
             "
           ></div>
           <div style="margin: auto">
@@ -332,6 +332,9 @@
       <div class="sepbar noanims" style="margin-top: 4px; margin-bottom: 7px; width: 97%;"></div>
       `
       for (let element in event.nameSchemes)  {
+        if (!__data.data[element]) {
+          __data.data[element] = ''
+        }
         document.getElementById('editorContent').innerHTML += `
         <btext style="margin-left: 3vw; text-align: left;">${event.nameSchemes[element]}</btext>
         <input oninput="updateEventData(${element}, this.value)" value="${data[element]}">

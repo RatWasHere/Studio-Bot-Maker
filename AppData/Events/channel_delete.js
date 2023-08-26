@@ -3,13 +3,13 @@ module.exports = {
   nameSchemes: ["Store Channel As"],
   inputSchemes: 1,
   run(UI, client, fs, actionRunner, atWhat) {
-    client.on("channelDelete", (msg) => {
+    client.on("channelDelete", (channel) => {
       actionRunner(
         atWhat,
-        msg,
+        channel,
         client,
         {
-          [UI[0]]: msg,
+          [UI[0]]: channel,
         },
         true,
       );

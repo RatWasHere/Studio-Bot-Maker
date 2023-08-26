@@ -101,11 +101,14 @@ try {
       } else {
         cmdActions = at;
       }
-
+      let globalActionCache = {};
+      if (typeof actionBridge == 'object' && !actionBridge.globalActionCache) {
+        globalActionCache = {globalActionCache: {}}
+      }
       let actionContextBridge = {
         guild: interaction.guild || null,
         stopActionRun: false,
-        variables: typeof actionBridge == "object" ? actionBridge : {},
+        variables: typeof actionBridge == "object" ? {...actionBridge,  ...globalActionCache} : {globalActionCache: {}},
         data: {
           ranAt: cmdAt,
           nodeName: cmdName,

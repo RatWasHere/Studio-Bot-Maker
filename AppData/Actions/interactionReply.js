@@ -622,11 +622,13 @@ module.exports = {
         components: endComponents,
         flags: values.ephemeral == true ? 64 : null
       })
-      .then(async (inter) => {
+      .then(async () => {
         let msg = await interactionPendingReply.getOriginal();
         if (values.storeAs != "") {
-          bridge.variables[values.storeAs] = msg;
+          bridge.variables[values.storeAs] = {...msg, handleInteractionMethod: handleInteraction};
         }
+        bridge.variables.globalActionCache[msg.id] = handleInteraction;
+
         messageStorage = msg;
         client.on("interactionCreate", handleInteraction);
         setTimeout(() => {

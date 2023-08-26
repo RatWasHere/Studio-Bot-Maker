@@ -130,11 +130,15 @@ function closeWindowMenu() {
     });
   }, 500);
 }
+
+let lastOpenedMenu = {}
+
 function mbSelect(storeAs, menu, extraField, UIreference) {
   /* storeAs = the storeAs stored as value defined by the action */
   /* menu = the menu element */
   /* extraField = the input that appears when only a certain part of an input is selected */
   /* UIreference = how the menu is defined as in the action UI file */
+  lastOpenedMenu = {}
   cancelMenu = true;
   action.data[actionUI[UIreference].storeAs] = storeAs.innerText;
 
@@ -182,8 +186,8 @@ function mbSelect(storeAs, menu, extraField, UIreference) {
 
   setTimeout(() => {
     storeAs.parentNode.innerHTML = storeAs.innerText;
-    if (pending != "" && cachedParentNode.nextSibling.className !== "selectBar") {
-      pending.appendAfter(cachedParentNode);
+    if (pending != "" && cachedParentNode.parentElement.nextSibling.className !== "selectBar") {
+      pending.appendAfter(cachedParentNode.parentElement);
       pending.addEventListener('input', (event) => {
         saveField(extraField, menu);
         setTimeout(() => {
@@ -209,6 +213,9 @@ function mbSelect(storeAs, menu, extraField, UIreference) {
         }
       }
     }
+
+    cachedParentNode.style.zIndex = ''
+    cachedParentNode.parentElement.style.zIndex = ''
   }, 100);
 
   setTimeout(() => {
@@ -245,13 +252,25 @@ function closeMenu(elmett, nht, storesAs) {
 }
 // 32.8
 let cancelMenu = false;
-function openChoices(storesAs, pElm, dElement, elementStores) {
+
+
+function openChoices(storesAs, pElm, inputStoredAs, elementStoredAs) {
+  if (lastOpenedMenu.storesAs) {
+    closeMenu(lastOpenedMenu.storesAs, lastOpenedMenu.pElm, lastOpenedMenu.inputStoredAs, lastOpenedMenu.elementStoredAs)
+  }
+  lastOpenedMenu.storesAs = storesAs;
+  lastOpenedMenu.pElm = pElm;
+  lastOpenedMenu.inputStoredAs = inputStoredAs;
+  lastOpenedMenu.elementStoredAs = elementStoredAs;
+
   pElm.style.transition = "all 0.5s ease";
-  let choices = actionUI[elementStores].choices;
-  for (let option in actionUI[elementStores].choices) {
+  pElm.style.zIndex = '1000'
+  pElm.parentElement.style.zIndex = '1000'
+  let choices = actionUI[elementStoredAs].choices;
+  for (let option in actionUI[elementStoredAs].choices) {
     if (choices[option] != action.data[storesAs]) {
       pElm.onclick = () => {
-        closeMenu(storesAs, pElm, dElement, elementStores);
+        closeMenu(storesAs, pElm, inputStoredAs, elementStoredAs);
       };
       let menuElement = document.createElement("div");
       menuElement.className = "menuBar flexbox";
@@ -260,22 +279,25 @@ function openChoices(storesAs, pElm, dElement, elementStores) {
       menuElement.style.alignItems = "left";
       menuElement.innerHTML = `<div style="width: 0.3vw; height: 10px; margin-right: 1vw; margin-top: auto; margin-bottom: auto; background-color: #FFFFFF85;"></div> ${choices[option]} `;
       menuElement.onclick = () => {
-        mbSelect(menuElement, storesAs, dElement, elementStores);
+        mbSelect(menuElement, storesAs, inputStoredAs, elementStoredAs);
       };
       pElm.appendChild(menuElement);
-      menuElement.style.animationName = "inittl";
-      menuElement.style.animationDuration = "0.5s";
+      menuElement.style.animationName = "menuBarSelectionFadeIn";
+      menuElement.style.animationDuration = "0.2s";
     }
   }
 }
 function closeMenu(storesAs, pElm, inputStoredAs, elementStoredAs) {
   if (cancelMenu == true) return;
+  lastOpenedMenu = {}
   pElm.style.animationName = "";
   const innerHeight = pElm.clientHeight;
   pElm.style.animationDuration = "";
   pElm.style.setProperty("--inner-height", innerHeight + "px");
   pElm.style.animationName = "shrink";
   pElm.style.animationDuration = "300ms";
+  pElm.style.zIndex = ''
+  pElm.parentElement.style.zIndex = ''
   pElm.onclick = () => {
     openChoices(storesAs, pElm, inputStoredAs, elementStoredAs);
   };
@@ -1005,4 +1027,136 @@ function isCaretAtEnd(divElement) {
 
 
 function validateLargeInput(event) {
+}
+
+let postGuideHTML = ''
+
+function openGuide() {
+  let editorContent = document.getElementById('editorContent');
+  editorContent.style.transition = `all 0.${editorSettings.commonAnimation}s ease`
+  editorContent.style.opacity = '0'
+  postGuideHTML = editorContent.innerHTML
+  setTimeout(() => {
+  let UIdata = actionUI
+  let newBar = document.createElement('div')
+  newBar.classList = 'flexbox'
+
+  newBar.style = `width: 100vw; height: 0vh; background-color: #FFFFFF07; transition: all 0.${editorSettings.commonAnimation}s ease; justify-content: left; overflow: auto`
+
+  newBar.innerHTML = `
+  <div class="barbuttontexta" style="margin: auto; margin-left: 2vw;">Action Guide <span style="opacity: 50%;">for ${action.name}</span></div>
+ 
+  <div class="barbuttonshift flexbox" style="width: 14vw; margin-right: 1vw;" onclick="closeGuide()"> 
+  
+  <div class="image checkmark" style="
+  width: 30% !important;
+  height: 30px !important;
+  margin: auto !important;
+"></div>
+
+  <div style="margin: auto"> <btext>Go Back</btext><div class="smalltext" style="opacity: 50%; font-size: 8px;">Close The Guide</div> </div>
+  
+  </div>
+  `
+  if (document.getElementById('windowCloseButton')) {
+    let windowCloseButton = document.getElementById('windowCloseButton')
+    windowCloseButton.style.display = 'none'
+  }
+
+  let selectorMenu = document.getElementById('selectorMenu')
+  selectorMenu.style.transition = `all 0.${editorSettings.commonAnimation}s ease`
+
+
+
+  newBar.appendBefore(editorContent)
+  newBar.id = 'editorGuideBar'
+  setTimeout(() => {
+    selectorMenu.style.height = '0vh'
+    selectorMenu.style.overflow = 'auto'
+    newBar.style.height = '10vh'
+  }, 10);
+
+
+  editorContent.innerHTML = `
+  <div style="margin-top: 1.5vh;"></div>
+  <div class="text">${action.data.name}</div>
+  <div class="sepbars"></div>
+  `
+
+  let lastBtext;
+
+  for (let element in UIdata) {
+    if (UIdata.guide[element]) {
+      let types = '';
+      for (let type in UIdata[element].types) {
+        types += `<span style="padding: 6px; background-color: #00000030; margin-left: 3px; margin-right: 3px; border-radius: 4px;">${UIdata[element].types[type]}</span>`
+      }
+
+      if (element.startsWith('customMenu')) {
+        editorContent.innerHTML += `
+        <div class="textse" style="margin-bottom: -2.5vh !important;">${UIdata[element].name}</div>
+        <div id="${element}AddButton" class="addButton flexbox" style="cursor: default; background-color: #FFFFFF10;">
+        <div class="image add"></div>
+        </div>
+        <div style="background-color: #FFFFFF10; all 0.${editorSettings.commonAnimation}s ease; margin: auto; border-radius: 9px; padding: 12px; height: 40vh; overflow: auto; width: calc(95% - 24px); margin-bottom: 4px;" class="dimension flexbox">
+            <btext style="margin-bottom: 1vh;">${UIdata.guide[element]}</btext>
+
+            <text style="width: 100%; text-align: center; opacity: 70%; margin: auto; margin-top: 1vh;">Up To ${UIdata[element].max} Elements • Types: ${types}</text>
+            
+        </div><br>`
+      }
+
+      if (element.startsWith('menuBar')) {
+        editorContent.innerHTML += `<div class="dropdown" style="cursor: default; background-color: #ffffff10;">${lastBtext}</div>
+        <div class="selectBar noanims" style="cursor: default; font-size: 16px; background-color: #FFFFFF08; border-radius: 0px;">Selected: ${action.data[UIdata[element].storeAs].replaceAll('*', '')} ${action.data[UIdata[element].storeAs].endsWith('*') ? `- Filled In The Input With: ${action.data[UIdata[element].extraField].substring(0, 16)}${action.data[UIdata[element].extraField].length > 15 ? '...' : ''}` : '' }</div>
+        <div class="selectBar noanims" style="cursor: default; padding-left: 12px; padding-right: 12px; font-size: 16px; background-color: #FFFFFF10; margin-top: 0px;">${replaceWithHyper(UIdata.guide[element])}</div>
+        <br>
+        `
+      }
+    } else {
+      if (element.startsWith('btext')) {
+        lastBtext = UIdata[element]
+      }
+    }
+  }
+
+  editorContent.style.opacity = '1'
+}, editorSettings.commonAnimation * 100);
+
+}
+
+function replaceWithHyper(text) {
+  let endResult = text;
+  return endResult.replaceAll('\n', '<br>').replaceAll('[Context Menus]', `
+  <span class="hoverabley" style="padding: 3px; border-radius: 4px; margin-top: 2px;">Guide Temporarily Unavailable</span>
+  `)
+}
+
+function closeGuide() {
+  let editorContent = document.getElementById('editorContent');
+  editorContent.style.transition = `all 0.${editorSettings.commonAnimation}s ease`
+  editorContent.style.opacity = '0'
+
+  let selectorMenu = document.getElementById('selectorMenu')
+  selectorMenu.style.transition = `all 0.${editorSettings.commonAnimation}s ease`
+
+  let guideBar = document.getElementById('editorGuideBar')
+  guideBar.style.height = '0vh'
+
+  setTimeout(() => {
+    selectorMenu.style.height = '10vh'
+    selectorMenu.style.overflow = ''
+  }, 10);
+
+  setTimeout(() => {
+    guideBar.remove()
+  if (document.getElementById('windowCloseButton')) {
+    let windowCloseButton = document.getElementById('windowCloseButton')
+    windowCloseButton.style.display = ''
+  }
+
+  editorContent.innerHTML = postGuideHTML;
+
+  editorContent.style.opacity = '1'
+}, editorSettings.commonAnimation * 100);
 }

@@ -140,7 +140,7 @@
                 action.data.ExtraData = document.getElementById('ExtraData').innerText
             }
         } else {
-            if (i.startsWith('text') || i == 'script' || i.startsWith('toggle') || i.startsWith('menuBar') || i == 'preview' || i.startsWith('actions') || i.startsWith('customMenu') ||i == 'previewName' || i.startsWith('sepbar') || i.startsWith('btext') || i.startsWith('invisible')) {} else {
+            if (i.startsWith('text') || i == 'guide' || i == 'script' || i.startsWith('toggle') || i.startsWith('menuBar') || i == 'preview' || i.startsWith('actions') || i.startsWith('customMenu') ||i == 'previewName' || i.startsWith('sepbar') || i.startsWith('btext') || i.startsWith('invisible')) {} else {
                 try {
                     if (i.split(' ').includes('custom')) {
                         action.data[element] = document.getElementById(element).value;

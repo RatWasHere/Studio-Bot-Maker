@@ -52,6 +52,9 @@ exec("node -v", (error, stdout, stderr) => {
       consoleLog(`Checking NPM modules.. This might take a bit`);
 
       exec("npm i oceanic.js@1.8.0", (err) => {
+        if (err) {
+          consoleLog('Something Went Wrong Whilst Trying To Download Oceanic.JS: ', err)
+        }
         runBot()
       });
       exec("npm i @oceanicjs/builders");
@@ -60,17 +63,19 @@ exec("node -v", (error, stdout, stderr) => {
 });
 
 async function runBot() {
+  setTimeout(() => {
+    customFs.writeFileSync(
+      "bot.js",
+      customFs.readFileSync("./AppData/bot.js", "utf8"),
+    );
+    runCmd
+      .run(`node ${filePath}`, { onData: consoleLog, onError: consoleLog, oncancel: cancelWindow })
+      .catch((error) => {
+        consoleLog(`Error executing bot.js: ${error}`);
+      });
+  }, 1000);
   if (ranbot == true) return;
   ranbot = true;
-  customFs.writeFileSync(
-    "bot.js",
-    customFs.readFileSync("./AppData/bot.js", "utf8"),
-  );
-  runCmd
-    .run(`node ${filePath}`, { onData: consoleLog, onError: consoleLog, oncancel: cancelWindow })
-    .catch((error) => {
-      consoleLog(`Error executing bot.js: ${error}`);
-    });
 }
 
 let cancelWindow = () => {

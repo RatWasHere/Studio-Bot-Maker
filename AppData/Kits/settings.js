@@ -9,7 +9,6 @@ try {
 }
 
 let editorSettings = {};
-console.log(ownSettings.preffered);
 switch (ownSettings.preffered) {
   default:
     editorSettings.groupPaneHeight = "inherit";

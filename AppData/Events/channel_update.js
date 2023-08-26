@@ -1,6 +1,6 @@
 module.exports = {
   name: "Channel Update",
-  nameSchemes: ["Store Before As", "Store After As"],
+  nameSchemes: ["Store Channel Before Update As", "Store After Update As"],
   inputSchemes: 2,
   run(UI, client, fs, actionRunner, atWhat) {
     client.on("channelUpdate", (msg1, msg2) => {

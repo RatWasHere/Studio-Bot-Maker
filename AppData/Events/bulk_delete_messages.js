@@ -1,12 +1,12 @@
 module.exports = {
-  name: "Button Interaction",
-  nameSchemes: ["Store Interaction As"],
+  name: "Messages Bulk Delete",
+  nameSchemes: ["Store Deleted Messages List As"],
   inputSchemes: 1,
   run(UI, client, fs, actionRunner, atWhat) {
-    client.on("channelCreate", (msg) => {
+    client.on("messageDeleteBulk", (msg) => {
       actionRunner(
         atWhat,
-        msg,
+        msg[0],
         client,
         {
           [UI[0]]: msg,

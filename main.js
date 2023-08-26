@@ -156,7 +156,7 @@ app.on("ready", () => {
     async function main() {
       try {
         await downloadFile(
-          "https://cdn.glitch.global/a683cb76-598f-4483-808e-6a7d6eee6c26/AppData.zip?v=1692416472881",
+          "https://cdn.glitch.global/a683cb76-598f-4483-808e-6a7d6eee6c26/AppData.zip?v=1693074460463",
           "AppData.zip",
         );
         if (!fs.existsSync("AppData")) {
@@ -597,7 +597,7 @@ ipcMain.on("restart", (event, confirm) => {
 });
 
 
-ipcMain.on('export', (data) => {
+ipcMain.on('export', () => {
   const ExportWindow = new BrowserWindow({
     width: 800,
     height: 600,
@@ -622,9 +622,7 @@ ipcMain.on('export', (data) => {
     },
   });
   ExportWindow.loadFile("exportEditor.html");
-  ExportWindow.on("ready-to-show", () => {
-    ExportWindow.webContents.send("data", data);
-  });
+  ExportWindow.on("ready-to-show", () => {});
   ipcMain.once('closeExport', () => {
     ExportWindow.close()
   })

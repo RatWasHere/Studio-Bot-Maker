@@ -1,6 +1,6 @@
 module.exports = {
   name: "Message Update",
-  nameSchemes: ["Store Before As", "Store After As"],
+  nameSchemes: ["Store Old Message As", "Store New Message As"],
   inputSchemes: 2,
   run(UI, client, fs, actionRunner, atWhat) {
     client.on("messageUpdate", (msg1, msg2) => {

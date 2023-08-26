@@ -6,7 +6,7 @@ module.exports = {
     client.on("roleCreate", (role) => {
       actionRunner(
         atWhat,
-        msg,
+        {...role, guild: role.guild},
         client,
         {
           [UI[0]]: role,

@@ -6,7 +6,7 @@ module.exports = {
     client.on("messageReactionRemove", (reaction_origin, author) => {
       actionRunner(
         atWhat,
-        msg1,
+        reaction_origin,
         client,
         {
           [UI[0]]: reaction_origin,

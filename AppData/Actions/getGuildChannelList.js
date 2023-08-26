@@ -2,7 +2,7 @@ module.exports = {
   data: { name: "Get Guild Channels List", storeAs: "", get: "IDs" },
 
   UI: {
-    compatibleWith: ["Text", "Slash"],
+    compatibleWith: ["Any"],
     text: "Get Guild Channels List",
 
     sepbar: "",

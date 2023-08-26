@@ -35,7 +35,7 @@ function getUIelements(UIdata) {
         <div id="${element}AddButton" onclick="addObjectToCustomMenu('${element}')" class="addButton flexbox">
         <div class="image add"></div>
         </div>
-        <div id="${UIdata[element].storeAs}" style="background-color: #FFFFFF10; all 0.${editorSettings.commonAnimation}s ease; margin: auto; border-radius: 9px; padding: 12px; height: 40vh; overflow: auto; width: calc(95% - 24px);" class="dimension">
+        <div id="${UIdata[element].storeAs}" style="background-color: #FFFFFF10; all 0.${editorSettings.commonAnimation}s ease; margin: auto; border-radius: 9px; padding: 12px; height: 40vh; overflow: auto; width: calc(95% - 24px); margin-bottom: 6px;" class="dimension">
             
         </div>`;
     }
@@ -161,7 +161,7 @@ function getUIelements(UIdata) {
             if (UIdata[element].extraField) {
               MenuConditionalInput = UIdata[element].extraField;
             }
-            endHTML = `${endHTML}<div class="dropdown" id="${UIdata[element].storeAs}" onclick="openChoices('${UIdata[element].storeAs}', this, '${MenuConditionalInput}', '${element}')">${UIdata[element].choices[option]}</div>`;
+            endHTML = `${endHTML}<div style="width: 100%; height: 30.8px; margin-bottom: 6px;"><div class="dropdown" id="${UIdata[element].storeAs}" onclick="openChoices('${UIdata[element].storeAs}', this, '${MenuConditionalInput}', '${element}')">${UIdata[element].choices[option]}</div></div>`;
             if (UIdata[element].choices[option].endsWith("*")) {
               endHTML = `${endHTML} <div class="selectBar" oninput="validateInput(event)" onblur="saveField('${
                 UIdata[element].extraField
@@ -186,7 +186,11 @@ function getUIelements(UIdata) {
       }
     }
     if (element.startsWith("text")) {
-      endHTML = `${endHTML} <div class="text">${UIdata[element]}</div>`;
+      if (UIdata.guide) {
+        endHTML = `${endHTML} <div class="text flexbox" style="justify-content: left;">${UIdata[element]} <div class="hoverablez dimension flexbox" onclick="openGuide()" style="padding: 2px; width: 7vw; margin-left: 1vw; border-radius: 4px;"><btext style="margin: auto !important;">Guide</btext></div></div>`;
+      } else {
+        endHTML = `${endHTML} <div class="text">${UIdata[element]}</div>`;
+      }
     }
     if (element.startsWith("btext")) {
       endHTML = `${endHTML} <div class="textse" id="_text${UIdata[element]}">${UIdata[element]}</div>`;

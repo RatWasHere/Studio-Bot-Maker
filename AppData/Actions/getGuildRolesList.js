@@ -2,7 +2,7 @@ module.exports = {
   data: { name: "Get Guild Roles List", storeAs: "", get: "IDs" },
 
   UI: {
-    compatibleWith: ["Text", "Slash"],
+    compatibleWith: ["Any"],
     text: "Get Guild Roles List",
 
     sepbar: "",

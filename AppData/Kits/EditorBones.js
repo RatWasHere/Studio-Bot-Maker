@@ -34,14 +34,12 @@ function editAction() {
   if (botData.commands[lastObj].type == "event") {
     actionType = "event";
     try {
-      if (
-        require(processPath + "/AppData/Events/" + botData.commands[lastObj].eventFile)
-          .inputSchemes == 2
-      ) {
-        variables.push(botData.commands[lastObj].eventData[0]);
-        variables.push(botData.commands[lastObj].eventData[1]);
-      } else {
-        variables.push(botData.commands[lastObj].eventData[0]);
+      let event = require(processPath + "/AppData/Events/" + botData.commands[lastObj].eventFile)
+      for (let eventVariableStorageName in event.nameSchemes) {
+        console.log(event)
+        if (event.preventStorage && event.preventStorage.includes(event.nameSchemes[eventVariableStorageName])) {} else {
+          variables.push(botData.commands[lastObj].eventData[eventVariableStorageName])
+        }
       }
     } catch (err) {
       null;

@@ -8,6 +8,7 @@ module.exports = {
     name: "Edit Interaction Reply",
     ExtraData: "",
     sendTo: "",
+    editMessageContent: true
   },
   UI: {
     compatibleWith: ["Slash"],
@@ -15,6 +16,10 @@ module.exports = {
     sepbar: "",
     btext: "Message Content",
     largeInput: "messageContent",
+    toggle: {
+      name: "Edit Message Content?",
+      storeAs: "editMessageContent"
+    },
     sepbar0: "",
     customMenu: {
       name: "Components",
@@ -230,6 +235,10 @@ module.exports = {
       },
       storeAs: "actionRows",
     },
+    toggle0: {
+      name: "Edit Message Components?",
+      storeAs: "editMessageComponents"
+    },
     sepbar1: "",
     customMenu0: {
       name: "Embeds",
@@ -309,6 +318,10 @@ module.exports = {
       },
       storeAs: "embeds",
     },
+    toggle1: {
+      name: "Edit Message Embeds?",
+      storeAs: "editMessageEmbeds"
+    },
     sepbar2: "",
     btext0: "Get Interaction Via",
     menuBar: {
@@ -323,7 +336,7 @@ module.exports = {
       }
     }
   },
-  subtitle: "Content: $[messageContent]$ - Interaction From: $[messageVariable]$",
+  subtitle: "Content: $[messageContent]$ - Interaction From: $[interactionFrom]$",
   async run(values, message, client, bridge) {
     let actionRunner = bridge.runner
     const {
@@ -604,27 +617,38 @@ module.exports = {
     };
 
     let messageToEdit;
-
     if (values.interactionFrom == 'Command Interaction') {
-      messageToEdit = message;
+      messageToEdit = await message;
     } else {
-      messageToEdit = bridge.variables[varTools.transf(values.interaction, bridge.variables)]
+      messageToEdit = await bridge.variables[varTools.transf(values.interaction, bridge.variables)]
     }
 
-      let msg = await messageToEdit
-      .editOriginal({
-        content: varTools.transf(values.messageContent, bridge.variables),
-        embeds: embeds,
-        components: endComponents,
-      })
 
-      if (values.storeAs != "") {
-        bridge.variables[values.storeAs] = msg;
-      }
-      messageStorage = msg;
-      client.on("interactionCreate", handleInteraction);
-      setTimeout(() => {
-        client.off("interactionCreate", handleInteraction);
-      }, highestTimeDenominator * 1000);
+    let original = await messageToEdit.getOriginal()
+
+    let msg = await messageToEdit
+    .editOriginal({
+      content: values.editMessageContent ? varTools.transf(values.messageContent, bridge.variables) : original.content,
+      embeds: values.editMessageEmbeds ? embeds : original.embeds,
+      components: values.editMessageComponents ? endComponents : original.components,
+    })
+
+    
+    if (values.storeAs != "") {
+      bridge.variables[values.storeAs] = msg;
+    }
+    
+    messageStorage = msg;
+
+    if (!values.editMessageComponents) return;
+
+    client.off("interactionCreate", bridge.variables.globalActionCache[msg.id])
+
+    bridge.variables.globalActionCache[msg.id] = handleInteraction;
+    
+    client.on("interactionCreate", handleInteraction);
+    setTimeout(() => {
+      client.off("interactionCreate", handleInteraction);
+    }, highestTimeDenominator * 1000);
   },
 };

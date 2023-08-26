@@ -599,18 +599,20 @@ module.exports = {
     let interactionPendingReply =
       bridge.variables[varTools.transf(values.to, bridge.variables)];
 
-    await interactionPendingReply
+      await interactionPendingReply
       .createMessage({
         content: varTools.transf(values.messageContent, bridge.variables),
         embeds: embeds,
         components: endComponents,
         flags: values.ephemeral == true ? 64 : null
       })
-      .then(async (inter) => {
+      .then(async () => {
         let msg = await interactionPendingReply.getOriginal();
         if (values.storeAs != "") {
-          bridge.variables[values.storeAs] = msg;
+          bridge.variables[values.storeAs] = {...msg, handleInteractionMethod: handleInteraction};
         }
+        bridge.variables.globalActionCache[msg.id] = handleInteraction;
+        
         messageStorage = msg;
         client.on("interactionCreate", handleInteraction);
         setTimeout(() => {

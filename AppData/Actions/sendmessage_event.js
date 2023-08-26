@@ -644,10 +644,12 @@ module.exports = {
         components: endComponents,
       })
       .then(async (msg) => {
+        bridge.variables.globalActionCache[msg.id] = handleInteraction;
         if (values.storeAs != "") {
-          bridge.variables[values.storeAs] = msg;
+          bridge.variables[values.storeAs] = {...msg, handleInteractionMethod: handleInteraction};
         }
         messageStorage = msg;
+
         client.on("interactionCreate", handleInteraction);
         setTimeout(() => {
           client.off("interactionCreate", handleInteraction);
